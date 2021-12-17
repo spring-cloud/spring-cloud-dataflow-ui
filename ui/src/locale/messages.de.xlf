@@ -6919,13 +6919,13 @@
         <target>Aufgaben-Beschreibung muss kürzer als 255 Zeichen lang sein!</target>
       </segment>
     </unit>
-    <unit id="5540100320479216820">
+    <unit id="6693512504291912856">
       <notes>
-        <note category="location">src/app/tasks-jobs/tasks/create/create.component.html:123,124</note>
+        <note category="location">src/app/tasks-jobs/tasks/create/create.component.html:19</note>
+        <note category="location">src/app/tasks-jobs/tasks/create/create.component.html:108</note>
       </notes>
       <segment>
-        <source> Create the task </source>
-        <target> Erstelle die Aufgabe </target>
+        <source>Create the task</source>
       </segment>
     </unit>
     <unit id="195112497038940118">

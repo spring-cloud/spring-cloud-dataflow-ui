@@ -2,7 +2,7 @@
   <clr-modal [(clrModalOpen)]="isOpen" clrModalSize="xs">
     <h3 class="modal-title"><ng-container i18n>Settings</ng-container></h3>
     <div class="modal-body">
-      <clr-select-container *ngIf="languageActive">
+      <!-- <clr-select-container *ngIf="languageActive">
         <label><ng-container i18n>Language</ng-container></label>
         <select
           clrSelect
@@ -16,7 +16,7 @@
         <clr-control-helper>
           <ng-container i18n>You can choose your preferred language</ng-container>
         </clr-control-helper>
-      </clr-select-container>
+      </clr-select-container> -->
       <clr-select-container *ngIf="themeActive">
         <label><ng-container i18n>Theme</ng-container></label>
         <select

@@ -22,6 +22,8 @@ export class UrlUtilities {
     let path: string = window.location.pathname.replace(/[^/]*$/, '');
     // Check if the path ends with /
     path += path.endsWith('/') ? '' : '/';
+    path = path.replace('/en/', '/');
+    path = path.replace('/de/', '/');
     return path;
   }
 }

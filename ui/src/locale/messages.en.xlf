@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<xliff version="2.0" xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="en-US">
+<xliff version="2.0" xmlns="urn:oasis:names:tc:xliff:document:2.0" srcLang="en">
   <file id="ngi18n" original="ng.template">
     <unit id="5071555479457271198">
       <notes>
@@ -28,7 +28,7 @@
         <note category="location">src/app/manage/tools/stream/export.component.ts:18</note>
         <note category="location">src/app/manage/tools/task/export.component.ts:18</note>
         <note category="location">src/app/streams/streams/clone/clone.component.html:33</note>
-        <note category="location">src/app/streams/streams/create/create.component.html:47</note>
+        <note category="location">src/app/streams/streams/create/create.component.html:57</note>
         <note category="location">src/app/streams/streams/destroy/destroy.component.html:14</note>
         <note category="location">src/app/streams/streams/undeploy/undeploy.component.html:14</note>
         <note category="location">src/app/tasks-jobs/executions/execution/execution.component.html:182</note>
@@ -39,7 +39,7 @@
         <note category="location">src/app/tasks-jobs/schedules/schedule/schedule.component.html:27</note>
         <note category="location">src/app/tasks-jobs/schedules/schedule/schedule.component.html:54</note>
         <note category="location">src/app/tasks-jobs/tasks/clone/clone.component.html:33</note>
-        <note category="location">src/app/tasks-jobs/tasks/create/create.component.html:67</note>
+        <note category="location">src/app/tasks-jobs/tasks/create/create.component.html:53</note>
         <note category="location">src/app/tasks-jobs/tasks/destroy/destroy.component.html:20</note>
         <note category="location">src/app/tasks-jobs/tasks/task/task.component.html:273</note>
       </notes>
@@ -460,7 +460,7 @@
     </unit>
     <unit id="4704891312393304405">
       <notes>
-        <note category="location">src/app/about/info/info.component.html:215,216</note>
+        <note category="location">src/app/about/info/info.component.html:214,216</note>
       </notes>
       <segment>
         <source> Copy Details to Clipboard </source>
@@ -468,7 +468,7 @@
     </unit>
     <unit id="8738732372986673558">
       <notes>
-        <note category="location">src/app/about/info/info.component.ts:34</note>
+        <note category="location">src/app/about/info/info.component.ts:35</note>
       </notes>
       <segment>
         <source>Copy to clipboard</source>
@@ -476,7 +476,7 @@
     </unit>
     <unit id="3273358904358723826">
       <notes>
-        <note category="location">src/app/about/info/info.component.ts:34</note>
+        <note category="location">src/app/about/info/info.component.ts:35</note>
       </notes>
       <segment>
         <source>Copied About Details to Clipboard (As JSON).</source>
@@ -676,31 +676,30 @@
     </unit>
     <unit id="4598124915768290146">
       <notes>
-        <note category="location">src/app/apps/add/props/props.component.html:34,35</note>
-        <note category="location">src/app/apps/add/register/register.component.html:140,141</note>
-        <note category="location">src/app/apps/add/uri/uri.component.html:37,38</note>
-        <note category="location">src/app/apps/add/website-starters/website-starters.component.html:45,46</note>
-        <note category="location">src/app/apps/apps.component.html:27,28</note>
-        <note category="location">src/app/apps/unregister/unregister.component.html:45,46</note>
-        <note category="location">src/app/apps/version/version.component.html:60,61</note>
-        <note category="location">src/app/flo/shared/properties-groups/properties-groups-dialog.component.html:50,51</note>
-        <note category="location">src/app/manage/tools/cleanup/cleanup.component.html:23,24</note>
-        <note category="location">src/app/shared/component/confirm/confirm.component.html:11,12</note>
-        <note category="location">src/app/streams/streams/clone/clone.component.html:69,70</note>
-        <note category="location">src/app/streams/streams/create/create.component.html:124,125</note>
-        <note category="location">src/app/streams/streams/destroy/destroy.component.html:42,43</note>
-        <note category="location">src/app/streams/streams/multi-deploy/multi-deploy.component.html:90,91</note>
-        <note category="location">src/app/streams/streams/rollback/rollback.component.html:17,18</note>
-        <note category="location">src/app/streams/streams/streams.component.html:38,39</note>
-        <note category="location">src/app/streams/streams/undeploy/undeploy.component.html:42,43</note>
-        <note category="location">src/app/tasks-jobs/executions/cleanup/cleanup.component.html:39,40</note>
-        <note category="location">src/app/tasks-jobs/executions/executions.component.html:15,16</note>
-        <note category="location">src/app/tasks-jobs/executions/stop/stop.component.html:20,21</note>
-        <note category="location">src/app/tasks-jobs/schedules/create/create.component.html:133,134</note>
-        <note category="location">src/app/tasks-jobs/schedules/destroy/destroy.component.html:43,44</note>
-        <note category="location">src/app/tasks-jobs/schedules/schedules.component.html:15,16</note>
-        <note category="location">src/app/tasks-jobs/tasks/cleanup/cleanup.component.html:33,34</note>
-        <note category="location">src/app/tasks-jobs/tasks/tasks.component.html:29,30</note>
+        <note category="location">src/app/apps/add/props/props.component.html:33,35</note>
+        <note category="location">src/app/apps/add/register/register.component.html:139,141</note>
+        <note category="location">src/app/apps/add/uri/uri.component.html:36,38</note>
+        <note category="location">src/app/apps/add/website-starters/website-starters.component.html:44,46</note>
+        <note category="location">src/app/apps/apps.component.html:26,28</note>
+        <note category="location">src/app/apps/unregister/unregister.component.html:44,46</note>
+        <note category="location">src/app/apps/version/version.component.html:59,61</note>
+        <note category="location">src/app/flo/shared/properties-groups/properties-groups-dialog.component.html:49,51</note>
+        <note category="location">src/app/manage/tools/cleanup/cleanup.component.html:22,24</note>
+        <note category="location">src/app/shared/component/confirm/confirm.component.html:10,12</note>
+        <note category="location">src/app/streams/streams/clone/clone.component.html:68,70</note>
+        <note category="location">src/app/streams/streams/destroy/destroy.component.html:41,43</note>
+        <note category="location">src/app/streams/streams/multi-deploy/multi-deploy.component.html:89,91</note>
+        <note category="location">src/app/streams/streams/rollback/rollback.component.html:16,18</note>
+        <note category="location">src/app/streams/streams/streams.component.html:37,39</note>
+        <note category="location">src/app/streams/streams/undeploy/undeploy.component.html:41,43</note>
+        <note category="location">src/app/tasks-jobs/executions/cleanup/cleanup.component.html:38,40</note>
+        <note category="location">src/app/tasks-jobs/executions/executions.component.html:14,16</note>
+        <note category="location">src/app/tasks-jobs/executions/stop/stop.component.html:19,21</note>
+        <note category="location">src/app/tasks-jobs/schedules/create/create.component.html:132,134</note>
+        <note category="location">src/app/tasks-jobs/schedules/destroy/destroy.component.html:42,44</note>
+        <note category="location">src/app/tasks-jobs/schedules/schedules.component.html:14,16</note>
+        <note category="location">src/app/tasks-jobs/tasks/cleanup/cleanup.component.html:32,34</note>
+        <note category="location">src/app/tasks-jobs/tasks/tasks.component.html:28,30</note>
       </notes>
       <segment>
         <source> Cancel </source>
@@ -708,9 +707,9 @@
     </unit>
     <unit id="5736444574207684893">
       <notes>
-        <note category="location">src/app/apps/add/props/props.component.html:39,40</note>
-        <note category="location">src/app/apps/add/uri/uri.component.html:42,43</note>
-        <note category="location">src/app/apps/add/website-starters/website-starters.component.html:50,51</note>
+        <note category="location">src/app/apps/add/props/props.component.html:38,40</note>
+        <note category="location">src/app/apps/add/uri/uri.component.html:41,43</note>
+        <note category="location">src/app/apps/add/website-starters/website-starters.component.html:49,51</note>
       </notes>
       <segment>
         <source> Import Application(s) </source>
@@ -740,15 +739,14 @@
     </unit>
     <unit id="4134917114666618814">
       <notes>
-        <note category="location">src/app/apps/add/props/props.component.html:53,54</note>
-        <note category="location">src/app/apps/add/register/register.component.html:160,161</note>
-        <note category="location">src/app/apps/add/uri/uri.component.html:55,56</note>
-        <note category="location">src/app/apps/add/website-starters/website-starters.component.html:64,65</note>
-        <note category="location">src/app/streams/streams/deploy/deploy.component.html:61,62</note>
-        <note category="location">src/app/streams/streams/multi-deploy/multi-deploy.component.html:68,69</note>
-        <note category="location">src/app/tasks-jobs/schedules/create/create.component.html:106,107</note>
-        <note category="location">src/app/tasks-jobs/tasks/create/create.component.html:32,33</note>
-        <note category="location">src/app/tasks-jobs/tasks/launch/launch.component.html:70,71</note>
+        <note category="location">src/app/apps/add/props/props.component.html:52,54</note>
+        <note category="location">src/app/apps/add/register/register.component.html:159,161</note>
+        <note category="location">src/app/apps/add/uri/uri.component.html:54,56</note>
+        <note category="location">src/app/apps/add/website-starters/website-starters.component.html:63,65</note>
+        <note category="location">src/app/streams/streams/deploy/deploy.component.html:60,62</note>
+        <note category="location">src/app/streams/streams/multi-deploy/multi-deploy.component.html:67,69</note>
+        <note category="location">src/app/tasks-jobs/schedules/create/create.component.html:105,107</note>
+        <note category="location">src/app/tasks-jobs/tasks/launch/launch.component.html:69,71</note>
       </notes>
       <segment>
         <source> Cancel </source>
@@ -1003,7 +1001,7 @@
     </unit>
     <unit id="6391489794682253153">
       <notes>
-        <note category="location">src/app/apps/add/register/register.component.html:114,115</note>
+        <note category="location">src/app/apps/add/register/register.component.html:113,115</note>
       </notes>
       <segment>
         <source> Remove </source>
@@ -1011,7 +1009,7 @@
     </unit>
     <unit id="6942187163598944759">
       <notes>
-        <note category="location">src/app/apps/add/register/register.component.html:129,130</note>
+        <note category="location">src/app/apps/add/register/register.component.html:128,130</note>
       </notes>
       <segment>
         <source> New application </source>
@@ -1019,7 +1017,7 @@
     </unit>
     <unit id="2177336950055751357">
       <notes>
-        <note category="location">src/app/apps/add/register/register.component.html:146,147</note>
+        <note category="location">src/app/apps/add/register/register.component.html:145,147</note>
       </notes>
       <segment>
         <source> Import application(s) </source>
@@ -1214,7 +1212,7 @@
     </unit>
     <unit id="173781968037393370">
       <notes>
-        <note category="location">src/app/apps/app/app.component.html:22,23</note>
+        <note category="location">src/app/apps/app/app.component.html:21,23</note>
       </notes>
       <segment>
         <source> Manage versions </source>
@@ -1303,7 +1301,7 @@
     </unit>
     <unit id="2726347560599304357">
       <notes>
-        <note category="location">src/app/apps/app/app.component.html:125,126</note>
+        <note category="location">src/app/apps/app/app.component.html:124,126</note>
       </notes>
       <segment>
         <source> Show all the properties </source>
@@ -1374,7 +1372,7 @@
     </unit>
     <unit id="7533818887977174013">
       <notes>
-        <note category="location">src/app/apps/apps.component.html:11,12</note>
+        <note category="location">src/app/apps/apps.component.html:10,12</note>
       </notes>
       <segment>
         <source> Add application(s) </source>
@@ -1382,7 +1380,7 @@
     </unit>
     <unit id="8156817968557023379">
       <notes>
-        <note category="location">src/app/apps/apps.component.html:37,38</note>
+        <note category="location">src/app/apps/apps.component.html:36,38</note>
       </notes>
       <segment>
         <source> Unregister application(s) </source>
@@ -1390,11 +1388,11 @@
     </unit>
     <unit id="5101676041522914614">
       <notes>
-        <note category="location">src/app/apps/apps.component.html:46,47</note>
-        <note category="location">src/app/streams/streams/streams.component.html:82,83</note>
-        <note category="location">src/app/tasks-jobs/executions/executions.component.html:32,33</note>
-        <note category="location">src/app/tasks-jobs/schedules/schedules.component.html:31,32</note>
-        <note category="location">src/app/tasks-jobs/tasks/tasks.component.html:65,66</note>
+        <note category="location">src/app/apps/apps.component.html:45,47</note>
+        <note category="location">src/app/streams/streams/streams.component.html:81,83</note>
+        <note category="location">src/app/tasks-jobs/executions/executions.component.html:31,33</note>
+        <note category="location">src/app/tasks-jobs/schedules/schedules.component.html:30,32</note>
+        <note category="location">src/app/tasks-jobs/tasks/tasks.component.html:64,66</note>
       </notes>
       <segment>
         <source> Group Actions </source>
@@ -1402,15 +1400,15 @@
     </unit>
     <unit id="8078792260229529133">
       <notes>
-        <note category="location">src/app/apps/apps.component.html:52,53</note>
-        <note category="location">src/app/manage/records/records.component.html:8,9</note>
-        <note category="location">src/app/streams/runtime/runtime.component.html:9,10</note>
-        <note category="location">src/app/streams/streams/streams.component.html:87,88</note>
-        <note category="location">src/app/tasks-jobs/executions/executions.component.html:37,38</note>
-        <note category="location">src/app/tasks-jobs/jobs/jobs.component.html:8,9</note>
-        <note category="location">src/app/tasks-jobs/jobs/step/step.component.html:15,16</note>
-        <note category="location">src/app/tasks-jobs/schedules/schedules.component.html:37,38</note>
-        <note category="location">src/app/tasks-jobs/tasks/tasks.component.html:70,71</note>
+        <note category="location">src/app/apps/apps.component.html:51,53</note>
+        <note category="location">src/app/manage/records/records.component.html:7,9</note>
+        <note category="location">src/app/streams/runtime/runtime.component.html:8,10</note>
+        <note category="location">src/app/streams/streams/streams.component.html:86,88</note>
+        <note category="location">src/app/tasks-jobs/executions/executions.component.html:36,38</note>
+        <note category="location">src/app/tasks-jobs/jobs/jobs.component.html:7,9</note>
+        <note category="location">src/app/tasks-jobs/jobs/step/step.component.html:14,16</note>
+        <note category="location">src/app/tasks-jobs/schedules/schedules.component.html:36,38</note>
+        <note category="location">src/app/tasks-jobs/tasks/tasks.component.html:69,71</note>
       </notes>
       <segment>
         <source> Refresh </source>
@@ -1462,10 +1460,10 @@
     </unit>
     <unit id="8539173677240113987">
       <notes>
-        <note category="location">src/app/apps/apps.component.html:125,126</note>
-        <note category="location">src/app/tasks-jobs/executions/executions.component.html:107,108</note>
-        <note category="location">src/app/tasks-jobs/jobs/jobs.component.html:80,81</note>
-        <note category="location">src/app/tasks-jobs/schedules/schedules.component.html:84,85</note>
+        <note category="location">src/app/apps/apps.component.html:124,126</note>
+        <note category="location">src/app/tasks-jobs/executions/executions.component.html:106,108</note>
+        <note category="location">src/app/tasks-jobs/jobs/jobs.component.html:79,81</note>
+        <note category="location">src/app/tasks-jobs/schedules/schedules.component.html:83,85</note>
       </notes>
       <segment>
         <source> Details </source>
@@ -1473,7 +1471,7 @@
     </unit>
     <unit id="4242694961087028181">
       <notes>
-        <note category="location">src/app/apps/apps.component.html:131,132</note>
+        <note category="location">src/app/apps/apps.component.html:130,132</note>
       </notes>
       <segment>
         <source> Manage Version </source>
@@ -1481,7 +1479,7 @@
     </unit>
     <unit id="2157559540459261336">
       <notes>
-        <note category="location">src/app/apps/apps.component.html:137,138</note>
+        <note category="location">src/app/apps/apps.component.html:136,138</note>
       </notes>
       <segment>
         <source> Unregister </source>
@@ -1678,7 +1676,7 @@
     </unit>
     <unit id="5587615675621735355">
       <notes>
-        <note category="location">src/app/apps/version/version.component.html:31,32</note>
+        <note category="location">src/app/apps/version/version.component.html:30,32</note>
       </notes>
       <segment>
         <source> Unregister </source>
@@ -1686,7 +1684,7 @@
     </unit>
     <unit id="8266825110639378761">
       <notes>
-        <note category="location">src/app/apps/version/version.component.html:39,40</note>
+        <note category="location">src/app/apps/version/version.component.html:38,40</note>
       </notes>
       <segment>
         <source> Set default </source>
@@ -1788,7 +1786,7 @@
     </unit>
     <unit id="6008147000285314653">
       <notes>
-        <note category="location">src/app/flo/shared/properties-groups/properties-groups-dialog.component.html:56,57</note>
+        <note category="location">src/app/flo/shared/properties-groups/properties-groups-dialog.component.html:55,57</note>
       </notes>
       <segment>
         <source> Update </source>
@@ -2028,7 +2026,7 @@
     <unit id="958584654811212919">
       <notes>
         <note category="location">src/app/flo/stream/properties/stream-properties-dialog.component.ts:53</note>
-        <note category="location">src/app/streams/streams/create/create.component.html:86</note>
+        <note category="location">src/app/streams/streams/create/create.component.html:96</note>
       </notes>
       <segment>
         <source>Invalid stream name!</source>
@@ -2068,7 +2066,7 @@
     </unit>
     <unit id="5837496834254924746">
       <notes>
-        <note category="location">src/app/flo/task/component/create.component.ts:85,86</note>
+        <note category="location">src/app/flo/task/component/create.component.ts:84,86</note>
       </notes>
       <segment>
         <source> Fit to Content </source>
@@ -2550,7 +2548,7 @@
         <note category="location">src/app/manage/tools/stream/export.component.ts:19</note>
         <note category="location">src/app/manage/tools/task/export.component.ts:19</note>
         <note category="location">src/app/streams/streams/clone/clone.component.html:27</note>
-        <note category="location">src/app/streams/streams/create/create.component.html:39</note>
+        <note category="location">src/app/streams/streams/create/create.component.html:48</note>
         <note category="location">src/app/streams/streams/destroy/destroy.component.html:15</note>
         <note category="location">src/app/streams/streams/stream/stream.component.html:78</note>
         <note category="location">src/app/streams/streams/undeploy/undeploy.component.html:15</note>
@@ -2559,7 +2557,7 @@
         <note category="location">src/app/tasks-jobs/jobs/step/step.component.html:261</note>
         <note category="location">src/app/tasks-jobs/schedules/schedule/schedule.component.html:60</note>
         <note category="location">src/app/tasks-jobs/tasks/clone/clone.component.html:27</note>
-        <note category="location">src/app/tasks-jobs/tasks/create/create.component.html:60</note>
+        <note category="location">src/app/tasks-jobs/tasks/create/create.component.html:46</note>
         <note category="location">src/app/tasks-jobs/tasks/task/task.component.html:55</note>
       </notes>
       <segment>
@@ -2578,8 +2576,12 @@
       <notes>
         <note category="location">src/app/manage/tools/stream/export.component.ts:33</note>
         <note category="location">src/app/streams/streams/create/create.component.html:5</note>
+        <note category="location">src/app/streams/streams/create/create.component.html:131</note>
         <note category="location">src/app/streams/streams/deploy/builder/builder.component.html:477</note>
         <note category="location">src/app/streams/streams/deploy/free-text/free-text.component.html:61</note>
+        <note category="location">src/app/tasks-jobs/tasks/create/create.component.html:5</note>
+        <note category="location">src/app/tasks-jobs/tasks/create/create.component.html:18</note>
+        <note category="location">src/app/tasks-jobs/tasks/create/create.component.html:107</note>
         <note category="location">src/app/tasks-jobs/tasks/destroy/destroy.component.html:49</note>
         <note category="location">src/app/tasks-jobs/tasks/launch/builder/builder.component.html:589</note>
         <note category="location">src/app/tasks-jobs/tasks/launch/free-text/free-text.component.html:114</note>
@@ -2701,14 +2703,14 @@
       <notes>
         <note category="location">src/app/manage/tools/stream/import.component.ts:56</note>
         <note category="location">src/app/manage/tools/stream/import.component.ts:80</note>
-        <note category="location">src/app/streams/streams/create/create.component.html:98</note>
+        <note category="location">src/app/streams/streams/create/create.component.html:109</note>
         <note category="location">src/app/streams/streams/multi-deploy/multi-deploy.component.html:24</note>
         <note category="location">src/app/streams/streams/stream/stream.component.html:74</note>
         <note category="location">src/app/streams/streams/stream/stream.component.html:218</note>
         <note category="location">src/app/tasks-jobs/executions/execution/execution.component.html:186</note>
         <note category="location">src/app/tasks-jobs/jobs/execution/execution.component.html:105</note>
         <note category="location">src/app/tasks-jobs/jobs/step/step.component.html:257</note>
-        <note category="location">src/app/tasks-jobs/tasks/create/create.component.html:96</note>
+        <note category="location">src/app/tasks-jobs/tasks/create/create.component.html:90</note>
         <note category="location">src/app/tasks-jobs/tasks/task/task.component.html:51</note>
       </notes>
       <segment>
@@ -2776,8 +2778,7 @@
     </unit>
     <unit id="8699434297868700883">
       <notes>
-        <note category="location">src/app/manage/tools/task/export.component.ts:37,38</note>
-        <note category="location">src/app/tasks-jobs/tasks/create/create.component.html:117,118</note>
+        <note category="location">src/app/manage/tools/task/export.component.ts:36,38</note>
       </notes>
       <segment>
         <source> Cancel </source>
@@ -2826,7 +2827,7 @@
     </unit>
     <unit id="6313866326472862575">
       <notes>
-        <note category="location">src/app/manage/tools/tools.component.html:9</note>
+        <note category="location">src/app/manage/tools/tools.component.html:10</note>
       </notes>
       <segment>
         <source>Export stream(s): Create a JSON file with the selected streams</source>
@@ -2834,7 +2835,7 @@
     </unit>
     <unit id="6995508858001375361">
       <notes>
-        <note category="location">src/app/manage/tools/tools.component.html:13</note>
+        <note category="location">src/app/manage/tools/tools.component.html:16</note>
       </notes>
       <segment>
         <source>Import stream(s): Import streams from a JSON file</source>
@@ -2842,7 +2843,7 @@
     </unit>
     <unit id="4251824001236954785">
       <notes>
-        <note category="location">src/app/manage/tools/tools.component.html:22</note>
+        <note category="location">src/app/manage/tools/tools.component.html:26</note>
       </notes>
       <segment>
         <source>Clean up all task/job executions</source>
@@ -2850,7 +2851,7 @@
     </unit>
     <unit id="8278189292421134387">
       <notes>
-        <note category="location">src/app/manage/tools/tools.component.html:26</note>
+        <note category="location">src/app/manage/tools/tools.component.html:30</note>
       </notes>
       <segment>
         <source>Clean up all completed task/job executions</source>
@@ -2858,7 +2859,7 @@
     </unit>
     <unit id="6581882555526173665">
       <notes>
-        <note category="location">src/app/manage/tools/tools.component.html:36</note>
+        <note category="location">src/app/manage/tools/tools.component.html:41</note>
       </notes>
       <segment>
         <source>Export task(s): Create a JSON file with the selected tasks</source>
@@ -2866,7 +2867,7 @@
     </unit>
     <unit id="4156521914034964473">
       <notes>
-        <note category="location">src/app/manage/tools/tools.component.html:40</note>
+        <note category="location">src/app/manage/tools/tools.component.html:46</note>
       </notes>
       <segment>
         <source>Import task(s): Import tasks from a JSON file</source>
@@ -2930,7 +2931,7 @@
     </unit>
     <unit id="7103588127254721505">
       <notes>
-        <note category="location">src/app/settings/settings/settings.component.html:6</note>
+        <note category="location">src/app/settings/settings/settings.component.html:21</note>
       </notes>
       <segment>
         <source>Theme</source>
@@ -2938,7 +2939,7 @@
     </unit>
     <unit id="6855462350544488601">
       <notes>
-        <note category="location">src/app/settings/settings/settings.component.html:13</note>
+        <note category="location">src/app/settings/settings/settings.component.html:28</note>
       </notes>
       <segment>
         <source>default</source>
@@ -2946,7 +2947,7 @@
     </unit>
     <unit id="8262108640078645269">
       <notes>
-        <note category="location">src/app/settings/settings/settings.component.html:14</note>
+        <note category="location">src/app/settings/settings/settings.component.html:29</note>
       </notes>
       <segment>
         <source>dark</source>
@@ -2954,7 +2955,7 @@
     </unit>
     <unit id="1899340250392631213">
       <notes>
-        <note category="location">src/app/settings/settings/settings.component.html:16</note>
+        <note category="location">src/app/settings/settings/settings.component.html:32</note>
       </notes>
       <segment>
         <source>You can choose between dark and default theme</source>
@@ -2962,7 +2963,7 @@
     </unit>
     <unit id="5968132631442328843">
       <notes>
-        <note category="location">src/app/settings/settings/settings.component.html:20</note>
+        <note category="location">src/app/settings/settings/settings.component.html:37</note>
       </notes>
       <segment>
         <source>Results</source>
@@ -2970,19 +2971,19 @@
     </unit>
     <unit id="5627107410818468241">
       <notes>
-        <note category="location">src/app/settings/settings/settings.component.html:32</note>
+        <note category="location">src/app/settings/settings/settings.component.html:50</note>
       </notes>
       <segment>
         <source>You can choose the number of results per page.</source>
       </segment>
     </unit>
-    <unit id="3935920932340410342">
+    <unit id="7819314041543176992">
       <notes>
-        <note category="location">src/app/settings/settings/settings.component.html:40,41</note>
-        <note category="location">src/app/tasks-jobs/executions/execution/log/log.component.ts:24,25</note>
+        <note category="location">src/app/settings/settings/settings.component.html:55</note>
+        <note category="location">src/app/streams/streams/stream/stream.component.html:278</note>
       </notes>
       <segment>
-        <source> Close </source>
+        <source>Close</source>
       </segment>
     </unit>
     <unit id="1436490309459525500">
@@ -3123,7 +3124,7 @@
     </unit>
     <unit id="8320199519049481697">
       <notes>
-        <note category="location">src/app/streams/runtime/details/details.component.html:10,11</note>
+        <note category="location">src/app/streams/runtime/details/details.component.html:9,11</note>
       </notes>
       <segment>
         <source> Grafana dashboard </source>
@@ -3131,7 +3132,7 @@
     </unit>
     <unit id="6655003494740655400">
       <notes>
-        <note category="location">src/app/streams/runtime/details/details.component.html:16,17</note>
+        <note category="location">src/app/streams/runtime/details/details.component.html:15,17</note>
       </notes>
       <segment>
         <source> Wavefront dashboard </source>
@@ -3147,7 +3148,7 @@
     </unit>
     <unit id="6649526515816793119">
       <notes>
-        <note category="location">src/app/streams/runtime/details/details.component.html:30,31</note>
+        <note category="location">src/app/streams/runtime/details/details.component.html:29,31</note>
       </notes>
       <segment>
         <source> Grafana dashboard </source>
@@ -3155,7 +3156,7 @@
     </unit>
     <unit id="6470712478193824761">
       <notes>
-        <note category="location">src/app/streams/runtime/details/details.component.html:36,37</note>
+        <note category="location">src/app/streams/runtime/details/details.component.html:35,37</note>
       </notes>
       <segment>
         <source> Wavefront dashboard </source>
@@ -3163,7 +3164,7 @@
     </unit>
     <unit id="3912307190518681177">
       <notes>
-        <note category="location">src/app/streams/runtime/details/details.component.html:57,58</note>
+        <note category="location">src/app/streams/runtime/details/details.component.html:56,58</note>
       </notes>
       <segment>
         <source> Close </source>
@@ -3196,7 +3197,7 @@
     </unit>
     <unit id="7887771687203365116">
       <notes>
-        <note category="location">src/app/streams/runtime/runtime.component.html:35,36</note>
+        <note category="location">src/app/streams/runtime/runtime.component.html:34,36</note>
       </notes>
       <segment>
         <source> View details </source>
@@ -3204,7 +3205,7 @@
     </unit>
     <unit id="2891402761505004842">
       <notes>
-        <note category="location">src/app/streams/runtime/runtime.component.html:41,42</note>
+        <note category="location">src/app/streams/runtime/runtime.component.html:40,42</note>
       </notes>
       <segment>
         <source> Grafana dashboard </source>
@@ -3212,7 +3213,7 @@
     </unit>
     <unit id="3193242405789498448">
       <notes>
-        <note category="location">src/app/streams/runtime/runtime.component.html:47,48</note>
+        <note category="location">src/app/streams/runtime/runtime.component.html:46,48</note>
       </notes>
       <segment>
         <source> Wavefront dashboard </source>
@@ -3262,9 +3263,9 @@
     <unit id="8229673265434361855">
       <notes>
         <note category="location">src/app/streams/streams/clone/clone.component.html:13</note>
-        <note category="location">src/app/streams/streams/create/create.component.html:25</note>
+        <note category="location">src/app/streams/streams/create/create.component.html:28</note>
         <note category="location">src/app/tasks-jobs/tasks/clone/clone.component.html:13</note>
-        <note category="location">src/app/tasks-jobs/tasks/create/create.component.html:48</note>
+        <note category="location">src/app/tasks-jobs/tasks/create/create.component.html:29</note>
       </notes>
       <segment>
         <source>This action will create the following</source>
@@ -3273,7 +3274,7 @@
     <unit id="455814702045979767">
       <notes>
         <note category="location">src/app/streams/streams/clone/clone.component.html:13</note>
-        <note category="location">src/app/streams/streams/create/create.component.html:25</note>
+        <note category="location">src/app/streams/streams/create/create.component.html:29</note>
       </notes>
       <segment>
         <source>stream(s)</source>
@@ -3282,7 +3283,7 @@
     <unit id="5379104141720920721">
       <notes>
         <note category="location">src/app/streams/streams/clone/clone.component.html:20</note>
-        <note category="location">src/app/streams/streams/create/create.component.html:32</note>
+        <note category="location">src/app/streams/streams/create/create.component.html:39</note>
       </notes>
       <segment>
         <source>Duplicate stream name, please check input names.</source>
@@ -3391,7 +3392,7 @@
     <unit id="1664843888203148125">
       <notes>
         <note category="location">src/app/streams/streams/create/create.component.html:1</note>
-        <note category="location">src/app/streams/streams/create/create.component.html:6</note>
+        <note category="location">src/app/streams/streams/create/create.component.html:7</note>
       </notes>
       <segment>
         <source>Create stream(s)</source>
@@ -3399,7 +3400,7 @@
     </unit>
     <unit id="7347966169889999748">
       <notes>
-        <note category="location">src/app/streams/streams/create/create.component.html:9</note>
+        <note category="location">src/app/streams/streams/create/create.component.html:11</note>
       </notes>
       <segment>
         <source>Create Stream(s)</source>
@@ -3407,7 +3408,7 @@
     </unit>
     <unit id="6636984282020279733">
       <notes>
-        <note category="location">src/app/streams/streams/create/create.component.html:10</note>
+        <note category="location">src/app/streams/streams/create/create.component.html:12</note>
       </notes>
       <segment>
         <source>Creating Stream(s)...</source>
@@ -3415,7 +3416,7 @@
     </unit>
     <unit id="5422739357732443118">
       <notes>
-        <note category="location">src/app/streams/streams/create/create.component.html:72</note>
+        <note category="location">src/app/streams/streams/create/create.component.html:82</note>
       </notes>
       <segment>
         <source>Stream name is required!</source>
@@ -3423,7 +3424,7 @@
     </unit>
     <unit id="780477282295648335">
       <notes>
-        <note category="location">src/app/streams/streams/create/create.component.html:80</note>
+        <note category="location">src/app/streams/streams/create/create.component.html:90</note>
       </notes>
       <segment>
         <source>Stream name is already taken!</source>
@@ -3431,7 +3432,7 @@
     </unit>
     <unit id="2854224135845830113">
       <notes>
-        <note category="location">src/app/streams/streams/create/create.component.html:92</note>
+        <note category="location">src/app/streams/streams/create/create.component.html:102</note>
       </notes>
       <segment>
         <source>Stream name must be less than 255 characters long!</source>
@@ -3439,7 +3440,7 @@
     </unit>
     <unit id="4899162831445349700">
       <notes>
-        <note category="location">src/app/streams/streams/create/create.component.html:111</note>
+        <note category="location">src/app/streams/streams/create/create.component.html:123</note>
       </notes>
       <segment>
         <source>Stream description must be less than 255 characters long!</source>
@@ -3447,7 +3448,7 @@
     </unit>
     <unit id="7635622568029014731">
       <notes>
-        <note category="location">src/app/streams/streams/create/create.component.html:131,132</note>
+        <note category="location">src/app/streams/streams/create/create.component.html:132,134</note>
       </notes>
       <segment>
         <source> Create the stream(s) </source>
@@ -3601,8 +3602,8 @@
     </unit>
     <unit id="2907770225272206329">
       <notes>
-        <note category="location">src/app/streams/streams/deploy/builder/builder.component.html:253,254</note>
-        <note category="location">src/app/tasks-jobs/tasks/launch/builder/builder.component.html:279,280</note>
+        <note category="location">src/app/streams/streams/deploy/builder/builder.component.html:252,254</note>
+        <note category="location">src/app/tasks-jobs/tasks/launch/builder/builder.component.html:278,280</note>
       </notes>
       <segment>
         <source> Edit </source>
@@ -3610,8 +3611,8 @@
     </unit>
     <unit id="8778711023187740169">
       <notes>
-        <note category="location">src/app/streams/streams/deploy/builder/builder.component.html:360,361</note>
-        <note category="location">src/app/tasks-jobs/tasks/launch/builder/builder.component.html:462,463</note>
+        <note category="location">src/app/streams/streams/deploy/builder/builder.component.html:359,361</note>
+        <note category="location">src/app/tasks-jobs/tasks/launch/builder/builder.component.html:461,463</note>
       </notes>
       <segment>
         <source> Edit </source>
@@ -3619,8 +3620,8 @@
     </unit>
     <unit id="219456873313945062">
       <notes>
-        <note category="location">src/app/streams/streams/deploy/builder/builder.component.html:426,427</note>
-        <note category="location">src/app/tasks-jobs/tasks/launch/builder/builder.component.html:528,529</note>
+        <note category="location">src/app/streams/streams/deploy/builder/builder.component.html:425,427</note>
+        <note category="location">src/app/tasks-jobs/tasks/launch/builder/builder.component.html:527,529</note>
       </notes>
       <segment>
         <source> Edit </source>
@@ -3665,7 +3666,7 @@
     </unit>
     <unit id="936916879870036770">
       <notes>
-        <note category="location">src/app/streams/streams/deploy/builder/builder.component.html:464,465</note>
+        <note category="location">src/app/streams/streams/deploy/builder/builder.component.html:463,465</note>
       </notes>
       <segment>
         <source> Export </source>
@@ -3673,7 +3674,7 @@
     </unit>
     <unit id="4556977754664663969">
       <notes>
-        <note category="location">src/app/streams/streams/deploy/builder/builder.component.html:473,474</note>
+        <note category="location">src/app/streams/streams/deploy/builder/builder.component.html:472,474</note>
       </notes>
       <segment>
         <source> Copy to Clipboard </source>
@@ -3843,9 +3844,9 @@
     </unit>
     <unit id="1776397585518379735">
       <notes>
-        <note category="location">src/app/streams/streams/deploy/free-text/free-text.component.html:48,49</note>
-        <note category="location">src/app/tasks-jobs/tasks/launch/free-text/free-text.component.html:44,45</note>
-        <note category="location">src/app/tasks-jobs/tasks/launch/free-text/free-text.component.html:98,99</note>
+        <note category="location">src/app/streams/streams/deploy/free-text/free-text.component.html:47,49</note>
+        <note category="location">src/app/tasks-jobs/tasks/launch/free-text/free-text.component.html:43,45</note>
+        <note category="location">src/app/tasks-jobs/tasks/launch/free-text/free-text.component.html:97,99</note>
       </notes>
       <segment>
         <source> Export </source>
@@ -3853,9 +3854,9 @@
     </unit>
     <unit id="7713124456742140609">
       <notes>
-        <note category="location">src/app/streams/streams/deploy/free-text/free-text.component.html:55,56</note>
-        <note category="location">src/app/tasks-jobs/tasks/launch/free-text/free-text.component.html:51,52</note>
-        <note category="location">src/app/tasks-jobs/tasks/launch/free-text/free-text.component.html:105,106</note>
+        <note category="location">src/app/streams/streams/deploy/free-text/free-text.component.html:54,56</note>
+        <note category="location">src/app/tasks-jobs/tasks/launch/free-text/free-text.component.html:50,52</note>
+        <note category="location">src/app/tasks-jobs/tasks/launch/free-text/free-text.component.html:104,106</note>
       </notes>
       <segment>
         <source> Copy to Clipboard </source>
@@ -4062,7 +4063,7 @@
     </unit>
     <unit id="9044000975383856655">
       <notes>
-        <note category="location">src/app/streams/streams/multi-deploy/multi-deploy.component.html:73,74</note>
+        <note category="location">src/app/streams/streams/multi-deploy/multi-deploy.component.html:72,74</note>
       </notes>
       <segment>
         <source> Deploy the streams </source>
@@ -4150,7 +4151,7 @@
     </unit>
     <unit id="7428540403691855437">
       <notes>
-        <note category="location">src/app/streams/streams/rollback/rollback.component.html:24,25</note>
+        <note category="location">src/app/streams/streams/rollback/rollback.component.html:23,25</note>
       </notes>
       <segment>
         <source> Rollback </source>
@@ -4231,7 +4232,7 @@
     </unit>
     <unit id="4730235574424161119">
       <notes>
-        <note category="location">src/app/streams/streams/status/status.component.ts:41,42</note>
+        <note category="location">src/app/streams/streams/status/status.component.ts:40,42</note>
       </notes>
       <segment>
         <source> Close </source>
@@ -4239,7 +4240,7 @@
     </unit>
     <unit id="7314166078904416026">
       <notes>
-        <note category="location">src/app/streams/streams/stream/stream.component.html:19,20</note>
+        <note category="location">src/app/streams/streams/stream/stream.component.html:18,20</note>
       </notes>
       <segment>
         <source> Deploy stream </source>
@@ -4247,7 +4248,7 @@
     </unit>
     <unit id="1250293373010092836">
       <notes>
-        <note category="location">src/app/streams/streams/stream/stream.component.html:29,30</note>
+        <note category="location">src/app/streams/streams/stream/stream.component.html:28,30</note>
       </notes>
       <segment>
         <source> Update stream </source>
@@ -4255,7 +4256,7 @@
     </unit>
     <unit id="3362789384983454232">
       <notes>
-        <note category="location">src/app/streams/streams/stream/stream.component.html:39,40</note>
+        <note category="location">src/app/streams/streams/stream/stream.component.html:38,40</note>
       </notes>
       <segment>
         <source> Undeploy stream </source>
@@ -4263,7 +4264,7 @@
     </unit>
     <unit id="4570272830701809250">
       <notes>
-        <note category="location">src/app/streams/streams/stream/stream.component.html:48,49</note>
+        <note category="location">src/app/streams/streams/stream/stream.component.html:47,49</note>
       </notes>
       <segment>
         <source> Destroy stream </source>
@@ -4271,12 +4272,12 @@
     </unit>
     <unit id="4738546724915824115">
       <notes>
-        <note category="location">src/app/streams/streams/stream/stream.component.html:55,56</note>
-        <note category="location">src/app/streams/streams/streams.component.html:15,16</note>
-        <note category="location">src/app/tasks-jobs/executions/execution/execution.component.html:39,40</note>
-        <note category="location">src/app/tasks-jobs/jobs/execution/execution.component.html:26,27</note>
-        <note category="location">src/app/tasks-jobs/tasks/task/task.component.html:28,29</note>
-        <note category="location">src/app/tasks-jobs/tasks/tasks.component.html:10,11</note>
+        <note category="location">src/app/streams/streams/stream/stream.component.html:54,56</note>
+        <note category="location">src/app/streams/streams/streams.component.html:14,16</note>
+        <note category="location">src/app/tasks-jobs/executions/execution/execution.component.html:38,40</note>
+        <note category="location">src/app/tasks-jobs/jobs/execution/execution.component.html:25,27</note>
+        <note category="location">src/app/tasks-jobs/tasks/task/task.component.html:27,29</note>
+        <note category="location">src/app/tasks-jobs/tasks/tasks.component.html:9,11</note>
       </notes>
       <segment>
         <source> Grafana Dashboard </source>
@@ -4284,10 +4285,10 @@
     </unit>
     <unit id="3649093177018289122">
       <notes>
-        <note category="location">src/app/streams/streams/stream/stream.component.html:64,65</note>
-        <note category="location">src/app/streams/streams/streams.component.html:21,22</note>
-        <note category="location">src/app/tasks-jobs/executions/execution/execution.component.html:46,47</note>
-        <note category="location">src/app/tasks-jobs/tasks/tasks.component.html:13,14</note>
+        <note category="location">src/app/streams/streams/stream/stream.component.html:63,65</note>
+        <note category="location">src/app/streams/streams/streams.component.html:20,22</note>
+        <note category="location">src/app/tasks-jobs/executions/execution/execution.component.html:45,47</note>
+        <note category="location">src/app/tasks-jobs/tasks/tasks.component.html:12,14</note>
       </notes>
       <segment>
         <source> Wavefront Dashboard </source>
@@ -4319,7 +4320,7 @@
     </unit>
     <unit id="818811050393650003">
       <notes>
-        <note category="location">src/app/streams/streams/stream/stream.component.html:192,193</note>
+        <note category="location">src/app/streams/streams/stream/stream.component.html:191,193</note>
       </notes>
       <segment>
         <source> View Log </source>
@@ -4335,7 +4336,7 @@
     </unit>
     <unit id="6656267879664435833">
       <notes>
-        <note category="location">src/app/streams/streams/stream/stream.component.html:239,240</note>
+        <note category="location">src/app/streams/streams/stream/stream.component.html:238,240</note>
       </notes>
       <segment>
         <source> Rollback </source>
@@ -4389,17 +4390,9 @@
         <source>Loading log(s)...</source>
       </segment>
     </unit>
-    <unit id="7819314041543176992">
-      <notes>
-        <note category="location">src/app/streams/streams/stream/stream.component.html:278</note>
-      </notes>
-      <segment>
-        <source>Close</source>
-      </segment>
-    </unit>
     <unit id="2837998311531126658">
       <notes>
-        <note category="location">src/app/streams/streams/streams.component.html:9,10</note>
+        <note category="location">src/app/streams/streams/streams.component.html:8,10</note>
       </notes>
       <segment>
         <source> Create stream(s) </source>
@@ -4407,7 +4400,7 @@
     </unit>
     <unit id="7367721331397701557">
       <notes>
-        <note category="location">src/app/streams/streams/streams.component.html:47,48</note>
+        <note category="location">src/app/streams/streams/streams.component.html:46,48</note>
       </notes>
       <segment>
         <source> Deploy stream(s) </source>
@@ -4415,7 +4408,7 @@
     </unit>
     <unit id="3484530662386146436">
       <notes>
-        <note category="location">src/app/streams/streams/streams.component.html:56,57</note>
+        <note category="location">src/app/streams/streams/streams.component.html:55,57</note>
       </notes>
       <segment>
         <source> Undeploy stream(s) </source>
@@ -4423,7 +4416,7 @@
     </unit>
     <unit id="8813305697558099005">
       <notes>
-        <note category="location">src/app/streams/streams/streams.component.html:65,66</note>
+        <note category="location">src/app/streams/streams/streams.component.html:64,66</note>
       </notes>
       <segment>
         <source> Destroy stream(s) </source>
@@ -4431,7 +4424,7 @@
     </unit>
     <unit id="8662006694886849398">
       <notes>
-        <note category="location">src/app/streams/streams/streams.component.html:74,75</note>
+        <note category="location">src/app/streams/streams/streams.component.html:73,75</note>
       </notes>
       <segment>
         <source> Clone stream(s) </source>
@@ -4457,7 +4450,7 @@
     </unit>
     <unit id="7558406454183940357">
       <notes>
-        <note category="location">src/app/streams/streams/streams.component.html:150,151</note>
+        <note category="location">src/app/streams/streams/streams.component.html:149,151</note>
       </notes>
       <segment>
         <source> Deploy </source>
@@ -4465,7 +4458,7 @@
     </unit>
     <unit id="8937457130059719516">
       <notes>
-        <note category="location">src/app/streams/streams/streams.component.html:158,159</note>
+        <note category="location">src/app/streams/streams/streams.component.html:157,159</note>
       </notes>
       <segment>
         <source> Update </source>
@@ -4473,7 +4466,7 @@
     </unit>
     <unit id="2771387551539154127">
       <notes>
-        <note category="location">src/app/streams/streams/streams.component.html:166,167</note>
+        <note category="location">src/app/streams/streams/streams.component.html:165,167</note>
       </notes>
       <segment>
         <source> Undeploy </source>
@@ -4481,9 +4474,9 @@
     </unit>
     <unit id="3052760760790920195">
       <notes>
-        <note category="location">src/app/streams/streams/streams.component.html:172,173</note>
-        <note category="location">src/app/tasks-jobs/schedules/schedules.component.html:99,100</note>
-        <note category="location">src/app/tasks-jobs/tasks/tasks.component.html:146,147</note>
+        <note category="location">src/app/streams/streams/streams.component.html:171,173</note>
+        <note category="location">src/app/tasks-jobs/schedules/schedules.component.html:98,100</note>
+        <note category="location">src/app/tasks-jobs/tasks/tasks.component.html:145,147</note>
       </notes>
       <segment>
         <source> Destroy </source>
@@ -4491,8 +4484,8 @@
     </unit>
     <unit id="6204142274321985488">
       <notes>
-        <note category="location">src/app/streams/streams/streams.component.html:178,179</note>
-        <note category="location">src/app/tasks-jobs/tasks/tasks.component.html:154,155</note>
+        <note category="location">src/app/streams/streams/streams.component.html:177,179</note>
+        <note category="location">src/app/tasks-jobs/tasks/tasks.component.html:153,155</note>
       </notes>
       <segment>
         <source> Clone </source>
@@ -4500,10 +4493,10 @@
     </unit>
     <unit id="6651485270113904204">
       <notes>
-        <note category="location">src/app/streams/streams/streams.component.html:184,185</note>
-        <note category="location">src/app/tasks-jobs/executions/executions.component.html:138,139</note>
-        <note category="location">src/app/tasks-jobs/jobs/jobs.component.html:100,101</note>
-        <note category="location">src/app/tasks-jobs/tasks/tasks.component.html:168,169</note>
+        <note category="location">src/app/streams/streams/streams.component.html:183,185</note>
+        <note category="location">src/app/tasks-jobs/executions/executions.component.html:137,139</note>
+        <note category="location">src/app/tasks-jobs/jobs/jobs.component.html:99,101</note>
+        <note category="location">src/app/tasks-jobs/tasks/tasks.component.html:167,169</note>
       </notes>
       <segment>
         <source> Grafana Dashboard </source>
@@ -4511,9 +4504,9 @@
     </unit>
     <unit id="1432111625223912038">
       <notes>
-        <note category="location">src/app/streams/streams/streams.component.html:190,191</note>
-        <note category="location">src/app/tasks-jobs/executions/executions.component.html:144,145</note>
-        <note category="location">src/app/tasks-jobs/tasks/tasks.component.html:174,175</note>
+        <note category="location">src/app/streams/streams/streams.component.html:189,191</note>
+        <note category="location">src/app/tasks-jobs/executions/executions.component.html:143,145</note>
+        <note category="location">src/app/tasks-jobs/tasks/tasks.component.html:173,175</note>
       </notes>
       <segment>
         <source> Wavefront Dashboard </source>
@@ -4702,7 +4695,7 @@
     </unit>
     <unit id="1978960582380983365">
       <notes>
-        <note category="location">src/app/tasks-jobs/executions/execution/execution.component.html:14,15</note>
+        <note category="location">src/app/tasks-jobs/executions/execution/execution.component.html:13,15</note>
       </notes>
       <segment>
         <source> Relaunch task </source>
@@ -4710,7 +4703,7 @@
     </unit>
     <unit id="3675148304695338320">
       <notes>
-        <note category="location">src/app/tasks-jobs/executions/execution/execution.component.html:23,24</note>
+        <note category="location">src/app/tasks-jobs/executions/execution/execution.component.html:22,24</note>
       </notes>
       <segment>
         <source> Stop execution </source>
@@ -4718,7 +4711,7 @@
     </unit>
     <unit id="2446581288123337183">
       <notes>
-        <note category="location">src/app/tasks-jobs/executions/execution/execution.component.html:32,33</note>
+        <note category="location">src/app/tasks-jobs/executions/execution/execution.component.html:31,33</note>
       </notes>
       <segment>
         <source> Clean up task execution </source>
@@ -4891,10 +4884,10 @@
     </unit>
     <unit id="871804620907934701">
       <notes>
-        <note category="location">src/app/tasks-jobs/executions/execution/execution.component.html:171,172</note>
-        <note category="location">src/app/tasks-jobs/jobs/execution/execution.component.html:281,282</note>
-        <note category="location">src/app/tasks-jobs/jobs/step/step.component.html:432,433</note>
-        <note category="location">src/app/tasks-jobs/tasks/task/task.component.html:222,223</note>
+        <note category="location">src/app/tasks-jobs/executions/execution/execution.component.html:170,172</note>
+        <note category="location">src/app/tasks-jobs/jobs/execution/execution.component.html:280,282</note>
+        <note category="location">src/app/tasks-jobs/jobs/step/step.component.html:431,433</note>
+        <note category="location">src/app/tasks-jobs/tasks/task/task.component.html:221,223</note>
       </notes>
       <segment>
         <source> View log </source>
@@ -4935,9 +4928,9 @@
     </unit>
     <unit id="8385318213485986592">
       <notes>
-        <note category="location">src/app/tasks-jobs/executions/execution/execution.component.html:229,230</note>
-        <note category="location">src/app/tasks-jobs/jobs/execution/execution.component.html:148,149</note>
-        <note category="location">src/app/tasks-jobs/jobs/step/step.component.html:300,301</note>
+        <note category="location">src/app/tasks-jobs/executions/execution/execution.component.html:228,230</note>
+        <note category="location">src/app/tasks-jobs/jobs/execution/execution.component.html:147,149</note>
+        <note category="location">src/app/tasks-jobs/jobs/step/step.component.html:299,301</note>
       </notes>
       <segment>
         <source> View task </source>
@@ -4945,9 +4938,9 @@
     </unit>
     <unit id="1030262081455364357">
       <notes>
-        <note category="location">src/app/tasks-jobs/executions/execution/execution.component.html:235,236</note>
-        <note category="location">src/app/tasks-jobs/jobs/execution/execution.component.html:154,155</note>
-        <note category="location">src/app/tasks-jobs/jobs/step/step.component.html:306,307</note>
+        <note category="location">src/app/tasks-jobs/executions/execution/execution.component.html:234,236</note>
+        <note category="location">src/app/tasks-jobs/jobs/execution/execution.component.html:153,155</note>
+        <note category="location">src/app/tasks-jobs/jobs/step/step.component.html:305,307</note>
       </notes>
       <segment>
         <source> Relaunch Task </source>
@@ -4970,6 +4963,14 @@
         <source>Loading logs...</source>
       </segment>
     </unit>
+    <unit id="3935920932340410342">
+      <notes>
+        <note category="location">src/app/tasks-jobs/executions/execution/log/log.component.ts:23,25</note>
+      </notes>
+      <segment>
+        <source> Close </source>
+      </segment>
+    </unit>
     <unit id="4727469149017493701">
       <notes>
         <note category="location">src/app/tasks-jobs/executions/executions.component.html:1</note>
@@ -4980,7 +4981,7 @@
     </unit>
     <unit id="7762364309871137907">
       <notes>
-        <note category="location">src/app/tasks-jobs/executions/executions.component.html:24,25</note>
+        <note category="location">src/app/tasks-jobs/executions/executions.component.html:23,25</note>
       </notes>
       <segment>
         <source> Clean Up task execution(s) </source>
@@ -5037,8 +5038,8 @@
     </unit>
     <unit id="7484107284199919071">
       <notes>
-        <note category="location">src/app/tasks-jobs/executions/executions.component.html:112,113</note>
-        <note category="location">src/app/tasks-jobs/schedules/schedules.component.html:89,90</note>
+        <note category="location">src/app/tasks-jobs/executions/executions.component.html:111,113</note>
+        <note category="location">src/app/tasks-jobs/schedules/schedules.component.html:88,90</note>
       </notes>
       <segment>
         <source> Task details </source>
@@ -5046,7 +5047,7 @@
     </unit>
     <unit id="630224989334365945">
       <notes>
-        <note category="location">src/app/tasks-jobs/executions/executions.component.html:118,119</note>
+        <note category="location">src/app/tasks-jobs/executions/executions.component.html:117,119</note>
       </notes>
       <segment>
         <source> Relaunch task </source>
@@ -5054,7 +5055,7 @@
     </unit>
     <unit id="3411306442274277948">
       <notes>
-        <note category="location">src/app/tasks-jobs/executions/executions.component.html:126,127</note>
+        <note category="location">src/app/tasks-jobs/executions/executions.component.html:125,127</note>
       </notes>
       <segment>
         <source> Stop task </source>
@@ -5062,7 +5063,7 @@
     </unit>
     <unit id="143863752878698803">
       <notes>
-        <note category="location">src/app/tasks-jobs/executions/executions.component.html:132,133</note>
+        <note category="location">src/app/tasks-jobs/executions/executions.component.html:131,133</note>
       </notes>
       <segment>
         <source> Clean up task execution </source>
@@ -5102,7 +5103,7 @@
     </unit>
     <unit id="4526528922020931282">
       <notes>
-        <note category="location">src/app/tasks-jobs/executions/stop/stop.component.html:28,29</note>
+        <note category="location">src/app/tasks-jobs/executions/stop/stop.component.html:27,29</note>
       </notes>
       <segment>
         <source> Stop Task Execution(s) </source>
@@ -5119,7 +5120,7 @@
     </unit>
     <unit id="7837226522692105721">
       <notes>
-        <note category="location">src/app/tasks-jobs/jobs/execution/execution.component.html:12,13</note>
+        <note category="location">src/app/tasks-jobs/jobs/execution/execution.component.html:11,13</note>
       </notes>
       <segment>
         <source> Restart the job </source>
@@ -5127,7 +5128,7 @@
     </unit>
     <unit id="1504689006435398659">
       <notes>
-        <note category="location">src/app/tasks-jobs/jobs/execution/execution.component.html:20,21</note>
+        <note category="location">src/app/tasks-jobs/jobs/execution/execution.component.html:19,21</note>
       </notes>
       <segment>
         <source> Stop the job </source>
@@ -5183,9 +5184,9 @@
     </unit>
     <unit id="8180243499714604719">
       <notes>
-        <note category="location">src/app/tasks-jobs/jobs/execution/execution.component.html:275,276</note>
-        <note category="location">src/app/tasks-jobs/jobs/step/step.component.html:427,428</note>
-        <note category="location">src/app/tasks-jobs/tasks/task/task.component.html:215,216</note>
+        <note category="location">src/app/tasks-jobs/jobs/execution/execution.component.html:274,276</note>
+        <note category="location">src/app/tasks-jobs/jobs/step/step.component.html:426,428</note>
+        <note category="location">src/app/tasks-jobs/tasks/task/task.component.html:214,216</note>
       </notes>
       <segment>
         <source> View task execution </source>
@@ -5365,7 +5366,7 @@
     </unit>
     <unit id="3340981412553405256">
       <notes>
-        <note category="location">src/app/tasks-jobs/jobs/jobs.component.html:87,88</note>
+        <note category="location">src/app/tasks-jobs/jobs/jobs.component.html:86,88</note>
       </notes>
       <segment>
         <source> Restart </source>
@@ -5373,7 +5374,7 @@
     </unit>
     <unit id="4436630499151371293">
       <notes>
-        <note category="location">src/app/tasks-jobs/jobs/jobs.component.html:94,95</note>
+        <note category="location">src/app/tasks-jobs/jobs/jobs.component.html:93,95</note>
       </notes>
       <segment>
         <source> Stop </source>
@@ -5723,7 +5724,7 @@
     </unit>
     <unit id="4868798299026623012">
       <notes>
-        <note category="location">src/app/tasks-jobs/schedules/create/create.component.html:111,112</note>
+        <note category="location">src/app/tasks-jobs/schedules/create/create.component.html:110,112</note>
       </notes>
       <segment>
         <source> Create schedule(s) </source>
@@ -5876,7 +5877,7 @@
     </unit>
     <unit id="9161086650450094513">
       <notes>
-        <note category="location">src/app/tasks-jobs/schedules/schedule/schedule.component.html:10,11</note>
+        <note category="location">src/app/tasks-jobs/schedules/schedule/schedule.component.html:9,11</note>
       </notes>
       <segment>
         <source> Task details </source>
@@ -5884,7 +5885,7 @@
     </unit>
     <unit id="1006692129884725062">
       <notes>
-        <note category="location">src/app/tasks-jobs/schedules/schedule/schedule.component.html:16,17</note>
+        <note category="location">src/app/tasks-jobs/schedules/schedule/schedule.component.html:15,17</note>
       </notes>
       <segment>
         <source> Delete schedule </source>
@@ -5908,7 +5909,7 @@
     </unit>
     <unit id="6090450902300231671">
       <notes>
-        <note category="location">src/app/tasks-jobs/schedules/schedules.component.html:23,24</note>
+        <note category="location">src/app/tasks-jobs/schedules/schedules.component.html:22,24</note>
       </notes>
       <segment>
         <source> Delete schedules(s) </source>
@@ -5932,7 +5933,7 @@
     </unit>
     <unit id="4584492224703907295">
       <notes>
-        <note category="location">src/app/tasks-jobs/schedules/schedules.component.html:94,95</note>
+        <note category="location">src/app/tasks-jobs/schedules/schedules.component.html:93,95</note>
       </notes>
       <segment>
         <source> Add new schedule </source>
@@ -6013,7 +6014,7 @@
     <unit id="3464252298877812400">
       <notes>
         <note category="location">src/app/tasks-jobs/tasks/clone/clone.component.html:20</note>
-        <note category="location">src/app/tasks-jobs/tasks/create/create.component.html:55</note>
+        <note category="location">src/app/tasks-jobs/tasks/create/create.component.html:40</note>
       </notes>
       <segment>
         <source>Duplicate task name, please check input names.</source>
@@ -6108,27 +6109,10 @@
         <source>No task(s) cloned.</source>
       </segment>
     </unit>
-    <unit id="262084464200616127">
-      <notes>
-        <note category="location">src/app/tasks-jobs/tasks/create/create.component.html:9,10</note>
-      </notes>
-      <segment>
-        <source> Cancel
-</source>
-      </segment>
-    </unit>
-    <unit id="6895111694442916898">
-      <notes>
-        <note category="location">src/app/tasks-jobs/tasks/create/create.component.html:15,16</note>
-      </notes>
-      <segment>
-        <source> Create task
-</source>
-      </segment>
-    </unit>
     <unit id="8192258211003608112">
       <notes>
-        <note category="location">src/app/tasks-jobs/tasks/create/create.component.html:24</note>
+        <note category="location">src/app/tasks-jobs/tasks/create/create.component.html:6</note>
+        <note category="location">src/app/tasks-jobs/tasks/create/create.component.html:14</note>
       </notes>
       <segment>
         <source>Create task</source>
@@ -6136,31 +6120,32 @@
     </unit>
     <unit id="4270049643841688858">
       <notes>
-        <note category="location">src/app/tasks-jobs/tasks/create/create.component.html:26</note>
+        <note category="location">src/app/tasks-jobs/tasks/create/create.component.html:16</note>
       </notes>
       <segment>
         <source>Creating task...</source>
       </segment>
     </unit>
-    <unit id="1257606109146968801">
+    <unit id="6693512504291912856">
       <notes>
-        <note category="location">src/app/tasks-jobs/tasks/create/create.component.html:38,39</note>
+        <note category="location">src/app/tasks-jobs/tasks/create/create.component.html:19</note>
+        <note category="location">src/app/tasks-jobs/tasks/create/create.component.html:108</note>
       </notes>
       <segment>
-        <source> Create the task </source>
+        <source>Create the task</source>
       </segment>
     </unit>
     <unit id="7637989673748605380">
       <notes>
-        <note category="location">src/app/tasks-jobs/tasks/create/create.component.html:48</note>
+        <note category="location">src/app/tasks-jobs/tasks/create/create.component.html:30</note>
       </notes>
       <segment>
         <source>task</source>
       </segment>
     </unit>
-    <unit id="5160081883992747812">
+    <unit id="3145236494639951097">
       <notes>
-        <note category="location">src/app/tasks-jobs/tasks/create/create.component.html:82</note>
+        <note category="location">src/app/tasks-jobs/tasks/create/create.component.html:69,70</note>
       </notes>
       <segment>
         <source>The task definition name should be less than 63 characters for Kubernetes or Cloud Foundry platforms.</source>
@@ -6168,7 +6153,7 @@
     </unit>
     <unit id="5194479961276787231">
       <notes>
-        <note category="location">src/app/tasks-jobs/tasks/create/create.component.html:84</note>
+        <note category="location">src/app/tasks-jobs/tasks/create/create.component.html:74</note>
       </notes>
       <segment>
         <source>Task name is required!</source>
@@ -6176,7 +6161,7 @@
     </unit>
     <unit id="1137599432964575415">
       <notes>
-        <note category="location">src/app/tasks-jobs/tasks/create/create.component.html:86</note>
+        <note category="location">src/app/tasks-jobs/tasks/create/create.component.html:77</note>
       </notes>
       <segment>
         <source>Task name is already taken!</source>
@@ -6184,7 +6169,7 @@
     </unit>
     <unit id="1444068140446140957">
       <notes>
-        <note category="location">src/app/tasks-jobs/tasks/create/create.component.html:88</note>
+        <note category="location">src/app/tasks-jobs/tasks/create/create.component.html:80</note>
       </notes>
       <segment>
         <source>Task task name!</source>
@@ -6192,7 +6177,7 @@
     </unit>
     <unit id="6512914730887955726">
       <notes>
-        <note category="location">src/app/tasks-jobs/tasks/create/create.component.html:90</note>
+        <note category="location">src/app/tasks-jobs/tasks/create/create.component.html:83</note>
       </notes>
       <segment>
         <source>Task name must be less than 256 characters long!</source>
@@ -6200,18 +6185,10 @@
     </unit>
     <unit id="1657011457031003339">
       <notes>
-        <note category="location">src/app/tasks-jobs/tasks/create/create.component.html:107</note>
+        <note category="location">src/app/tasks-jobs/tasks/create/create.component.html:102</note>
       </notes>
       <segment>
         <source>Task description must be less than 255 characters long!</source>
-      </segment>
-    </unit>
-    <unit id="5540100320479216820">
-      <notes>
-        <note category="location">src/app/tasks-jobs/tasks/create/create.component.html:123,124</note>
-      </notes>
-      <segment>
-        <source> Create the task </source>
       </segment>
     </unit>
     <unit id="195112497038940118">
@@ -6409,7 +6386,7 @@
     </unit>
     <unit id="4756370683987276470">
       <notes>
-        <note category="location">src/app/tasks-jobs/tasks/launch/launch.component.html:19,20</note>
+        <note category="location">src/app/tasks-jobs/tasks/launch/launch.component.html:18,20</note>
       </notes>
       <segment>
         <source> Builder </source>
@@ -6417,7 +6394,7 @@
     </unit>
     <unit id="6196030161820893864">
       <notes>
-        <note category="location">src/app/tasks-jobs/tasks/launch/launch.component.html:39,40</note>
+        <note category="location">src/app/tasks-jobs/tasks/launch/launch.component.html:38,40</note>
       </notes>
       <segment>
         <source> Freetext </source>
@@ -6433,7 +6410,7 @@
     </unit>
     <unit id="7620827574347394023">
       <notes>
-        <note category="location">src/app/tasks-jobs/tasks/task/task.component.html:13,14</note>
+        <note category="location">src/app/tasks-jobs/tasks/task/task.component.html:12,14</note>
       </notes>
       <segment>
         <source> Launch task </source>
@@ -6441,7 +6418,7 @@
     </unit>
     <unit id="5939875507747670999">
       <notes>
-        <note category="location">src/app/tasks-jobs/tasks/task/task.component.html:22,23</note>
+        <note category="location">src/app/tasks-jobs/tasks/task/task.component.html:21,23</note>
       </notes>
       <segment>
         <source> Schedule </source>
@@ -6449,7 +6426,7 @@
     </unit>
     <unit id="710707040191899428">
       <notes>
-        <note category="location">src/app/tasks-jobs/tasks/task/task.component.html:34,35</note>
+        <note category="location">src/app/tasks-jobs/tasks/task/task.component.html:33,35</note>
       </notes>
       <segment>
         <source> Destroy task </source>
@@ -6457,7 +6434,7 @@
     </unit>
     <unit id="7512656670127982335">
       <notes>
-        <note category="location">src/app/tasks-jobs/tasks/task/task.component.html:41,42</note>
+        <note category="location">src/app/tasks-jobs/tasks/task/task.component.html:40,42</note>
       </notes>
       <segment>
         <source> Cleanup </source>
@@ -6521,7 +6498,7 @@
     </unit>
     <unit id="7344858519163413466">
       <notes>
-        <note category="location">src/app/tasks-jobs/tasks/tasks.component.html:7,8</note>
+        <note category="location">src/app/tasks-jobs/tasks/tasks.component.html:6,8</note>
       </notes>
       <segment>
         <source> Create task </source>
@@ -6529,7 +6506,7 @@
     </unit>
     <unit id="6695217352063693622">
       <notes>
-        <note category="location">src/app/tasks-jobs/tasks/tasks.component.html:38,39</note>
+        <note category="location">src/app/tasks-jobs/tasks/tasks.component.html:37,39</note>
       </notes>
       <segment>
         <source> Schedule task(s) </source>
@@ -6537,7 +6514,7 @@
     </unit>
     <unit id="3692869274378714412">
       <notes>
-        <note category="location">src/app/tasks-jobs/tasks/tasks.component.html:47,48</note>
+        <note category="location">src/app/tasks-jobs/tasks/tasks.component.html:46,48</note>
       </notes>
       <segment>
         <source> Destroy task(s) </source>
@@ -6545,7 +6522,7 @@
     </unit>
     <unit id="3290600891695722308">
       <notes>
-        <note category="location">src/app/tasks-jobs/tasks/tasks.component.html:56,57</note>
+        <note category="location">src/app/tasks-jobs/tasks/tasks.component.html:55,57</note>
       </notes>
       <segment>
         <source> Clone task(s) </source>
@@ -6553,7 +6530,7 @@
     </unit>
     <unit id="4393040665247534540">
       <notes>
-        <note category="location">src/app/tasks-jobs/tasks/tasks.component.html:129,130</note>
+        <note category="location">src/app/tasks-jobs/tasks/tasks.component.html:128,130</note>
       </notes>
       <segment>
         <source> Launch </source>
@@ -6561,7 +6538,7 @@
     </unit>
     <unit id="4181037056565881183">
       <notes>
-        <note category="location">src/app/tasks-jobs/tasks/tasks.component.html:138,139</note>
+        <note category="location">src/app/tasks-jobs/tasks/tasks.component.html:137,139</note>
       </notes>
       <segment>
         <source> Schedule </source>
@@ -6569,7 +6546,7 @@
     </unit>
     <unit id="4762975432808561626">
       <notes>
-        <note category="location">src/app/tasks-jobs/tasks/tasks.component.html:162,163</note>
+        <note category="location">src/app/tasks-jobs/tasks/tasks.component.html:161,163</note>
       </notes>
       <segment>
         <source> Cleanup </source>

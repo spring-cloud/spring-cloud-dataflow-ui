@@ -5,7 +5,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --proxy-config proxy.conf.json",
-    "build": "ng build --localize",
+    "build": "ng build --configuration production --localize",
     "test": "ng test",
     "pretty": "pretty-quick",
     "test-saucelabs-local": "node ./node_modules/@angular/cli/bin/ng test --karma-config ./src/karma-saucelabs.conf.js",
