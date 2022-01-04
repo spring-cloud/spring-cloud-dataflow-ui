@@ -5,12 +5,12 @@ describe('Applications area', () => {
   })
 
   it('Test add applications renders on table', () => {
-    cy.addApplications()
+    cy.importStreams()
     cy.get('.datagrid clr-dg-cell').should('have.length.gte', 1)
   })
 
   it('Test unregister for selected application', () => {
-    cy.addApplications()
+    cy.importStreams()
     cy.wait(1200)
     cy.get('.apps-total').then($appTotal => {
       const initialAddedApps = $appTotal.text();
@@ -26,7 +26,7 @@ describe('Applications area', () => {
   })
 
   it('Test show details for selected application', () => {
-    cy.addApplications()
+    cy.importStreams()
     cy.wait(1200)
     cy.get('.apps-total').then($appTotal => {
       const initialAddedApps = Number($appTotal.text());
@@ -39,7 +39,7 @@ describe('Applications area', () => {
   })
 
   it('Test group actions', () => {
-    cy.addApplications()
+    cy.importStreams()
     cy.wait(1200)
     cy.get('.apps-total').then($appTotal => {
       const initialAddedApps = $appTotal.text();
