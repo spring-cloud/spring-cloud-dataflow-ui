@@ -21,3 +21,12 @@ Cypress.Commands.add('addApplications',() => {
   cy.get('[value="stream.kafka.docker"] + label').click()
   cy.get('button[type=submit]').click()
 })
+
+Cypress.Commands.add('createTasks',() => {
+  cy.get('button.btn-primary').first().click()
+  cy.get('pre.CodeMirror-line').type('time|filter|log')
+  cy.get('button.btn-primary').first().click()
+  cy.get('input[name = "name"]').type('Test')
+  cy.get('input[name = "desc"]').type('Test task description')
+  cy.get('button[type = "submit"]').click()
+})
