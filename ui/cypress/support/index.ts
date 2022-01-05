@@ -11,7 +11,7 @@ Cypress.Commands.add('importTasks', () => {
   cy.get('button[type=submit]').click()
 })
 
-Cypress.Commands.add('createTasks', () => {
+Cypress.Commands.add('createTask', () => {
   cy.get('button.btn-primary').first().click()
   cy.get('pre.CodeMirror-line').type('timestamp')
   cy.get('button.btn-primary').first().click()
@@ -20,10 +20,11 @@ Cypress.Commands.add('createTasks', () => {
   cy.get('button[type = "submit"]').click()
 })
 
-Cypress.Commands.add('launchTasck', () => {
+Cypress.Commands.add('launchTask', () => {
   cy.get('.datagrid-action-toggle').first().click()
     cy.wait(1200)
     cy.get('.datagrid-action-overflow button:nth-child(2)').click()
     cy.wait(1200)
     cy.get('button#btn-deploy-builder').click()
+    cy.wait(1200)
 })
