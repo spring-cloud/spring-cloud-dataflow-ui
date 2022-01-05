@@ -1,4 +1,4 @@
-describe('Applications area', () => {
+describe('Applications area validation', () => {
   beforeEach(() => {
     cy.visit('/')
     cy.get('.nav-content > a[routerlink = "apps"]').click()
