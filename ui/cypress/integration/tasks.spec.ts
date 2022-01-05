@@ -1,4 +1,4 @@
-describe('Tasks area validation', () => {
+describe('Tasks validation', () => {
 
   before(()=> {
     cy.visit('/')
@@ -49,7 +49,6 @@ describe('Tasks area validation', () => {
     cy.launchTask()
     cy.get('button:nth-child(3)').click()
     cy.wait(1200)
-    cy.get('input[value="all"] + label').click()
     cy.get('button').last().click()
     cy.get('.modal-dialog button:nth-child(2)').first().click()
   })
@@ -57,22 +56,38 @@ describe('Tasks area validation', () => {
   describe('Tasks executions validation', () => {
 
     beforeEach(() => {
-      cy.visit('/')
       cy.get('a[routerlink = "tasks-jobs/task-executions"]').click()
+      cy.wait(1500)
     })
 
     it('View details on task execution', () => {
       cy.get('.datagrid-action-toggle').first().click()
       cy.wait(1200)
       cy.get('.datagrid-action-overflow button:nth-child(1)').first().click()
-      cy.wait(1200)
     })
 
     it('View task detail on task execution', () => {
       cy.get('.datagrid-action-toggle').first().click()
       cy.wait(1200)
       cy.get('.datagrid-action-overflow button:nth-child(2)').first().click()
+    })
+
+    it('Relaunch task execution', () => {
+      cy.get('.datagrid-action-toggle').first().click()
       cy.wait(1200)
+      cy.get('.datagrid-action-overflow button:nth-child(3)').first().click()
+    })
+
+    it('Stop task execution', () => {
+      cy.get('.datagrid-action-toggle').first().click()
+      cy.wait(1200)
+      cy.get('.datagrid-action-overflow button:nth-child(4)').first().click()
+    })
+
+    it('Cleanup task execution', () => {
+      cy.get('.datagrid-action-toggle').first().click()
+      cy.wait(1200)
+      cy.get('.datagrid-action-overflow button:nth-child(5)').first().click()
     })
 
   })
