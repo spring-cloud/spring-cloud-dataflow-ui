@@ -11,15 +11,14 @@ describe('Applications validation', () => {
 
   it('Test unregister for selected application', () => {
     cy.importStreams()
-    cy.wait(1200)
+    cy.checkVisiblity('.apps-total')
     cy.get('.apps-total').then($appTotal => {
       const initialAddedApps = $appTotal.text();
       cy.get('.datagrid-action-toggle').last().click()
-      cy.wait(1200)
+      cy.checkVisibility('.datagrid-action-overflow button')
       cy.get('.datagrid-action-overflow button').last().click()
-      cy.wait(3000)
+      cy.checkVisibility('.modal-dialog button')
       cy.get('.modal-dialog button').last().click()
-      cy.wait(1200)
       cy.get('.apps-total').then($appUpdatedTotal => {
         expect(Number($appUpdatedTotal.text())).to.eq(Number(initialAddedApps) - 1)
       })
@@ -28,27 +27,24 @@ describe('Applications validation', () => {
 
   it('Test show details for selected application', () => {
     cy.importStreams()
-    cy.wait(1200)
     cy.get('.apps-total').then($appTotal => {
       const initialAddedApps = Number($appTotal.text());
       cy.get('.datagrid-action-toggle').last().click()
-      cy.wait(1200)
       cy.get('.datagrid-action-overflow button').first().click()
-      cy.wait(1200)
+      cy.checkVisibility('app-view-card')
       cy.get('app-view-card').should('have.id','info')
     })
   })
 
   it('Test group actions', () => {
     cy.importStreams()
-    cy.wait(1200)
     cy.get('.apps-total').then($appTotal => {
       const initialAddedApps = $appTotal.text();
       cy.get('button#btnGroupActions').click()
       cy.get('input[type="checkbox"] + label').first().click()
       cy.get('button#btnUnregisterApplications').click()
       cy.get('.modal button').last().click()
-      cy.wait(2000)
+      cy.checkVisibility('.modal button')
       cy.get('.apps-total').then($appUpdatedTotal => {
         expect(Number($appUpdatedTotal.text())).to.lt(Number(initialAddedApps))
       })
