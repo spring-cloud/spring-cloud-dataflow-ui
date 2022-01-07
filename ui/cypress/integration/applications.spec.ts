@@ -19,6 +19,7 @@ describe('Applications validation', () => {
       cy.get('.datagrid-action-overflow button').last().click()
       cy.wait(3000)
       cy.get('.modal-dialog button').last().click()
+      cy.wait(1200)
       cy.get('.apps-total').then($appUpdatedTotal => {
         expect(Number($appUpdatedTotal.text())).to.eq(Number(initialAddedApps) - 1)
       })
@@ -47,7 +48,7 @@ describe('Applications validation', () => {
       cy.get('input[type="checkbox"] + label').first().click()
       cy.get('button#btnUnregisterApplications').click()
       cy.get('.modal button').last().click()
-      cy.wait(1200)
+      cy.wait(2000)
       cy.get('.apps-total').then($appUpdatedTotal => {
         expect(Number($appUpdatedTotal.text())).to.lt(Number(initialAddedApps))
       })

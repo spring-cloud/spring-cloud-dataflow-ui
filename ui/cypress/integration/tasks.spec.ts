@@ -9,7 +9,6 @@ describe('Tasks validation', () => {
   beforeEach(() => {
     cy.get('a[routerlink = "tasks-jobs/tasks"]').first().click()
     cy.createTask()
-    cy.wait(1200)
   })
 
   it('Create a task and render it on table', () => {
@@ -18,8 +17,7 @@ describe('Tasks validation', () => {
 
   it('View details for selected task', () => {
     cy.get('.datagrid-action-toggle').last().click()
-    cy.wait(1200)
-    cy.get('.datagrid-action-overflow button').first().click()
+    cy.get('.datagrid-action-overflow button').last().click()
     cy.wait(1200)
     cy.get('app-view-card').should('have.id','info')
   })
@@ -30,16 +28,14 @@ describe('Tasks validation', () => {
   })
 
   it('Destroy selected task', () => {
-    cy.get('.datagrid-action-toggle').first().click()
-    cy.wait(1200)
+    cy.get('.datagrid-action-toggle').last().click()
     cy.get('.datagrid-action-overflow button:nth-child(4)').first().click()
     cy.wait(1200)
     cy.get('.modal-dialog button').last().click()
   })
 
   it('Clone selected task', () => {
-    cy.get('.datagrid-action-toggle').first().click()
-    cy.wait(1200)
+    cy.get('.datagrid-action-toggle').last().click()
     cy.get('.datagrid-action-overflow button:nth-child(5)').first().click()
     cy.wait(1200)
     cy.get('.modal-dialog button').last().click()
@@ -48,7 +44,6 @@ describe('Tasks validation', () => {
   it('Cleanup selected task', () => {
     cy.launchTask()
     cy.get('button:nth-child(3)').click()
-    cy.wait(1200)
     cy.get('button').last().click()
     cy.get('.modal-dialog button:nth-child(2)').first().click()
   })
@@ -82,12 +77,26 @@ describe('Tasks validation', () => {
       cy.get('.datagrid-action-toggle').first().click()
       cy.wait(1200)
       cy.get('.datagrid-action-overflow button:nth-child(4)').first().click()
+      cy.wait(1200)
+      cy.get('.modal-dialog button:nth-child(2)').last().click()
     })
 
     it('Cleanup task execution', () => {
       cy.get('.datagrid-action-toggle').first().click()
       cy.wait(1200)
       cy.get('.datagrid-action-overflow button:nth-child(5)').first().click()
+    })
+
+    it('Group action for cleaning up tasks execution', () => {
+      cy.get('.tasks-execution-total').then($appTotal => {
+        cy.get('button.btn-secondary').first().click()
+        cy.get('input[type="checkbox"] + label').first().click()
+        cy.get('button.btn-outline-danger').first().click()
+        cy.get('.modal #btn-stop').click()
+        cy.get('.apps-total').then($appUpdatedTotal => {
+          expect(Number($appUpdatedTotal.text())).to.eq(0)
+        })
+      })
     })
 
   })
