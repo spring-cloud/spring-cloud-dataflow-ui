@@ -11,14 +11,15 @@ describe('Applications validation', () => {
 
   it('Test unregister for selected application', () => {
     cy.importStreams()
-    cy.checkVisiblity('.apps-total')
     cy.get('.apps-total').then($appTotal => {
       const initialAddedApps = $appTotal.text();
       cy.get('.datagrid-action-toggle').last().click()
-      cy.checkVisibility('.datagrid-action-overflow button')
+      cy.checkDomExistence('.datagrid-action-overflow button')
       cy.get('.datagrid-action-overflow button').last().click()
-      cy.checkVisibility('.modal-dialog button')
+      cy.checkDomExistence('.modal-dialog button')
       cy.get('.modal-dialog button').last().click()
+      cy.checkDomExistence('.apps-total')
+      cy.checkDomExistence('app-toast.toast-success')
       cy.get('.apps-total').then($appUpdatedTotal => {
         expect(Number($appUpdatedTotal.text())).to.eq(Number(initialAddedApps) - 1)
       })
@@ -31,7 +32,7 @@ describe('Applications validation', () => {
       const initialAddedApps = Number($appTotal.text());
       cy.get('.datagrid-action-toggle').last().click()
       cy.get('.datagrid-action-overflow button').first().click()
-      cy.checkVisibility('app-view-card')
+      cy.checkDomExistence('app-view-card')
       cy.get('app-view-card').should('have.id','info')
     })
   })
@@ -43,8 +44,9 @@ describe('Applications validation', () => {
       cy.get('button#btnGroupActions').click()
       cy.get('input[type="checkbox"] + label').first().click()
       cy.get('button#btnUnregisterApplications').click()
+      cy.checkDomExistence('.modal button')
       cy.get('.modal button').last().click()
-      cy.checkVisibility('.modal button')
+      cy.checkDomExistence('app-toast.toast-success')
       cy.get('.apps-total').then($appUpdatedTotal => {
         expect(Number($appUpdatedTotal.text())).to.lt(Number(initialAddedApps))
       })
