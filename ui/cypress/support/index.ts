@@ -2,6 +2,7 @@ declare namespace Cypress {
   interface Chainable {
     checkExistence(selector: string): void
     checkVisibility(selector: string): void
+    checkToastEnd(): void
     importStreams(): void
     importTasks(): void
     createTask(): void
@@ -15,6 +16,11 @@ Cypress.Commands.add('checkExistence', (selector: string) => {
 
 Cypress.Commands.add('checkVisibility', (selector: string) => {
   cy.get(selector).should('be.visible')
+})
+
+Cypress.Commands.add('checkToastEnd', () => {
+  cy.get('#toast-container').its('length').should('gt', 0)
+  cy.get('#toast-container').should('not.have.descendants')
 })
 
 Cypress.Commands.add('importStreams', () => {

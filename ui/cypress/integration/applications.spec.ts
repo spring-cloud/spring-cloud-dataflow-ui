@@ -19,7 +19,7 @@ describe('Applications validation', () => {
       cy.get('.datagrid-action-overflow button').last().click()
       cy.checkExistence('.modal-dialog button')
       cy.get('.modal-dialog button').last().click()
-      cy.checkVisibility('app-toast.toast-success')
+      cy.checkToastEnd()
       cy.get('.apps-total').then($appUpdatedTotal => {
         expect(Number($appUpdatedTotal.text())).to.eq(Number(initialAddedApps) - 1)
       })
@@ -49,6 +49,7 @@ describe('Applications validation', () => {
       cy.checkExistence('.modal button')
       cy.get('.modal button').last().click()
       cy.checkVisibility('app-toast.toast-success')
+      cy.checkToastEnd()
       cy.get('app-toast.toast-success').should('not.exist')
       cy.get('.apps-total').then($appUpdatedTotal => {
         expect(Number($appUpdatedTotal.text())).to.lt(Number(initialAddedApps))
