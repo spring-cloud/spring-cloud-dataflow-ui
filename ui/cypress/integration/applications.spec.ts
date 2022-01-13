@@ -48,7 +48,8 @@ describe('Applications validation', () => {
       cy.get('button#btnUnregisterApplications').click()
       cy.checkExistence('.modal button')
       cy.get('.modal button').last().click()
-      cy.checkExistence('app-toast.toast-success')
+      cy.checkVisibility('app-toast.toast-success')
+      cy.get('app-toast.toast-success').should('not.exist')
       cy.get('.apps-total').then($appUpdatedTotal => {
         expect(Number($appUpdatedTotal.text())).to.lt(Number(initialAddedApps))
       })

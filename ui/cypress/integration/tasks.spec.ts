@@ -88,6 +88,7 @@ describe('Tasks validation', () => {
     })
 
     it('Group action for cleaning up tasks execution', () => {
+      cy.launchTask()
       cy.get('.tasks-execution-total').then($appTotal => {
         cy.get('button.btn-secondary').first().click()
         cy.get('input[type="checkbox"] + label').first().click()

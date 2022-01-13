@@ -1,8 +1,19 @@
-Cypress.Commands.add('checkExistence', (selector: keyof HTMLElementTagNameMap) => {
+declare namespace Cypress {
+  interface Chainable {
+    checkExistence(selector: string): void
+    checkVisibility(selector: string): void
+    importStreams(): void
+    importTasks(): void
+    createTask(): void
+    launchTask(): void
+  }
+}
+
+Cypress.Commands.add('checkExistence', (selector: string) => {
   cy.get(selector).should('be.exist')
 })
 
-Cypress.Commands.add('checkVisibility', (selector: keyof HTMLElementTagNameMap) => {
+Cypress.Commands.add('checkVisibility', (selector: string) => {
   cy.get(selector).should('be.visible')
 })
 
