@@ -18,7 +18,7 @@ describe('Tasks validation', () => {
   it('View details for selected task', () => {
     cy.get('.datagrid-action-toggle').last().click()
     cy.get('.datagrid-action-overflow button').first().click()
-    cy.checkDomExistence('app-view-card')
+    cy.checkExistence('app-view-card')
     cy.get('app-view-card').should('have.id','info')
   })
 
@@ -30,23 +30,22 @@ describe('Tasks validation', () => {
   it('Destroy selected task', () => {
     cy.get('.datagrid-action-toggle').last().click()
     cy.get('.datagrid-action-overflow button:nth-child(4)').first().click()
-    cy.checkDomExistence('.modal-dialog button')
+    cy.checkExistence('.modal-dialog button')
     cy.get('.modal-dialog button').last().click()
   })
 
   it('Clone selected task', () => {
     cy.get('.datagrid-action-toggle').last().click()
     cy.get('.datagrid-action-overflow button:nth-child(5)').first().click()
-    cy.checkDomExistence('.modal-dialog button')
+    cy.checkExistence('.modal-dialog button')
     cy.get('.modal-dialog button').last().click()
   })
 
   it('Cleanup selected task', () => {
-    cy.checkDomExistence()
-    cy.get('button:nth-child(3)').last().click()
-    cy.checkDomExistence('button')
-    cy.get('button').last().click()
-    cy.get('.modal-dialog button:nth-child(2)').first().click()
+    cy.get('.datagrid-action-toggle').first().click()
+    cy.get('.datagrid-action-overflow button:nth-child(6)').first().click()
+    cy.checkExistence('.modal-dialog button')
+    cy.get('.modal-dialog button').last().click()
   })
 
   describe('Tasks executions validation', () => {
@@ -57,34 +56,34 @@ describe('Tasks validation', () => {
 
     it('View details on task execution', () => {
       cy.get('.datagrid-action-toggle').last().click()
-      cy.checkDomExistence('.datagrid-action-overflow')
+      cy.checkExistence('.datagrid-action-overflow')
       cy.get('.datagrid-action-overflow button:nth-child(1)').first().click()
     })
 
     it('View task detail on task execution', () => {
       cy.get('.datagrid-action-toggle').last().click()
-      cy.checkDomExistence('.datagrid-action-overflow button')
+      cy.checkExistence('.datagrid-action-overflow button')
       cy.get('.datagrid-action-overflow button:nth-child(2)').first().click()
     })
 
     it('Relaunch task execution', () => {
       cy.get('.datagrid-action-toggle').last().click()
-      cy.checkDomExistence('.datagrid-action-overflow button')
+      cy.checkExistence('.datagrid-action-overflow button')
       cy.get('.datagrid-action-overflow button:nth-child(3)').first().click()
     })
 
     it('Stop task execution', () => {
       cy.get('.datagrid-action-toggle').last().click()
-      cy.checkDomExistence('.datagrid-action-overflow button')
+      cy.checkExistence('.datagrid-action-overflow button')
       cy.get('.datagrid-action-overflow button:nth-child(4)').first().click()
-      cy.checkDomExistence('.modal-dialog button')
+      cy.checkExistence('.modal-dialog button')
       cy.get('.modal-dialog button:nth-child(2)').last().click()
     })
 
     it('Cleanup task execution', () => {
       cy.get('.datagrid-action-toggle').last().click()
       cy.get('.datagrid-action-overflow button:nth-child(5)').first().click()
-      cy.checkDomExistence('button.close')
+      cy.checkExistence('button.close')
       cy.get('button.close').click()
     })
 
@@ -93,9 +92,11 @@ describe('Tasks validation', () => {
         cy.get('button.btn-secondary').first().click()
         cy.get('input[type="checkbox"] + label').first().click()
         cy.get('button.btn-outline-danger').first().click()
-        cy.checkDomExistence('.modal #btn-stop')
+        cy.checkExistence('.modal #btn-stop')
         cy.get('.modal #btn-stop').click()
-        cy.checkDomExistence('.tasks-execution-total')
+        cy.get('app-toast').should('be.visible')
+        cy.checkExistence('.tasks-execution-total')
+        cy.wait(800)
         cy.get('.tasks-execution-total').then($appUpdatedTotal => {
           expect(Number($appUpdatedTotal.text())).to.eq(0)
         })

@@ -1,6 +1,6 @@
 describe('Applications validation', () => {
   beforeEach(() => {
-    cy.visit('/')
+    cy.visit(Cypress.config('baseUrl'))
     cy.get('.nav-content > a[routerlink = "apps"]').click()
   })
 
@@ -11,15 +11,15 @@ describe('Applications validation', () => {
 
   it('Test unregister for selected application', () => {
     cy.importStreams()
+    cy.checkExistence('.apps-total')
     cy.get('.apps-total').then($appTotal => {
       const initialAddedApps = $appTotal.text();
       cy.get('.datagrid-action-toggle').last().click()
-      cy.checkDomExistence('.datagrid-action-overflow button')
+      cy.checkExistence('.datagrid-action-overflow button')
       cy.get('.datagrid-action-overflow button').last().click()
-      cy.checkDomExistence('.modal-dialog button')
+      cy.checkExistence('.modal-dialog button')
       cy.get('.modal-dialog button').last().click()
-      cy.checkDomExistence('.apps-total')
-      cy.checkDomExistence('app-toast.toast-success')
+      cy.checkVisibility('app-toast.toast-success')
       cy.get('.apps-total').then($appUpdatedTotal => {
         expect(Number($appUpdatedTotal.text())).to.eq(Number(initialAddedApps) - 1)
       })
@@ -28,25 +28,27 @@ describe('Applications validation', () => {
 
   it('Test show details for selected application', () => {
     cy.importStreams()
+    cy.checkExistence('.apps-total')
     cy.get('.apps-total').then($appTotal => {
       const initialAddedApps = Number($appTotal.text());
       cy.get('.datagrid-action-toggle').last().click()
       cy.get('.datagrid-action-overflow button').first().click()
-      cy.checkDomExistence('app-view-card')
+      cy.checkExistence('app-view-card')
       cy.get('app-view-card').should('have.id','info')
     })
   })
 
   it('Test group actions', () => {
     cy.importStreams()
+    cy.checkExistence('.apps-total')
     cy.get('.apps-total').then($appTotal => {
       const initialAddedApps = $appTotal.text();
       cy.get('button#btnGroupActions').click()
       cy.get('input[type="checkbox"] + label').first().click()
       cy.get('button#btnUnregisterApplications').click()
-      cy.checkDomExistence('.modal button')
+      cy.checkExistence('.modal button')
       cy.get('.modal button').last().click()
-      cy.checkDomExistence('app-toast.toast-success')
+      cy.checkExistence('app-toast.toast-success')
       cy.get('.apps-total').then($appUpdatedTotal => {
         expect(Number($appUpdatedTotal.text())).to.lt(Number(initialAddedApps))
       })
