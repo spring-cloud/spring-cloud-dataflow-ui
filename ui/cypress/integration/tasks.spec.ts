@@ -111,4 +111,67 @@ describe('Tasks validation', () => {
 
   })
 
+  describe('Jobs executions validation', () => {
+
+    beforeEach(() => {
+      cy.launchTask()
+      cy.get('a[routerlink = "tasks-jobs/job-executions"]').click()
+    })
+
+    it('View execution details on selected job', () => {
+      cy.checkVisibility('.datagrid-action-toggle')
+      cy.get('.datagrid-action-toggle').last().click()
+      cy.checkExistence('.datagrid-action-overflow')
+      cy.get('.datagrid-action-overflow button:nth-child(1)').first().click()
+    })
+
+    it('Stop job execution', () => {
+      cy.checkVisibility('.datagrid-action-toggle')
+      cy.get('.datagrid-action-toggle').last().click()
+      cy.checkExistence('.datagrid-action-overflow button')
+      cy.get('.datagrid-action-overflow button:nth-child(2)').first().click()
+    })
+
+    it('Restart job execution', () => {
+      cy.checkVisibility('.datagrid-action-toggle')
+      cy.get('.datagrid-action-toggle').last().click()
+      cy.checkExistence('.datagrid-action-overflow button')
+      cy.get('.datagrid-action-overflow button:nth-child(3)').first().click()
+    })
+
+    it('Group action for cleaning up job execution', () => {
+      cy.get('.tasks-execution-total').then($appTotal => {
+        cy.get('button.btn-secondary').first().click()
+        cy.get('input[type="checkbox"] + label').first().click()
+        cy.get('button.btn-outline-danger').first().click()
+        cy.checkExistence('.modal #btn-stop')
+        cy.get('.modal #btn-stop').click()
+        cy.get('app-toast').should('be.visible')
+        cy.checkExistence('.tasks-execution-total')
+        cy.checkLoading()
+        cy.get('.tasks-execution-total').then($appUpdatedTotal => {
+          expect(Number($appUpdatedTotal.text())).to.eq(0)
+        })
+      })
+    })
+
+    it('Stop job execution', () => {
+      cy.checkVisibility('.datagrid-action-toggle')
+      cy.get('.datagrid-action-toggle').last().click()
+      cy.checkExistence('.datagrid-action-overflow button')
+      cy.get('.datagrid-action-overflow button:nth-child(4)').first().click()
+      cy.checkExistence('.modal-dialog button')
+      cy.get('.modal-dialog button:nth-child(2)').last().click()
+    })
+
+    it('Cleanup job execution', () => {
+      cy.checkVisibility('.datagrid-action-toggle')
+      cy.get('.datagrid-action-toggle').last().click()
+      cy.get('.datagrid-action-overflow button:nth-child(5)').first().click()
+      cy.checkExistence('button.close')
+      cy.get('button.close').click()
+    })
+
+  })
+
 })
