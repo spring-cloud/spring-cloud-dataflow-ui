@@ -1,26 +1,26 @@
 declare namespace Cypress {
   interface Chainable {
-    checkExistence(selector: string): void
     checkVisibility(selector: string): void
-    checkToastEnd(): void
+    checkExistence(selector: string): void
     importStreams(): void
+    checkLoading(): void
     importTasks(): void
     createTask(): void
     launchTask(): void
   }
 }
 
-Cypress.Commands.add('checkExistence', (selector: string) => {
-  cy.get(selector).should('be.exist')
-})
-
 Cypress.Commands.add('checkVisibility', (selector: string) => {
   cy.get(selector).should('be.visible')
 })
 
-Cypress.Commands.add('checkToastEnd', () => {
-  cy.get('#toast-container').its('length').should('gt', 0)
-  cy.get('#toast-container').should('not.have.descendants')
+Cypress.Commands.add('checkExistence', (selector: string) => {
+  cy.get(selector).should('be.exist')
+})
+
+Cypress.Commands.add('checkLoading', () => {
+  cy.get('clr-spinner').should('be.visible')
+  cy.get('clr-spinner').should('not.exist')
 })
 
 Cypress.Commands.add('importStreams', () => {
@@ -42,7 +42,7 @@ Cypress.Commands.add('importTasks', () => {
 Cypress.Commands.add('createTask', () => {
   cy.get('button.btn-primary').first().click()
   cy.checkExistence('pre.CodeMirror-line')
-  cy.get('pre.CodeMirror-line').type('timestamp')
+  cy.get('.CodeMirror-line').type('timestamp')
   cy.get('button.btn-primary').first().click()
   cy.get('input[name = "name"]').type('Test'+new Date().getTime())
   cy.get('input[name = "desc"]').type('Test task description')
@@ -50,7 +50,9 @@ Cypress.Commands.add('createTask', () => {
 })
 
 Cypress.Commands.add('launchTask', () => {
+  cy.checkExistence('.datagrid-action-toggle')
   cy.get('.datagrid-action-toggle').first().click()
   cy.get('.datagrid-action-overflow button:nth-child(2)').click()
+  cy.checkExistence('button#btn-deploy-builder')
   cy.get('button#btn-deploy-builder').click()
 })

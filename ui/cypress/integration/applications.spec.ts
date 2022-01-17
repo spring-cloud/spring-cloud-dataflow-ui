@@ -12,6 +12,9 @@ describe('Applications validation', () => {
   it('Test unregister for selected application', () => {
     cy.importStreams()
     cy.checkExistence('.apps-total')
+    cy.get('.apps-total').should((elem) => {
+      expect(Number(elem.text())).to.gt(0);
+    });
     cy.get('.apps-total').then($appTotal => {
       const initialAddedApps = $appTotal.text();
       cy.get('.datagrid-action-toggle').last().click()
@@ -19,7 +22,9 @@ describe('Applications validation', () => {
       cy.get('.datagrid-action-overflow button').last().click()
       cy.checkExistence('.modal-dialog button')
       cy.get('.modal-dialog button').last().click()
-      cy.checkToastEnd()
+      cy.get('.content-area').scrollTo('bottom')
+      cy.checkLoading()
+      cy.checkVisibility('.apps-total')
       cy.get('.apps-total').then($appUpdatedTotal => {
         expect(Number($appUpdatedTotal.text())).to.eq(Number(initialAddedApps) - 1)
       })
@@ -38,9 +43,13 @@ describe('Applications validation', () => {
     })
   })
 
-  it('Test group actions', () => {
+  it('Test group action for unregistering application', () => {
     cy.importStreams()
+    cy.checkLoading()
     cy.checkExistence('.apps-total')
+    cy.get('.apps-total').should((elem) => {
+      expect(Number(elem.text())).to.gt(0);
+    });
     cy.get('.apps-total').then($appTotal => {
       const initialAddedApps = $appTotal.text();
       cy.get('button#btnGroupActions').click()
@@ -49,8 +58,9 @@ describe('Applications validation', () => {
       cy.checkExistence('.modal button')
       cy.get('.modal button').last().click()
       cy.checkVisibility('app-toast.toast-success')
-      cy.checkToastEnd()
-      cy.get('app-toast.toast-success').should('not.exist')
+      cy.checkLoading()
+      cy.get('.content-area').scrollTo('bottom')
+      cy.checkExistence('.apps-total')
       cy.get('.apps-total').then($appUpdatedTotal => {
         expect(Number($appUpdatedTotal.text())).to.lt(Number(initialAddedApps))
       })
