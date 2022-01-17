@@ -65,7 +65,7 @@
           <div class="clr-subtext" *ngIf="taskName?.errors && taskName?.errors?.uniqueResource">
             Task name is already taken!
           </div>
-          <div class="clr-subtext" *ngIf="taskName?.errors && taskName?.errors?.pattern">Task task name!</div>
+          <div class="clr-subtext" *ngIf="taskName?.errors && taskName?.errors?.pattern">Invalid task name!</div>
           <div class="clr-subtext" *ngIf="taskName?.errors && taskName?.errors?.maxlength">
             Task name must be less than 256 characters long!
           </div>
