@@ -2,6 +2,7 @@ declare namespace Cypress {
   interface Chainable {
     checkVisibility(selector: string): void
     checkExistence(selector: string): void
+    registerApplication(): void
     importStreams(): void
     checkLoading(): void
     importTasks(): void
@@ -27,6 +28,18 @@ Cypress.Commands.add('importStreams', () => {
   cy.get('button#btnAddApplications').click()
   cy.get('[value="stream.kafka.docker"] + label').click()
   cy.get('button[type=submit]').click()
+  cy.checkExistence('app-apps-list')
+  cy.checkExistence('.apps-total')
+})
+
+Cypress.Commands.add('registerApplication', () => {
+  cy.get('.nav-content > a[routerlink = "apps"]').click()
+  cy.get('button#btnAddApplications').click()
+  cy.get('button.clr-accordion-header-button').first().click()
+  cy.get('input[name = "name0"]').type('billrun')
+  cy.get('select[name = "type0"]').select('4')
+  cy.get('input[name = "uri0"]').type('maven://io.spring:billrun:0.0.1-SNAPSHOT')
+  cy.get('button[name = "register"]').click()
   cy.checkExistence('app-apps-list')
   cy.checkExistence('.apps-total')
 })

@@ -7,6 +7,7 @@ describe('Tasks validation', () => {
   })
 
   beforeEach(() => {
+    cy.checkVisibility('a[routerlink = "tasks-jobs/tasks"]')
     cy.get('a[routerlink = "tasks-jobs/tasks"]').first().click()
     cy.createTask()
   })
@@ -112,6 +113,11 @@ describe('Tasks validation', () => {
   })
 
   describe('Jobs executions validation', () => {
+
+    before(() => {
+      cy.registerApplication()
+      cy.launchTask()
+    })
 
     beforeEach(() => {
       cy.launchTask()
