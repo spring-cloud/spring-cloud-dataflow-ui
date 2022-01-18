@@ -22,7 +22,6 @@
     <img src="https://saucelabs.com/buildstatus/ghillert"
          alt="Sauce Test Status">
   </a>
-  <a href="https://automate.browserstack.com/public-build/VmtkRGtNTnZWRnFTL0RYQlN0OVVMUHJaaFhMNzhvR3VNNWw2ZXNrcEI4ST0tLXg4VDd1YzhBYktJQUtZbVJKdU9SM1E9PQ==--1b233ea47f41a74431204ba2c57901b7854efc67"><img src='https://automate.browserstack.com/badge.svg?badge_key=VmtkRGtNTnZWRnFTL0RYQlN0OVVMUHJaaFhMNzhvR3VNNWw2ZXNrcEI4ST0tLXg4VDd1YzhBYktJQUtZbVJKdU9SM1E9PQ==--1b233ea47f41a74431204ba2c57901b7854efc67'/></a>  
 </p>
 
 <p align="center">
