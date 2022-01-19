@@ -2,6 +2,7 @@ declare namespace Cypress {
   interface Chainable {
     checkVisibility(selector: string): void
     checkExistence(selector: string): void
+    launchBatchSampleTask(): void
     registerApplication(): void
     importStreams(): void
     checkLoading(): void
@@ -36,9 +37,9 @@ Cypress.Commands.add('registerApplication', () => {
   cy.get('.nav-content > a[routerlink = "apps"]').click()
   cy.get('button#btnAddApplications').click()
   cy.get('button.clr-accordion-header-button').first().click()
-  cy.get('input[name = "name0"]').type('billrun')
+  cy.get('input[name = "name0"]').type('billrun'+new Date().getTime())
   cy.get('select[name = "type0"]').select('4')
-  cy.get('input[name = "uri0"]').type('maven://io.spring:billrun:0.0.1-SNAPSHOT')
+  cy.get('input[name = "uri0"]').type('maven://org.springframework.cloud:spring-cloud-dataflow-single-step-batch-job:2.9.0-SNAPSHOT')
   cy.get('button[name = "register"]').click()
   cy.checkExistence('app-apps-list')
   cy.checkExistence('.apps-total')
@@ -65,6 +66,18 @@ Cypress.Commands.add('createTask', () => {
 Cypress.Commands.add('launchTask', () => {
   cy.checkExistence('.datagrid-action-toggle')
   cy.get('.datagrid-action-toggle').first().click()
+  cy.get('.datagrid-action-overflow button:nth-child(2)').click()
+  cy.checkExistence('button#btn-deploy-builder')
+  cy.get('button#btn-deploy-builder').click()
+})
+
+Cypress.Commands.add('launchBatchSampleTask', () => {
+  cy.get('.content-area').scrollTo('bottom')
+  cy.checkVisibility('.datagrid-footer')
+  cy.checkVisibility('button.pagination-last')
+  cy.get('button.pagination-last').click()
+  cy.checkExistence('.datagrid-action-toggle')
+  cy.get('.datagrid-action-toggle').last().click()
   cy.get('.datagrid-action-overflow button:nth-child(2)').click()
   cy.checkExistence('button#btn-deploy-builder')
   cy.get('button#btn-deploy-builder').click()

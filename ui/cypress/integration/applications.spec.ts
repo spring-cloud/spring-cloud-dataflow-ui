@@ -23,7 +23,6 @@ describe('Applications validation', () => {
       cy.checkExistence('.modal-dialog button')
       cy.get('.modal-dialog button').last().click()
       cy.get('.content-area').scrollTo('bottom')
-      cy.checkLoading()
       cy.checkVisibility('.apps-total')
       cy.get('.apps-total').then($appUpdatedTotal => {
         expect(Number($appUpdatedTotal.text())).to.eq(Number(initialAddedApps) - 1)
@@ -43,9 +42,8 @@ describe('Applications validation', () => {
     })
   })
 
-  it('Test group action for unregistering application', () => {
+  it('Test group action for unregistering applications', () => {
     cy.importStreams()
-    cy.checkLoading()
     cy.checkExistence('.apps-total')
     cy.get('.apps-total').should((elem) => {
       expect(Number(elem.text())).to.gt(0);
@@ -57,8 +55,8 @@ describe('Applications validation', () => {
       cy.get('button#btnUnregisterApplications').click()
       cy.checkExistence('.modal button')
       cy.get('.modal button').last().click()
-      cy.checkVisibility('app-toast.toast-success')
       cy.checkLoading()
+      cy.checkVisibility('app-toast.toast-success')
       cy.get('.content-area').scrollTo('bottom')
       cy.checkExistence('.apps-total')
       cy.get('.apps-total').then($appUpdatedTotal => {
