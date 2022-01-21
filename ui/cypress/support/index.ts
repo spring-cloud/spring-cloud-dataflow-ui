@@ -4,6 +4,7 @@ declare namespace Cypress {
     checkExistence(selector: string): void
     launchBatchSampleTask(): void
     registerApplication(): void
+    createBatchTask(): void
     importStreams(): void
     checkLoading(): void
     importTasks(): void
@@ -22,6 +23,7 @@ Cypress.Commands.add('checkExistence', (selector: string) => {
 
 Cypress.Commands.add('checkLoading', () => {
   cy.get('clr-spinner').should('be.visible')
+  cy.get('.toast-message').should('not.be.visible')
   cy.get('clr-spinner').should('not.exist')
 })
 
@@ -37,7 +39,7 @@ Cypress.Commands.add('registerApplication', () => {
   cy.get('.nav-content > a[routerlink = "apps"]').click()
   cy.get('button#btnAddApplications').click()
   cy.get('button.clr-accordion-header-button').first().click()
-  cy.get('input[name = "name0"]').type('billrun'+new Date().getTime())
+  cy.get('input[name = "name0"]').type('billrun')
   cy.get('select[name = "type0"]').select('4')
   cy.get('input[name = "uri0"]').type('maven://org.springframework.cloud:spring-cloud-dataflow-single-step-batch-job:2.9.0-SNAPSHOT')
   cy.get('button[name = "register"]').click()
@@ -63,6 +65,16 @@ Cypress.Commands.add('createTask', () => {
   cy.get('button[type = "submit"]').click()
 })
 
+Cypress.Commands.add('createBatchTask', () => {
+  cy.get('button.btn-primary').first().click()
+  cy.checkExistence('pre.CodeMirror-line')
+  cy.get('.CodeMirror-line').type('billrun')
+  cy.get('button.btn-primary').first().click()
+  cy.get('input[name = "name"]').type('JobTask'+new Date().getTime())
+  cy.get('input[name = "desc"]').type('Test task description')
+  cy.get('button[type = "submit"]').click()
+})
+
 Cypress.Commands.add('launchTask', () => {
   cy.checkExistence('.datagrid-action-toggle')
   cy.get('.datagrid-action-toggle').first().click()
@@ -79,6 +91,7 @@ Cypress.Commands.add('launchBatchSampleTask', () => {
   cy.checkExistence('.datagrid-action-toggle')
   cy.get('.datagrid-action-toggle').last().click()
   cy.get('.datagrid-action-overflow button:nth-child(2)').click()
+  cy.wait(3000)
   cy.checkExistence('button#btn-deploy-builder')
   cy.get('button#btn-deploy-builder').click()
 })

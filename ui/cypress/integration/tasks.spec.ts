@@ -25,6 +25,7 @@ describe('Tasks validation', () => {
 
   it('Launch selected task', () => {
     cy.launchTask()
+    cy.checkLoading()
     cy.get('app-view-card').invoke('attr', 'keycontext').should('eq','execution')
   })
 
@@ -118,7 +119,7 @@ describe('Tasks validation', () => {
       cy.registerApplication()
       cy.checkVisibility('a[routerlink = "tasks-jobs/tasks"]')
       cy.get('a[routerlink = "tasks-jobs/tasks"]').first().click()
-      cy.createTask()
+      cy.createBatchTask()
       cy.launchBatchSampleTask()
 
     })

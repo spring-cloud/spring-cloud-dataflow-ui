@@ -23,6 +23,7 @@ describe('Applications validation', () => {
       cy.checkExistence('.modal-dialog button')
       cy.get('.modal-dialog button').last().click()
       cy.get('.content-area').scrollTo('bottom')
+      cy.get('.datagrid-footer').should('be.visible')
       cy.checkVisibility('.apps-total')
       cy.get('.apps-total').then($appUpdatedTotal => {
         expect(Number($appUpdatedTotal.text())).to.eq(Number(initialAddedApps) - 1)
@@ -42,7 +43,7 @@ describe('Applications validation', () => {
     })
   })
 
-  it('Test group action for unregistering applications', () => {
+  it('Test group action for unregister applications', () => {
     cy.importStreams()
     cy.checkExistence('.apps-total')
     cy.get('.apps-total').should((elem) => {
@@ -56,7 +57,6 @@ describe('Applications validation', () => {
       cy.checkExistence('.modal button')
       cy.get('.modal button').last().click()
       cy.checkLoading()
-      cy.checkVisibility('app-toast.toast-success')
       cy.get('.content-area').scrollTo('bottom')
       cy.checkExistence('.apps-total')
       cy.get('.apps-total').then($appUpdatedTotal => {
