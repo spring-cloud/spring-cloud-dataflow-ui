@@ -25,7 +25,7 @@ describe('Tasks validation', () => {
 
   it('Launch selected task', () => {
     cy.launchTask()
-    cy.checkLoading()
+    cy.checkLoadingDone()
     cy.get('app-view-card').invoke('attr', 'keycontext').should('eq','execution')
   })
 
@@ -44,10 +44,11 @@ describe('Tasks validation', () => {
   })
 
   it('Cleanup selected task', () => {
-    cy.get('.datagrid-action-toggle').first().click()
+    cy.get('.datagrid-action-toggle').last().click()
     cy.get('.datagrid-action-overflow button:nth-child(6)').first().click()
-    cy.checkExistence('.modal-dialog button')
-    cy.get('.modal-dialog button').last().click()
+    cy.checkExistence('.modal-dialog')
+    cy.checkExistence('.modal-dialog #btn-stop')
+    cy.get('.modal-dialog #btn-stop').click()
   })
 
   describe('Tasks executions validation', () => {
@@ -87,7 +88,7 @@ describe('Tasks validation', () => {
         cy.get('.modal #btn-stop').click()
         cy.get('app-toast').should('be.visible')
         cy.checkExistence('.tasks-execution-total')
-        cy.checkLoading()
+        cy.checkLoadingDone()
         cy.get('.tasks-execution-total').then($appUpdatedTotal => {
           expect(Number($appUpdatedTotal.text())).to.eq(0)
         })
@@ -158,7 +159,7 @@ describe('Tasks validation', () => {
         cy.get('.modal #btn-stop').click()
         cy.get('app-toast').should('be.visible')
         cy.checkExistence('.tasks-execution-total')
-        cy.checkLoading()
+        cy.checkLoadingDone()
         cy.get('.tasks-execution-total').then($appUpdatedTotal => {
           expect(Number($appUpdatedTotal.text())).to.eq(0)
         })

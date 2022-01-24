@@ -9,6 +9,21 @@ describe('Applications validation', () => {
     cy.get('.datagrid clr-dg-cell').should('have.length.gte', 1)
   })
 
+  it('Register a new application version', () => {
+    cy.checkVisibility('.datagrid-row-scrollable clr-dg-cell')
+    cy.get('.datagrid-row-scrollable clr-dg-cell a').first().click()
+    cy.checkVisibility('app-view-card[titlemodal = "Information"]')
+    cy.get('app-view-card[titlemodal = "Information"]').then($appDetails => {
+      const applicationName = $appDetails.parents('h1#page-title strong:first-child').text()
+      const applicationType = $appDetails.children('.row:first-child .value').text();
+      const applicationVersion = $appDetails.children('.row:nth-child(2) .value').text();
+      const applicationUri = $appDetails.children('.row:nth-child(3) .value').text();
+      cy.log('applicationUri', applicationUri)
+      cy.log('applicationName', applicationName)
+      cy.log('applicationVersion', applicationVersion)
+    })
+  });
+
   it('Test unregister for selected application', () => {
     cy.importStreams()
     cy.checkExistence('.apps-total')
@@ -25,6 +40,7 @@ describe('Applications validation', () => {
       cy.get('.content-area').scrollTo('bottom')
       cy.get('.datagrid-footer').should('be.visible')
       cy.checkVisibility('.apps-total')
+      cy.checkLoadingDone()
       cy.get('.apps-total').then($appUpdatedTotal => {
         expect(Number($appUpdatedTotal.text())).to.eq(Number(initialAddedApps) - 1)
       })
@@ -56,7 +72,7 @@ describe('Applications validation', () => {
       cy.get('button#btnUnregisterApplications').click()
       cy.checkExistence('.modal button')
       cy.get('.modal button').last().click()
-      cy.checkLoading()
+      cy.checkLoadingDone()
       cy.get('.content-area').scrollTo('bottom')
       cy.checkExistence('.apps-total')
       cy.get('.apps-total').then($appUpdatedTotal => {

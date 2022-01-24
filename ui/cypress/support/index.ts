@@ -23,7 +23,6 @@ Cypress.Commands.add('checkExistence', (selector: string) => {
 
 Cypress.Commands.add('checkLoading', () => {
   cy.get('clr-spinner').should('be.visible')
-  cy.get('.toast-message').should('not.be.visible')
   cy.get('clr-spinner').should('not.exist')
 })
 
@@ -77,8 +76,9 @@ Cypress.Commands.add('createBatchTask', () => {
 
 Cypress.Commands.add('launchTask', () => {
   cy.checkExistence('.datagrid-action-toggle')
-  cy.get('.datagrid-action-toggle').first().click()
+  cy.get('.datagrid-action-toggle').last().click()
   cy.get('.datagrid-action-overflow button:nth-child(2)').click()
+  cy.get('app-task-launch-builder').should('be.visible')
   cy.checkExistence('button#btn-deploy-builder')
   cy.get('button#btn-deploy-builder').click()
 })
@@ -91,7 +91,6 @@ Cypress.Commands.add('launchBatchSampleTask', () => {
   cy.checkExistence('.datagrid-action-toggle')
   cy.get('.datagrid-action-toggle').last().click()
   cy.get('.datagrid-action-overflow button:nth-child(2)').click()
-  cy.wait(3000)
   cy.checkExistence('button#btn-deploy-builder')
   cy.get('button#btn-deploy-builder').click()
 })
