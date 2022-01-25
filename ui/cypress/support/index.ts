@@ -4,9 +4,9 @@ declare namespace Cypress {
     checkExistence(selector: string): void
     launchBatchSampleTask(): void
     registerApplication(): void
+    checkLoadingDone(): void
     createBatchTask(): void
     importStreams(): void
-    checkLoading(): void
     importTasks(): void
     createTask(): void
     launchTask(): void
@@ -21,7 +21,7 @@ Cypress.Commands.add('checkExistence', (selector: string) => {
   cy.get(selector).should('be.exist')
 })
 
-Cypress.Commands.add('checkLoading', () => {
+Cypress.Commands.add('checkLoadingDone', () => {
   cy.get('clr-spinner').should('be.visible')
   cy.get('clr-spinner').should('not.exist')
 })

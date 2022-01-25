@@ -37,10 +37,10 @@ describe('Applications validation', () => {
       cy.get('.datagrid-action-overflow button').last().click()
       cy.checkExistence('.modal-dialog button')
       cy.get('.modal-dialog button').last().click()
+      cy.get('.modal-body').should('not.be.exist')
       cy.get('.content-area').scrollTo('bottom')
       cy.get('.datagrid-footer').should('be.visible')
       cy.checkVisibility('.apps-total')
-      cy.checkLoadingDone()
       cy.get('.apps-total').then($appUpdatedTotal => {
         expect(Number($appUpdatedTotal.text())).to.eq(Number(initialAddedApps) - 1)
       })

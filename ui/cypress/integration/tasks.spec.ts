@@ -44,6 +44,7 @@ describe('Tasks validation', () => {
   })
 
   it('Cleanup selected task', () => {
+    cy.checkVisibility('.datagrid-action-toggle')
     cy.get('.datagrid-action-toggle').last().click()
     cy.get('.datagrid-action-overflow button:nth-child(6)').first().click()
     cy.checkExistence('.modal-dialog')
@@ -101,7 +102,7 @@ describe('Tasks validation', () => {
       cy.checkExistence('.datagrid-action-overflow button')
       cy.get('.datagrid-action-overflow button:nth-child(4)').first().click()
       cy.checkExistence('.modal-dialog button')
-      cy.get('.modal-dialog button:nth-child(2)').last().click()
+      cy.get('.modal-dialog button:nth-child(2)').first().click()
     })
 
     it('Cleanup task execution', () => {
