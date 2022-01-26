@@ -44,6 +44,8 @@ describe('Tasks validation', () => {
   })
 
   it('Cleanup selected task', () => {
+    cy.launchTask()
+    cy.get('a[routerlink = "tasks-jobs/tasks"]').first().click()
     cy.checkVisibility('.datagrid-action-toggle')
     cy.get('.datagrid-action-toggle').last().click()
     cy.get('.datagrid-action-overflow button:nth-child(6)').first().click()
