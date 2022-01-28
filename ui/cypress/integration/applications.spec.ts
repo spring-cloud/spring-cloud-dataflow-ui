@@ -1,4 +1,20 @@
 describe('Applications validation', () => {
+
+  const registerApplicationVersion = (appName, appType, appUri, appVersionFullText) => {
+    const appVersionLength = appVersionFullText.length;
+    const prevAppVersion = appVersionFullText.substring(0, appVersionLength - 1);
+    const newAppVersion = Number(appVersionFullText.substring(appVersionLength - 1, appVersionLength)) + 1;
+    cy.get('.nav-content > a[routerlink = "apps"]').click()
+    cy.get('button#btnAddApplications').click()
+    cy.get('button.clr-accordion-header-button').first().click()
+    cy.get('input[name = "name0"]').type(appName)
+    cy.get('select[name = "type0"]').select(appType)
+    cy.get('input[name = "uri0"]').type(appUri.replace(appVersionFullText, prevAppVersion+newAppVersion))
+    cy.get('button[name = "register"]').click()
+    cy.checkToastAnimation()
+    cy.checkExistence('app-apps-list')
+  }
+
   beforeEach(() => {
     cy.visit(Cypress.config('baseUrl'))
     cy.get('.nav-content > a[routerlink = "apps"]').click()
@@ -10,18 +26,24 @@ describe('Applications validation', () => {
   })
 
   it('Register a new application version', () => {
+    let applicationName, applicationType, applicationUri, applicationVersion;
     cy.checkVisibility('.datagrid-row-scrollable clr-dg-cell')
     cy.get('.datagrid-row-scrollable clr-dg-cell a').first().click()
     cy.checkVisibility('app-view-card[titlemodal = "Information"]')
-    cy.get('app-view-card[titlemodal = "Information"]').then($appDetails => {
-      const applicationName = $appDetails.parents('h1#page-title strong:first-child').text()
-      const applicationType = $appDetails.children('.row:first-child .value').text();
-      const applicationVersion = $appDetails.children('.row:nth-child(2) .value').text();
-      const applicationUri = $appDetails.children('.row:nth-child(3) .value').text();
-      cy.log('applicationUri', applicationUri)
-      cy.log('applicationName', applicationName)
-      cy.log('applicationVersion', applicationVersion)
+    cy.checkLoadingDone()
+    cy.get('h1 strong:first-child').then($appName => {
+      applicationName = $appName.text()
     })
+    cy.get('.row:nth-child(2) .value span').first().then($appVersion => {
+      applicationVersion = $appVersion.text()
+    })
+    cy.get('.row:nth-child(1) .value span').first().then($appType => {
+      applicationType = $appType.text()
+    });
+    cy.get('.row:nth-child(3) .value').first().then($appUri => {
+      applicationUri = $appUri.text()
+      registerApplicationVersion(applicationName, applicationType, applicationUri, applicationVersion)
+    });
   });
 
   it('Test unregister for selected application', () => {

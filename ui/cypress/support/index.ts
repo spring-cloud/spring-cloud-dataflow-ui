@@ -4,6 +4,7 @@ declare namespace Cypress {
     checkExistence(selector: string): void
     launchBatchSampleTask(): void
     registerApplication(): void
+    checkToastAnimation(): void
     checkLoadingDone(): void
     createBatchTask(): void
     importStreams(): void
@@ -27,7 +28,13 @@ Cypress.Commands.add('checkLoadingDone', () => {
   cy.get('clr-spinner').should('not.exist')
 })
 
+Cypress.Commands.add('checkToastAnimation', () => {
+  cy.get('app-toast div').should('be.visible')
+  cy.get('app-toast div').should('not.be.visible')
+})
+
 Cypress.Commands.add('importStreams', () => {
+  cy.get('.nav-content > a[routerlink = "apps"]').click()
   cy.get('button#btnAddApplications').click()
   cy.get('[value="stream.kafka.docker"] + label').click()
   cy.get('button[type=submit]').click()
