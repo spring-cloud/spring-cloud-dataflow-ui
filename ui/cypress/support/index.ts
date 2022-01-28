@@ -7,6 +7,7 @@ declare namespace Cypress {
     checkLoadingDone(): void
     createBatchTask(): void
     importStreams(): void
+    createStream(): void
     importTasks(): void
     createTask(): void
     launchTask(): void
@@ -61,6 +62,16 @@ Cypress.Commands.add('createTask', () => {
   cy.get('button.btn-primary').first().click()
   cy.get('input[name = "name"]').type('Test'+new Date().getTime())
   cy.get('input[name = "desc"]').type('Test task description')
+  cy.get('button[type = "submit"]').click()
+})
+
+Cypress.Commands.add('createStream', () => {
+  cy.get('button.btn-primary').first().click()
+  cy.checkExistence('pre.CodeMirror-line')
+  cy.get('.CodeMirror-line').type('timestamp')
+  cy.get('button.btn-primary').first().click()
+  cy.get('input[name = "name"]').type('Stream'+new Date().getTime())
+  cy.get('input[name = "desc"]').type('Stream description')
   cy.get('button[type = "submit"]').click()
 })
 
