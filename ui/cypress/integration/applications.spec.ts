@@ -1,18 +1,30 @@
 describe('Applications validation', () => {
 
-  const registerApplicationVersion = (appName, appType, appUri, appVersionFullText) => {
-    const appVersionLength = appVersionFullText.length;
-    const prevAppVersion = appVersionFullText.substring(0, appVersionLength - 1);
-    const newAppVersion = Number(appVersionFullText.substring(appVersionLength - 1, appVersionLength)) + 1;
+  const registerApplicationVersion = (appName: string, appType: string, appUri: string, appVersionFullText: string, appCount: number) => {
+    const appVersionLength: number = appVersionFullText.length;
+    const prevAppVersion: string = appVersionFullText.substring(0, appVersionLength - 1);
+    const newAppVersion: number = appCount + 1;
+    const newVersionFullText: string = prevAppVersion+newAppVersion
     cy.get('.nav-content > a[routerlink = "apps"]').click()
     cy.get('button#btnAddApplications').click()
     cy.get('button.clr-accordion-header-button').first().click()
     cy.get('input[name = "name0"]').type(appName)
     cy.get('select[name = "type0"]').select(appType)
-    cy.get('input[name = "uri0"]').type(appUri.replace(appVersionFullText, prevAppVersion+newAppVersion))
+    cy.get('input[name = "uri0"]').type(appUri.replace(appVersionFullText, newVersionFullText))
     cy.get('button[name = "register"]').click()
     cy.checkToastAnimation()
     cy.checkExistence('app-apps-list')
+    cy.get('clr-dg-cell a').contains(appName).parent().next().next().get('span').should('has.class','badge')
+    cy.get('clr-dg-cell a').contains(appName).parentsUntil('clr-dg-row').children('.datagrid-row-sticky').first().click()
+    cy.checkExistence('div[role = "menu"]')
+    cy.get('div[role = "menu"] button:nth-child(2)').click()
+    cy.checkVisibility('.modal-content tr')
+    cy.get('.modal-content tr').last().children('td').children('button').last().click()
+    cy.checkVisibility('.modal-content button.btn-primary')
+    cy.get('.modal-content button.btn-primary').click()
+    cy.get('.modal-content button.close').click()
+    cy.checkExistence('app-apps-list')
+    cy.get('clr-dg-cell a').contains(appName).parent().next().next().get('span.label').contains(newVersionFullText)
   }
 
   beforeEach(() => {
@@ -25,8 +37,8 @@ describe('Applications validation', () => {
     cy.get('.datagrid clr-dg-cell').should('have.length.gte', 1)
   })
 
-  it('Register a new application version', () => {
-    let applicationName, applicationType, applicationUri, applicationVersion;
+  it('Register a new application version and set default to it', () => {
+    let applicationName, applicationType, applicationUri, applicationVersion: string
     cy.checkVisibility('.datagrid-row-scrollable clr-dg-cell')
     cy.get('.datagrid-row-scrollable clr-dg-cell a').first().click()
     cy.checkVisibility('app-view-card[titlemodal = "Information"]')
@@ -34,16 +46,19 @@ describe('Applications validation', () => {
     cy.get('h1 strong:first-child').then($appName => {
       applicationName = $appName.text()
     })
+    cy.get('.row:nth-child(1) .value span').first().then($appType => {
+      applicationType = $appType.text()
+    })
     cy.get('.row:nth-child(2) .value span').first().then($appVersion => {
       applicationVersion = $appVersion.text()
     })
-    cy.get('.row:nth-child(1) .value span').first().then($appType => {
-      applicationType = $appType.text()
-    });
     cy.get('.row:nth-child(3) .value').first().then($appUri => {
       applicationUri = $appUri.text()
-      registerApplicationVersion(applicationName, applicationType, applicationUri, applicationVersion)
-    });
+    })
+    cy.get('.row:nth-child(5) .value').first().then($appCount => {
+      const applicationCount = Number($appCount.text())
+      registerApplicationVersion(applicationName, applicationType, applicationUri, applicationVersion, applicationCount)
+    })
   });
 
   it('Test unregister for selected application', () => {
@@ -59,7 +74,7 @@ describe('Applications validation', () => {
       cy.get('.datagrid-action-overflow button').last().click()
       cy.checkExistence('.modal-dialog button')
       cy.get('.modal-dialog button').last().click()
-      cy.wait(600)
+      cy.checkLoadingDone()
       cy.get('.modal-body').should('not.be.exist')
       cy.get('.content-area').scrollTo('bottom')
       cy.get('.datagrid-footer').should('be.visible')
