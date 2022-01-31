@@ -14,17 +14,21 @@ describe('Applications validation', () => {
     cy.get('button[name = "register"]').click()
     cy.checkToastAnimation()
     cy.checkExistence('app-apps-list')
+    setDefaultVersion(appName, newVersionFullText)
+  }
+
+  const setDefaultVersion = (appName: string, appVersion: string) => {
     cy.get('clr-dg-cell a').contains(appName).parent().next().next().get('span').should('has.class','badge')
     cy.get('clr-dg-cell a').contains(appName).parentsUntil('clr-dg-row').children('.datagrid-row-sticky').first().click()
     cy.checkExistence('div[role = "menu"]')
     cy.get('div[role = "menu"] button:nth-child(2)').click()
     cy.checkVisibility('.modal-content tr')
-    cy.get('.modal-content tr').last().children('td').children('button').last().click()
+    cy.get('.modal-content tr').children('td').not('clr-icon').last().children('button').last().click()
     cy.checkVisibility('.modal-content button.btn-primary')
     cy.get('.modal-content button.btn-primary').click()
     cy.get('.modal-content button.close').click()
     cy.checkExistence('app-apps-list')
-    cy.get('clr-dg-cell a').contains(appName).parent().next().next().get('span.label').contains(newVersionFullText)
+    cy.get('clr-dg-cell a').contains(appName).parent().next().next().get('span.label').contains(appVersion)
   }
 
   beforeEach(() => {
