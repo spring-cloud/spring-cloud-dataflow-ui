@@ -9,6 +9,7 @@ declare namespace Cypress {
     createBatchTask(): void
     importStreams(): void
     createStream(): void
+    cleanupTasks(): void
     importTasks(): void
     createTask(): void
     launchTask(): void
@@ -75,7 +76,7 @@ Cypress.Commands.add('createTask', () => {
 Cypress.Commands.add('createStream', () => {
   cy.get('button.btn-primary').first().click()
   cy.checkExistence('pre.CodeMirror-line')
-  cy.get('.CodeMirror-line').type('timestamp')
+  cy.get('.CodeMirror-line').type('timestamp|filter|log')
   cy.get('button.btn-primary').first().click()
   cy.get('input[name = "name"]').type('Stream'+new Date().getTime())
   cy.get('input[name = "desc"]').type('Stream description')
@@ -104,11 +105,22 @@ Cypress.Commands.add('launchTask', () => {
 Cypress.Commands.add('launchBatchSampleTask', () => {
   cy.get('.content-area').scrollTo('bottom')
   cy.checkVisibility('.datagrid-footer')
-  cy.checkVisibility('button.pagination-last')
-  cy.get('button.pagination-last').click()
   cy.checkExistence('.datagrid-action-toggle')
   cy.get('.datagrid-action-toggle').last().click()
   cy.get('.datagrid-action-overflow button:nth-child(2)').click()
   cy.checkExistence('button#btn-deploy-builder')
   cy.get('button#btn-deploy-builder').click()
+})
+
+Cypress.Commands.add('cleanupTasks', () => {
+  cy.get('.tasks-total').then($appTotal => {
+    cy.get('clr-datagrid button.btn-secondary').first().click()
+    cy.get('input[type="checkbox"] + label').first().click()
+    cy.get('button.btn-outline-danger').first().click()
+    cy.checkExistence('.modal button.btn-danger')
+    cy.get('.modal button.btn-danger').click()
+    cy.get('app-toast').should('be.visible')
+    cy.get('.content-area').scrollTo('bottom')
+    cy.checkLoadingDone()
+  })
 })

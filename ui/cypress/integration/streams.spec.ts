@@ -1,15 +1,20 @@
 describe('Streams validation', () => {
 
+  const goToStreams = () => {
+    cy.get('clr-vertical-nav-group[appfeature = "streams"]').click()
+  }
+
   before(()=> {
     cy.visit(Cypress.config('baseUrl'))
-    cy.get('clr-vertical-nav-group[appfeature = "streams"]').click()
+    goToStreams()
     cy.importStreams()
+    goToStreams()
+    cy.createStream()
   })
 
   beforeEach(() => {
     cy.checkVisibility('a[routerlink = "streams/list"]')
     cy.get('a[routerlink = "streams/list"]').first().click()
-    cy.createStream()
   })
 
   it('Create a stream and render it on table', () => {

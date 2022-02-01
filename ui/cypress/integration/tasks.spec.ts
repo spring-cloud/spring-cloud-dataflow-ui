@@ -9,6 +9,7 @@ describe('Tasks validation', () => {
   beforeEach(() => {
     cy.checkVisibility('a[routerlink = "tasks-jobs/tasks"]')
     cy.get('a[routerlink = "tasks-jobs/tasks"]').first().click()
+    cy.get('clr-spinner').should('not.exist')
     cy.createTask()
   })
 
@@ -91,7 +92,7 @@ describe('Tasks validation', () => {
         cy.get('.modal #btn-stop').click()
         cy.get('app-toast').should('be.visible')
         cy.checkExistence('.tasks-execution-total')
-        cy.checkLoadingDone()
+        cy.get('clr-spinner').should('not.exist')
         cy.get('.tasks-execution-total').then($appUpdatedTotal => {
           expect(Number($appUpdatedTotal.text())).to.eq(0)
         })
@@ -119,10 +120,17 @@ describe('Tasks validation', () => {
 
   describe('Jobs executions validation', () => {
 
+    const goToTasksJobs = () => {
+      cy.get('a[routerlink = "tasks-jobs/tasks"]').first().click()
+    }
+
     before(() => {
+      goToTasksJobs()
+      cy.cleanupTasks()
+      cy.log('after CLEANUP JOBS')
       cy.registerApplication()
       cy.checkVisibility('a[routerlink = "tasks-jobs/tasks"]')
-      cy.get('a[routerlink = "tasks-jobs/tasks"]').first().click()
+      goToTasksJobs()
       cy.createBatchTask()
       cy.launchBatchSampleTask()
 
