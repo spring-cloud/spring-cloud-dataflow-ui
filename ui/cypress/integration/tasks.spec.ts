@@ -1,5 +1,10 @@
 describe('Tasks validation', () => {
 
+  const goToTasksJobs = () => {
+    cy.checkVisibility('a[routerlink = "tasks-jobs/tasks"]')
+    cy.get('a[routerlink = "tasks-jobs/tasks"]').first().click()
+  }
+
   before(()=> {
     cy.visit(Cypress.config('baseUrl'))
     cy.get('clr-vertical-nav-group[appfeature = "tasks"]').click()
@@ -7,8 +12,7 @@ describe('Tasks validation', () => {
   })
 
   beforeEach(() => {
-    cy.checkVisibility('a[routerlink = "tasks-jobs/tasks"]')
-    cy.get('a[routerlink = "tasks-jobs/tasks"]').first().click()
+    goToTasksJobs()
     cy.get('clr-spinner').should('not.exist')
     cy.createTask()
   })
@@ -46,7 +50,7 @@ describe('Tasks validation', () => {
 
   it('Cleanup selected task', () => {
     cy.launchTask()
-    cy.get('a[routerlink = "tasks-jobs/tasks"]').first().click()
+    goToTasksJobs()
     cy.checkVisibility('.datagrid-action-toggle')
     cy.get('.datagrid-action-toggle').last().click()
     cy.get('.datagrid-action-overflow button:nth-child(6)').first().click()
@@ -59,6 +63,7 @@ describe('Tasks validation', () => {
 
     beforeEach(() => {
       cy.launchTask()
+      cy.checkVisibility('a[routerlink = "tasks-jobs/task-executions"]')
       cy.get('a[routerlink = "tasks-jobs/task-executions"]').click()
     })
 
@@ -120,16 +125,10 @@ describe('Tasks validation', () => {
 
   describe('Jobs executions validation', () => {
 
-    const goToTasksJobs = () => {
-      cy.get('a[routerlink = "tasks-jobs/tasks"]').first().click()
-    }
-
     before(() => {
       goToTasksJobs()
       cy.cleanupTasks()
-      cy.log('after CLEANUP JOBS')
-      cy.registerApplication()
-      cy.checkVisibility('a[routerlink = "tasks-jobs/tasks"]')
+      // cy.registerApplication()
       goToTasksJobs()
       cy.createBatchTask()
       cy.launchBatchSampleTask()
