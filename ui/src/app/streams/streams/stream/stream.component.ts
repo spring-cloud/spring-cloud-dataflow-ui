@@ -10,6 +10,7 @@ import {UndeployComponent} from '../undeploy/undeploy.component';
 import get from 'lodash.get';
 import {StreamStatus} from '../../../shared/model/metrics.model';
 import {RollbackComponent} from '../rollback/rollback.component';
+import {ScaleComponent} from '../scale/scale.component';
 
 @Component({
   selector: 'app-stream',
@@ -36,6 +37,7 @@ export class StreamComponent implements OnInit {
   @ViewChild('destroyModal', {static: true}) destroyModal: DestroyComponent;
   @ViewChild('undeployModal', {static: true}) undeployModal: UndeployComponent;
   @ViewChild('rollbackModal', {static: true}) rollbackModal: RollbackComponent;
+  @ViewChild('scaleModal', {static: true}) scaleModal: ScaleComponent;
 
   constructor(
     private route: ActivatedRoute,
@@ -192,6 +194,10 @@ export class StreamComponent implements OnInit {
 
   deploy(): void {
     this.router.navigateByUrl(`streams/list/${this.stream.name}/deploy`);
+  }
+
+  scale(): void {
+    this.scaleModal.open(this.stream.name);
   }
 
   undeploy(): void {

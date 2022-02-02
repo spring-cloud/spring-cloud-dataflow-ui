@@ -180,4 +180,11 @@ describe('shared/api/stream.service.ts', () => {
     const httpUri = mockHttp.post.calls.mostRecent().args[0];
     expect(httpUri).toEqual('/streams/deployments/rollback/foo/2');
   });
+
+  it('scaleAppInstance', () => {
+    mockHttp.post.and.returnValue(of({}));
+    streamService.scaleAppInstance('foo', 'log', 2);
+    const httpUri = mockHttp.post.calls.mostRecent().args[0];
+    expect(httpUri).toEqual('/streams/deployments/scale/foo/log/instances/2');
+  });
 });

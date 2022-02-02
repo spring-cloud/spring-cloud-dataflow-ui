@@ -144,6 +144,14 @@
       >
         Undeploy
       </button>
+      <button
+        class="action-item"
+        (click)="scale(stream)"
+        *ngIf="stream.status !== 'UNDEPLOYED' && stream.status !== 'INCOMPLETE'"
+        [appRole]="['ROLE_CREATE']"
+      >
+        Scale
+      </button>
       <button class="action-item" (click)="destroy([stream])" [appRole]="['ROLE_DESTROY']">Destroy</button>
       <button class="action-item" (click)="clone([stream])" [appRole]="['ROLE_CREATE']">Clone</button>
       <button class="action-item" grafanaDashboardStream [stream]="stream">Grafana Dashboard</button>
@@ -180,3 +188,4 @@
 <app-stream-undeploy #undeployModal (onUndeployed)="refresh(state)"></app-stream-undeploy>
 <app-stream-clone #cloneModal (onCloned)="refresh(state)"></app-stream-clone>
 <app-stream-status #statusModal></app-stream-status>
+<app-stream-scale #scaleModal></app-stream-scale>

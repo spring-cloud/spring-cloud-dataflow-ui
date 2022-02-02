@@ -1,0 +1,51 @@
+<clr-modal [(clrModalOpen)]="isOpen" *ngIf="streamName" [clrModalClosable]="!isRunning">
+  <h3 class="modal-title">
+    Scale instances for app
+    <strong>{{ streamName }}</strong
+    >&nbsp;
+  </h3>
+  <div class="modal-body">
+    <div *ngIf="isLoading">
+      <clr-spinner clrInline clrSmall></clr-spinner>&nbsp;
+      <span>Fetching stream runtime statuses ...</span>
+    </div>
+    <table class="table table-striped" *ngIf="!isLoading">
+      <thead>
+        <tr>
+          <th class="left">Name</th>
+          <th class="left" style="width: 60px">Instances</th>
+          <th class="left" style="width: 30px">&nbsp;</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of instances">
+          <td class="left">
+            {{ item.name }}
+          </td>
+          <td class="left">
+            <input
+              style="width: 50px"
+              type="number"
+              min="0"
+              class="clr-input ng-pristine ng-valid ng-touched"
+              [(ngModel)]="item.instanceCount"
+            />
+          </td>
+          <td nowrap="">
+            <button
+              type="button"
+              class="btn btn-sm btn-secondary"
+              [disabled]="item.currentInstanceCount === item.instanceCount || item.isScaling"
+              (click)="scale(item)"
+            >
+              Scale <clr-spinner *ngIf="item.isScaling" clrInline clrSmall></clr-spinner>&nbsp;
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="isOpen = false">Close</button>
+  </div>
+</clr-modal>

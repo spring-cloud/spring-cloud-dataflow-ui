@@ -29,6 +29,16 @@
       Update stream
     </button>
     <button
+      id="btn-scale"
+      *ngIf="stream.status !== 'UNDEPLOYED'"
+      type="button"
+      class="btn btn-sm btn-secondary"
+      (click)="scale()"
+      [appRole]="['ROLE_MODIFY']"
+    >
+      Scale instances
+    </button>
+    <button
       id="btn-undeploy"
       *ngIf="stream.status !== 'UNDEPLOYED' && stream.status !== 'INCOMPLETE'"
       type="button"
@@ -179,7 +189,7 @@
                     </td>
                     <td class="left">{{ app.deploymentId }}</td>
                     <td class="left">{{ app.instances?.length || 'n/a' }} instance(s)</td>
-                    <td class="left" style="width: 20px">
+                    <td>
                       <button
                         type="button"
                         (click)="showLog(app.deploymentId, getAppType(app.name))"
@@ -278,3 +288,4 @@
 <app-stream-destroy #destroyModal (onDestroyed)="back()"></app-stream-destroy>
 <app-stream-undeploy #undeployModal (onUndeployed)="refresh()"></app-stream-undeploy>
 <app-stream-rollback #rollbackModal (onRollback)="refresh()"></app-stream-rollback>
+<app-stream-scale #scaleModal (onScale)="refresh()"></app-stream-scale>

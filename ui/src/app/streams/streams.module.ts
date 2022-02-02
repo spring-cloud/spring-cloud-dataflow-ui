@@ -22,6 +22,7 @@ import {SecurityModule} from '../security/security.module';
 import {StatusComponent} from './streams/status/status.component';
 import {RollbackComponent} from './streams/rollback/rollback.component';
 import {CloneComponent} from './streams/clone/clone.component';
+import {ScaleComponent} from './streams/scale/scale.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import {CloneComponent} from './streams/clone/clone.component';
     MultiDeployComponent,
     StatusComponent,
     RollbackComponent,
-    CloneComponent
+    CloneComponent,
+    ScaleComponent
   ],
   imports: [
     CommonModule,

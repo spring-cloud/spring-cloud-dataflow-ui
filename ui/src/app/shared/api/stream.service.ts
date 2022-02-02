@@ -179,4 +179,11 @@ export class StreamService {
       )
       .pipe(catchError(ErrorUtils.catchError));
   }
+
+  scaleAppInstance(streamName: string, appName: string, count: number): Observable<HttpResponse<any>> {
+    const headers = HttpUtils.getDefaultHttpHeaders();
+    const url =
+      UrlUtilities.calculateBaseApiUrl() + `streams/deployments/scale/${streamName}/${appName}/instances/${count}`;
+    return this.httpClient.post<any>(url, null, {headers}).pipe(catchError(ErrorUtils.catchError));
+  }
 }
