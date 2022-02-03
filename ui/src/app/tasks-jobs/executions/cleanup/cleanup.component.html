@@ -3,7 +3,8 @@
   <div class="modal-body" *ngIf="executions.length === 1 && !isRunning">
     <p
       [innerHTML]="
-        'executions.cleanup.description' | translate: {id: executions[0].executionId, taskName: executions[0].taskName}
+        'executions.cleanup.description'
+          | translate: {executionId: executions[0].executionId, taskName: executions[0].taskName}
       "
     ></p>
   </div>
