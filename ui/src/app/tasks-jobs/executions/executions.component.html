@@ -93,7 +93,7 @@
     <clr-dg-cell>{{ execution.endTime | datetime }}</clr-dg-cell>
     <clr-dg-cell>{{ execution.exitCode }}</clr-dg-cell>
     <clr-dg-action-overflow *ngIf="!grouped">
-      <button class="action-item" (click)="details(execution)">{{ 'executions.main.details' | translate }}</button>
+      <button class="action-item" (click)="details(execution)">{{ 'commons.details' | translate }}</button>
       <button class="action-item" (click)="taskDetails(execution)">
         {{ 'executions.main.taskDetails' | translate }}
       </button>
@@ -112,10 +112,10 @@
         {{ 'executions.main.cleanup' | translate }}
       </button>
       <button class="action-item" grafanaDashboardTaskExecution [taskExecution]="execution">
-        {{ 'executions.main.grafana' | translate }}
+        {{ 'commons.grafanaDashboard' | translate }}
       </button>
       <button class="action-item" wavefrontDashboardTaskExecution [taskExecution]="execution">
-        {{ 'executions.main.wavefront' | translate }}
+        {{ 'commons.main.wavefrontDashboard' | translate }}
       </button>
     </clr-dg-action-overflow>
   </clr-dg-row>

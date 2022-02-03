@@ -10,7 +10,7 @@
       (click)="restart()"
       [disabled]="execution.status !== 'FAILED' && execution.status !== 'STOPPED' && execution.status !== 'ERROR'"
     >
-      {{ 'jobs.execution.restart' | translate }}
+      {{ 'commons.restart' | translate }}
     </button>
     <button
       type="button"
@@ -18,17 +18,17 @@
       (click)="stop()"
       [disabled]="execution.status === 'FAILED' || execution.status === 'ERROR' || execution.status === 'COMPLETED'"
     >
-      {{ 'jobs.execution.stop' | translate }}
+      {{ 'commons.stop' | translate }}
     </button>
     <button class="btn btn-sm btn-secondary" grafanaDashboardJobExecution [jobExecution]="execution">
-      {{ 'jobs.main.grafana' | translate }}
+      {{ 'commons.grafanaDashboard' | translate }}
     </button>
   </div>
 
   <div class="clr-row">
     <div class="clr-col-lg-6 clr-col-md-12 clr-col-12">
       <app-view-card
-        [titleModal]="'jobs.execution.information' | translate"
+        [titleModal]="'commons.information' | translate"
         keyContext="job"
         name="{{ execution.jobExecutionId }}"
         id="info"
@@ -36,7 +36,7 @@
         <ng-template>
           <div class="block card-block-keyvalue lg-key" *ngIf="!loading">
             <div class="row">
-              <div class="key">{{ 'jobs.main.id' | translate }}</div>
+              <div class="key">{{ 'commons.id' | translate }}</div>
               <div class="value">{{ execution.jobExecutionId }}</div>
             </div>
             <div class="row">
@@ -72,7 +72,7 @@
               <div class="value">{{ execution.startTime | duration: execution.endTime }}</div>
             </div>
             <div class="row">
-              <div class="key">{{ 'jobs.main.status' | translate }}</div>
+              <div class="key">{{ 'commons.status' | translate }}</div>
               <div class="value">
                 <span class="{{ execution.labelStatusClass() }}">{{ execution.status }}</span>
               </div>

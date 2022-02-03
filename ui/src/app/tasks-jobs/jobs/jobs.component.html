@@ -15,7 +15,7 @@
     (clrDgColumnResize)="updateContext('sizeName', $event)"
     [style.width.px]="context.sizeName | datagridcolumn: datagrid:contextName | async"
   >
-    <ng-container>{{ 'jobs.main.name' | translate }}</ng-container>
+    <ng-container>{{ 'commons.name' | translate }}</ng-container>
     <clr-dg-filter style="display: none"></clr-dg-filter>
   </clr-dg-column>
   <clr-dg-column
@@ -53,7 +53,7 @@
     (clrDgColumnResize)="updateContext('sizeStatus', $event)"
     [style.width.px]="context.sizeStatus | datagridcolumn: datagrid:contextName | async"
   >
-    <ng-container>{{ 'jobs.main.status' | translate }}</ng-container>
+    <ng-container>{{ 'commons.status' | translate }}</ng-container>
     <clr-dg-filter style="display: none"></clr-dg-filter>
   </clr-dg-column>
   <clr-dg-row *ngFor="let execution of page?.items" [clrDgItem]="execution">
@@ -71,23 +71,23 @@
       ><span class="{{ execution.labelStatusClass() }}">{{ execution.status }}</span></clr-dg-cell
     >
     <clr-dg-action-overflow>
-      <button class="action-item" (click)="details(execution)">{{ 'jobs.main.details' | translate }}</button>
+      <button class="action-item" (click)="details(execution)">{{ 'commons.details' | translate }}</button>
       <button
         class="action-item"
         (click)="restart(execution)"
         [disabled]="execution.status !== 'FAILED' && execution.status !== 'STOPPED' && execution.status !== 'ERROR'"
       >
-        {{ 'jobs.main.restart' | translate }}
+        {{ 'commons.restart' | translate }}
       </button>
       <button
         class="action-item"
         (click)="stop(execution)"
         [disabled]="execution.status === 'FAILED' || execution.status === 'ERROR' || execution.status === 'COMPLETED'"
       >
-        {{ 'jobs.main.stop' | translate }}
+        {{ 'commons.stop' | translate }}
       </button>
       <button class="action-item" grafanaDashboardJobExecution [jobExecution]="execution">
-        {{ 'jobs.main.garafana' | translate }}
+        {{ 'commons.grafanaDashboard' | translate }}
       </button>
     </clr-dg-action-overflow>
   </clr-dg-row>
@@ -114,7 +114,7 @@
   #restartModal
   (onConfirmed)="restartJob()"
   [title]="'jobs.main.restartConfirmTitle' | translate"
-  [yes]="'jobs.main.restart' | translate"
+  [yes]="'commons.restart' | translate"
 >
   <div
     [innerHTML]="'jobs.main.restartConfirmContent' | translate: {name: selection?.name, id: selection?.jobExecutionId}"
@@ -125,7 +125,7 @@
   #stopModal
   (onConfirmed)="stopJob()"
   [title]="'jobs.main.stopConfirmTitle' | translate"
-  [yes]="'jobs.main.stop' | translate"
+  [yes]="'commons.stop' | translate"
 >
   <div
     [innerHTML]="'jobs.main.stopConfirmContent' | translate: {name: selection?.name, id: selection?.jobExecutionId}"
