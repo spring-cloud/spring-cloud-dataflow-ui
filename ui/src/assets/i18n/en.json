@@ -600,7 +600,6 @@
         "updating": "Updating stream",
         "deploying": "Deploying stream(s)",
         "export": "Export",
-        "copy": "Copy to Clipboard",
         "message": {
           "errorExportPropertyContent": "There are no properties to export.",
           "errorCopyPropertyContent": "There are no properties to copy.",
@@ -1046,11 +1045,11 @@
       "create": "Create schedule(s)",
       "creating": "Creating schedule(s)",
       "message": {
-        "groupSeclectionNotFoundTitle": "Group selection not found.",
-        "scheculeSuccessTitle": "Schedule creation",
-        "scheculesSuccessTitle": "Schedule creation",
-        "scheculeSuccessContent": "Successfully schedule creation \"{{ name }}\"",
-        "scheculesSuccessContent": "Successfully {{ count }} schedules creation"
+        "groupSelectionNotFoundTitle": "Group selection not found.",
+        "scheduleSuccessTitle": "Schedule creation",
+        "schedulesSuccessTitle": "Schedule creation",
+        "scheduleSuccessContent": "Successfully schedule creation \"{{ name }}\"",
+        "schedulesSuccessContent": "Successfully {{ count }} schedules creation"
       }
     },
     "schedule": {

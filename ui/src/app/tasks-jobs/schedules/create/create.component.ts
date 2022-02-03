@@ -43,7 +43,7 @@ export class CreateComponent implements OnInit {
             if (this.groupService.group(params.id)) {
               return forkJoin([...(this.groupService.group(params.id) as any)].map(id => this.taskService.getTask(id)));
             } else {
-              return throwError(this.translate.instant('schedules.create.message.groupSeclectionNotFoundTitle'));
+              return throwError(this.translate.instant('schedules.create.message.groupSelectionNotFoundTitle'));
             }
           } else {
             return forkJoin([this.taskService.getTask(params.id)]);
@@ -152,15 +152,15 @@ export class CreateComponent implements OnInit {
         () => {
           if (scheduleParams.length === 1) {
             this.notificationService.success(
-              this.translate.instant('schedules.create.message.scheculeSuccessTitle'),
-              this.translate.instant('schedules.create.message.scheculeSuccessContent', {
+              this.translate.instant('schedules.create.message.scheduleSuccessTitle'),
+              this.translate.instant('schedules.create.message.scheduleSuccessContent', {
                 name: scheduleParams[0].schedulerName
               })
             );
           } else {
             this.notificationService.success(
-              this.translate.instant('schedules.create.message.scheculesSuccessTitle'),
-              this.translate.instant('schedules.create.message.scheculesSuccessContent', {count: scheduleParams.length})
+              this.translate.instant('schedules.create.message.schedulesSuccessTitle'),
+              this.translate.instant('schedules.create.message.schedulesSuccessContent', {count: scheduleParams.length})
             );
           }
           this.back();
