@@ -23,7 +23,7 @@
       {{ 'tasks.task.destroy' | translate }}
     </button>
     <button type="button" class="btn btn-sm btn-outline-danger" (click)="cleanup()" [appRole]="['ROLE_DESTROY']">
-      {{ 'tasks.task.cleanup' | translate }}
+      {{ 'commons.cleanup' | translate }}
     </button>
   </div>
 
@@ -38,23 +38,23 @@
         <ng-template>
           <div class="block card-block-keyvalue">
             <div *ngIf="task.description" class="row">
-              <div class="key">{{ 'tasks.main.description' | translate }}</div>
+              <div class="key">{{ 'commons.description' | translate }}</div>
               <div class="value">{{ task.description }}</div>
             </div>
             <div class="row">
-              <div class="key">{{ 'tasks.main.definition' | translate }}</div>
+              <div class="key">{{ 'commons.definition' | translate }}</div>
               <div class="value">
                 <span class="dsl-text">{{ task.dslText }}</span>
               </div>
             </div>
             <div class="row">
-              <div class="key">{{ 'tasks.main.status' | translate }}</div>
+              <div class="key">{{ 'commons.status' | translate }}</div>
               <div class="value">
                 <span class="{{ task.labelStatusClass() }}">{{ task.status }}</span>
               </div>
             </div>
             <div class="row">
-              <div class="key">{{ 'tasks.task.applications' | translate }}</div>
+              <div class="key">{{ 'commons.applications' | translate }}</div>
               <div class="value">
                 <div *ngIf="!loadingApplications">
                   <div *ngFor="let app of applications">

@@ -32,17 +32,17 @@
       {{ 'executions.execution.cleanup' | translate }}
     </button>
     <button type="button" class="btn btn-sm btn-secondary" grafanaDashboardTaskExecution [taskExecution]="execution">
-      {{ 'executions.main.grafana' | translate }}
+      {{ 'commons.grafanaDashboard' | translate }}
     </button>
     <button type="button" class="btn btn-sm btn-secondary" wavefrontDashboardTaskExecution [taskExecution]="execution">
-      {{ 'executions.main.wavefront' | translate }}
+      {{ 'commons.wavefrontDashboard' | translate }}
     </button>
   </div>
 
   <div class="clr-row">
     <div class="clr-col-lg-6 clr-col-md-12 clr-col-12">
       <app-view-card
-        [titleModal]="'executions.execution.information' | translate"
+        [titleModal]="'commons.information' | translate"
         keyContext="execution"
         name="{{ execution?.executionId }}"
         id="info"
@@ -179,27 +179,27 @@
           <div *ngIf="!loadingTask">
             <div class="block card-block-keyvalue" *ngIf="task">
               <div class="row">
-                <div class="key">{{ 'tasks.main.name' | translate }}</div>
+                <div class="key">{{ 'commons.name' | translate }}</div>
                 <div class="value">{{ task.name }}</div>
               </div>
               <div *ngIf="task.description" class="row">
-                <div class="key">{{ 'tasks.main.description' | translate }}</div>
+                <div class="key">{{ 'commons.description' | translate }}</div>
                 <div class="value">{{ task.description }}</div>
               </div>
               <div class="row">
-                <div class="key">{{ 'tasks.main.definition' | translate }}</div>
+                <div class="key">{{ 'commons.definition' | translate }}</div>
                 <div class="value">
                   <span class="dsl-text">{{ task.dslText }}</span>
                 </div>
               </div>
               <div class="row">
-                <div class="key">{{ 'tasks.main.status' | translate }}</div>
+                <div class="key">{{ 'commons.status' | translate }}</div>
                 <div class="value">
                   <span class="{{ task.labelStatusClass() }}">{{ task.status }}</span>
                 </div>
               </div>
               <div class="row">
-                <div class="key">{{ 'tasks.main.applications' | translate }}</div>
+                <div class="key">{{ 'commons.applications' | translate }}</div>
                 <div class="value">
                   <div *ngIf="!loadingApplication">
                     <div *ngFor="let app of applications">

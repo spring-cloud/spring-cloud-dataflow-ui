@@ -55,19 +55,19 @@
         <ng-template>
           <div class="block card-block-keyvalue">
             <div class="row">
-              <div class="key">{{ 'tasks.main.name' | translate }}</div>
+              <div class="key">{{ 'commons.name' | translate }}</div>
               <div class="value">
                 <a [routerLink]="'/tasks-jobs/tasks/' + task.name">{{ task.name }}</a>
               </div>
             </div>
             <div class="row">
-              <div class="key">{{ 'tasks.main.definition' | translate }}</div>
+              <div class="key">{{ 'commons.definition' | translate }}</div>
               <div class="value">
                 <span class="dsl-text">{{ task.dslText }}</span>
               </div>
             </div>
             <div class="row">
-              <div class="key">{{ 'tasks.main.status' | translate }}</div>
+              <div class="key">{{ 'commons.status' | translate }}</div>
               <div class="value">
                 <span class="{{ task.labelStatusClass() }}">{{ task.status }}</span>
               </div>
