@@ -317,7 +317,7 @@
     "actions": "Actions",
     "operations": "Operations",
     "operationID": "Operation ID",
-    "createBy": "Create by",
+    "createdBy": "Created by",
     "platformName": "Platform name",
     "noResult": "No results found.",
     "data": "Data",

@@ -76,7 +76,7 @@
     [style.width.px]="context.sizeCreatedBy | datagridcolumn: datagrid:contextName | async"
   >
     <ng-container>
-      {{ 'auditRecords.createBy' | translate }}
+      {{ 'auditRecords.createdBy' | translate }}
       <clr-dg-filter style="display: none"></clr-dg-filter>
     </ng-container>
   </clr-dg-column>
@@ -150,7 +150,7 @@
           </tr>
           <tr>
             <td class="left">
-              <strong>{{ 'auditRecords.createBy' | translate }}</strong>
+              <strong>{{ 'auditRecords.createdBy' | translate }}</strong>
             </td>
             <td class="left">{{ detail.createdBy || 'N/A' }}</td>
           </tr>
