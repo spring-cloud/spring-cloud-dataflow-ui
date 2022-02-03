@@ -33,7 +33,7 @@
             <div class="line-toggle">
               <a class="toggle" (click)="state.platform = !state.platform">
                 <clr-icon shape="angle" [class.active]="state.platform"></clr-icon>
-                {{ 'tasks.launch.builder.platform' | translate }}
+                {{ 'commons.platform' | translate }}
               </a>
             </div>
 
@@ -142,10 +142,10 @@
                   </clr-tooltip>
                 </div>
 
-                <div class="form-control form-control-label">{{ 'tasks.launch.builder.version' | translate }}</div>
+                <div class="form-control form-control-label">{{ 'commons.version' | translate }}</div>
               </div>
               <div class="line-body">
-                <div class="form-control form-control-label">{{ 'tasks.launch.builder.properties' | translate }}</div>
+                <div class="form-control form-control-label">{{ 'commons.properties' | translate }}</div>
               </div>
               <div formArrayName="global">
                 <div

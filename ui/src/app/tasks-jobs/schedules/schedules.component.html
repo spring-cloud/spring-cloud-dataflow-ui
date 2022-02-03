@@ -32,7 +32,7 @@
     (clrDgColumnResize)="updateContext('sizeName', $event)"
     [style.width.px]="context.sizeName | datagridcolumn: datagrid:contextName | async"
   >
-    <ng-container>{{ 'schedules.main.name' | translate }}</ng-container>
+    <ng-container>{{ 'commons.name' | translate }}</ng-container>
   </clr-dg-column>
   <clr-dg-column
     (clrDgColumnResize)="updateContext('sizeTaskName', $event)"
@@ -45,7 +45,7 @@
     (clrDgColumnResize)="updateContext('sizePlatform', $event)"
     [style.width.px]="context.sizePlatform | datagridcolumn: datagrid:contextName | async"
   >
-    <ng-container>{{ 'schedules.main.platform' | translate }}</ng-container>
+    <ng-container>{{ 'commons.platform' | translate }}</ng-container>
     <clr-dg-filter [clrDgFilter]="platformFilter">
       <app-clr-datagrid-platform-filter [value]="context.platform" #platformFilter></app-clr-datagrid-platform-filter>
     </clr-dg-filter>
@@ -69,7 +69,7 @@
     <clr-dg-cell>{{ schedule.platform || 'N/A' }}</clr-dg-cell>
     <clr-dg-cell>{{ schedule.cronExpression || 'N/A' }}</clr-dg-cell>
     <clr-dg-action-overflow *ngIf="!grouped">
-      <button class="action-item" (click)="details(schedule)">{{ 'schedules.main.details' | translate }}</button>
+      <button class="action-item" (click)="details(schedule)">{{ 'commons.details' | translate }}</button>
       <button class="action-item" (click)="taskDetails(schedule)">
         {{ 'schedules.main.taskDetails' | translate }}
       </button>
@@ -77,7 +77,7 @@
         {{ 'schedules.main.addNewSchedule' | translate }}
       </button>
       <button class="action-item" (click)="destroySchedules([schedule])">
-        {{ 'schedules.main.destroy' | translate }}
+        {{ 'commons.destroy' | translate }}
       </button>
     </clr-dg-action-overflow>
   </clr-dg-row>

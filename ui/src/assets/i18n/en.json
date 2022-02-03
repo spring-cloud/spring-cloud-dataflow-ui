@@ -623,18 +623,15 @@
         }
       },
       "builder": {
-        "platform": "Platform",
         "invalidPlatform": "The define platform is not valid (unknown).",
         "genericDeployerProperties": "Generic Deployer Properties",
         "example": "Example",
         "key": "Key",
         "value": "Value",
-        "properties": "Properties",
         "defaultVersion": "Default version",
         "generatedProperty": "Generated property",
         "deploymentPlatform": "Deployment Platform",
         "applicationsProperties": "Applications Properties",
-        "version": "Version",
         "global": "Global",
         "invalid": "invalid",
         "enterNumber": "Enter a number",
@@ -979,21 +976,16 @@
   },
   "schedules": {
     "main": {
-      "title": "Sechdules",
-      "name": "Name",
+      "title": "Schedules",
       "taskName": "Task name",
       "scheduleName": "Schedule name",
-      "schedule": "Schedule",
-      "platform": "Platform",
       "cronExpression": "Cron Expression",
       "cronExp": "Cron Expr.",
       "arguments": "Arguments",
       "noSchedule": "No schedule yet.",
       "deleteSchedules": "Delete schedules(s)",
-      "details": "Details",
       "taskDetails": "Task details",
       "addNewSchedule": "Add new schedule",
-      "destroy": "Destroy",
       "pagination": "{{ count }} schedules"
     },
     "destroy": {
