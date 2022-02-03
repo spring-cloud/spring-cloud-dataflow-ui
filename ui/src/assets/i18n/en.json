@@ -22,6 +22,7 @@
     "groupActions": "Group Actions",
     "confirmAction": "Confirm action",
     "noResultFound": "No results found.",
+    "copyToClipboard": "Copy to clipboard",
     "message": {
       "error": "An error occurred",
       "copiedTitle": "Content copied",

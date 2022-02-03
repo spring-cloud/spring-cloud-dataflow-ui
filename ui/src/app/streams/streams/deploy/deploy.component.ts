@@ -134,7 +134,7 @@ export class DeployComponent implements OnInit, OnDestroy {
       const propertiesText = this.properties.join('\n');
       this.clipboardCopyService.executeCopy(propertiesText);
       this.notificationService.success(
-        this.translate.instant('streams.deploy.main.message.successCopyTitle'),
+        this.translate.instant('commons.copyToClipboard'),
         this.translate.instant('streams.deploy.main.message.successCopyContent')
       );
     }
