@@ -1,6 +1,6 @@
 <clr-modal [(clrModalOpen)]="isOpen" *ngIf="tasks" [clrModalClosable]="!isRunning">
   <h3 *ngIf="tasks?.length === 1" class="modal-title">{{ 'tasks.clone.cloneTitle' | translate }}</h3>
-  <h3 *ngIf="tasks?.length > 1" class="modal-title">{{ 'tasks.clones.cloneTitle' | translate }}</h3>
+  <h3 *ngIf="tasks?.length > 1" class="modal-title">{{ 'tasks.clone.cloneTitle' | translate }}</h3>
   <div class="modal-body" *ngIf="!isRunning && !loading">
     <form
       clrForm

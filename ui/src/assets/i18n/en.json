@@ -522,7 +522,6 @@
       "title": "Create stream(s)",
       "create": "Create stream(s)",
       "modal": {
-        "title": "Create stream(s)",
         "creating": "Creating Stream(s)",
         "content": "This action will create the following <strong>stream(s)</strong>:",
         "create": "Create the stream(s)",

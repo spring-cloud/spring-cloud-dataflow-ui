@@ -8,7 +8,7 @@
 </button>
 
 <clr-modal [(clrModalOpen)]="isOpen" *ngIf="isOpen" [clrModalClosable]="!progressData" clrModalSize="lg">
-  <h3 class="modal-title" *ngIf="!progressData">{{ 'streams.create.modal.create' | translate }}</h3>
+  <h3 class="modal-title" *ngIf="!progressData">{{ 'streams.create.create' | translate }}</h3>
   <h3 class="modal-title" *ngIf="progressData">{{ 'streams.create.modal.creating' | translate }}</h3>
   <div *ngIf="progressData" class="modal-body">
     <div>
