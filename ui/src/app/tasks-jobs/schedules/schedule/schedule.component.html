@@ -15,7 +15,7 @@
   <div class="clr-row">
     <div class="clr-col-lg-6 clr-col-md-12 clr-col-12">
       <app-view-card
-        [titleModal]="'schedules.schedule.information' | translate"
+        [titleModal]="'commons.information' | translate"
         keyContext="schedule"
         name="{{ schedule.name }}"
         id="info"
@@ -23,7 +23,7 @@
         <ng-template>
           <div class="block card-block-keyvalue">
             <div class="row">
-              <div class="key">{{ 'schedules.main.name' | translate }}</div>
+              <div class="key">{{ 'commons.name' | translate }}</div>
               <div class="value">{{ schedule.name }}</div>
             </div>
             <div class="row">
@@ -33,7 +33,7 @@
               </div>
             </div>
             <div class="row">
-              <div class="key">{{ 'schedules.main.platform' | translate }}</div>
+              <div class="key">{{ 'commons.platform' | translate }}</div>
               <div class="value">{{ schedule.platform || 'N/A' }}</div>
             </div>
             <div class="row">
