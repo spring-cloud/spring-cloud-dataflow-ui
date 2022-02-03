@@ -30,6 +30,7 @@
     "clone": "Clone",
     "date": "Date",
     "name": "Name",
+    "type": "Type",
     "cleanup": "Cleanup",
     "details": "Details",
     "version": "Version",
