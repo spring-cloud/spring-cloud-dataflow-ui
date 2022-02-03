@@ -24,15 +24,13 @@
       <div *ngFor="let stream of streams; let i = index" class="card" style="padding: 10px 0">
         <div class="card-block">
           <div class="clr-form-control clr-row" style="margin-top: 0; height: 42px">
-            <label class="clr-control-label clr-col-12 clr-col-md-2"
-              >{{ 'streams.main.definition' | translate }}:</label
-            >
+            <label class="clr-control-label clr-col-12 clr-col-md-2">{{ 'commons.definition' | translate }}:</label>
             <div class="clr-control-container form-control input-sm clr-col-md-10 clr-col-12">
               <span class="dsl-text dsl-truncate">{{ stream.dslText }}</span>
             </div>
           </div>
           <clr-input-container style="margin-top: 0">
-            <label class="clr-col-12 clr-col-md-2">{{ 'streams.main.name' | translate }}</label>
+            <label class="clr-col-12 clr-col-md-2">{{ 'commons.name' | translate }}</label>
             <input
               clrInput
               name="name"
