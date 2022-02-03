@@ -49,7 +49,7 @@
       {{ 'streams.stream.destroy' | translate }}
     </button>
     <button id="btn-grafana" type="button" class="btn btn-sm btn-secondary" grafanaDashboardStream [stream]="stream">
-      {{ 'streams.main.grafana' | translate }}
+      {{ 'commons.grafanaDashboard' | translate }}
     </button>
     <button
       id="btn-wavefront"
@@ -58,14 +58,14 @@
       wavefrontDashboardStream
       [stream]="stream"
     >
-      {{ 'streams.main.wavefront' | translate }}
+      {{ 'commons.wavefrontDashboard' | translate }}
     </button>
   </div>
 
   <div class="clr-row">
     <div class="clr-col-lg-6 clr-col-md-12 clr-col-12">
       <app-view-card
-        [titleModal]="'streams.stream.information' | translate"
+        [titleModal]="'commons.information' | translate"
         name="{{ stream.name }}"
         keyContext="stream"
         id="info"
@@ -73,23 +73,23 @@
         <ng-template>
           <div class="block card-block-keyvalue">
             <div *ngIf="stream.description" class="row">
-              <div class="key">{{ 'streams.main.description' | translate }}</div>
+              <div class="key">{{ 'commons.description' | translate }}</div>
               <div class="value">{{ stream.description }}</div>
             </div>
             <div class="row">
-              <div class="key">{{ 'streams.main.definition' | translate }}</div>
+              <div class="key">{{ 'commons.definition' | translate }}</div>
               <div class="value">
                 <span class="dsl-text"><app-stream-dsl [dsl]="stream.dslText"></app-stream-dsl></span>
               </div>
             </div>
             <div class="row">
-              <div class="key">{{ 'streams.main.status' | translate }}</div>
+              <div class="key">{{ 'commons.status' | translate }}</div>
               <div class="value">
                 <span class="{{ stream.labelStatusClass() }}">{{ stream.status }}</span>
               </div>
             </div>
             <div class="row">
-              <div class="key">{{ 'streams.stream.applications' | translate }}</div>
+              <div class="key">{{ 'commons.applications' | translate }}</div>
               <div class="value">
                 <div *ngIf="!loadingApps">
                   <div *ngFor="let app of applications">
@@ -241,11 +241,11 @@
             <table *ngIf="history.length > 0" class="table table-noborder" style="margin-top: 0">
               <thead>
                 <tr>
-                  <th class="left">{{ 'streams.stream.version' | translate }}</th>
-                  <th class="left">{{ 'streams.stream.date' | translate }}</th>
+                  <th class="left">{{ 'commons.version' | translate }}</th>
+                  <th class="left">{{ 'commons.date' | translate }}</th>
                   <th class="left">{{ 'streams.stream.streamStatus' | translate }}</th>
-                  <th class="left">{{ 'streams.stream.description' | translate }}</th>
-                  <th class="left">{{ 'streams.stream.platform' | translate }}</th>
+                  <th class="left">{{ 'commons.description' | translate }}</th>
+                  <th class="left">{{ 'commons.platform' | translate }}</th>
                   <th class="left" style="width: 20px">&nbsp;</th>
                 </tr>
               </thead>

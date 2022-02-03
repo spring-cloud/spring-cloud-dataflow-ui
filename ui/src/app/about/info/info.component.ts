@@ -35,7 +35,7 @@ export class InfoComponent implements OnInit {
     if (this.about) {
       this.clipboardCopyService.executeCopy(new JsonPipe().transform(this.about), this.container.nativeElement);
       this.notificationService.success(
-        this.translate.instant('about.info.message.copyTitle'),
+        this.translate.instant('commons.copyToClipboard'),
         this.translate.instant('about.info.message.copyContent')
       );
     }

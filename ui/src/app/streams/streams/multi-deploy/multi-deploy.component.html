@@ -5,19 +5,15 @@
     <div class="card" *ngFor="let streamConfig of streamConfigs; let i = index" [formGroup]="form[i]">
       <div class="card-header">
         <span class="text-truncate">
-          <span *ngIf="streamConfig.stream.status === 'UNDEPLOYED'">{{
-            'streams.multiDeploy.deploy' | translate
-          }}</span>
-          <span *ngIf="streamConfig.stream.status !== 'UNDEPLOYED'">{{
-            'streams.multiDeploy.update' | translate
-          }}</span>
+          <span *ngIf="streamConfig.stream.status === 'UNDEPLOYED'">{{ 'commons.deploy' | translate }}</span>
+          <span *ngIf="streamConfig.stream.status !== 'UNDEPLOYED'">{{ 'commons.update' | translate }}</span>
           <strong>&nbsp;{{ streamConfig.stream.name }}</strong>
         </span>
       </div>
       <div class="card-block">
         <div class="card-text">
           <div class="clr-form-control clr-row">
-            <div class="clr-col-md-1 clr-control-label">{{ 'streams.main.definition' | translate }}</div>
+            <div class="clr-col-md-1 clr-control-label">{{ 'commons.definition' | translate }}</div>
             <div class="clr-col-10">
               <span class="dsl-text">
                 <app-stream-dsl [dsl]="streamConfig.stream.dslText" [expandable]="false"></app-stream-dsl>
@@ -25,13 +21,13 @@
             </div>
           </div>
           <div class="clr-form-control clr-row">
-            <div class="clr-col-md-1 clr-control-label">{{ 'streams.main.description' | translate }}</div>
+            <div class="clr-col-md-1 clr-control-label">{{ 'commons.description' | translate }}</div>
             <div class="clr-col-10">
               {{ streamConfig.stream.description }}
             </div>
           </div>
           <div class="clr-form-control clr-row">
-            <div class="clr-col-md-1 clr-control-label">{{ 'streams.main.status' | translate }}</div>
+            <div class="clr-col-md-1 clr-control-label">{{ 'commons.status' | translate }}</div>
             <div class="clr-col-10">
               <span class="label label-{{ streamConfig.stream.labelStatusClass() }}">{{
                 streamConfig.stream.status
@@ -39,7 +35,7 @@
             </div>
           </div>
           <clr-select-container *ngIf="platforms.length > 1">
-            <label class="clr-col-md-1">{{ 'streams.main.platform' | translate }}</label>
+            <label class="clr-col-md-1">{{ 'commons.platform' | translate }}</label>
             <select clrSelect tabindex="1" formControlName="platform" [dataflowFocus]="i === 0">
               <option *ngFor="let platform of platforms" [value]="platform.name">
                 {{ platform.name }}
@@ -50,7 +46,7 @@
           </clr-select-container>
 
           <clr-control-container class="key-value-wrapper">
-            <label class="clr-col-md-1">{{ 'streams.multiDeploy.properties' | translate }}</label>
+            <label class="clr-col-md-1">{{ 'commons.properties' | translate }}</label>
             <app-key-value
               clrControl
               formControlName="properties"
