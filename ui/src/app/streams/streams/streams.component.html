@@ -5,10 +5,10 @@
       {{ 'streams.main.createStreams' | translate }}
     </button>
     <button type="button" class="btn btn-sm btn-secondary" grafanaDashboardStreams>
-      {{ 'streams.main.grafana' | translate }}
+      {{ 'commons.grafanaDashboard' | translate }}
     </button>
     <button type="button" class="btn btn-sm btn-secondary" wavefrontDashboardStreams>
-      {{ 'streams.main.wavefront' | translate }}
+      {{ 'commons.wavefrontDashboard' | translate }}
     </button>
   </span>
 </h1>
@@ -81,13 +81,13 @@
     [style.width.px]="context.sizeName | datagridcolumn: datagrid:contextName:30 | async"
     [clrFilterValue]="context.name"
   >
-    <ng-container>{{ 'streams.main.name' | translate }}</ng-container>
+    <ng-container>{{ 'commons.name' | translate }}</ng-container>
   </clr-dg-column>
   <clr-dg-column
     (clrDgColumnResize)="updateContext('sizeDescription', $event)"
     [style.width.px]="context.sizeDescription | datagridcolumn: datagrid:contextName:30 | async"
   >
-    <ng-container>{{ 'streams.main.description' | translate }}</ng-container>
+    <ng-container>{{ 'commons.description' | translate }}</ng-container>
     <clr-dg-filter style="display: none"></clr-dg-filter>
   </clr-dg-column>
   <clr-dg-column
@@ -96,7 +96,7 @@
     (clrDgColumnResize)="updateContext('sizeDslText', $event)"
     [style.width.px]="context.sizeDslText | datagridcolumn: datagrid:contextName:30 | async"
   >
-    <ng-container>{{ 'streams.main.definition' | translate }}</ng-container>
+    <ng-container>{{ 'commons.definition' | translate }}</ng-container>
     <clr-dg-filter style="display: none"></clr-dg-filter>
   </clr-dg-column>
   <clr-dg-column
@@ -104,7 +104,7 @@
     [style.width.px]="context.sizeStatus | datagridcolumn: datagrid:contextName:20 | async"
   >
     <ng-container>
-      {{ 'streams.main.status' | translate }}&nbsp;
+      {{ 'commons.status' | translate }}&nbsp;
       <button class="datagrid-column-title" style="width: 20px; flex: 0" (click)="statusModal.open()">
         <clr-icon shape="info-standard"></clr-icon>
       </button>
@@ -127,14 +127,14 @@
       ><span class="{{ stream.labelStatusClass() }}">{{ stream.status }}</span></clr-dg-cell
     >
     <clr-dg-action-overflow *ngIf="!grouped">
-      <button class="action-item" (click)="details(stream)">{{ 'streams.main.details' | translate }}</button>
+      <button class="action-item" (click)="details(stream)">{{ 'commons.details' | translate }}</button>
       <button
         class="action-item"
         (click)="deploy([stream])"
         *ngIf="stream.status === 'UNDEPLOYED'"
         [appRole]="['ROLE_DEPLOY']"
       >
-        {{ 'streams.main.deploy' | translate }}
+        {{ 'commons.deploy' | translate }}
       </button>
       <button
         class="action-item"
@@ -142,7 +142,7 @@
         *ngIf="stream.status !== 'UNDEPLOYED'"
         [appRole]="['ROLE_MODIFY']"
       >
-        {{ 'streams.main.update' | translate }}
+        {{ 'commons.update' | translate }}
       </button>
       <button
         class="action-item"
@@ -150,19 +150,19 @@
         *ngIf="stream.status !== 'UNDEPLOYED' && stream.status !== 'INCOMPLETE'"
         [appRole]="['ROLE_CREATE']"
       >
-        {{ 'streams.main.undeploy' | translate }}
+        {{ 'commons.undeploy' | translate }}
       </button>
       <button class="action-item" (click)="destroy([stream])" [appRole]="['ROLE_DESTROY']">
-        {{ 'streams.main.destroy' | translate }}
+        {{ 'commons.destroy' | translate }}
       </button>
       <button class="action-item" (click)="clone([stream])" [appRole]="['ROLE_CREATE']">
-        {{ 'streams.main.clone' | translate }}
+        {{ 'commons.clone' | translate }}
       </button>
       <button class="action-item" grafanaDashboardStream [stream]="stream">
-        {{ 'streams.main.grafana' | translate }}
+        {{ 'commons.grafanaDashboard' | translate }}
       </button>
       <button class="action-item" wavefrontDashboardStream [stream]="stream">
-        {{ 'streams.main.wavefront' | translate }}
+        {{ 'commons.wavefrontDashboard' | translate }}
       </button>
     </clr-dg-action-overflow>
     <ng-template
