@@ -13,6 +13,8 @@ import {StreamServiceMock} from '../../../../tests/api/stream.service.mock';
 import {StreamDeployServiceMock} from '../../../../tests/service/stream-deploy.service.mock';
 import {RoleDirective} from '../../../../security/directive/role.directive';
 import {ContextServiceMock} from '../../../../tests/service/context.service.mock';
+import {TranslateTestingModule} from 'ngx-translate-testing';
+import TRANSLATIONS from '../../../../../assets/i18n/en.json';
 
 describe('streams/deploy/builder/builder.component.ts', () => {
   let component: BuilderComponent;
@@ -26,6 +28,7 @@ describe('streams/deploy/builder/builder.component.ts', () => {
           FormsModule,
           ReactiveFormsModule,
           ClarityModule,
+          TranslateTestingModule.withTranslations('en', TRANSLATIONS),
           RouterTestingModule.withRoutes([]),
           BrowserAnimationsModule
         ],

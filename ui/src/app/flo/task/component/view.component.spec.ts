@@ -5,6 +5,12 @@ import {MetamodelService} from '../metamodel.service';
 import {RenderService} from '../render.service';
 import {LoggerService} from '../../../shared/service/logger.service';
 import {ToolsServiceMock} from '../../../tests/service/task-tools.service.mock';
+import {TranslateTestingModule} from 'ngx-translate-testing';
+import TRANSLATIONS from '../../../../assets/i18n/en.json';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {RouterTestingModule} from '@angular/router/testing';
+import {StoreModule} from '@ngrx/store';
+import {TaskFloModule} from '../../task-flo.module';
 
 describe('ViewComponent', () => {
   let component: ViewComponent;
@@ -21,6 +27,13 @@ describe('ViewComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [ViewComponent],
+        imports: [
+          StoreModule.forRoot({}),
+          TaskFloModule,
+          TranslateTestingModule.withTranslations('en', TRANSLATIONS),
+          BrowserAnimationsModule,
+          RouterTestingModule.withRoutes([])
+        ],
         providers: [
           {provide: MetamodelService, useValue: metamodelService},
           {provide: RenderService, useValue: renderService}

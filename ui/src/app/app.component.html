@@ -1,9 +1,9 @@
 <div class="login-wrapper" *ngIf="shouldProtect | async; else main">
   <form class="login">
     <section class="title">
-      <h3 class="welcome">Welcome to</h3>
-      Data Flow UI
-      <h5 class="hint">You have to log in to access the application.</h5>
+      <h3 class="welcome">{{ 'appRoot.welcomeTo' | translate }}</h3>
+      {{ 'appRoot.appTitle' | translate }}
+      <h5 class="hint">{{ 'appRoot.youHaveToLogin' | translate }}</h5>
     </section>
     <div style="padding-bottom: 50px">
       <a href="{{ baseApiUrl }}login" class="btn btn-primary"> Log In </a>
@@ -17,7 +17,7 @@
       <div class="branding">
         <a routerLink="/" class="logo-and-title">
           <app-logo></app-logo>
-          <span class="title">Data Flow</span>
+          <span class="title">{{ 'appRoot.title' | translate }}</span>
         </a>
       </div>
       <app-search></app-search>

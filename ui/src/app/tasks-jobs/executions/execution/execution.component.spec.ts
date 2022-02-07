@@ -13,6 +13,8 @@ import {StopComponent} from '../stop/stop.component';
 import {CleanupComponent} from '../cleanup/cleanup.component';
 import {RoleDirective} from '../../../security/directive/role.directive';
 import {ContextServiceMock} from '../../../tests/service/context.service.mock';
+import {TranslateTestingModule} from 'ngx-translate-testing';
+import TRANSLATIONS from '../../../../assets/i18n/en.json';
 
 describe('tasks-jobs/executions/execution/execution.component.ts', () => {
   let component: ExecutionComponent;
@@ -22,7 +24,13 @@ describe('tasks-jobs/executions/execution/execution.component.ts', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [ExecutionComponent, StopComponent, CleanupComponent, RoleDirective],
-        imports: [FormsModule, ClarityModule, RouterTestingModule.withRoutes([]), BrowserAnimationsModule],
+        imports: [
+          FormsModule,
+          ClarityModule,
+          RouterTestingModule.withRoutes([]),
+          TranslateTestingModule.withTranslations('en', TRANSLATIONS),
+          BrowserAnimationsModule
+        ],
         providers: [
           SecurityServiceMock.provider,
           AboutServiceMock.provider,

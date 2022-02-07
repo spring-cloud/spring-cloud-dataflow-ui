@@ -5,7 +5,8 @@ import {of} from 'rxjs';
 import {SettingsService} from '../settings.service';
 import * as SettingsActions from './settings.action';
 import {ThemeService} from '../../layout/theme/theme.service';
-import {themeActiveKey} from './settings.reducer';
+import {languageActiveKey, themeActiveKey} from './settings.reducer';
+import {TranslateService} from '@ngx-translate/core';
 
 @Injectable()
 export class SettingsEffect {
@@ -28,9 +29,11 @@ export class SettingsEffect {
       this.actions$.pipe(
         ofType(SettingsActions.loaded),
         take(1),
-        map(action => action.settings.find(s => s.name === themeActiveKey)?.value as string),
-        tap(theme => {
+        tap(action => {
+          const theme = action.settings.find(s => s.name === themeActiveKey)?.value as string;
+          const language = action.settings.find(s => s.name === languageActiveKey)?.value as string;
           this.themeService.switchTheme(theme);
+          this.translate.use(language);
         })
       ),
     {dispatch: false}
@@ -49,9 +52,23 @@ export class SettingsEffect {
     {dispatch: false}
   );
 
+  updateLanguage$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(SettingsActions.updateOk),
+        tap(action => {
+          if (action.setting.name === languageActiveKey) {
+            this.translate.use(action.setting.value as string);
+          }
+        })
+      ),
+    {dispatch: false}
+  );
+
   constructor(
     private actions$: Actions,
     private settingsService: SettingsService,
-    private themeService: ThemeService
+    private themeService: ThemeService,
+    private translate: TranslateService
   ) {}
 }

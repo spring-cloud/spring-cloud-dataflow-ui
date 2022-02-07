@@ -16,8 +16,9 @@ import {GrafanaServiceMock} from '../../tests/service/grafana.service.mock';
 import {GroupServiceMock} from '../../tests/service/group.service.mock';
 import {ContextServiceMock} from '../../tests/service/context.service.mock';
 import {SettingsServiceMock} from '../../tests/service/settings.service.mock';
-import {ConfirmComponent} from '../../shared/component/confirm/confirm.component';
 import {DatagridColumnPipe} from '../../shared/pipe/datagrid-column.pipe';
+import {TranslateTestingModule} from 'ngx-translate-testing';
+import TRANSLATIONS from '../../../assets/i18n/en.json';
 
 describe('streams/streams/streams.component.ts', () => {
   let component: StreamsComponent;
@@ -34,7 +35,13 @@ describe('streams/streams/streams.component.ts', () => {
           GrafanaStreamDirective,
           DatagridColumnPipe
         ],
-        imports: [FormsModule, ClarityModule, RouterTestingModule.withRoutes([]), BrowserAnimationsModule],
+        imports: [
+          FormsModule,
+          ClarityModule,
+          RouterTestingModule.withRoutes([]),
+          BrowserAnimationsModule,
+          TranslateTestingModule.withTranslations('en', TRANSLATIONS)
+        ],
         providers: [
           SecurityServiceMock.provider,
           AboutServiceMock.provider,

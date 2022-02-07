@@ -11,6 +11,7 @@ import {ClipboardCopyService} from '../../../shared/service/clipboard-copy.servi
 import {DateTime} from 'luxon';
 import {StreamDeployService} from '../stream-deploy.service';
 import {saveAs} from 'file-saver';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-deploy',
@@ -34,7 +35,8 @@ export class DeployComponent implements OnInit, OnDestroy {
     private loggerService: LoggerService,
     private streamDeployService: StreamDeployService,
     private router: Router,
-    private clipboardCopyService: ClipboardCopyService
+    private clipboardCopyService: ClipboardCopyService,
+    private translate: TranslateService
   ) {}
 
   /**
@@ -72,7 +74,7 @@ export class DeployComponent implements OnInit, OnDestroy {
           this.loading = false;
         },
         error => {
-          this.notificationService.error('An error occurred', error);
+          this.notificationService.error(this.translate.instant('commons.message.error'), error);
           if (HttpError.is404(error)) {
             this.router.navigate(['/streams/definitions']);
           }
@@ -103,7 +105,10 @@ export class DeployComponent implements OnInit, OnDestroy {
   runExport(value: Array<string>): void {
     this.update(value);
     if (this.properties.length === 0) {
-      this.notificationService.error('An error occured', 'There are no properties to export.');
+      this.notificationService.error(
+        this.translate.instant('commons.message.error'),
+        this.translate.instant('streams.deploy.main.message.errorExportPropertyContent')
+      );
     } else {
       const propertiesText = this.properties.join('\n');
       const date = DateTime.local().toFormat('yyyy-MM-HHmmss');
@@ -121,11 +126,17 @@ export class DeployComponent implements OnInit, OnDestroy {
   runCopy(value: Array<string>): void {
     this.update(value);
     if (this.properties.length === 0) {
-      this.notificationService.error('An error occured', 'There are no properties to copy.');
+      this.notificationService.error(
+        this.translate.instant('commons.message.error'),
+        this.translate.instant('streams.deploy.main.message.errorCopyPropertyContent')
+      );
     } else {
       const propertiesText = this.properties.join('\n');
       this.clipboardCopyService.executeCopy(propertiesText);
-      this.notificationService.success('Copy to clipboard', 'The properties have been copied to your clipboard.');
+      this.notificationService.success(
+        this.translate.instant('commons.copyToClipboard'),
+        this.translate.instant('streams.deploy.main.message.successCopyContent')
+      );
     }
   }
 
@@ -169,13 +180,13 @@ export class DeployComponent implements OnInit, OnDestroy {
         () => {
           if (isDeployed) {
             this.notificationService.success(
-              'Deploy success',
-              `Successfully updated stream definition "${this.stream.name}"`
+              this.translate.instant('streams.deploy.main.message.successUpdateTitle'),
+              this.translate.instant('streams.deploy.main.message.successUpdateContent', {name: this.stream.name})
             );
           } else {
             this.notificationService.success(
-              'Deploy success',
-              `Successfully deployed stream definition "${this.stream.name}"`
+              this.translate.instant('streams.deploy.main.message.successDeployTitle'),
+              this.translate.instant('streams.deploy.main.message.successDeployContent', {name: this.stream.name})
             );
           }
           this.router.navigate(['streams/list']);
@@ -184,8 +195,8 @@ export class DeployComponent implements OnInit, OnDestroy {
           this.isDeploying = false;
           const err = error.message ? error.message : error.toString();
           this.notificationService.error(
-            'An error occurred',
-            err ? err : 'An error occurred during the stream deployment update.'
+            this.translate.instant('commons.message.error'),
+            err ? err : this.translate.instant('streams.deploy.main.message.errorDeployContent')
           );
         }
       );

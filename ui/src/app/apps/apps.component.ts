@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, OnDestroy, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, ViewChild} from '@angular/core';
 import {AppService} from '../shared/api/app.service';
 import {ClrDatagridStateInterface} from '@clr/angular';
 import {App, AppPage} from '../shared/model/app.model';

@@ -13,6 +13,7 @@ import {ToolsService} from '../../../flo/task/tools.service';
 import get from 'lodash.get';
 import {TaskService} from '../../../shared/api/task.service';
 import {LogComponent} from '../../executions/execution/log/log.component';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-execution-step',
@@ -37,7 +38,8 @@ export class StepComponent implements OnInit {
     private router: Router,
     private taskService: TaskService,
     private toolsService: ToolsService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private translate: TranslateService
   ) {}
 
   ngOnInit(): void {
@@ -54,14 +56,11 @@ export class StepComponent implements OnInit {
             this.jobService.getExecutionStep(params.executionId, params.stepId),
             this.jobService.getExecutionStepProgress(params.executionId, params.stepId)
           ]).pipe(
-            map(results =>
-              // this.jobId = val.jobid;
-              ({
-                execution: results[0],
-                step: results[1],
-                stepProgress: results[2]
-              })
-            )
+            map(results => ({
+              execution: results[0],
+              step: results[1],
+              stepProgress: results[2]
+            }))
           )
         )
       )
@@ -74,7 +73,7 @@ export class StepComponent implements OnInit {
           this.loading = false;
         },
         error => {
-          this.notificationService.error('An error occurred', error);
+          this.notificationService.error(this.translate.instant('commons.message.error'), error);
           if (HttpError.is404(error)) {
             this.router.navigateByUrl('/tasks-jobs/job-executions');
           }
@@ -92,7 +91,7 @@ export class StepComponent implements OnInit {
       },
       error => {
         this.loadingExecution = false;
-        this.notificationService.error('An error occurred', error);
+        this.notificationService.error(this.translate.instant('commons.message.error'), error);
       }
     );
   }

@@ -19,7 +19,8 @@ import {ParserService} from '../../../flo/shared/service/parser.service';
 import {SanitizeDsl} from '../../../flo/stream/dsl-sanitize.service';
 import {StreamService} from '../../../shared/api/stream.service';
 import {of} from 'rxjs';
-import {browser} from 'protractor';
+import {TranslateTestingModule} from 'ngx-translate-testing';
+import TRANSLATIONS from '../../../../assets/i18n/en.json';
 
 describe('streams/streams/create/create.component.ts', () => {
   let component: CreateComponent;
@@ -38,6 +39,7 @@ describe('streams/streams/create/create.component.ts', () => {
           ClarityModule,
           RouterTestingModule.withRoutes([]),
           BrowserAnimationsModule,
+          TranslateTestingModule.withTranslations('en', TRANSLATIONS),
           FloModule
         ],
         providers: [

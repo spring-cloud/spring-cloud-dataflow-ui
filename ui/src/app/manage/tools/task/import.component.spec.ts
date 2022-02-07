@@ -12,6 +12,8 @@ import {ImportExportServiceMock} from '../../../tests/service/import-export.serv
 import {throwError} from 'rxjs';
 import {TaskImportComponent} from './import.component';
 import {ContextServiceMock} from '../../../tests/service/context.service.mock';
+import {TranslateTestingModule} from 'ngx-translate-testing';
+import TRANSLATIONS from '../../../../assets/i18n/en.json';
 
 describe('manage/tools/task/import.component.ts', () => {
   let component: TaskImportComponent;
@@ -21,7 +23,13 @@ describe('manage/tools/task/import.component.ts', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [TaskImportComponent],
-        imports: [FormsModule, ClarityModule, RouterTestingModule.withRoutes([]), BrowserAnimationsModule],
+        imports: [
+          FormsModule,
+          ClarityModule,
+          RouterTestingModule.withRoutes([]),
+          BrowserAnimationsModule,
+          TranslateTestingModule.withTranslations('en', TRANSLATIONS)
+        ],
         providers: [
           SecurityServiceMock.provider,
           AboutServiceMock.provider,

@@ -6,10 +6,16 @@ import {SignpostComponent} from './signpost/signpost.component';
 import {UserComponent} from './user/user.component';
 import {StoreModule} from '@ngrx/store';
 import * as fromAbout from '../shared/store/about.reducer';
+import {TranslateModule} from '@ngx-translate/core';
 
 @NgModule({
   declarations: [InfoComponent, SignpostComponent, UserComponent],
-  imports: [CommonModule, ClarityModule, StoreModule.forFeature(fromAbout.aboutFeatureKey, fromAbout.reducer)],
+  imports: [
+    CommonModule,
+    ClarityModule,
+    StoreModule.forFeature(fromAbout.aboutFeatureKey, fromAbout.reducer),
+    TranslateModule
+  ],
   exports: [SignpostComponent, UserComponent]
 })
 export class AboutModule {}

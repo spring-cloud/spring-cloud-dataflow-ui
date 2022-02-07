@@ -2,8 +2,8 @@ import {Component} from '@angular/core';
 
 @Component({
   template: `
-    <h1>Authentication required</h1>
-    <p>Please sign in.</p>
+    <h1>{{ 'security.authenticationRequired.title' | translate }}</h1>
+    <p>{{ 'security.authenticationRequired.description' | translate }}</p>
   `
 })
 export class AuthenticationRequiredComponent {}

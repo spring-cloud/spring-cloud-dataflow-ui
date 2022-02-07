@@ -1,20 +1,16 @@
 <div *ngIf="!loading">
   <h1 class="page-title">
     <span class="text-truncate">
-      <span *ngIf="isDeployed(stream)">Update</span>
-      <span *ngIf="!isDeployed(stream)">Deploy</span>
-      stream <strong>{{ stream?.name }}</strong>
+      <span *ngIf="isDeployed(stream)">{{ 'streams.deploy.main.titleUpdate' | translate }}&nbsp;</span>
+      <span *ngIf="!isDeployed(stream)">{{ 'streams.deploy.main.titleDeploy' | translate }}&nbsp;</span>
+      <strong>{{ stream?.name }}</strong>
     </span>
   </h1>
-  <p style="margin-top: 0.6rem; margin-bottom: 0.6rem">
-    Please specify any optional deployment properties. You can either use the builder.<br />
-    Alternatively, you can point to an external properties file containing the deployment properties. For more
-    information please see the Technical Documentation.
-  </p>
+  <p style="margin-top: 0.6rem; margin-bottom: 0.6rem" [innerHTML]="'streams.deploy.main.description' | translate"></p>
 
   <clr-tabs *ngIf="!loading && stream">
     <clr-tab>
-      <button clrTabLink id="link1">Builder</button>
+      <button clrTabLink id="link1">{{ 'streams.deploy.main.builder' | translate }}</button>
       <clr-tab-content id="content1" *clrIfActive="true">
         <app-stream-deploy-builder
           [properties]="properties"
@@ -29,7 +25,7 @@
       </clr-tab-content>
     </clr-tab>
     <clr-tab>
-      <button clrTabLink>Freetext</button>
+      <button clrTabLink>{{ 'streams.deploy.main.freetext' | translate }}</button>
       <clr-tab-content *clrIfActive>
         <app-stream-deploy-free-text
           [properties]="properties"
@@ -46,20 +42,20 @@
   </clr-tabs>
 
   <clr-modal [(clrModalOpen)]="isDeploying" *ngIf="stream" [clrModalClosable]="false">
-    <h3 class="modal-title" *ngIf="isDeployed(stream)">Update stream</h3>
-    <h3 class="modal-title" *ngIf="!isDeployed(stream)">Deploy stream</h3>
+    <h3 class="modal-title" *ngIf="isDeployed(stream)">{{ 'streams.deploy.main.update' | translate }}</h3>
+    <h3 class="modal-title" *ngIf="!isDeployed(stream)">{{ 'streams.deploy.main.deploy' | translate }}</h3>
     <div class="modal-body" *ngIf="isDeploying">
       <clr-spinner clrInline clrSmall></clr-spinner>&nbsp;
-      <span *ngIf="isDeployed(stream)">Updating stream ...</span>
-      <span *ngIf="!isDeployed(stream)">Deploying stream(s) ...</span>
+      <span *ngIf="isDeployed(stream)">{{ 'streams.deploy.main.updating' | translate }}</span>
+      <span *ngIf="!isDeployed(stream)">{{ 'streams.deploy.main.deploying' | translate }}</span>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-outline" [disabled]="true">Cancel</button>
+      <button type="button" class="btn btn-outline" [disabled]="true">{{ 'commons.cancel' | translate }}</button>
     </div>
   </clr-modal>
 </div>
 
 <div *ngIf="loading">
   <clr-spinner clrInline clrSmall></clr-spinner>
-  Loading data ...
+  {{ 'commons.loading' | translate }}
 </div>

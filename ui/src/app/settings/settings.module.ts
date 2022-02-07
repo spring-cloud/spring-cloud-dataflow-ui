@@ -8,6 +8,7 @@ import {SettingsRoutingModule} from './settings-routing.module';
 import {SettingsComponent} from './settings/settings.component';
 import * as fromSettings from './store/settings.reducer';
 import {SettingsEffect} from './store/settings.effect';
+import {TranslateModule} from '@ngx-translate/core';
 
 @NgModule({
   declarations: [SettingsComponent],
@@ -15,6 +16,7 @@ import {SettingsEffect} from './store/settings.effect';
     CommonModule,
     ClarityModule,
     SharedModule,
+    TranslateModule,
     SettingsRoutingModule,
     StoreModule.forFeature(fromSettings.settingsFeatureKey, fromSettings.reducer),
     EffectsModule.forFeature([SettingsEffect])

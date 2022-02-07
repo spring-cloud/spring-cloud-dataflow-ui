@@ -5,6 +5,7 @@ import {AppService} from '../../../shared/api/app.service';
 import {NotificationService} from '../../../shared/service/notification.service';
 import {Router} from '@angular/router';
 import {AppsAddValidator} from '../add.validtor';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-add-register',
@@ -20,7 +21,8 @@ export class RegisterComponent implements OnInit {
     private appService: AppService,
     private notificationService: NotificationService,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private translate: TranslateService
   ) {}
 
   ngOnInit(): void {
@@ -31,9 +33,15 @@ export class RegisterComponent implements OnInit {
     this.submitted = true;
     if (!this.isValid()) {
       if (this.noValue()) {
-        this.notificationService.error('Invalid application', 'Please, register at least one application.');
+        this.notificationService.error(
+          this.translate.instant('applications.add.register.message.invalidAppTitle'),
+          this.translate.instant('applications.add.register.message.invalidAppContent')
+        );
       } else {
-        this.notificationService.error('Invalid application(s)', 'Some field(s) are missing or invalid.');
+        this.notificationService.error(
+          this.translate.instant('commons.message.invalidFieldsTitle'),
+          this.translate.instant('commons.message.invalidFieldsContent')
+        );
       }
     } else {
       this.isImporting = true;
@@ -50,19 +58,19 @@ export class RegisterComponent implements OnInit {
           }
         })
         .filter(a => a != null);
-      this.appService
-        .registerProps(applications)
-        // .pipe(takeUntil(this.ngUnsubscribe$), finalize(() => this.blockerService.unlock()))
-        .subscribe(
-          data => {
-            this.notificationService.success('Register application(s).', `${data.length} App(s) registered.`);
-            this.cancel();
-          },
-          error => {
-            this.isImporting = false;
-            this.notificationService.error('An error occurred', error);
-          }
-        );
+      this.appService.registerProps(applications).subscribe(
+        data => {
+          this.notificationService.success(
+            this.translate.instant('applications.add.register.message.successTitle'),
+            this.translate.instant('applications.add.register.message.successContent', {count: data.length})
+          );
+          this.cancel();
+        },
+        error => {
+          this.isImporting = false;
+          this.notificationService.error(this.translate.instant('commons.message.error'), error);
+        }
+      );
     }
   }
 

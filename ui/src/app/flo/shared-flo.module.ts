@@ -8,6 +8,7 @@ import {ClrDynamicFormPropertyComponent} from './shared/properties/df.property.c
 import {ClrPropertiesGroupComponent} from './shared/properties/properties.group.component';
 import {PropertiesDialogComponent} from './shared/properties/properties-dialog.component';
 import {PropertiesGroupsDialogComponent} from './shared/properties-groups/properties-groups-dialog.component';
+import {TranslateModule} from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,15 @@ import {PropertiesGroupsDialogComponent} from './shared/properties-groups/proper
     PropertiesDialogComponent,
     PropertiesGroupsDialogComponent
   ],
-  imports: [CommonModule, HttpClientModule, FormsModule, ReactiveFormsModule, ClarityModule, FloModule],
+  imports: [
+    CommonModule,
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule,
+    ClarityModule,
+    TranslateModule,
+    FloModule
+  ],
   providers: [],
   exports: [
     ClrDynamicFormPropertyComponent,

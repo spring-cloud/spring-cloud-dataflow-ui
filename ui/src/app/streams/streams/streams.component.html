@@ -1,11 +1,15 @@
 <h1 class="page-title-actions">
-  Streams
+  {{ 'streams.main.title' | translate }}
   <span class="actions">
     <button type="button" class="btn btn-sm btn-primary" (click)="create()" [appRole]="['ROLE_CREATE']">
-      Create stream(s)
+      {{ 'streams.main.createStreams' | translate }}
     </button>
-    <button type="button" class="btn btn-sm btn-secondary" grafanaDashboardStreams>Grafana Dashboard</button>
-    <button type="button" class="btn btn-sm btn-secondary" wavefrontDashboardStreams>Wavefront Dashboard</button>
+    <button type="button" class="btn btn-sm btn-secondary" grafanaDashboardStreams>
+      {{ 'commons.grafanaDashboard' | translate }}
+    </button>
+    <button type="button" class="btn btn-sm btn-secondary" wavefrontDashboardStreams>
+      {{ 'commons.wavefrontDashboard' | translate }}
+    </button>
   </span>
 </h1>
 
@@ -17,7 +21,9 @@
   #datagrid
 >
   <clr-dg-action-bar *ngIf="grouped">
-    <button type="button" class="btn btn-sm btn-secondary" (click)="setMode(false)">Cancel</button>
+    <button type="button" class="btn btn-sm btn-secondary" (click)="setMode(false)">
+      {{ 'commons.cancel' | translate }}
+    </button>
     <button
       type="button"
       class="btn btn-sm btn-secondary"
@@ -25,7 +31,7 @@
       (click)="deploy(selected)"
       [appRole]="['ROLE_DEPLOY']"
     >
-      Deploy stream(s)
+      {{ 'streams.main.deployStreams' | translate }}
     </button>
     <button
       type="button"
@@ -34,7 +40,7 @@
       (click)="undeploy(selected)"
       [appRole]="['ROLE_CREATE']"
     >
-      Undeploy stream(s)
+      {{ 'streams.main.undeployStreams' | translate }}
     </button>
     <button
       type="button"
@@ -43,7 +49,7 @@
       (click)="destroy(selected)"
       [appRole]="['ROLE_DESTROY']"
     >
-      Destroy stream(s)
+      {{ 'streams.main.destroyStreams' | translate }}
     </button>
     <button
       type="button"
@@ -52,7 +58,7 @@
       (click)="clone(selected)"
       [appRole]="['ROLE_CREATE']"
     >
-      Clone stream(s)
+      {{ 'streams.main.cloneStreams' | translate }}
     </button>
   </clr-dg-action-bar>
   <clr-dg-action-bar *ngIf="!grouped">
@@ -62,9 +68,11 @@
       (click)="setMode(true)"
       [appRole]="['ROLE_DEPLOY', 'ROLE_CREATE', 'ROLE_DESTROY']"
     >
-      Group Actions
+      {{ 'commons.groupActions' | translate }}
     </button>
-    <button type="button" class="btn btn-sm btn-secondary" (click)="refresh(state)">Refresh</button>
+    <button type="button" class="btn btn-sm btn-secondary" (click)="refresh(state)">
+      {{ 'commons.refresh' | translate }}
+    </button>
   </clr-dg-action-bar>
   <clr-dg-column
     [clrDgField]="'name'"
@@ -73,13 +81,13 @@
     [style.width.px]="context.sizeName | datagridcolumn: datagrid:contextName:30 | async"
     [clrFilterValue]="context.name"
   >
-    <ng-container> Name </ng-container>
+    <ng-container>{{ 'commons.name' | translate }}</ng-container>
   </clr-dg-column>
   <clr-dg-column
     (clrDgColumnResize)="updateContext('sizeDescription', $event)"
     [style.width.px]="context.sizeDescription | datagridcolumn: datagrid:contextName:30 | async"
   >
-    <ng-container> Description </ng-container>
+    <ng-container>{{ 'commons.description' | translate }}</ng-container>
     <clr-dg-filter style="display: none"></clr-dg-filter>
   </clr-dg-column>
   <clr-dg-column
@@ -88,7 +96,7 @@
     (clrDgColumnResize)="updateContext('sizeDslText', $event)"
     [style.width.px]="context.sizeDslText | datagridcolumn: datagrid:contextName:30 | async"
   >
-    <ng-container> Definition </ng-container>
+    <ng-container>{{ 'commons.definition' | translate }}</ng-container>
     <clr-dg-filter style="display: none"></clr-dg-filter>
   </clr-dg-column>
   <clr-dg-column
@@ -96,7 +104,7 @@
     [style.width.px]="context.sizeStatus | datagridcolumn: datagrid:contextName:20 | async"
   >
     <ng-container>
-      Status&nbsp;
+      {{ 'commons.status' | translate }}&nbsp;
       <button class="datagrid-column-title" style="width: 20px; flex: 0" (click)="statusModal.open()">
         <clr-icon shape="info-standard"></clr-icon>
       </button>
@@ -119,14 +127,14 @@
       ><span class="{{ stream.labelStatusClass() }}">{{ stream.status }}</span></clr-dg-cell
     >
     <clr-dg-action-overflow *ngIf="!grouped">
-      <button class="action-item" (click)="details(stream)">Details</button>
+      <button class="action-item" (click)="details(stream)">{{ 'commons.details' | translate }}</button>
       <button
         class="action-item"
         (click)="deploy([stream])"
         *ngIf="stream.status === 'UNDEPLOYED'"
         [appRole]="['ROLE_DEPLOY']"
       >
-        Deploy
+        {{ 'commons.deploy' | translate }}
       </button>
       <button
         class="action-item"
@@ -134,7 +142,7 @@
         *ngIf="stream.status !== 'UNDEPLOYED'"
         [appRole]="['ROLE_MODIFY']"
       >
-        Update
+        {{ 'commons.update' | translate }}
       </button>
       <button
         class="action-item"
@@ -142,12 +150,20 @@
         *ngIf="stream.status !== 'UNDEPLOYED' && stream.status !== 'INCOMPLETE'"
         [appRole]="['ROLE_CREATE']"
       >
-        Undeploy
+        {{ 'commons.undeploy' | translate }}
       </button>
-      <button class="action-item" (click)="destroy([stream])" [appRole]="['ROLE_DESTROY']">Destroy</button>
-      <button class="action-item" (click)="clone([stream])" [appRole]="['ROLE_CREATE']">Clone</button>
-      <button class="action-item" grafanaDashboardStream [stream]="stream">Grafana Dashboard</button>
-      <button class="action-item" wavefrontDashboardStream [stream]="stream">Wavefront Dashboard</button>
+      <button class="action-item" (click)="destroy([stream])" [appRole]="['ROLE_DESTROY']">
+        {{ 'commons.destroy' | translate }}
+      </button>
+      <button class="action-item" (click)="clone([stream])" [appRole]="['ROLE_CREATE']">
+        {{ 'commons.clone' | translate }}
+      </button>
+      <button class="action-item" grafanaDashboardStream [stream]="stream">
+        {{ 'commons.grafanaDashboard' | translate }}
+      </button>
+      <button class="action-item" wavefrontDashboardStream [stream]="stream">
+        {{ 'commons.wavefrontDashboard' | translate }}
+      </button>
     </clr-dg-action-overflow>
     <ng-template
       [clrIfExpanded]="expanded[stream.name]"
@@ -162,7 +178,7 @@
       </clr-dg-row-detail>
     </ng-template>
   </clr-dg-row>
-  <clr-dg-placeholder>No results found.</clr-dg-placeholder>
+  <clr-dg-placeholder>{{ 'streams.main.noResult' | translate }}</clr-dg-placeholder>
   <clr-dg-footer>
     <clr-dg-pagination
       #pagination
@@ -170,8 +186,13 @@
       [clrDgPageSize]="context.size"
       [clrDgPage]="context.current"
     >
-      <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]">Streams per page</clr-dg-page-size>
-      {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of {{ page?.total }} streams
+      <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]">{{
+        'streams.main.streamsPerPage' | translate
+      }}</clr-dg-page-size>
+      {{
+        'streams.main.pagination'
+          | translate: {first: pagination.firstItem + 1, last: pagination.lastItem + 1, total: page?.total}
+      }}
     </clr-dg-pagination>
   </clr-dg-footer>
 </clr-datagrid>

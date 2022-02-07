@@ -16,11 +16,11 @@ import {DateTime} from 'luxon';
       </div>
     </div>
     <clr-input-container>
-      <label>Min date:</label>
+      <label>{{ 'commons.minDate' | translate }}:</label>
       <input clrInput type="text" (change)="change()" placeholder="YYYY-MM-DD" [(ngModel)]="min" />
     </clr-input-container>
     <clr-input-container>
-      <label>Max date:</label>
+      <label>{{ 'commons.maxDate' | translate }}:</label>
       <input clrInput type="text" (change)="change()" placeholder="YYYY-MM-DD" [(ngModel)]="max" />
     </clr-input-container>
   </div>`

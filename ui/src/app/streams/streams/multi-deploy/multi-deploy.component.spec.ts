@@ -19,6 +19,8 @@ import {of, throwError} from 'rxjs';
 import {HttpError} from '../../../shared/model/error.model';
 import {RoleDirective} from '../../../security/directive/role.directive';
 import {ContextServiceMock} from '../../../tests/service/context.service.mock';
+import {TranslateTestingModule} from 'ngx-translate-testing';
+import TRANSLATIONS from '../../../../assets/i18n/en.json';
 
 describe('streams/streams/multi-deploy/multi-deploy.component.ts', () => {
   let component: MultiDeployComponent;
@@ -33,6 +35,7 @@ describe('streams/streams/multi-deploy/multi-deploy.component.ts', () => {
           ReactiveFormsModule,
           ClarityModule,
           RouterTestingModule.withRoutes([]),
+          TranslateTestingModule.withTranslations('en', TRANSLATIONS),
           BrowserAnimationsModule
         ],
         providers: [

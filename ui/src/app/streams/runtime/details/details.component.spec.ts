@@ -14,6 +14,8 @@ import {RuntimeStreamPage} from '../../../shared/model/runtime.model';
 import {GET_RUNTIME} from '../../../tests/data/runtime';
 import {By} from '@angular/platform-browser';
 import {ContextServiceMock} from '../../../tests/service/context.service.mock';
+import {TranslateTestingModule} from 'ngx-translate-testing';
+import TRANSLATIONS from '../../../../assets/i18n/en.json';
 
 describe('streams/runtime/details/details.component.ts', () => {
   let component: DetailsComponent;
@@ -23,7 +25,13 @@ describe('streams/runtime/details/details.component.ts', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [DetailsComponent, DetailsComponent, GrafanaRuntimeAppDirective, GrafanaRuntimeInstanceDirective],
-        imports: [FormsModule, ClarityModule, RouterTestingModule.withRoutes([]), BrowserAnimationsModule],
+        imports: [
+          FormsModule,
+          ClarityModule,
+          TranslateTestingModule.withTranslations('en', TRANSLATIONS),
+          RouterTestingModule.withRoutes([]),
+          BrowserAnimationsModule
+        ],
         providers: [
           SecurityServiceMock.provider,
           AboutServiceMock.provider,

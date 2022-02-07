@@ -8,6 +8,8 @@ import {AboutServiceMock} from '../../tests/api/about.service.mock';
 import {AppServiceMock} from '../../tests/api/app.service.mock';
 import {NotificationServiceMock} from '../../tests/service/notification.service.mock';
 import {FeatureDisabledComponent} from './feature-disabled.component';
+import {TranslateTestingModule} from 'ngx-translate-testing';
+import TRANSLATIONS from '../../../assets/i18n/en.json';
 
 describe('security/component/feature-disabled.component.ts', () => {
   let component: FeatureDisabledComponent;
@@ -17,7 +19,13 @@ describe('security/component/feature-disabled.component.ts', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [FeatureDisabledComponent],
-        imports: [FormsModule, ClarityModule, RouterTestingModule.withRoutes([]), BrowserAnimationsModule],
+        imports: [
+          FormsModule,
+          ClarityModule,
+          TranslateTestingModule.withTranslations('en', TRANSLATIONS),
+          RouterTestingModule.withRoutes([]),
+          BrowserAnimationsModule
+        ],
         providers: [
           SecurityServiceMock.provider,
           AboutServiceMock.provider,

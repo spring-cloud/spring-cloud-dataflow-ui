@@ -4,6 +4,8 @@ import {ClarityModule} from '@clr/angular';
 import {RouterTestingModule} from '@angular/router/testing';
 import {UserComponent} from './user.component';
 import {SecurityServiceMock} from '../../../app/tests/api/security.service.mock';
+import {TranslateTestingModule} from 'ngx-translate-testing';
+import TRANSLATIONS from '../../../assets/i18n/en.json';
 
 describe('UserComponent', () => {
   let component: UserComponent;
@@ -13,7 +15,12 @@ describe('UserComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [UserComponent],
-        imports: [FormsModule, ClarityModule, RouterTestingModule.withRoutes([])],
+        imports: [
+          FormsModule,
+          ClarityModule,
+          TranslateTestingModule.withTranslations('en', TRANSLATIONS),
+          RouterTestingModule.withRoutes([])
+        ],
         providers: [SecurityServiceMock.provider]
       }).compileComponents();
     })

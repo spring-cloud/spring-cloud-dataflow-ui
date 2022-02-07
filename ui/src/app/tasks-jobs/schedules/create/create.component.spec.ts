@@ -12,6 +12,8 @@ import {TaskServiceMock} from '../../../tests/api/task.service.mock';
 import {CreateComponent} from './create.component';
 import {GroupServiceMock} from '../../../tests/service/group.service.mock';
 import {ContextServiceMock} from '../../../tests/service/context.service.mock';
+import {TranslateTestingModule} from 'ngx-translate-testing';
+import TRANSLATIONS from '../../../../assets/i18n/en.json';
 
 describe('tasks-jobs/schedules/create/create.component.ts', () => {
   let component: CreateComponent;
@@ -21,7 +23,13 @@ describe('tasks-jobs/schedules/create/create.component.ts', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [CreateComponent, RoleDirective],
-        imports: [FormsModule, ClarityModule, RouterTestingModule.withRoutes([]), BrowserAnimationsModule],
+        imports: [
+          FormsModule,
+          ClarityModule,
+          RouterTestingModule.withRoutes([]),
+          TranslateTestingModule.withTranslations('en', TRANSLATIONS),
+          BrowserAnimationsModule
+        ],
         providers: [
           SecurityServiceMock.provider,
           AboutServiceMock.provider,

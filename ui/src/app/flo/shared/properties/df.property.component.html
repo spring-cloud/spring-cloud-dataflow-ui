@@ -8,7 +8,7 @@
         <textarea [id]="model.id" class="clr-textarea" [formControl]="control" style="width: 100%"></textarea>
       </div>
       <div class="clr-subtext">{{ model.description }}</div>
-      <div *ngIf="control?.errors" class="clr-subtext">Invalid value.</div>
+      <div *ngIf="control?.errors" class="clr-subtext">{{ 'flo.commons.invalidValue' | translate }}</div>
     </div>
   </div>
 
@@ -23,7 +23,7 @@
         </select>
       </div>
       <div class="clr-subtext">{{ model.description }}</div>
-      <div *ngIf="control?.errors" class="clr-subtext">Invalid value.</div>
+      <div *ngIf="control?.errors" class="clr-subtext">{{ 'flo.commons.invalidValue' | translate }}</div>
     </div>
   </div>
 
@@ -98,7 +98,7 @@
         />
       </div>
       <div class="clr-subtext">{{ model.description }}</div>
-      <div *ngIf="control?.errors" class="clr-subtext">Invalid value.</div>
+      <div *ngIf="control?.errors" class="clr-subtext">{{ 'flo.commons.invalidValue' | translate }}</div>
     </div>
   </div>
 </div>

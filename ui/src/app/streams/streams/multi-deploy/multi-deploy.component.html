@@ -1,19 +1,19 @@
-<h1>Deploy Streams</h1>
+<h1>{{ 'streams.multiDeploy.title' | translate }}</h1>
 
 <div *ngIf="!isLoading" class="multi-deploy">
   <form clrForm clrLayout="horizontal" (submit)="runDeploy()" spellcheck="false">
     <div class="card" *ngFor="let streamConfig of streamConfigs; let i = index" [formGroup]="form[i]">
       <div class="card-header">
         <span class="text-truncate">
-          <span *ngIf="streamConfig.stream.status === 'UNDEPLOYED'">Deploy</span>
-          <span *ngIf="streamConfig.stream.status !== 'UNDEPLOYED'">Update</span>
+          <span *ngIf="streamConfig.stream.status === 'UNDEPLOYED'">{{ 'commons.deploy' | translate }}</span>
+          <span *ngIf="streamConfig.stream.status !== 'UNDEPLOYED'">{{ 'commons.update' | translate }}</span>
           <strong>&nbsp;{{ streamConfig.stream.name }}</strong>
         </span>
       </div>
       <div class="card-block">
         <div class="card-text">
           <div class="clr-form-control clr-row">
-            <div class="clr-col-md-1 clr-control-label">DSL Text</div>
+            <div class="clr-col-md-1 clr-control-label">{{ 'commons.definition' | translate }}</div>
             <div class="clr-col-10">
               <span class="dsl-text">
                 <app-stream-dsl [dsl]="streamConfig.stream.dslText" [expandable]="false"></app-stream-dsl>
@@ -21,13 +21,13 @@
             </div>
           </div>
           <div class="clr-form-control clr-row">
-            <div class="clr-col-md-1 clr-control-label">Description</div>
+            <div class="clr-col-md-1 clr-control-label">{{ 'commons.description' | translate }}</div>
             <div class="clr-col-10">
               {{ streamConfig.stream.description }}
             </div>
           </div>
           <div class="clr-form-control clr-row">
-            <div class="clr-col-md-1 clr-control-label">Status</div>
+            <div class="clr-col-md-1 clr-control-label">{{ 'commons.status' | translate }}</div>
             <div class="clr-col-10">
               <span class="label label-{{ streamConfig.stream.labelStatusClass() }}">{{
                 streamConfig.stream.status
@@ -35,30 +35,25 @@
             </div>
           </div>
           <clr-select-container *ngIf="platforms.length > 1">
-            <label class="clr-col-md-1"> Platform </label>
+            <label class="clr-col-md-1">{{ 'commons.platform' | translate }}</label>
             <select clrSelect tabindex="1" formControlName="platform" [dataflowFocus]="i === 0">
               <option *ngFor="let platform of platforms" [value]="platform.name">
                 {{ platform.name }}
                 ({{ platform.type }})
               </option>
             </select>
-            <clr-control-error> Select a platform. </clr-control-error>
+            <clr-control-error>{{ 'streams.multiDeploy.invalidPlatform' | translate }}</clr-control-error>
           </clr-select-container>
 
           <clr-control-container class="key-value-wrapper">
-            <label class="clr-col-md-1">Properties</label>
+            <label class="clr-col-md-1">{{ 'commons.properties' | translate }}</label>
             <app-key-value
               clrControl
               formControlName="properties"
               [kvFocus]="i === 0 && platforms.length < 2"
             ></app-key-value>
-            <!--            <clr-control-helper>-->
-            <!--              Arguments can be prefixed by <code>&#45;&#45;</code> (optional). Example:<br/>-->
-            <!--              <pre><code>&#45;&#45;myarg1=value1-->
-            <!--&#45;&#45;myarg2=value2</code></pre>-->
-            <!--            </clr-control-helper>-->
             <clr-control-error>
-              One or more arguments are invalid.<br />Example: <code>myarg=myvalue</code>.
+              <span [innerHTML]="'streams.multiDeploy.invalidProperties' | translate"></span>
             </clr-control-error>
           </clr-control-container>
         </div>
@@ -66,19 +61,19 @@
     </div>
 
     <div class="actions">
-      <button class="btn btn-secondary" type="button" (click)="back()">Cancel</button>
-      <button class="btn btn-primary" type="submit">Deploy the streams</button>
+      <button class="btn btn-secondary" type="button" (click)="back()">{{ 'commons.cancel' | translate }}</button>
+      <button class="btn btn-primary" type="submit">{{ 'streams.multiDeploy.deployStreams' | translate }}</button>
     </div>
   </form>
 </div>
 
 <clr-modal [(clrModalOpen)]="isRunning" [clrModalClosable]="false">
-  <h3 class="modal-title">Deploy streams</h3>
+  <h3 class="modal-title">{{ 'streams.multiDeploy.deployModal' | translate }}</h3>
   <div class="modal-body">
     <clr-spinner clrInline clrSmall></clr-spinner>
-    Deploying streams...
+    {{ 'streams.multiDeploy.deploying' | translate }}
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline" [disabled]="true">Cancel</button>
+    <button type="button" class="btn btn-outline" [disabled]="true">{{ 'commons.cancel' | translate }}</button>
   </div>
 </clr-modal>

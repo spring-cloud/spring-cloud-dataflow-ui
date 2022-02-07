@@ -1,0 +1,1066 @@
+{
+  "commons": {
+    "id": "Id",
+    "ok": "Ok",
+    "of": "of",
+    "yes": "Yes",
+    "ofType": "of type",
+    "refresh": "Refresh",
+    "cancel": "Cancel",
+    "remove": "Remove",
+    "edit": "Edit",
+    "close": "Close",
+    "loading": "loading",
+    "listedBelow": "listed below",
+    "areYouSure": "Are you sure?",
+    "setDefault": "Set default",
+    "makeDefault": "Make default",
+    "importFile": "Import a file",
+    "selectFile": "Select a file",
+    "minDate": "Min date",
+    "maxDate": "Max date",
+    "actions": "Actions",
+    "restart": "Restart",
+    "update": "Update",
+    "deploy": "Deploy",
+    "undeploy": "Undeploy",
+    "destroy": "Destroy",
+    "launch": "Launch",
+    "schedule": "Schedule",
+    "description": "Description",
+    "status": "Status",
+    "clone": "Clone",
+    "date": "Date",
+    "name": "Name",
+    "type": "Type",
+    "stop": "Stop",
+    "cleanup": "Cleanup",
+    "details": "Details",
+    "version": "Version",
+    "platform": "Platform",
+    "properties": "Properties",
+    "definition": "Definition",
+    "information": "Information",
+    "applications": "Applications",
+    "groupActions": "Group Actions",
+    "confirmAction": "Confirm action",
+    "noResultFound": "No results found.",
+    "copyToClipboard": "Copy to clipboard",
+    "grafanaDashboard": "Grafana Dashboard",
+    "wavefrontDashboard": "Wafefront Dashboard",
+    "message": {
+      "error": "An error occurred",
+      "copiedTitle": "Content copied",
+      "copiedContent": "The content have been copied to your clipboard.",
+      "invalidFieldsTitle": "Invalid field(s)",
+      "invalidFieldsContent": "Some field(s) are missing or invalid."
+    }
+  },
+  "appRoot": {
+    "welcomeTo": "Welcome to",
+    "appTitle": "Data Flow UI",
+    "youHaveToLogin": "You have to log in to access the application.",
+    "title": "Data Flow",
+    "fullName": "Spring Cloud Data Flow"
+  },
+  "layout": {
+    "logo": {
+      "title": "Spring Cloud Dataflow UI"
+    },
+    "nav": {
+      "applications": "Applications",
+      "streams": "Streams",
+      "runtime": "Runtime",
+      "tasks": "Tasks",
+      "tasksJobs": "Tasks / Jobs",
+      "taskExecution": "Task executions",
+      "jobExecution": "Job executions",
+      "schedules": "Schedules",
+      "manage": "Manage",
+      "auditRecords": "Audit Records",
+      "tools": "Tools"
+    },
+    "quicksearch": {
+      "input": "Search for keywords...",
+      "searching": "Searching for results...",
+      "application": "Application(s)",
+      "stream": "Stream(s)",
+      "task": "Task(s)",
+      "noResult": "There are no search results for"
+    }
+  },
+  "applications": {
+    "main": {
+      "title": "Applications",
+      "addApplications": "Add application(s)",
+      "unregisterApplications": "Unregister application(s)",
+      "name": "Name",
+      "type": "Type",
+      "version": "Version",
+      "uri": "URI",
+      "metadataURI": "Metadata URI",
+      "manageVersion": "Manage Version",
+      "unregister": "Unregister",
+      "noResult": "No results found",
+      "applicationsPerPage": "Applications per page",
+      "application": "application",
+      "details": "Details",
+      "pagination": "{{ first }} - {{ last }} of {{ total }} applications"
+    },
+    "add": {
+      "registerOneOrMore": "Register one or more applications",
+      "importFromHttp": "Import application coordinates from an HTTP URI location",
+      "importFromFile": "Import application coordinates from a properties file",
+      "importFromSpringDataFlow": "Import application starters from dataflow.spring.io",
+      "websiteStarters": {
+        "usePredefined": "Use predefined application-URIs (for either maven or docker) for all the out-of-the-box stream and task/batch apps",
+        "startersForKafkaMaven": "Stream application starters for Kafka/Maven",
+        "startersForKafkaDocker": "Stream application starters for Kafka/Docker",
+        "startersForRabbitMQMaven": "Stream application starters for RabbitMQ/Maven",
+        "startersForRabbitMQDocker": "Stream application starters for RabbitMQ/Docker",
+        "startersForMaven": "Task application starters for Maven",
+        "startersForDocker": "Task application starters for Docker",
+        "forceImport": "Force, the applications will be imported and installed even if it already exists but only if not being used already",
+        "importApplications": "Import Application(s)",
+        "importingApplications": "Importing application(s)",
+        "message": {
+          "successTitle": "Import starters",
+          "successContent": "Application(s) Imported.",
+          "noStarterTitle": "No starter selected",
+          "noStarterContent": "Please, select a starter pack."
+        }
+      },
+      "props": {
+        "desc": "Enter the list of properties into the text area field below.",
+        "desc2": "Alternatively, you can also select a file in your local file system, which is used to populate the text area field.",
+        "appsAsProperties": "Apps as Properties",
+        "example": "Example",
+        "example1": "task.timestamp=maven://o.s.cloud.task.app:timestamp-task:1.2.3.RELEASE",
+        "example2": "task.spark-client=maven://o.s.cloud.task.app:spark-client-task:1.2.3.RELEASE",
+        "force": "Force, the applications will be imported and installed even if it already exists but only if not being used already.",
+        "import": "Import Application(s)",
+        "importing": "Importing application(s)",
+        "requiredApp": "One or more application(s) are required.",
+        "message": {
+          "successTitle": "Import application(s)",
+          "successContent": "Application(s) Imported.",
+          "errorContent": "An error occurred while importing Apps. Please check the server logs for more details."
+        }
+      },
+      "register": {
+        "desc": "Register one or more applications by entering a <strong>Name</strong>, <strong>Type</strong> and <strong>App URI</strong> of the application Jar. You can also provide an optional <strong>metadata artifact URI</strong>. <br />The App <strong>URI</strong> &amp; the <strong>Metadata Artifact URI</strong> are typically provided using the Maven coordinates of the Jar but can be a local file or a docker image URI.",
+        "invalidName": "Please provide a valid name for the app.",
+        "invalidType": "Please provide a valid type.",
+        "invalidUri": "Please provide a valid URI pointing to the respective properties file.",
+        "invalidMetadataURI": "Please provide a valid URI pointing to the respective properties file.",
+        "force": "Force, the applications will be imported and installed even if it already exists but only if not being used already.",
+        "newApp": "New application",
+        "import": "Import Application(s)",
+        "register": "Register Application(s)",
+        "registering": "Registering application(s)",
+        "message": {
+          "invalidAppTitle": "Invalid application",
+          "invalidAppContent": "Please, register at least one application.",
+          "successTitle": "Register application(s).",
+          "successContent": "{{count}} App(s) registered"
+        }
+      },
+      "uri": {
+        "desc": "Provide a URI that points to the location of the properties file.<br />This properties file is formatted so that the keys represent the type and the name of the application, e.g. type.name. The property values are the URIs of the app.",
+        "placeholderUri": "https://url.to.properties",
+        "eg": "e.g.",
+        "egValue": "https://dataflow.spring.io/kafka-maven-latest",
+        "invalidUri": "Please provide a valid URI pointing to the respective properties file.",
+        "force": "Force, the applications will be imported and installed even if it already exists but only if not being used already.",
+        "importing": "Importing application(s)",
+        "import": "Import Application(s)",
+        "message": {
+          "successTitle": "Import Application(s)",
+          "successContent": "Application(s) Imported."
+        }
+      }
+    },
+    "unregister": {
+      "title": "Confirm Unregister Application",
+      "title2": "Confirm Unregister Applications",
+      "content": "This action will unregister and delete application",
+      "content2": "This action will unregister and delete the",
+      "unregistering": "Unregistering application(s) ...",
+      "unregister": "Unregister the application",
+      "unregister2": "Unregister the applications",
+      "message": {
+        "successTitle": "Unregister application",
+        "successContent": "Successfully removed app \"{{name}}\" of type \"{{type}}\".",
+        "successTitle2": "Unregister applications",
+        "successContent2": "{{count}} app(s) unregistered."
+      }
+    },
+    "details": {
+      "title": "Application",
+      "unregister": "Unregister Application",
+      "manageVersions": "Manage versions",
+      "notFound": "No application found.",
+      "information": "Information",
+      "appProperties": "Application properties",
+      "tooManyProperties": "There are more than 50 properties to display, the UI can be slow.",
+      "tooManyProperties2": "Do you want to display all the properties ?",
+      "showAll": "Show all the properties",
+      "default": "Default",
+      "deprecatedLevel": "Deprecation level",
+      "noDescription": "No Description Available",
+      "defaultValue": "Default value",
+      "noProperty": "No property"
+    },
+    "version": {
+      "manageVersions": "Manage versions",
+      "loadingVersions": "Loading version(s) ...",
+      "thisActionWillUnregisterThe": "This action will unregister the",
+      "ofTheApplication": "of the application",
+      "thisActionWillMakeTheVersion": "This action will make the version",
+      "asTheDefaultVersion": "as the default version for the application",
+      "version": "version",
+      "message": {
+        "unregisterSuccessTitle": "Unregister version",
+        "unregisterSuccessContent": "Successfully removed version \"{{version}}\".",
+        "defaultSuccessTitle": "Default version",
+        "defaultSuccessContent": "The version \"{{version}}\" is now the default version of the application \"{{app}}\" ({{type}})."
+      }
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "close": "Close",
+    "language": "Language",
+    "languageDescription": "You can choose your preferred language.",
+    "en": "English",
+    "de": "German",
+    "fr": "French",
+    "theme": "Theme",
+    "themeDescription": "You can choose between dark and default theme.",
+    "darkTheme": "dark",
+    "defaultTheme": "default",
+    "results": "Results",
+    "resultsDescription": "You can choose the number of results per page."
+  },
+  "about": {
+    "user": {
+      "logOut": "Log out",
+      "logIn": "Log In"
+    },
+    "signpost": {
+      "title": "Data Flow Server Implementation",
+      "name": "Name",
+      "version": "Version",
+      "moreInfo": "More info",
+      "projectPage": "Project Page",
+      "sourceCode": "Source Code",
+      "documentation": "Documentation",
+      "apiDocs": "API Docs",
+      "supportForum": "Support Forum",
+      "issueTracker": "Issue Tracker"
+    },
+    "info": {
+      "title": "About Spring Cloud Data Flow",
+      "serverImpTitle": "Data Flow Server Implementation",
+      "name": "Name",
+      "version": "Version",
+      "features": "Features",
+      "streams": "Streams",
+      "tasks": "Tasks",
+      "schedules": "Schedules",
+      "monitoring": "Monitoring Dashboard",
+      "grafana": "Grafana",
+      "wavefront": "Wavefront",
+      "security": "Security",
+      "authentificationEnabled": "Authentication Enabled",
+      "authenticated": "Authenticated",
+      "username": "Username",
+      "roles": "Roles",
+      "impVersion": "Implementation Version",
+      "core": "Core",
+      "dashboard": "Dashboard",
+      "shell": "Shell",
+      "shellChecksumSha1": "Shell Checksum Sha1",
+      "shellChecksumSha256": "Shell Checksum Sha256",
+      "runtimeSkipperDeployer": "Runtime Environment - Skipper Deployer",
+      "spiVersion": "Spi Version",
+      "javaVersion": "Java Version",
+      "platformApiVersion": "Platform Api Version",
+      "platformClientVersion": "Platform Client Version",
+      "platformHostVersion": "Platform Host Version",
+      "platformType": "Platform Type",
+      "springBootVersion": "Spring Boot Version",
+      "springVersion": "Spring Version",
+      "platformSkipperDeployer": "Platform-specific Information of the Skipper Deployer",
+      "noPlatform": "No platform-specific app deployer information available.",
+      "runtimeTaskLauncher": "Runtime Environment - Task Launcher",
+      "noLauncher": "No Task Launcher information is available.",
+      "platformTaskLauncher": "Platform-specific Information of the Task Launcher",
+      "noPlatformTaskLauncher": "No platform-specific task launcher information available.",
+      "help": "Need Help or Found an Issue?",
+      "projectPageDesc": "Quick overview of Spring Cloud Data Flow Project.",
+      "sourceCodeDesc": "Spring Cloud Data Flow Project is an Open Source Project.",
+      "documentationDesc": "Learn more about the product features.",
+      "apiDocsDesc": "Learn more about the REST-APIs.",
+      "supportFormDesc": "You need help?",
+      "issueTrackerDesc": "Report an issue or request for a new feature.",
+      "copy": "Copy Details to Clipboard",
+      "message": {
+        "copyContent": "Copied About Details to Clipboard (As JSON)."
+      }
+    }
+  },
+  "auditRecords": {
+    "title": "Audit Records",
+    "id": "ID",
+    "createdOn": "Created On",
+    "actions": "Actions",
+    "operations": "Operations",
+    "operationID": "Operation ID",
+    "createdBy": "Created by",
+    "platformName": "Platform name",
+    "noResult": "No results found.",
+    "data": "Data",
+    "property": "Property",
+    "recordsPerPage": "Records per page",
+    "pagination": "{{ first }} - {{ last }} of {{ total }} records",
+    "allActions": "All actions",
+    "allOperations": "All operations"
+  },
+  "tools": {
+    "title": "Tools",
+    "exportStreams": "Export stream(s): Create a JSON file with the selected streams",
+    "importStreams": "Import stream(s): Import streams from a JSON file",
+    "cleanUpAll": "Clean up all task/job executions",
+    "cleanUpCompleted": "Clean up all completed task/job executions",
+    "exportTasks": "Export task(s): Create a JSON file with the selected tasks",
+    "importTasks": "Import task(s): Import tasks from a JSON file",
+    "streams": "Streams",
+    "tasks": "Tasks",
+    "cleanUp": "Clean up Task Executions",
+    "modal": {
+      "cleanUp": {
+        "title": "Confirm Clean Up Task Execution(s)",
+        "content": "This action will remove <strong>{{ count }} execution(s)</strong>. Are you sure?",
+        "processing": "Removing data",
+        "cleanUp": "Clean up Execution(s)",
+        "message": {
+          "warningNoExecutionTitle": "No execution",
+          "warningNoExecutionContent": "There is no execution.",
+          "successTitle": "Clean up execution(s)",
+          "successContent": "{{count}} execution(s) cleaned up."
+        }
+      },
+      "exportStreams": {
+        "title": "Export stream(s)",
+        "content": "You can create an export of your <strong>selected streams</strong>.<br />This operation will generate and download a <strong>JSON file</strong>.",
+        "name": "Name",
+        "definition": "Definition",
+        "exporting": "Exporting stream(s)",
+        "export": "Export stream(s)",
+        "message": {
+          "errorNoStreamTitle": "No stream selected",
+          "errorNoStreamContent": "Please, select stream(s) to export.",
+          "successTitle": "Stream(s) export",
+          "successContent": "Stream(s) has been exported."
+        }
+      },
+      "importStreams": {
+        "title": "Import stream(s)",
+        "content": "You can import your streams from a <strong>JSON file</strong>.<br />The file needs to be modified for sensitive properties before importing.",
+        "options": "Options",
+        "jsonFile": "JSON file",
+        "file": "File",
+        "optimize": "Optimize",
+        "duration": "Duration",
+        "errors": "{{count}} error(s)",
+        "description": "Description",
+        "errorMessage": "Message",
+        "index": "Index",
+        "success": "{{count}} stream(s) created",
+        "imnporting": "Importing stream(s)",
+        "import": "Import stream(s)",
+        "message": {
+          "errorInvalidFileTitle": "Invalid file",
+          "errorInvalidFileContent": "The file is not valid.",
+          "errorSelectFileTitle": "Invalid file",
+          "errorSelectFileContent": "Please, select a file."
+        }
+      },
+      "exportTasks": {
+        "title": "Export task(s)",
+        "content": "You can create an export of your <strong>selected tasks</strong>.<br />This operation will generate and download a <strong>JSON file</strong>.",
+        "name": "Name",
+        "definition": "Definition",
+        "exporting": "Exporting task(s)",
+        "export": "Export task(s)",
+        "message": {
+          "errorNoTaskTitle": "No task selected",
+          "errorNoTaskContent": "Please, select task(s) to export.",
+          "successTitle": "Task(s) export",
+          "successContent": "Task(s) has been exported."
+        }
+      },
+      "importTasks": {
+        "title": "Import task(s)",
+        "content": "You can import your tasks from a <strong>JSON file</strong>.<br />The file needs to be modified for sensitive properties before importing.",
+        "options": "Options",
+        "jsonFile": "JSON file",
+        "file": "File",
+        "excludeChildren": "Exclude children",
+        "duration": "Duration",
+        "errors": "{{count}} error(s)",
+        "description": "Description",
+        "errorMessage": "Message",
+        "index": "Index",
+        "success": "{{count}} task(s) created",
+        "imnporting": "Importing task(s)",
+        "import": "Import task(s)",
+        "message": {
+          "errorInvalidFileTitle": "Invalid file",
+          "errorInvalidFileContent": "The file is not valid.",
+          "errorSelectFileTitle": "Invalid file",
+          "errorSelectFileContent": "Please, select a file."
+        }
+      }
+    }
+  },
+  "runtime": {
+    "main": {
+      "title": "Runtime",
+      "stream": "Stream <strong>{{ name }}</strong>",
+      "instance": "instance",
+      "instances": "instances",
+      "viewDetails": "View details",
+      "grafana": "Grafana dashboard",
+      "wavefront": "Wavefront dashboard",
+      "noApp": "There are currently <strong>no applications running</strong>.",
+      "loading": "Loading runtime"
+    },
+    "details": {
+      "title": "Instances for app",
+      "instance": "Instance"
+    }
+  },
+  "streams": {
+    "main": {
+      "title": "Streams",
+      "createStreams": "Create stream(s)",
+      "deployStreams": "Deploy stream(s)",
+      "undeployStreams": "Undeploy stream(s)",
+      "destroyStreams": "Destroy stream(s)",
+      "cloneStreams": "Clone stream(s)",
+      "noResult": "No results found.",
+      "streamsPerPage": "Streams per page",
+      "pagination": "{{ first }} - {{ last }} of {{ total }} streams"
+    },
+    "clone": {
+      "title": "Clone Stream",
+      "title2": "Clone Streams",
+      "content": "This action will create the following <strong>stream(s)</strong>",
+      "duplicate": "Duplicate stream name, please check input names.",
+      "requiredName": "Stream name is required.",
+      "invalidName": "Invalid stream name (no space or special charaters).",
+      "maxLengthName": "Stream name must be less than 255 characters long.",
+      "uniqueName": "Stream name is already taken.",
+      "cloning": "Cloning stream(s)",
+      "clone": "Clone the stream",
+      "clone2": "Clone the streams",
+      "message": {
+        "partialSuccessTitle": "Stream(s) clone",
+        "partialSuccessContent": "Stream(s) have been cloned partially",
+        "successTitle": "Stream(s) clone",
+        "successContent": "Stream(s) have been cloned successfully",
+        "errorContent": "No stream(s) cloned."
+      }
+    },
+    "destroy": {
+      "title": "Confirm Destroy Stream",
+      "title2": "Confirm Destroy Streams",
+      "content": "This action will destroy and delete the stream <strong>{{ name }}</strong>. Are you sure?",
+      "content2": "This action will destroy the <strong>{{ count }} stream definitions</strong> listed below. Are you sure?",
+      "destroying": "Destroying stream(s)",
+      "destroy": "Destroy the stream",
+      "destroy2": "Destroy the streams",
+      "message": {
+        "successTitle": "Destroy stream",
+        "successContent": "Successfully removed stream \"{{ name }}\".",
+        "successTitle2": "Destroy streams",
+        "successContent2": "{{ count }} stream(s) destroyed.",
+        "errorContent": "An error occurred while bulk deleting Streams. Please check the server logs for more details."
+      }
+    },
+    "rollback": {
+      "title": "Confirm stream rollback",
+      "content": " This action will rollback the stream <strong>{{ name }}</strong> to the version {{ version }}. Are you sure?",
+      "rollbacking": "Rollback stream(s)",
+      "rollback": "Rollback",
+      "message": {
+        "successTitle": "Rollback success",
+        "successContent": "Successful stream rollback to version \"{{ version }}\""
+      }
+    },
+    "status": {
+      "title": "Stream status",
+      "deploying": "Deploying",
+      "deployingContent": "Deployment has been initiated",
+      "deployed": "Deployed",
+      "deployedContent": "Fully deployed based on each of the stream's apps' count properties",
+      "partial": "Partial",
+      "partialContent": "1 or more of the apps are not yet deployed.",
+      "incomplete": "Incomplete",
+      "incompleteContent": "At least 1 of each app, but 1 or more of them not at requested capacity",
+      "failed": "Failed",
+      "failedContent": "1 or more of the apps does not have even a single instance deployed",
+      "undeployed": "Undeployed",
+      "undeployedContent": "Intentionally undeployed, or created but not yet deployed"
+    },
+    "undeploy": {
+      "title": "Confirm Undeploy Stream",
+      "title2": "Confirm Undeploy Streams",
+      "content": "This action will undeploy the stream <strong>{{ name }}</strong>. Are you sure?",
+      "content2": "This action will undeploy the <strong>{{ count }} stream definitions</strong> listed below. Are you sure?",
+      "undeploying": "Undeploying stream(s)",
+      "undeploy": "Undeploy the stream",
+      "undeploy2": "Undeploy the streams",
+      "message": {
+        "successTitle": "Undeploy stream",
+        "successContent": "Successfully undeploy stream \"{{ name }}\".",
+        "successTitle2": "Undeploy streams",
+        "successContent2": "{{ count }} stream(s) undeployed.",
+        "errorContent": "An error occurred while undeploying Streams. Please check the server logs for more details."
+      }
+    },
+    "create": {
+      "title": "Create stream(s)",
+      "create": "Create stream(s)",
+      "modal": {
+        "creating": "Creating Stream(s)",
+        "content": "This action will create the following <strong>stream(s)</strong>:",
+        "create": "Create the stream(s)",
+        "placeholderName": "Stream Name",
+        "placeholderDescription": "Stream Description",
+        "duplicateName": "Duplicate stream name, please check input names.",
+        "requiredName": "Stream name is required",
+        "uniqueName": "Stream name is already taken",
+        "invalidName": "Invalid stream name",
+        "maxLengthName": "Stream name must be less than 255 characters long",
+        "maxLengthDescription": "Stream description must be less than 255 characters long",
+        "operation": {
+          "creating": "Create stream {{ name }}",
+          "completed": "Creation completed"
+        },
+        "message": {
+          "invalidStreamTitle": "Invalid stream(s)",
+          "invalidStreamContent": "Please, enter one or more valid streams.",
+          "successTitle": "Stream(s) creation",
+          "successContent": "Stream(s) have been created successfully",
+          "errorContent": "Problem creating stream \"{{ name }}\": {{ message }}",
+          "errorContent2": "Failed to create stream \"{{ name }} \""
+        }
+      }
+    },
+    "stream": {
+      "title": "Stream",
+      "deploy": "Deploy stream",
+      "update": "Update stream",
+      "undeploy": "Undeploy stream",
+      "destroy": "Destroy stream",
+      "showPipeline": "Show Data Pipeline",
+      "relatedStreams": "Related stream(s)",
+      "deploymentInfo": "Deployment Info",
+      "runtime": "Runtime",
+      "instances": "instance(s)",
+      "viewLog": "View Log",
+      "history": "History",
+      "noHistory": "There is no history yet.",
+      "streamStatus": "Stream Status",
+      "rollback": "Rollback",
+      "logStream": "Log {{ name }}",
+      "noLog": "No log."
+    },
+    "multiDeploy": {
+      "title": "Deploy Streams",
+      "invalidPlatform": "Select a platform.",
+      "invalidProperties": "One or more arguments are invalid.<br />Example: <code>myarg=myvalue</code>.",
+      "deployStreams": "Deploy the streams",
+      "deployModal": "Deploy streams",
+      "deploying": "Deploying streams",
+      "message": {
+        "successTitle": "Deploy success",
+        "successContent": "Successfully deployed {{count}} stream(s)."
+      }
+    },
+    "deploy": {
+      "main": {
+        "titleUpdate": "Update stream",
+        "titleDeploy": "Deploy stream",
+        "description": "Please specify any optional deployment properties. You can either use the builder.<br /> Alternatively, you can point to an external properties file containing the deployment properties. For more information please see the Technical Documentation.",
+        "builder": "Builder",
+        "freetext": "Freetext",
+        "update": "Update stream",
+        "deploy": "Deploy stream",
+        "updating": "Updating stream",
+        "deploying": "Deploying stream(s)",
+        "export": "Export",
+        "message": {
+          "errorExportPropertyContent": "There are no properties to export.",
+          "errorCopyPropertyContent": "There are no properties to copy.",
+          "successCopyTitle": "Copy to clipboard",
+          "successCopyContent": "The properties have been copied to your clipboard.",
+          "successUpdateTitle": "Update success",
+          "successUpdateContent": "Successfully updated stream definition \"{{ name }}\"",
+          "successDeployTitle": "Deploy success",
+          "successDeployContent": "Successfully deployed stream definition \"{{ name }}\"",
+          "errorDeployContent": "An error occurred during the stream deployment update."
+        }
+      },
+      "freetext": {
+        "description": "Enter the list of properties into the text area field below. Alternatively, you can also select a file in your local file system, which is used to populate the text area field.",
+        "tooltip": "Please provide a text file containing properties. This will be used to populate the text area above.",
+        "deploy": "Deploy the stream",
+        "update": "Update the stream",
+        "message": {
+          "errorDeployTitle": "Invalid properties",
+          "errorDeployContent": "Some line(s) are invalid."
+        }
+      },
+      "builder": {
+        "invalidPlatform": "The define platform is not valid (unknown).",
+        "genericDeployerProperties": "Generic Deployer Properties",
+        "example": "Example",
+        "key": "Key",
+        "value": "Value",
+        "defaultVersion": "Default version",
+        "generatedProperty": "Generated property",
+        "deploymentPlatform": "Deployment Platform",
+        "applicationsProperties": "Applications Properties",
+        "global": "Global",
+        "invalid": "invalid",
+        "enterNumber": "Enter a number",
+        "enterValue": "Enter a value",
+        "errorLoading": "Error loading",
+        "invalidVersion": "Invalid version",
+        "noProperties": "No properties",
+        "deploy": "Deploy the stream",
+        "update": "Update the stream",
+        "tooltip": {
+          "invalidProperty": "The field \"property\" is not valid.",
+          "invalidGlobal": "The field \"global\" is not valid.",
+          "invalidField": "The field \"{{ name }}\" is not valid."
+        },
+        "deploymentPropertiesTitle": "Deployment properties for platform"
+      }
+    }
+  },
+  "tasks": {
+    "main": {
+      "title": "Tasks",
+      "create": "Create task",
+      "scheduleTasks": "Schedule task(s)",
+      "destroyTasks": "Destroy task(s)",
+      "cloneTasks": "Clone task(s)",
+      "tasksPerPage": "Tasks per page",
+      "pagination": "{{ first }} - {{ last }} of {{ total }} tasks"
+    },
+    "cleanup": {
+      "title": "Confirm Clean Up Execution(s)",
+      "confirmContent": "This action will remove <strong>{{ count }} execution(s)</strong>. Are you sure?",
+      "selectContent": "Please, selected the status of the execution to remove:",
+      "all": "All the {{ all }} execution(s)",
+      "completed": "{{ completed }} execution(s) completed",
+      "removing": "Removing data",
+      "cleanup": "Clean up Execution(s)",
+      "message": {
+        "warningNoExecutionTitle": "No execution",
+        "warningNoExecutionContent": "There is no execution for this task.",
+        "successTitle": "Clean up execution(s)",
+        "successContent": "{{ count }} execution(s) cleaned up."
+      }
+    },
+    "clone": {
+      "cloneTitle": "Clone Task",
+      "cloneTitle2": "Clone Tasks",
+      "content": "This action will create the following <strong>task(s)</strong>",
+      "duplicate": "Duplicate task name, please check input names.",
+      "requiredName": "Task name is required.",
+      "invalidName": "Invalid task name (no space or special charaters).",
+      "maxLengthName": "Task name must be less than 255 characters long.",
+      "uniqueName": "Task name is already taken.",
+      "cloning": "Cloning task(s)",
+      "clone": "Clone the task",
+      "clone2": "Clone the task",
+      "message": {
+        "partialSuccessTitle": "Task(s) clone",
+        "partialSuccessContent": "Task(s) have been cloned partially",
+        "successTitle": "Task(s) clone",
+        "successContent": "Task(s) have been cloned successfully",
+        "errorContent": "No task(s) cloned."
+      }
+    },
+    "destroy": {
+      "destroyTitle": "Confirm Destroy Task",
+      "destroyTitle2": "Confirm Destroy Tasks",
+      "content": "This action will destroy and delete the task <strong>{{ name }}</strong>. Are you sure?",
+      "content2": "This action will destroy the <strong>{{ count }} tasks</strong> listed below. Are you sure?",
+      "destroying": "Destroying task(s)",
+      "destroy": "Destroy the task",
+      "destroy2": "Destroy the tasks",
+      "message": {
+        "successTitle": "Destroy task",
+        "successContent": "Successfully removed task \"{{ name }}\".",
+        "successTitle2": "Destroy tasks",
+        "successContent2": "{{ count }} task definition(s) destroyed.",
+        "errorContent": "An error occurred while bulk deleting tasks. Please check the server logs for more details."
+      }
+    },
+    "task": {
+      "title": "Task",
+      "launch": "Launch task",
+      "schedule": "Schedule task",
+      "destroy": "Destroy task",
+      "information": "Information",
+      "applications": "Applications",
+      "showPipeline": "Show Data Pipeline",
+      "lastExecution": "Last execution",
+      "viewTaskExecution": "View task execution",
+      "viewLog": "View log",
+      "latestExecutions": "Latest execution(s)",
+      "schedules": "Schedule(s)"
+    },
+    "create": {
+      "title": "Create a task",
+      "createTask": "Create task",
+      "modal": {
+        "creating": "Creating task",
+        "create": "Create the task",
+        "taskName": "Task Name",
+        "taskDescription": "Task Description",
+        "content": "This action will create the following <strong>task</strong>:",
+        "duplicateName": "Duplicate task name, please check input names.",
+        "maxLengthName": "Task name must be less than 256 characters long.",
+        "invalidName": "Invalid task name.",
+        "requiredTask": "Task name is required.",
+        "maxLength63Name": "The task definition name should be less than 63 characters for Kubernetes or Cloud Foundry platforms.",
+        "uniqueTask": "Task name is already taken.",
+        "maxLengthDescription": "Task description must be less than 255 characters long."
+      },
+      "message": {
+        "errorContent": "Please, enter a valid task.",
+        "successTitle": "Task creation",
+        "successContent": "Task Definition created for {{ name }}"
+      }
+    },
+    "launch": {
+      "main": {
+        "title": "Launch task",
+        "description": "Please specify any optional deployment properties. You can either use the builder. <br />Alternatively, you can point to an external properties file containing the deployment properties. For more information please see the Technical Documentation.",
+        "builder": "Builder",
+        "freetext": "Freetext",
+        "export": "Export",
+        "copy": "Copy to Clipboard",
+        "launching": "Launching task",
+        "launch": "Launch task",
+        "message": {
+          "errorExportPropertyContent": "There are no properties to export.",
+          "errorExportArgumentContent": "There are no arguments to export.",
+          "errorCopyPropertyContent": "There are no properties to copy.",
+          "errorCopyArgumentContent": "There are no arguments to copy.",
+          "successCopyTitle": "Copy to clipboard",
+          "successCopyContent": "The properties have been copied to your clipboard.",
+          "successCopyArgsContent": "The arguments have been copied to your clipboard.",
+          "successTitle": "Launch success",
+          "successContent": "Successfully launched task definition \"{{ name }}\"",
+          "errorLaunchContent": "An error occurred during the task launch."
+        }
+      },
+      "freetext": {
+        "propertiesDescription": "Enter the list of properties into the text area field below.",
+        "argumentsDescription": "Enter the list of arguments into the text area field below.",
+        "propertiesTooltip": "Please provide a text file containing properties. This will be used to populate the text area above.",
+        "argumentsTooltip": "Please provide a text file containing arguments. This will be used to populate the text area above.",
+        "launch": "Launch Task"
+      },
+      "builder": {
+        "platform": "Platform",
+        "invalidPlatform": "The define platform is not valid (unknown).",
+        "genericDeployerProperties": "Generic Deployer Properties",
+        "arguments": "Arguments",
+        "properties": "Properties",
+        "defaultVersion": "Default version",
+        "deploymentPlatform": "Deployment Platform",
+        "applicationsProperties": "Applications Properties",
+        "version": "Version",
+        "ctrProperties": "Ctr Properties",
+        "global": "Global",
+        "invalid": "invalid",
+        "enterNumber": "Enter a number",
+        "enterValue": "Enter a value",
+        "selectValue": "Select a value",
+        "errorLoading": "Error loading",
+        "invalidVersion": "Invalid version",
+        "noProperties": "No properties",
+        "launch": "Launch task",
+        "deploymentPropertiesTitle": "Deployment properties for platform",
+        "ctrPropertiesTitle": "Ctr properties",
+        "lastVersionLabel": "Last launch {{ version }}",
+        "defaultVersionLabel": "Default version ({{ version }})",
+        "tooltip": {
+          "invalidProperty": "The field \"property\" is not valid.",
+          "invalidGlobal": "The field \"global\" is not valid.",
+          "invalidField": "The field \"{{ name }}\" is not valid."
+        },
+        "alert": {
+          "migrateContent": "There are properties which can be migrated.",
+          "migrate": "Migrate"
+        }
+      }
+    }
+  },
+  "executions": {
+    "main": {
+      "title": "Task executions",
+      "executionId": "Execution Id",
+      "taskName": "Task name",
+      "arguments": "Arguments",
+      "externalExecutionId": "External Execution Id",
+      "batchJob": "Batch Job",
+      "jobExecutionIds": "Job Execution Ids",
+      "startTime": "Start Time",
+      "endTime": "End Time",
+      "startDate": "Start Date",
+      "endDate": "End Date",
+      "duration": "Duration",
+      "exitCode": "Exit Code",
+      "exitMessage": "Exit Message",
+      "resourceUrl": "Resource URL",
+      "viewLog": "View log",
+      "applicationProperties": "Application Properties",
+      "platformProperties": "Platform Properties",
+      "noExecution": "No execution yet.",
+      "cleanupExecutions": "Clean Up task execution(s)",
+      "cleanup": "Clean up task execution",
+      "taskDetails": "Task details",
+      "relaunch": "Relaunch task",
+      "stop": "Stop task",
+      "executionPerPage": "Task executions per page",
+      "pagination": "{{ first }} - {{ last }} of {{ total }} task executions"
+    },
+    "stop": {
+      "title": "Confirm Stop Task Execution",
+      "description": "This action will stop the task execution <strong>{{ id }}</strong> (task <strong>{{ taskName }}</strong>). Are you sure?",
+      "stopping": "Stopping task execution",
+      "stop": "Stop Task Execution(s)",
+      "message": {
+        "successTitle": "Stop task execution(s)",
+        "successContent": "Request submitted to stop task execution \"{{ id }}\".",
+        "errorContent": "An error occurred while stopping task executions. Please check the server logs for more details."
+      }
+    },
+    "cleanup": {
+      "title": "Confirm Clean Up Task Execution(s)",
+      "description": "This action will remove the data of the task execution <strong>{{ executionId }}</strong> (task <strong>{{ taskName }}</strong>). Are you sure?",
+      "description2": "This action will remove the data of the <strong>{{ count }} task executions</strong> listed below. Are you sure?",
+      "removing": "Removing data",
+      "cleanupExecution": "Clean up Task Execution",
+      "cleanupExecutions": "Clean up Task Executions",
+      "message": {
+        "successTitle": "Clean up task execution(s)",
+        "successContent": "{{ count }} task execution(s) cleaned up."
+      }
+    },
+    "execution": {
+      "title": "Task execution - Execution ID",
+      "relaunch": "Relaunch task",
+      "stop": "Stop execution",
+      "cleanup": "Clean up task execution",
+      "viewTask": "View task",
+      "noTask": "No task found.",
+      "task": "Task",
+      "logTitle": "Log task execution {{ id }}"
+    }
+  },
+  "jobs": {
+    "main": {
+      "title": "Job Executions",
+      "executionId": "Execution Id",
+      "jobName": "Job Name",
+      "jobInstance": "Job Instance",
+      "taskId": "Task Id",
+      "taskExecutionId": "Task Execution Id",
+      "jobParameters": "Job Parameters",
+      "instanceId": "Instance Id",
+      "startTime": "Start Time",
+      "endTime": "End Time",
+      "duration": "Duration",
+      "exitCode": "Exit Code",
+      "exitMessage": "Exit Message",
+      "stepExecutionCount": "Step Execution Count",
+      "jobPerPage": "Job executions per page",
+      "pagination": "{{ first }} - {{ last }} of {{ total }} job executions",
+      "restartConfirmTitle": "Confirm restart the job execution",
+      "restartConfirmContent": "This action will restart the steps failed of the job execution <strong>{{ name }} ({{ id }})</strong>.<br />Are you sure?",
+      "stopConfirmTitle": "Confirm stop the job execution",
+      "stopConfirmContent": "This action will stop the job execution <strong>{{ name }} ({{ id }})</strong>.<br />Are you sure?",
+      "message": {
+        "successRestartTitle": "Restart job",
+        "successRestartMessage": "Successfully restarted job \"{{ name }}\".",
+        "successStopTitle": "Stop job",
+        "successStopMessage": "Successfully stopped job \"{{ name }}\"."
+      }
+    },
+    "execution": {
+      "title": "Job execution",
+      "restart": "Restart the job",
+      "stop": "Stop the job",
+      "noTaskFound": "No task found.",
+      "task": "Task",
+      "taskExecution": "Task execution",
+      "steps": "Steps",
+      "viewTask": "View task",
+      "relaunchTask": "Relaunch Task",
+      "viewExecution": "View task execution",
+      "viewLog": "View log"
+    },
+    "step": {
+      "title": "Step Execution",
+      "stepId": "Step Id",
+      "stepName": "Step Name",
+      "stepExecutionId": "Step Execution Id",
+      "jobExecutionId": "Job Execution Id",
+      "stepType": "Step Type",
+      "reads": "Reads",
+      "writes": "Writes",
+      "commits": "Commits",
+      "rollbacks": "Rollbacks",
+      "duration": "Durations",
+      "filterCount": "Filter Count",
+      "processSkips": "Process Skips",
+      "readSkips": "Read Skips",
+      "skips": "Skips",
+      "writeSkips": "Write Skips",
+      "noStep": "No Step Execution available.",
+      "noExecutionContext": "No step execution context.",
+      "information": "Information",
+      "exitDescription": "Exit Description",
+      "stepExecutionContext": "Step Execution Context",
+      "stepExecutionHistory": "Step Execution History",
+      "task": "task",
+      "taskExecution": "Task execution",
+      "history": {
+        "name": "name",
+        "count": "count",
+        "min": "min",
+        "max": "max",
+        "mean": "mean",
+        "standardDeviation": "Standard Deviation",
+        "commitCount": "Commit Count",
+        "duration": "Duration",
+        "durationPerRead": "Duration per Read",
+        "filterCount": "Filter Count",
+        "processSkipCount": "Process Skip Count",
+        "readCount": "Read Count",
+        "readSkipCount": "Read Skip Count",
+        "rollbackCount": "Rollback Count",
+        "writeCount": "Write Count",
+        "writeSkipCount": "Write Skip Count"
+      }
+    }
+  },
+  "schedules": {
+    "main": {
+      "title": "Schedules",
+      "taskName": "Task name",
+      "scheduleName": "Schedule name",
+      "cronExpression": "Cron Expression",
+      "cronExp": "Cron Expr.",
+      "arguments": "Arguments",
+      "noSchedule": "No schedule yet.",
+      "deleteSchedules": "Delete schedules(s)",
+      "taskDetails": "Task details",
+      "addNewSchedule": "Add new schedule",
+      "pagination": "{{ count }} schedules"
+    },
+    "destroy": {
+      "title": "Confirm Delete Schedule",
+      "title2": "Confirm Delete Schedules",
+      "description": "This action will delete the schedule <u><strong>{{ name }}</strong></u>. Are you sure?",
+      "description2": "This action will delete the <u><strong>{{ count }} schedules</strong></u>listed below.<br />Are you sure?",
+      "deleting": "Deleting schedule(s)",
+      "delete": "Delete the schedule",
+      "delete2": "Delete the schedules",
+      "message": {
+        "successTitle": "Delete schedule(s)",
+        "successContent": "{{ count }} schedule(s) deleted.",
+        "errorContent": "An error occurred while deleting schedule(s). Please check the server logs for more details."
+      }
+    },
+    "create": {
+      "title": "Create schedule(s)",
+      "requiredName": "The name is required.",
+      "uniqueName": "The name already exists.",
+      "duplicateScheduleName": "Duplicate schedule name on the form.",
+      "requiredScheduleName": "The name is required.",
+      "uniqueScheduleName": "The name already exists.",
+      "requiredPlatform": "The platform is required.",
+      "requiredCronExpression": "The cron expression is required.",
+      "arguments": "arguments",
+      "argumentsDesc": "Arguments can be prefixed by <code>--</code> (optional). Example:",
+      "invalidArguments": "One or more arguments are invalid.<br />Example: <code>myarg=myvalue</code>.",
+      "properties": "Properties",
+      "propertiesDesc": "Parameters should start with an <code>app.</code> or <code>scheduler.</code>. Example:",
+      "invalidProperties": "One or more parameters are invalid.<br />Example: <code>app.myarg=myvalue</code>.",
+      "create": "Create schedule(s)",
+      "creating": "Creating schedule(s)",
+      "message": {
+        "groupSelectionNotFoundTitle": "Group selection not found.",
+        "scheduleSuccessTitle": "Schedule creation",
+        "schedulesSuccessTitle": "Schedule creation",
+        "scheduleSuccessContent": "Successfully schedule creation \"{{ name }}\"",
+        "schedulesSuccessContent": "Successfully {{ count }} schedules creation"
+      }
+    },
+    "schedule": {
+      "title": "Schedule",
+      "taskDetails": "Task details",
+      "deleteSchedule": "Delete schedule",
+      "taskInformation": "Task Information"
+    }
+  },
+  "security": {
+    "authenticationRequired": {
+      "title": "Authentication required",
+      "description": "Please sign in."
+    },
+    "featureDisabled": {
+      "title": "Feature Disabled",
+      "description": "The requested feature is disabled on the server."
+    },
+    "rolesMissing": {
+      "title": "Roles Missing",
+      "description": "It appears that you are missing the proper roles. Please contact your administrator to rectify the situation."
+    }
+  },
+  "flo": {
+    "commons": {
+      "invalidValue": "Invalid value.",
+      "searchForApplications": "Search for applications",
+      "fitToContent": "Fit to Content",
+      "instanceDown": "App instance either is down or not deployed"
+    },
+    "properties": {
+      "title": "Properties for",
+      "searchProperties": "Search properties"
+    },
+    "stream": {
+      "invalidAppLabel": "Invalid app label.",
+      "invalidStreamName": "Invalid stream name.",
+      "uniqueStreamName": "Stream name already exists.",
+      "noneOfStreamName": "Stream name already exists on the canvas.",
+      "enterStreamDefinition": "Enter stream definition"
+    },
+    "task": {
+      "enterTaskDefinition": "Enter task definition"
+    }
+  }
+}

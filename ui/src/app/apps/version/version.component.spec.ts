@@ -14,6 +14,8 @@ import {By} from '@angular/platform-browser';
 import {throwError} from 'rxjs';
 import {HttpError} from '../../shared/model/error.model';
 import {ContextServiceMock} from '../../tests/service/context.service.mock';
+import {TranslateTestingModule} from 'ngx-translate-testing';
+import TRANSLATIONS from '../../../assets/i18n/en.json';
 
 describe('apps/version/version.component.ts', () => {
   let component: VersionComponent;
@@ -23,7 +25,13 @@ describe('apps/version/version.component.ts', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [VersionComponent, ConfirmComponent],
-        imports: [FormsModule, ClarityModule, RouterTestingModule.withRoutes([]), BrowserAnimationsModule],
+        imports: [
+          FormsModule,
+          ClarityModule,
+          RouterTestingModule.withRoutes([]),
+          TranslateTestingModule.withTranslations('en', TRANSLATIONS),
+          BrowserAnimationsModule
+        ],
         providers: [
           SecurityServiceMock.provider,
           AboutServiceMock.provider,

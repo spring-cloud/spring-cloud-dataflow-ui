@@ -11,6 +11,8 @@ import {TaskServiceMock} from '../../../tests/api/task.service.mock';
 import {CleanupComponent} from './cleanup.component';
 import {ContextServiceMock} from '../../../tests/service/context.service.mock';
 import {Task} from '../../../shared/model/task.model';
+import {TranslateTestingModule} from 'ngx-translate-testing';
+import TRANSLATIONS from '../../../../assets/i18n/en.json';
 
 describe('tasks-jobs/tasks/cleanup/cleanup.component.ts', () => {
   let component: CleanupComponent;
@@ -21,7 +23,13 @@ describe('tasks-jobs/tasks/cleanup/cleanup.component.ts', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [CleanupComponent],
-        imports: [FormsModule, ClarityModule, RouterTestingModule.withRoutes([]), BrowserAnimationsModule],
+        imports: [
+          FormsModule,
+          ClarityModule,
+          RouterTestingModule.withRoutes([]),
+          TranslateTestingModule.withTranslations('en', TRANSLATIONS),
+          BrowserAnimationsModule
+        ],
         providers: [
           SecurityServiceMock.provider,
           AboutServiceMock.provider,

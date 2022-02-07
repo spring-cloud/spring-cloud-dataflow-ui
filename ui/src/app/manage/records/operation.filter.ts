@@ -9,7 +9,7 @@ import {RecordOperationType} from '../../shared/model/record.model';
   template: ` <div>
     <clr-radio-wrapper>
       <input type="radio" clrRadio (change)="change()" [(ngModel)]="val" value="all" name="options" />
-      <label>All operations</label>
+      <label>{{ 'auditRecords.allOperations | translate }}</label>
     </clr-radio-wrapper>
     <clr-radio-wrapper *ngFor="let operation of operationTypes">
       <input type="radio" clrRadio (change)="change()" [(ngModel)]="val" value="{{ operation.key }}" name="options" />

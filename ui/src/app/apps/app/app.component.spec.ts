@@ -18,6 +18,8 @@ import {OrderByPipe} from '../../shared/pipe/order-by.pipe';
 import {By} from '@angular/platform-browser';
 import {HttpError} from '../../shared/model/error.model';
 import {ContextServiceMock} from '../../tests/service/context.service.mock';
+import {TranslateTestingModule} from 'ngx-translate-testing';
+import TRANSLATIONS from '../../../assets/i18n/en.json';
 
 describe('apps/apps.component.ts', () => {
   let component: AppComponent;
@@ -33,7 +35,13 @@ describe('apps/apps.component.ts', () => {
           CardComponent,
           OrderByPipe
         ],
-        imports: [FormsModule, ClarityModule, RouterTestingModule.withRoutes([]), BrowserAnimationsModule],
+        imports: [
+          FormsModule,
+          ClarityModule,
+          TranslateTestingModule.withTranslations('en', TRANSLATIONS),
+          RouterTestingModule.withRoutes([]),
+          BrowserAnimationsModule
+        ],
         providers: [
           SecurityServiceMock.provider,
           AboutServiceMock.provider,

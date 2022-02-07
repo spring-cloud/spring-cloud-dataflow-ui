@@ -15,6 +15,8 @@ import {TaskServiceMock} from '../../../tests/api/task.service.mock';
 import {ToolsServiceMock} from '../../../tests/service/task-tools.service.mock';
 import {StepComponent} from './step.component';
 import {ContextServiceMock} from '../../../tests/service/context.service.mock';
+import {TranslateTestingModule} from 'ngx-translate-testing';
+import TRANSLATIONS from '../../../../assets/i18n/en.json';
 
 describe('tasks-jobs/jobs/step/step.component.ts', () => {
   let component: StepComponent;
@@ -24,7 +26,13 @@ describe('tasks-jobs/jobs/step/step.component.ts', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [StepComponent, StopComponent, ConfirmComponent, LogComponent, RoleDirective],
-        imports: [FormsModule, ClarityModule, RouterTestingModule.withRoutes([]), BrowserAnimationsModule],
+        imports: [
+          FormsModule,
+          ClarityModule,
+          RouterTestingModule.withRoutes([]),
+          TranslateTestingModule.withTranslations('en', TRANSLATIONS),
+          BrowserAnimationsModule
+        ],
         providers: [
           SecurityServiceMock.provider,
           AboutServiceMock.provider,

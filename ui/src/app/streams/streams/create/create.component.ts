@@ -7,8 +7,9 @@ import {NotificationService} from '../../../shared/service/notification.service'
 import {ParserService} from '../../../flo/shared/service/parser.service';
 import {Properties} from 'spring-flo';
 import {StreamService} from '../../../shared/api/stream.service';
-import {Observable, timer} from 'rxjs';
+import {Observable} from 'rxjs';
 import {SanitizeDsl} from '../../../flo/stream/dsl-sanitize.service';
+import {TranslateService} from '@ngx-translate/core';
 
 class ProgressData {
   constructor(public count, public total) {}
@@ -43,7 +44,8 @@ export class CreateComponent implements OnInit {
     private streamService: StreamService,
     private notificationService: NotificationService,
     private fb: FormBuilder,
-    private sanitizeDsl: SanitizeDsl
+    private sanitizeDsl: SanitizeDsl,
+    private translate: TranslateService
   ) {
     this.form = this.fb.group({}, this.uniqueStreamNames());
   }
@@ -54,9 +56,6 @@ export class CreateComponent implements OnInit {
 
   ngOnInit(): void {
     this.streams = [];
-    // this.setDsl(`foo${new Date().getTime()}=file --app=sasdasdasdasdasdsadasdasdasdsada --app.toto=asdsadsadasdsadasdsadsad|
-    // log\nbar${new Date().getTime()}=file|log\njoo${new Date().getTime()}=file|log\nair${new Date().getTime()}=file|log`);
-    // this.isOpen = true;
   }
 
   back(): void {
@@ -205,11 +204,17 @@ export class CreateComponent implements OnInit {
 
   createStream(): void {
     if (!this.flo.dsl || !this.flo.dsl.trim()) {
-      this.notificationService.error('Invalid stream(s)', 'Please, enter one or more valid streams.');
+      this.notificationService.error(
+        this.translate.instant('streams.create.modal.message.invalidStreamTitle'),
+        this.translate.instant('streams.create.modal.message.invalidStreamContent')
+      );
       return;
     }
     if (this.flo.isCreateStreamsDisabled) {
-      this.notificationService.error('Invalid stream(s)', 'Some field(s) are missing or invalid.');
+      this.notificationService.error(
+        this.translate.instant('commons.message.invalidFieldsTitle'),
+        this.translate.instant('commons.message.invalidFieldsContent')
+      );
       return;
     }
     this.form = new FormGroup({}, this.uniqueStreamNames());
@@ -225,51 +230,56 @@ export class CreateComponent implements OnInit {
       // this.bsModalRef.hide();
     } else {
       const def = this.streams[index];
-      // this.blockerService.lock();
-      this.operationRunning = `Create stream ${def.name}`;
+      this.operationRunning = this.translate.instant('streams.create.modal.operation.creating', {name: def.name});
       const description = def.description === undefined ? '' : def.description;
-      this.streamService
-        .createStream(def.name, def.def, description)
-        // .pipe(takeUntil(this.ngUnsubscribe$), finalize(() => this.blockerService.unlock()))
-        .subscribe(
-          () => {
-            // Stream created successfully, mark it as created
-            def.created = true;
-            this.progressData.count++;
-            if (this.streams.length - 1 === index) {
-              // this.confirm.emit(true);
-              this.operationRunning = 'Creation completed';
-              setTimeout(() => {
-                this.notificationService.success('Stream(s) creation', 'Stream(s) have been created successfully');
-                this.router.navigate(['/streams/list']);
-              }, PROGRESS_BAR_WAIT_TIME);
-            } else {
-              this.waitForStreamDef(def.name, 0).then(
-                () => {
-                  this.progressData.count++;
-                  this.createStreams(index + 1);
-                },
-                () => {
-                  this.progressData.count++;
-                  this.createStreams(index + 1);
-                }
-              );
-            }
-          },
-          error => {
+      this.streamService.createStream(def.name, def.def, description).subscribe(
+        () => {
+          // Stream created successfully, mark it as created
+          def.created = true;
+          this.progressData.count++;
+          if (this.streams.length - 1 === index) {
+            // this.confirm.emit(true);
+            this.operationRunning = this.translate.instant('streams.create.modal.operation.completed');
             setTimeout(() => {
-              this.progressData = undefined;
-            }, PROGRESS_BAR_WAIT_TIME);
-            if (error._body && error._body.message) {
-              this.notificationService.error(
-                'An error occurred',
-                `Problem creating stream '${def.name}': ${error._body.message}`
+              this.notificationService.success(
+                this.translate.instant('streams.create.modal.message.successTitle'),
+                this.translate.instant('streams.create.modal.message.successContent')
               );
-            } else {
-              this.notificationService.error('An error occurred', `Failed to create stream '${def.name}'`);
-            }
+              this.router.navigate(['/streams/list']);
+            }, PROGRESS_BAR_WAIT_TIME);
+          } else {
+            this.waitForStreamDef(def.name, 0).then(
+              () => {
+                this.progressData.count++;
+                this.createStreams(index + 1);
+              },
+              () => {
+                this.progressData.count++;
+                this.createStreams(index + 1);
+              }
+            );
           }
-        );
+        },
+        error => {
+          setTimeout(() => {
+            this.progressData = undefined;
+          }, PROGRESS_BAR_WAIT_TIME);
+          if (error._body && error._body.message) {
+            this.notificationService.error(
+              this.translate.instant('commons.message.error'),
+              this.translate.instant('streams.create.modal.message.errorContent', {
+                name: def.name,
+                message: error._body.message
+              })
+            );
+          } else {
+            this.notificationService.error(
+              this.translate.instant('commons.message.error'),
+              this.translate.instant('streams.create.modal.message.errorContent2', {name: def.name})
+            );
+          }
+        }
+      );
     }
   }
 
@@ -282,21 +292,18 @@ export class CreateComponent implements OnInit {
       if (attemptCount === 10) {
         resolve();
       }
-      this.streamService
-        .getStream(streamDefNameToWaitFor)
-        // .pipe(takeUntil(this.ngUnsubscribe$))
-        .subscribe(
-          () => {
-            resolve();
-          },
-          () => {
-            setTimeout(() => {
-              this.waitForStreamDef(streamDefNameToWaitFor, attemptCount + 1).then(() => {
-                resolve();
-              });
-            }, 400);
-          }
-        );
+      this.streamService.getStream(streamDefNameToWaitFor).subscribe(
+        () => {
+          resolve();
+        },
+        () => {
+          setTimeout(() => {
+            this.waitForStreamDef(streamDefNameToWaitFor, attemptCount + 1).then(() => {
+              resolve();
+            });
+          }, 400);
+        }
+      );
     });
   }
 }

@@ -1,51 +1,61 @@
 <clr-modal [(clrModalOpen)]="isOpen" class="modal-about">
-  <h3 class="modal-title">About Spring Cloud Data Flow</h3>
+  <h3 class="modal-title">{{ 'about.info.title' | translate }}</h3>
   <div class="modal-body" #container>
     <div *ngIf="!loading && about">
-      <h3 style="padding-top: 0">Data Flow Server Implementation</h3>
+      <h3 style="padding-top: 0">{{ 'about.info.serverImpTitle' | translate }}</h3>
       <ul>
-        <li><strong>Name</strong>: {{ about.versions.implementation.name || 'n/a' }}</li>
-        <li><strong>Version</strong>: {{ about.versions.implementation.version || 'n/a' }}</li>
+        <li>
+          <strong>{{ 'about.info.name' | translate }}</strong
+          >: {{ about.versions.implementation.name || 'n/a' }}
+        </li>
+        <li>
+          <strong>{{ 'about.info.version' | translate }}</strong
+          >: {{ about.versions.implementation.version || 'n/a' }}
+        </li>
       </ul>
-      <h3>Features</h3>
+      <h3>{{ 'about.info.features' | translate }}</h3>
       <ul id="enabledFeaturesTable">
         <li>
-          <strong>Streams: </strong>
+          <strong>{{ 'about.info.streams' | translate }}: </strong>
           <clr-icon shape="check" *ngIf="about.features.streams"></clr-icon>
           <clr-icon shape="times" *ngIf="!about.features.streams"></clr-icon>
         </li>
         <li>
-          <strong>Tasks: </strong>
+          <strong>{{ 'about.info.tasks' | translate }}: </strong>
           <clr-icon shape="check" *ngIf="about.features.tasks"></clr-icon>
           <clr-icon shape="times" *ngIf="!about.features.tasks"></clr-icon>
         </li>
         <li>
-          <strong>Schedules: </strong>
+          <strong>{{ 'about.info.schedules' | translate }}: </strong>
           <clr-icon shape="check" *ngIf="about.features.schedules"></clr-icon>
           <clr-icon shape="times" *ngIf="!about.features.schedules"></clr-icon>
         </li>
         <li>
-          <strong>Monitoring Dashboard: </strong>
-          <span *ngIf="about.features.monitoringDashboardType === 'GRAFANA'">Grafana</span>
-          <span *ngIf="about.features.monitoringDashboardType === 'WAVEFRONT'">Wavefront</span>
+          <strong>{{ 'about.info.monitoring' | translate }}: </strong>
+          <span *ngIf="about.features.monitoringDashboardType === 'GRAFANA'">{{
+            'about.info.grafana' | translate
+          }}</span>
+          <span *ngIf="about.features.monitoringDashboardType === 'WAVEFRONT'">{{
+            'about.info.wavefront' | translate
+          }}</span>
           <clr-icon shape="times" *ngIf="about.features.monitoringDashboardType === 'NONE'"></clr-icon>
         </li>
       </ul>
-      <h3>Security</h3>
+      <h3>{{ 'about.info.security' | translate }}</h3>
       <ul>
         <li>
-          <strong>Authentication Enabled: </strong>
+          <strong>{{ 'about.info.authentificationEnabled' | translate }}: </strong>
           <clr-icon shape="check" *ngIf="about.security.isAuthentication"></clr-icon>
           <clr-icon shape="times" *ngIf="!about.security.isAuthentication"></clr-icon>
         </li>
         <li>
-          <strong>Authenticated: </strong>
+          <strong>{{ 'about.info.authenticated' | translate }}: </strong>
           <clr-icon shape="check" *ngIf="about.security.isAuthenticated"></clr-icon>
           <clr-icon shape="times" *ngIf="!about.security.isAuthenticated"></clr-icon>
         </li>
         <li *ngIf="about.security.username"><strong>Username: </strong> {{ about.security.username || 'N/A' }}</li>
         <li *ngIf="about.security.roles?.length > 0">
-          <strong>Roles: </strong>
+          <strong>{{ 'about.info.roles' | translate }}: </strong>
           <ul>
             <li *ngFor="let role of about.security.roles">
               {{ role }}
@@ -53,52 +63,79 @@
           </ul>
         </li>
       </ul>
-      <h3>Versions</h3>
+      <h3>{{ 'about.info.version' | translate }}</h3>
       <ul>
         <li>
-          <strong>Implementation Version: </strong> {{ about.versions.implementation.version }} ({{
+          <strong>{{ 'about.info.impVersion' | translate }}: </strong> {{ about.versions.implementation.version }} ({{
             about.versions.implementation.name
           }})
         </li>
-        <li><strong>Core: </strong> {{ about.versions.core.version }} ({{ about.versions.core.name }})</li>
         <li>
-          <strong>Dashboard: </strong> {{ about.versions.dashboard.version }} ({{ about.versions.dashboard.name }})
+          <strong>{{ 'about.info.core' | translate }}: </strong> {{ about.versions.core.version }} ({{
+            about.versions.core.name
+          }})
         </li>
-        <li><strong>Shell: </strong> {{ about.versions.shell.version }} ({{ about.versions.shell.name }})</li>
+        <li>
+          <strong>{{ 'about.info.dashboard' | translate }}: </strong> {{ about.versions.dashboard.version }} ({{
+            about.versions.dashboard.name
+          }})
+        </li>
+        <li>
+          <strong>{{ 'about.info.shell' | translate }}: </strong> {{ about.versions.shell.version }} ({{
+            about.versions.shell.name
+          }})
+        </li>
         <li *ngIf="about.versions.shell.checksumSha1">
-          <strong>Shell Checksum Sha1: </strong> {{ about.versions.shell.checksumSha1 }}
+          <strong>{{ 'about.info.shellChecksumSha1' | translate }}: </strong> {{ about.versions.shell.checksumSha1 }}
         </li>
         <li *ngIf="about.versions.shell.checksumSha256">
-          <strong>Shell Checksum Sha256: </strong> {{ about.versions.shell.checksumSha256 }}
+          <strong>{{ 'about.info.shellChecksum256' | translate }}: </strong> {{ about.versions.shell.checksumSha256 }}
         </li>
       </ul>
-      <h3>Runtime Environment - Skipper Deployer</h3>
+      <h3>{{ 'about.info.runtimeSkipperDeployer' | translate }}</h3>
       <ul>
         <li>
-          <strong>Implementation Version: </strong>
+          <strong>{{ 'about.info.impVersion' | translate }}: </strong>
           {{ about.runtimeEnvironment.appDeployer.deployerImplementationVersion }}
         </li>
-        <li><strong>Name: </strong> {{ about.runtimeEnvironment.appDeployer.deployerName || 'N/A' }}</li>
-        <li><strong>Spi Version: </strong> {{ about.runtimeEnvironment.appDeployer.deployerSpiVersion || 'N/A' }}</li>
-        <li><strong>Java Version: </strong> {{ about.runtimeEnvironment.appDeployer.javaVersion || 'N/A' }}</li>
         <li>
-          <strong>Platform Api Version: </strong> {{ about.runtimeEnvironment.appDeployer.platformApiVersion || 'N/A' }}
+          <strong>{{ 'about.info.name' | translate }}: </strong>
+          {{ about.runtimeEnvironment.appDeployer.deployerName || 'N/A' }}
         </li>
         <li>
-          <strong>Platform Client Version: </strong>
+          <strong>{{ 'about.info.spiVersion' | translate }}: </strong>
+          {{ about.runtimeEnvironment.appDeployer.deployerSpiVersion || 'N/A' }}
+        </li>
+        <li>
+          <strong>{{ 'about.info.javaVersion' | translate }}: </strong>
+          {{ about.runtimeEnvironment.appDeployer.javaVersion || 'N/A' }}
+        </li>
+        <li>
+          <strong>{{ 'about.info.platformApiVersion' | translate }}: </strong>
+          {{ about.runtimeEnvironment.appDeployer.platformApiVersion || 'N/A' }}
+        </li>
+        <li>
+          <strong>{{ 'about.info.platformClientVersion' | translate }}: </strong>
           {{ about.runtimeEnvironment.appDeployer.platformClientVersion || 'N/A' }}
         </li>
         <li>
-          <strong>Platform Host Version: </strong>
+          <strong>{{ 'about.info.platformHostVersion' | translate }}: </strong>
           {{ about.runtimeEnvironment.appDeployer.platformHostVersion || 'N/A' }}
         </li>
-        <li><strong>Platform Type: </strong> {{ about.runtimeEnvironment.appDeployer.platformType || 'N/A' }}</li>
         <li>
-          <strong>Spring Boot Version: </strong> {{ about.runtimeEnvironment.appDeployer.springBootVersion || 'N/A' }}
+          <strong>{{ 'about.info.platformType' | translate }}: </strong>
+          {{ about.runtimeEnvironment.appDeployer.platformType || 'N/A' }}
         </li>
-        <li><strong>Spring Version: </strong> {{ about.runtimeEnvironment.appDeployer.springVersion || 'N/A' }}</li>
+        <li>
+          <strong>{{ 'about.info.springBootVersion' | translate }}: </strong>
+          {{ about.runtimeEnvironment.appDeployer.springBootVersion || 'N/A' }}
+        </li>
+        <li>
+          <strong>{{ 'about.info.springVersion' | translate }}: </strong>
+          {{ about.runtimeEnvironment.appDeployer.springVersion || 'N/A' }}
+        </li>
       </ul>
-      <h3>Platform-specific Information of the Skipper Deployer</h3>
+      <h3>{{ 'about.info.platformSkipperDeployer' | translate }}</h3>
       <ul>
         <ng-template
           *ngIf="
@@ -119,29 +156,51 @@
             (about.runtimeEnvironment.appDeployer.platformSpecificInfo | keyvalue).length === 0
           "
         >
-          <strong> No platform-specific app deployer information available. </strong>
+          <strong>{{ 'about.info.noPlatform' | translate }}</strong>
         </li>
       </ul>
       <div>
-        <h3>Runtime Environment - Task Launcher</h3>
+        <h3>{{ 'about.info.runtimeTaskLauncher' | translate }}</h3>
         <div>
           <ul *ngIf="!about?.runtimeEnvironment?.taskLaunchers">
-            <li><strong>No Task Launcher information is available.</strong></li>
+            <li>
+              <strong>{{ 'about.info.noLauncher' | translate }}.</strong>
+            </li>
           </ul>
           <ul *ngIf="about?.runtimeEnvironment?.taskLaunchers" id="taskLauncherTable">
             <ng-template ngFor let-item [ngForOf]="about.runtimeEnvironment.taskLaunchers">
-              <li><strong>Implementation Version: </strong> {{ item.deployerImplementationVersion }}</li>
-              <li><strong>Name: </strong> {{ item.deployerName }}</li>
-              <li><strong>Spi Version: </strong> {{ item.deployerSpiVersion }}</li>
-              <li><strong>Java Version: </strong> {{ item.javaVersion }}</li>
-              <li><strong>Platform Api Version: </strong> {{ item.platformApiVersion }}</li>
-              <li><strong>Platform Client Version: </strong> {{ item.platformClientVersion }}</li>
-              <li><strong>Platform Host Version: </strong> {{ item.platformHostVersion }}</li>
-              <li><strong>Platform Type: </strong> {{ item.platformType }}</li>
-              <li><strong>Spring Boot Version: </strong> {{ item.springBootVersion }}</li>
-              <li><strong>Spring Version: </strong> {{ item.springVersion }}</li>
               <li>
-                <strong>Platform-specific Information of the Task Launcher</strong>
+                <strong>{{ 'about.info.impVersion' | translate }}: </strong> {{ item.deployerImplementationVersion }}
+              </li>
+              <li>
+                <strong>{{ 'about.info.name' | translate }}: </strong> {{ item.deployerName }}
+              </li>
+              <li>
+                <strong>{{ 'about.info.spiVersion' | translate }}: </strong> {{ item.deployerSpiVersion }}
+              </li>
+              <li>
+                <strong>{{ 'about.info.javaVersion' | translate }}: </strong> {{ item.javaVersion }}
+              </li>
+              <li>
+                <strong>{{ 'about.info.platformApiVersion' | translate }}: </strong> {{ item.platformApiVersion }}
+              </li>
+              <li>
+                <strong>{{ 'about.info.platformClientVersion' | translate }}: </strong> {{ item.platformClientVersion }}
+              </li>
+              <li>
+                <strong>{{ 'about.info.platformHostVersion' | translate }}: </strong> {{ item.platformHostVersion }}
+              </li>
+              <li>
+                <strong>{{ 'about.info.platformType' | translate }}: </strong> {{ item.platformType }}
+              </li>
+              <li>
+                <strong>{{ 'about.info.springBootVersion' | translate }}: </strong> {{ item.springBootVersion }}
+              </li>
+              <li>
+                <strong>{{ 'about.info.springVersion' | translate }}: </strong> {{ item.springVersion }}
+              </li>
+              <li>
+                <strong>{{ 'about.info.platformTaskLauncher' | translate }}</strong>
                 <ul>
                   <ng-template
                     *ngIf="item.platformSpecificInfo && (item.platformSpecificInfo | keyvalue).length > 0"
@@ -154,7 +213,7 @@
                     </li>
                   </ng-template>
                   <li *ngIf="!item.platformSpecificInfo || (item.platformSpecificInfo | keyvalue).length === 0">
-                    <strong> No platform-specific task launcher information available. </strong>
+                    <strong>{{ 'about.info.noPlatformTaskLauncher' | translate }}</strong>
                   </li>
                 </ul>
               </li>
@@ -162,16 +221,18 @@
           </ul>
         </div>
       </div>
-      <h3>Need Help or Found an Issue?</h3>
+      <h3>{{ 'about.info.help' | translate }}</h3>
       <ul>
         <li>
           <a target="_blank" href="https://cloud.spring.io/spring-cloud-dataflow/">
-            <strong>Project Page</strong>: Quick overview of Spring Cloud Data Flow Project.
+            <strong>{{ 'about.signpost.projectPage' | translate }}</strong
+            >: {{ 'about.info.projectPageDesc' | translate }}
           </a>
         </li>
         <li>
           <a target="_blank" href="https://github.com/spring-cloud/spring-cloud-dataflow">
-            <strong>Source Code</strong>: Spring Cloud Data Flow Project is an Open Source Project.
+            <strong>{{ 'about.signpost.sourceCode' | translate }}</strong
+            >: {{ 'about.info.sourceCodeDesc' | translate }}
           </a>
         </li>
         <li>
@@ -181,7 +242,8 @@
               about.versions.core.version
             }}/reference/htmlsingle/"
           >
-            <strong>Documentation</strong>: Learn more about the product features.
+            <strong>{{ 'about.signpost.documentation' | translate }}</strong
+            >: {{ 'about.info.documentationDesc' | translate }}
           </a>
         </li>
         <li>
@@ -191,23 +253,28 @@
               about.versions.core.version
             }}/reference/htmlsingle/#api-guide-resources"
           >
-            <strong>API Docs</strong>: Learn more about the REST-APIs.
+            <strong>{{ 'about.signpost.apiDocs' | translate }}</strong
+            >: {{ 'about.info.apiDocsDesc' | translate }}
           </a>
         </li>
         <li>
           <a target="_blank" href="https://stackoverflow.com/questions/tagged/spring-cloud-dataflow">
-            <strong>Support Forum</strong>: You need help?
+            <strong>{{ 'about.signpost.supportForum' | translate }}</strong
+            >: {{ 'about.info.supportForumDesc' | translate }}
           </a>
         </li>
         <li>
           <a target="_blank" href="https://github.com/spring-cloud/spring-cloud-dataflow/issues">
-            <strong>Issue Tracker</strong>: Report an issue or request for a new feature.
+            <strong>{{ 'about.signpost.issueTracker' | translate }}</strong
+            >: {{ 'about.info.issueTrackerDesc' | translate }}
           </a>
         </li>
       </ul>
     </div>
   </div>
   <div class="modal-footer">
-    <button (click)="copyToClipboard()" type="button" class="btn btn-primary">Copy Details to Clipboard</button>
+    <button (click)="copyToClipboard()" type="button" class="btn btn-primary">
+      {{ 'about.info.copy' | translate }}
+    </button>
   </div>
 </clr-modal>

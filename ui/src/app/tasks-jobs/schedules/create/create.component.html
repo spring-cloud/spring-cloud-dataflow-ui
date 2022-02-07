@@ -1,15 +1,15 @@
-<h1>Create schedule(s)</h1>
+<h1>{{ 'schedules.create.title' | translate }}</h1>
 <div *ngIf="!loading" style="padding-bottom: 1rem">
   <form clrForm [formGroup]="form" clrLayout="horizontal" clrLabelSize="4" (submit)="submit()">
     <div *ngIf="config.tasks.length === 1" formArrayName="names">
       <div class="clr-form-control clr-row">
-        <div class="clr-col-md-2 clr-control-label">Task Name</div>
+        <div class="clr-col-md-2 clr-control-label">{{ 'schedules.main.taskName' | translate }}</div>
         <div class="clr-col-9">
           {{ config.tasks[0].name }}
         </div>
       </div>
       <clr-input-container>
-        <label class="clr-col-md-2">Schedule name</label>
+        <label class="clr-col-md-2">{{ 'schedules.main.scheduleName' | translate }}</label>
         <input
           clrInput
           type="text"
@@ -17,8 +17,10 @@
           name="example"
           [dataflowFocus]="true"
         />
-        <clr-control-error *clrIfError="'required'">The name is required.</clr-control-error>
-        <clr-control-error *clrIfError="'exist'">The name already exists.</clr-control-error>
+        <clr-control-error *clrIfError="'required'">{{
+          'schedules.create.requiredName' | translate
+        }}</clr-control-error>
+        <clr-control-error *clrIfError="'exist'">{{ 'schedules.create.uniqueName' | translate }}</clr-control-error>
       </clr-input-container>
     </div>
     <div *ngIf="config.tasks.length > 1" formArrayName="names">
@@ -28,19 +30,19 @@
             <div class="alert-icon-wrapper">
               <clr-icon class="alert-icon" shape="exclamation-circle"></clr-icon>
             </div>
-            <span class="alert-text">Duplicate schedule name on the form.</span>
+            <span class="alert-text">{{ 'schedules.create.duplicateScheduleName' | translate }}</span>
           </div>
         </div>
       </div>
       <div *ngFor="let task of config.tasks; index as i">
         <div class="clr-form-control clr-row">
-          <div class="clr-col-md-2 clr-control-label">Task Name</div>
+          <div class="clr-col-md-2 clr-control-label">{{ 'schedules.main.taskName' | translate }}</div>
           <div class="clr-col-9">
             {{ task.name }}
           </div>
         </div>
         <clr-input-container>
-          <label class="clr-col-md-2">Schedule</label>
+          <label class="clr-col-md-2">{{ 'schedules.main.schedule' | translate }}</label>
           <input
             clrInput
             type="text"
@@ -48,14 +50,20 @@
             name="example"
             [dataflowFocus]="i === 0"
           />
-          <clr-control-error *clrIfError="'required'">The name is required.</clr-control-error>
-          <clr-control-error *clrIfError="'exist'">The name already exists.</clr-control-error>
-          <clr-control-error *clrIfError="'notUnique'">The name already exists.</clr-control-error>
+          <clr-control-error *clrIfError="'required'">{{
+            'schedules.create.requiredScheduleName' | translate
+          }}</clr-control-error>
+          <clr-control-error *clrIfError="'exist'">{{
+            'schedules.create.uniqueScheduleName' | translate
+          }}</clr-control-error>
+          <clr-control-error *clrIfError="'notUnique'">{{
+            'schedules.create.uniqueScheduleName' | translate
+          }}</clr-control-error>
         </clr-input-container>
       </div>
     </div>
     <clr-select-container>
-      <label class="clr-col-md-2"> Platform </label>
+      <label class="clr-col-md-2">{{ 'schedules.main.platform' | translate }}</label>
       <select clrSelect [formControl]="form.get('platform')">
         <option value="">Select</option>
         <option *ngFor="let platform of config.platforms" [value]="platform.name">
@@ -63,57 +71,61 @@
           ({{ platform.type }})
         </option>
       </select>
-      <clr-control-error *clrIfError="'required'">The platform is required.</clr-control-error>
+      <clr-control-error *clrIfError="'required'">{{
+        'schedules.create.requiredPlatform' | translate
+      }}</clr-control-error>
     </clr-select-container>
     <clr-input-container>
-      <label class="clr-col-md-2">Cron Expression</label>
+      <label class="clr-col-md-2">{{ 'schedules.main.cronExpression' | translate }}</label>
       <input clrInput type="text" [formControl]="form.get('cron')" name="example" />
-      <clr-control-error *clrIfError="'required'">The cron expression is required.</clr-control-error>
+      <clr-control-error *clrIfError="'required'">{{
+        'schedules.create.requiredCronExpression' | translate
+      }}</clr-control-error>
     </clr-input-container>
     <clr-control-container class="key-value-wrapper">
-      <label class="clr-col-md-2">Arguments</label>
+      <label class="clr-col-md-2">{{ 'schedules.create.arguments' | translate }}</label>
       <app-key-value clrControl formControlName="args"></app-key-value>
       <clr-control-helper>
-        Arguments can be prefixed by <code>--</code> (optional). Example:<br />
+        <div [innerHTML]="'schedules.create.argumentsDesc'"></div>
         <pre><code>--myarg1=value1
 --myarg2=value2</code></pre>
       </clr-control-helper>
       <clr-control-error>
-        One or more arguments are invalid.<br />Example: <code>myarg=myvalue</code>.
+        <div [innerHTML]="'schedules.create.invalidArguments'"></div>
       </clr-control-error>
     </clr-control-container>
     <clr-control-container class="key-value-wrapper">
-      <label class="clr-col-md-2">Properties</label>
+      <label class="clr-col-md-2">{{ 'schedules.main.properties' | translate }}</label>
       <app-key-value clrControl formControlName="props"></app-key-value>
       <clr-control-helper>
-        Parameters should start with an <code>app.</code> or <code>scheduler.</code>. Example:<br />
+        <div [innerHTML]="'schedules.create.propertiesDesc'"></div>
         <pre><code>app.myparam=value1
-          scheduler.myparam2=value2</code></pre>
+scheduler.myparam2=value2</code></pre>
       </clr-control-helper>
       <clr-control-error>
-        One or more parameters are invalid.<br />Example: <code>app.myarg=myvalue</code>.
+        <div [innerHTML]="'schedules.create.invalidProperties'"></div>
       </clr-control-error>
     </clr-control-container>
     <clr-control-container>
       <label class="clr-col-md-2"></label>
-      <button class="btn btn-secondary" type="button" (click)="back()">Cancel</button>
-      <button class="btn btn-primary" type="submit">Create schedule(s)</button>
+      <button class="btn btn-secondary" type="button" (click)="back()">{{ 'commons.cancel' | translate }}</button>
+      <button class="btn btn-primary" type="submit">{{ 'schedules.create.create' | translate }}</button>
     </clr-control-container>
   </form>
 </div>
 
 <div *ngIf="loading" style="padding: 1rem 0">
   <clr-spinner clrInline clrSmall></clr-spinner>
-  Loading...
+  {{ 'commons.loading' | translate }}
 </div>
 
 <clr-modal [(clrModalOpen)]="creating" *ngIf="config" [clrModalClosable]="false">
-  <h3 class="modal-title">Create schedule(s)</h3>
+  <h3 class="modal-title">{{ 'schedules.create.create' | translate }}</h3>
   <div class="modal-body">
     <clr-spinner clrInline clrSmall></clr-spinner>
-    Creating schedule(s)...
+    {{ 'schedules.create.creating' | translate }}
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline" [disabled]="true">Cancel</button>
+    <button type="button" class="btn btn-outline" [disabled]="true">{{ 'commons.cancel' | translate }}</button>
   </div>
 </clr-modal>

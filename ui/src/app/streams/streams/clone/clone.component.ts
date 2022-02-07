@@ -6,6 +6,7 @@ import {StreamPage, Stream} from '../../../shared/model/stream.model';
 import {of} from 'rxjs';
 import {concatAll} from 'rxjs/operators';
 import {Utils} from '../../..//flo/stream/support/utils';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-stream-clone',
@@ -24,7 +25,8 @@ export class CloneComponent {
   constructor(
     private streamService: StreamService,
     private notificationService: NotificationService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private translate: TranslateService
   ) {}
 
   open(streams: Array<any>): void {
@@ -73,20 +75,32 @@ export class CloneComponent {
   done(success: number, error: number): void {
     if (success > 0) {
       if (error > 0) {
-        this.notificationService.success('Stream(s) clone', 'Stream(s) have been cloned partially');
+        this.notificationService.success(
+          this.translate.instant('streams.clone.message.partialSuccessTitle'),
+          this.translate.instant('streams.clone.message.partialSuccessContent')
+        );
       } else {
-        this.notificationService.success('Stream(s) clone', 'Stream(s) have been cloned successfully');
+        this.notificationService.success(
+          this.translate.instant('streams.clone.message.successTitle'),
+          this.translate.instant('streams.clone.message.successContent')
+        );
       }
       this.onCloned.emit(true);
       this.cancel();
     } else {
-      this.notificationService.error('Error(s) occurred', 'No stream(s) cloned.');
+      this.notificationService.error(
+        this.translate.instant('commons.message.error'),
+        this.translate.instant('streams.clone.message.errorContent')
+      );
     }
   }
 
   submit(): void {
     if (this.form.invalid) {
-      this.notificationService.error('Invalid field', 'Some field(s) are missing or invalid.');
+      this.notificationService.error(
+        this.translate.instant('commons.message.invalidFieldsTitle'),
+        this.translate.instant('commons.message.invalidFieldsContent')
+      );
       return;
     }
     const requests = this.streams.map(stream => {
@@ -110,7 +124,7 @@ export class CloneComponent {
         err => {
           count++;
           error++;
-          this.notificationService.error('Error(s) occurred', err);
+          this.notificationService.error(this.translate.instant('commons.message.error'), err);
           if (count === requests.length) {
             this.done(success, error);
           }

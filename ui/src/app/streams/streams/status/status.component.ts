@@ -4,37 +4,61 @@ import {Component} from '@angular/core';
   selector: 'app-stream-status',
   template: `
     <clr-modal [(clrModalOpen)]="isOpen">
-      <h3 class="modal-title">Stream status</h3>
+      <h3 class="modal-title">{{ 'streams.status.title' | translate }}</h3>
       <div class="modal-body">
         <div class="list-status">
           <div>
-            <span class="status"><span class="label label-stream deploying">DEPLOYING</span></span>
-            <span class="desc">Deployment has been initiated</span>
+            <span class="status"
+              ><span class="label label-stream deploying">{{
+                'streams.status.deploying' | translate | uppercase
+              }}</span></span
+            >
+            <span class="desc">{{ 'streams.status.deployingContent' | translate }}</span>
           </div>
           <div>
-            <span class="status"><span class="label label-stream deployed">DEPLOYED</span></span>
-            <span class="desc">Fully deployed based on each of the stream's apps' count properties</span>
+            <span class="status"
+              ><span class="label label-stream deployed">{{
+                'streams.status.deployed' | translate | uppercase
+              }}</span></span
+            >
+            <span class="desc">{{ 'streams.status.deployedContent' | translate }}</span>
           </div>
           <div>
-            <span class="status"><span class="label label-stream incomplete">PARTIAL</span></span>
-            <span class="desc">1 or more of the apps are not yet deployed.</span>
+            <span class="status"
+              ><span class="label label-stream incomplete">{{
+                'streams.status.partial' | translate | uppercase
+              }}</span></span
+            >
+            <span class="desc">{{ 'streams.status.partialContent' | translate }}</span>
           </div>
           <div>
-            <span class="status"><span class="label label-stream incomplete">INCOMPLETE</span></span>
-            <span class="desc">At least 1 of each app, but 1 or more of them not at requested capacity</span>
+            <span class="status"
+              ><span class="label label-stream incomplete">{{
+                'streams.status.incomplete' | translate | uppercase
+              }}</span></span
+            >
+            <span class="desc">{{ 'streams.status.incompleteContent' | translate }}</span>
           </div>
           <div>
-            <span class="status"><span class="label label-stream failed">FAILED</span></span>
-            <span class="desc">1 or more of the apps does not have even a single instance deployed</span>
+            <span class="status"
+              ><span class="label label-stream failed">{{
+                'streams.status.failed' | translate | uppercase
+              }}</span></span
+            >
+            <span class="desc">{{ 'streams.status.failedContent' | translate }}</span>
           </div>
           <div>
-            <span class="status"><span class="label label-stream undeployed">UNDEPLOYED</span></span>
-            <span class="desc">Intentionally undeployed, or created but not yet deployed</span>
+            <span class="status"
+              ><span class="label label-stream undeployed">{{
+                'streams.status.undeployed' | translate | uppercase
+              }}</span></span
+            >
+            <span class="desc">{{ 'streams.status.undeployedContent' | translate }}</span>
           </div>
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-outline" (click)="close()">Close</button>
+        <button type="button" class="btn btn-outline" (click)="close()">{{ 'commons.close' | translate }}</button>
       </div>
     </clr-modal>
   `

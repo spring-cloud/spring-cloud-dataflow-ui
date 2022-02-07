@@ -1,23 +1,24 @@
 <clr-modal [(clrModalOpen)]="isOpen" [clrModalClosable]="!isRunning">
-  <h3 class="modal-title">Confirm Clean Up Task Execution(s)</h3>
+  <h3 class="modal-title">{{ 'tools.modal.cleanUp.title' | translate }}</h3>
   <div class="modal-body" *ngIf="!isRunning && !loading">
-    <p>
-      This action will remove <strong>{{ status === 'all' ? count.all : count.completed }} execution(s)</strong>. Are
-      you sure?
-    </p>
+    <p
+      [innerHTML]="'tools.modal.cleanUp.content' | translate: {count: status === 'all' ? count.all : count.completed}"
+    ></p>
   </div>
   <div class="modal-body" *ngIf="isRunning">
     <clr-spinner clrInline clrSmall></clr-spinner>
-    Removing data...
+    {{ 'tools.modal.cleanUp.removing' | translate }}
   </div>
   <div class="modal-body" *ngIf="loading">
     <clr-spinner clrInline clrSmall></clr-spinner>
-    Loading...
+    {{ 'commons.loading' | translate }}
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline" (click)="isOpen = false" [disabled]="isRunning">Cancel</button>
+    <button type="button" class="btn btn-outline" (click)="isOpen = false" [disabled]="isRunning">
+      {{ 'commons.cancel' | translate }}
+    </button>
     <button id="btn-stop" type="button" class="btn btn-danger" (click)="clean()" [disabled]="isRunning">
-      <span>Clean up Execution(s)</span>
+      <span>{{ 'tools.modal.cleanUp.cleanUp' | translate }}</span>
     </button>
   </div>
 </clr-modal>

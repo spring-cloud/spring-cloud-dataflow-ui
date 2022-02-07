@@ -15,6 +15,7 @@ import {SecurityModule} from '../security/security.module';
 import {OperationFilterComponent} from './records/operation.filter';
 import {ActionFilterComponent} from './records/action.filter';
 import {CleanupComponent} from './tools/cleanup/cleanup.component';
+import {TranslateModule} from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import {CleanupComponent} from './tools/cleanup/cleanup.component';
     ReactiveFormsModule,
     SharedModule,
     ClarityModule,
-    SecurityModule
+    SecurityModule,
+    TranslateModule
   ],
   providers: []
 })

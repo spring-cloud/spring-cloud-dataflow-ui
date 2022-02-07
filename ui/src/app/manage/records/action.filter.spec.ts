@@ -10,6 +10,8 @@ import {ActionFilterComponent} from './action.filter';
 import {RecordServiceMock} from '../../tests/api/record.service.mock';
 import {By} from '@angular/platform-browser';
 import {ContextServiceMock} from '../../tests/service/context.service.mock';
+import {TranslateTestingModule} from 'ngx-translate-testing';
+import TRANSLATIONS from '../../../assets/i18n/en.json';
 
 describe('manage/records/action.filter.ts', () => {
   let component: ActionFilterComponent;
@@ -19,7 +21,12 @@ describe('manage/records/action.filter.ts', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [ActionFilterComponent],
-        imports: [FormsModule, ClarityModule, BrowserAnimationsModule],
+        imports: [
+          FormsModule,
+          ClarityModule,
+          TranslateTestingModule.withTranslations('en', TRANSLATIONS),
+          BrowserAnimationsModule
+        ],
         providers: [
           SecurityServiceMock.provider,
           AboutServiceMock.provider,

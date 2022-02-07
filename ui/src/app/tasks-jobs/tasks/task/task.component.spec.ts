@@ -15,6 +15,8 @@ import {LogComponent} from '../../executions/execution/log/log.component';
 import {ContextServiceMock} from '../../../tests/service/context.service.mock';
 import {ScheduleServiceMock} from '../../../tests/api/schedule.service.mock';
 import {CleanupComponent} from '../cleanup/cleanup.component';
+import {TranslateTestingModule} from 'ngx-translate-testing';
+import TRANSLATIONS from '../../../../assets/i18n/en.json';
 
 describe('tasks-jobs/tasks/task/task.component.ts', () => {
   let component: TaskComponent;
@@ -28,6 +30,7 @@ describe('tasks-jobs/tasks/task/task.component.ts', () => {
           FormsModule,
           ReactiveFormsModule,
           ClarityModule,
+          TranslateTestingModule.withTranslations('en', TRANSLATIONS),
           RouterTestingModule.withRoutes([]),
           BrowserAnimationsModule
         ],

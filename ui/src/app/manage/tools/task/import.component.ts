@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {NotificationService} from '../../../shared/service/notification.service';
 import {ImportExportService} from '../../../shared/service/import-export.service';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-manage-task-import',
@@ -10,26 +11,23 @@ import {ImportExportService} from '../../../shared/service/import-export.service
       [clrModalClosable]="view !== 'loading'"
       [clrModalSize]="view === 'result' ? 'lg' : 'md'"
     >
-      <h3 class="modal-title">Import task(s)</h3>
+      <h3 class="modal-title">{{ 'tools.modal.importTasks.title' | translate }}</h3>
       <div class="modal-body clr-form clr-form-horizontal" *ngIf="view === 'file'">
-        <div>
-          You can import your tasks from a <strong>JSON file</strong>.<br />
-          The file needs to be modified for sensitive properties before importing.
-        </div>
+        <div [innerHTML]="'tools.modal.importTasks.content' | translate"></div>
         <div class="clr-form-control clr-row">
-          <label class="clr-col-2 clr-control-label">JSON file</label>
+          <label class="clr-col-2 clr-control-label">{{ 'tools.modal.importTasks.jsonFile' | translate }}</label>
           <div class="clr-control-container clr-col-10">
             <div class="clr-file-input-wrapper">
               <label for="file">
                 <span class="filename text-truncate">{{ file?.name }}</span>
-                <span class="btn btn-sm btn-secondary">Select a file</span>
+                <span class="btn btn-sm btn-secondary">{{ 'commons.selectFile' | translate }}</span>
                 <input name="file" id="file" type="file" (change)="fileChanged($event)" />
               </label>
             </div>
           </div>
         </div>
         <clr-checkbox-container class="clr-form-control clr-row">
-          <label class="clr-col-2">Options</label>
+          <label class="clr-col-2">{{ 'tools.modal.importTasks.options' | translate }}</label>
           <clr-checkbox-wrapper>
             <input
               type="checkbox"
@@ -39,21 +37,21 @@ import {ImportExportService} from '../../../shared/service/import-export.service
               [(ngModel)]="excludeChildren"
               class="clr-col-10"
             />
-            <label>Exclude children</label>
+            <label>{{ 'tools.modal.importTasks.excludeChildren' | translate }}</label>
           </clr-checkbox-wrapper>
         </clr-checkbox-container>
       </div>
       <div class="modal-body" *ngIf="view === 'result'">
         <div>
-          File: <strong>{{ file?.name }}</strong
+          {{ 'tools.modal.importTasks.file' | translate }}: <strong>{{ file?.name }}</strong
           ><br />
-          Duration: <strong>{{ result.duration }}s</strong>
+          {{ 'tools.modal.importTasks.duration' | translate }}: <strong>{{ result.duration }}s</strong>
         </div>
         <div *ngIf="result.error.length > 0">
-          <h4>{{ result.error.length }} error(s)</h4>
+          <h4>{{ 'tools.modal.importTasks.errors' | translate: {count: result.error.length} }}</h4>
           <clr-datagrid class="clr-datagrid-no-fixed-height">
             <clr-dg-column [style.width.px]="10">&nbsp;</clr-dg-column>
-            <clr-dg-column>Description</clr-dg-column>
+            <clr-dg-column>{{ 'tools.modal.importTasks.description' | translate }}</clr-dg-column>
             <clr-dg-row *clrDgItems="let task of result.error; index as i">
               <clr-dg-cell>
                 <clr-icon shape="error-standard" class="is-solid"></clr-icon>
@@ -66,18 +64,18 @@ import {ImportExportService} from '../../../shared/service/import-export.service
                   <span class="dsl-text dsl-truncate">{{ task.dslText }}</span>
                 </div>
                 <div class="error">
-                  Message: {{ task.message }}<br />
-                  Index: {{ i }}
+                  {{ 'tools.modal.importTasks.errorMessage' | translate }}: {{ task.message }}<br />
+                  {{ 'tools.modal.importTasks.index' | translate }}: {{ i }}
                 </div>
               </clr-dg-cell>
             </clr-dg-row>
           </clr-datagrid>
         </div>
         <div *ngIf="result.success.length > 0">
-          <h4>{{ result.success.length }} task(s) created</h4>
+          <h4>{{ 'tools.modal.importTasks.success' | translate: {count: result.success.length} }}</h4>
           <clr-datagrid class="clr-datagrid-no-fixed-height">
             <clr-dg-column [style.width.px]="10">&nbsp;</clr-dg-column>
-            <clr-dg-column>Description</clr-dg-column>
+            <clr-dg-column>{{ 'tools.modal.importTasks.description' | translate }}</clr-dg-column>
             <clr-dg-row *clrDgItems="let task of result.success">
               <clr-dg-cell>
                 <clr-icon shape="success-standard" class="is-solid"></clr-icon>
@@ -96,11 +94,11 @@ import {ImportExportService} from '../../../shared/service/import-export.service
       </div>
       <div class="modal-body" *ngIf="view === 'importing'">
         <clr-spinner clrInline clrSmall></clr-spinner>
-        Importing task(s) ...
+        {{ 'tools.modal.importTasks.importing' | translate }}
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-outline" [disabled]="view === 'importing'" (click)="isOpen = false">
-          Cancel
+          {{ 'commons.cancel' | translate }}
         </button>
         <button
           type="button"
@@ -109,7 +107,7 @@ import {ImportExportService} from '../../../shared/service/import-export.service
           [disabled]="view === 'importing'"
           *ngIf="view === 'file'"
         >
-          <span>Import task(s)</span>
+          <span>{{ 'tools.modal.importTasks.import' | translate }}</span>
         </button>
       </div>
     </clr-modal>
@@ -126,7 +124,11 @@ export class TaskImportComponent {
     duration: 0
   };
 
-  constructor(private notificationService: NotificationService, private importExportService: ImportExportService) {}
+  constructor(
+    private notificationService: NotificationService,
+    private importExportService: ImportExportService,
+    private translate: TranslateService
+  ) {}
 
   open(): void {
     this.result = {
@@ -150,7 +152,10 @@ export class TaskImportComponent {
 
   run(): void {
     if (!this.file) {
-      this.notificationService.error('Invalid file', 'Please, select a file.');
+      this.notificationService.error(
+        this.translate.instant('tools.modal.importTasks.message.errorSelectFileTitle'),
+        this.translate.instant('tools.modal.importTasks.message.errorSelectFileContent')
+      );
       return;
     }
     const date = new Date().getTime();
@@ -167,7 +172,10 @@ export class TaskImportComponent {
       },
       () => {
         this.view = 'file';
-        this.notificationService.error('Invalid file', 'The file is not valid.');
+        this.notificationService.error(
+          this.translate.instant('tools.modal.importTasks.message.errorInvalidFileTitle'),
+          this.translate.instant('tools.modal.importTasks.message.errorInvalidFileContent')
+        );
       }
     );
   }

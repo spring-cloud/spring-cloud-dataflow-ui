@@ -1,13 +1,13 @@
 <h1 class="page-title">
   <span class="text-truncate">
-    Task <strong *ngIf="task">{{ task.name }}</strong>
+    {{ 'tasks.task.title' | translate }} <strong *ngIf="task">{{ task.name }}</strong>
   </span>
 </h1>
 
 <div *ngIf="!loading">
   <div class="datagrid-action-bar">
     <button type="button" class="btn btn-sm btn-secondary" (click)="launch()" [appRole]="['ROLE_DEPLOY']">
-      Launch task
+      {{ 'tasks.task.launch' | translate }}
     </button>
     <button
       type="button"
@@ -16,40 +16,45 @@
       [appRole]="['ROLE_SCHEDULE']"
       appFeature="schedules"
     >
-      Schedule
+      {{ 'tasks.task.schedule' | translate }}
     </button>
     <button type="button" class="btn btn-sm btn-secondary" grafanaDashboardTask [task]="task">Grafana Dashboard</button>
     <button type="button" class="btn btn-sm btn-outline-danger" (click)="destroy()" [appRole]="['ROLE_DESTROY']">
-      Destroy task
+      {{ 'tasks.task.destroy' | translate }}
     </button>
     <button type="button" class="btn btn-sm btn-outline-danger" (click)="cleanup()" [appRole]="['ROLE_DESTROY']">
-      Cleanup
+      {{ 'commons.cleanup' | translate }}
     </button>
   </div>
 
   <div class="clr-row">
     <div class="clr-col-lg-6 clr-col-md-12 clr-col-12">
-      <app-view-card titleModal="Information" keyContext="task" name="{{ task.name }}" id="info">
+      <app-view-card
+        [titleModal]="'tasks.task.information' | translate"
+        keyContext="task"
+        name="{{ task.name }}"
+        id="info"
+      >
         <ng-template>
           <div class="block card-block-keyvalue">
             <div *ngIf="task.description" class="row">
-              <div class="key">Description</div>
+              <div class="key">{{ 'commons.description' | translate }}</div>
               <div class="value">{{ task.description }}</div>
             </div>
             <div class="row">
-              <div class="key">Definition</div>
+              <div class="key">{{ 'commons.definition' | translate }}</div>
               <div class="value">
                 <span class="dsl-text">{{ task.dslText }}</span>
               </div>
             </div>
             <div class="row">
-              <div class="key">Status</div>
+              <div class="key">{{ 'commons.status' | translate }}</div>
               <div class="value">
                 <span class="{{ task.labelStatusClass() }}">{{ task.status }}</span>
               </div>
             </div>
             <div class="row">
-              <div class="key">Applications</div>
+              <div class="key">{{ 'commons.applications' | translate }}</div>
               <div class="value">
                 <div *ngIf="!loadingApplications">
                   <div *ngFor="let app of applications">
@@ -60,7 +65,7 @@
                 </div>
                 <div *ngIf="loadingApplications">
                   <clr-spinner clrInline clrSmall></clr-spinner>
-                  Loading application(s)...
+                  {{ 'commons.loading' | translate }}
                 </div>
               </div>
             </div>
@@ -70,7 +75,12 @@
     </div>
 
     <div class="clr-col-lg-12 clr-col-md-12 clr-col-12">
-      <app-view-card titleModal="Show Data Pipeline" keyContext="task" name="{{ task.name }}" id="visualize">
+      <app-view-card
+        [titleModal]="'tasks.task.showPipeline' | translate"
+        keyContext="task"
+        name="{{ task.name }}"
+        id="visualize"
+      >
         <ng-template>
           <app-task-flo-view [dsl]="task.dslText"></app-task-flo-view>
         </ng-template>
@@ -78,16 +88,21 @@
     </div>
 
     <div class="clr-col-lg-6 clr-col-md-12 clr-col-12">
-      <app-view-card titleModal="Last execution" keyContext="task" name="{{ task.name }}" id="execution">
+      <app-view-card
+        [titleModal]="'tasks.task.lastExecution' | translate"
+        keyContext="task"
+        name="{{ task.name }}"
+        id="execution"
+      >
         <ng-template>
           <div class="block card-block-keyvalue lg-key">
             <div *ngIf="task.lastTaskExecution">
               <div class="row">
-                <div class="key">Execution Id</div>
+                <div class="key">{{ 'executions.main.executionId' | translate }}</div>
                 <div class="value">{{ task.lastTaskExecution.executionId }}</div>
               </div>
               <div class="row">
-                <div class="key">Arguments</div>
+                <div class="key">{{ 'executions.main.arguments' | translate }}</div>
                 <div class="value">
                   <div *ngIf="task.lastTaskExecution.getArgumentsToArray().length > 0">
                     <div *ngFor="let arg of task.lastTaskExecution.getArgumentsToArray()">
@@ -99,13 +114,13 @@
                 </div>
               </div>
               <div class="row">
-                <div class="key">External Execution Id</div>
+                <div class="key">{{ 'executions.main.externalExecutionId' | translate }}</div>
                 <div class="value">
                   {{ task.lastTaskExecution.externalExecutionId || 'N/A' }}
                 </div>
               </div>
               <div class="row">
-                <div class="key">Batch Job</div>
+                <div class="key">{{ 'executions.main.batchJob' | translate }}</div>
                 <div class="value">
                   <clr-icon
                     *ngIf="task.lastTaskExecution.jobExecutionIds?.length > 0"
@@ -118,7 +133,7 @@
                 </div>
               </div>
               <div class="row">
-                <div class="key">Job Execution Ids</div>
+                <div class="key">{{ 'executions.main.jobExecutionIds' | translate }}</div>
                 <div class="value">
                   <a
                     [routerLink]="'/jobs/executions/' + jobExecutionId"
@@ -130,43 +145,43 @@
                 </div>
               </div>
               <div class="row">
-                <div class="key">Start Time</div>
+                <div class="key">{{ 'executions.main.startTime' | translate }}</div>
                 <div class="value">
                   {{ task.lastTaskExecution.startTime | datetime }}
                 </div>
               </div>
               <div class="row">
-                <div class="key">End Time</div>
+                <div class="key">{{ 'executions.main.endTime' | translate }}</div>
                 <div class="value">
                   {{ task.lastTaskExecution.endTime | datetime }}
                 </div>
               </div>
               <div class="row">
-                <div class="key">Duration</div>
+                <div class="key">{{ 'executions.main.duration' | translate }}</div>
                 <div class="value">
                   {{ task.lastTaskExecution.startTime | duration: task.lastTaskExecution.endTime }}
                 </div>
               </div>
               <div class="row">
-                <div class="key">Exit Code</div>
+                <div class="key">{{ 'executions.main.exitCode' | translate }}</div>
                 <div class="value">
                   {{ task.lastTaskExecution.exitCode }}
                 </div>
               </div>
               <div class="row">
-                <div class="key">Exit Message</div>
+                <div class="key">{{ 'executions.main.exitMessage' | translate }}</div>
                 <div class="value">
                   {{ task.lastTaskExecution.exitMessage || 'N/A' }}
                 </div>
               </div>
               <div class="row">
-                <div class="key">Resource URL</div>
+                <div class="key">{{ 'executions.main.resourceUrl' | translate }}</div>
                 <div class="value">
                   {{ task.lastTaskExecution.resourceUrl || 'N/A' }}
                 </div>
               </div>
               <div class="row">
-                <div class="key">Application Properties</div>
+                <div class="key">{{ 'executions.main.applicationProperties' | translate }}</div>
                 <div class="value">
                   <div *ngIf="task.lastTaskExecution.getAppPropertiesToArray().length > 0">
                     <div *ngFor="let arg of task.lastTaskExecution.getAppPropertiesToArray()">
@@ -178,7 +193,7 @@
                 </div>
               </div>
               <div class="row">
-                <div class="key">Platform Properties</div>
+                <div class="key">{{ 'executions.main.platformProperties' | translate }}</div>
                 <div class="value">
                   <div *ngIf="task.lastTaskExecution.getDeploymentPropertiesToArray().length > 0">
                     <div *ngFor="let arg of task.lastTaskExecution.getDeploymentPropertiesToArray()">
@@ -190,36 +205,41 @@
                 </div>
               </div>
             </div>
-            <div *ngIf="!task.lastTaskExecution">No execution yet.</div>
+            <div *ngIf="!task.lastTaskExecution">{{ 'executions.main.noExecution' | translate }}</div>
           </div>
         </ng-template>
         <div class="card-footer" *ngIf="task.lastTaskExecution">
           <button class="btn btn-sm btn-secondary" (click)="navigateExecution(task.lastTaskExecution.executionId)">
-            View task execution
+            {{ 'tasks.task.viewTaskExecution' | translate }}
           </button>
           <button
             class="btn btn-sm btn-secondary"
             *ngIf="hasLog(task.lastTaskExecution)"
             (click)="openLog(task.lastTaskExecution)"
           >
-            View log
+            {{ 'tasks.task.viewLog' | translate }}
           </button>
         </div>
       </app-view-card>
     </div>
 
     <div class="clr-col-lg-6 clr-col-md-12 clr-col-12">
-      <app-view-card titleModal="Latest execution(s)" keyContext="task" name="{{ task.name }}" id="executions">
+      <app-view-card
+        [titleModal]="'tasks.task.latestExecutions' | translate"
+        keyContext="task"
+        name="{{ task.name }}"
+        id="executions"
+      >
         <ng-template>
           <div *ngIf="!loadingExecution">
             <table class="table table-noborder table-compact" style="margin: 0" *ngIf="executions?.total > 0">
               <thead>
                 <tr>
-                  <th class="left" nowrap="">Execution ID</th>
-                  <th class="left" nowrap="">Start time</th>
-                  <th class="left" nowrap="">End time</th>
-                  <th class="left" nowrap="">Duration</th>
-                  <th class="left" nowrap="">Exit code</th>
+                  <th class="left" nowrap="">{{ 'executions.main.executionId' | translate }}</th>
+                  <th class="left" nowrap="">{{ 'executions.main.startTime' | translate }}</th>
+                  <th class="left" nowrap="">{{ 'executions.main.endTime' | translate }}</th>
+                  <th class="left" nowrap="">{{ 'executions.main.duration' | translate }}</th>
+                  <th class="left" nowrap="">{{ 'executions.main.exitCode' | translate }}</th>
                 </tr>
               </thead>
               <tbody>
@@ -236,26 +256,31 @@
                 </tr>
               </tbody>
             </table>
-            <div *ngIf="!executions?.total">No execution yet.</div>
+            <div *ngIf="!executions?.total">{{ 'executions.main.noExecution' | translate }}</div>
           </div>
           <div *ngIf="loadingExecution">
             <clr-spinner clrInline clrSmall></clr-spinner>
-            Loading execution(s)...
+            {{ 'commons.loading' | translate }}
           </div>
         </ng-template>
       </app-view-card>
     </div>
 
     <div class="clr-col-lg-6 clr-col-md-12 clr-col-12" *ngIf="scheduleEnabled">
-      <app-view-card titleModal="Schedule(s)" keyContext="task" name="{{ task.name }}" id="schedules">
+      <app-view-card
+        [titleModal]="'tasks.task.schedules' | translate"
+        keyContext="task"
+        name="{{ task.name }}"
+        id="schedules"
+      >
         <ng-template>
           <div *ngIf="!loadingSchedules">
             <table class="table table-noborder table-compact" style="margin: 0" *ngIf="schedules?.total > 0">
               <thead>
                 <tr>
-                  <th class="left" nowrap="">Name</th>
-                  <th class="left" nowrap="">Platform</th>
-                  <th class="left" nowrap="">Cron Expression</th>
+                  <th class="left" nowrap="">{{ 'schedules.main.name' | translate }}</th>
+                  <th class="left" nowrap="">{{ 'schedules.main.platform' | translate }}</th>
+                  <th class="left" nowrap="">{{ 'schedules.main.cronExpression' | translate }}</th>
                 </tr>
               </thead>
               <tbody>
@@ -270,11 +295,11 @@
                 </tr>
               </tbody>
             </table>
-            <div *ngIf="!schedules?.total">No schedule yet.</div>
+            <div *ngIf="!schedules?.total">{{ 'schedules.main.noSchedule' | translate }}</div>
           </div>
           <div *ngIf="loadingSchedules">
             <clr-spinner clrInline clrSmall></clr-spinner>
-            Loading schedule(s)...
+            {{ 'commons.loading' | translate }}
           </div>
         </ng-template>
       </app-view-card>
@@ -284,7 +309,7 @@
 
 <div *ngIf="loading" style="padding: 1rem 0">
   <clr-spinner clrInline clrSmall></clr-spinner>
-  Loading task...
+  {{ 'commons.loading' | translate }}
 </div>
 
 <app-task-destroy #destroyModal (onDestroyed)="back()"></app-task-destroy>

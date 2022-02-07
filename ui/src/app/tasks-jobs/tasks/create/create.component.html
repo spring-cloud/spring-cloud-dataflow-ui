@@ -1,9 +1,11 @@
-<h1>Create a task</h1>
+<h1>{{ 'tasks.create.title' | translate }}</h1>
 
 <app-task-create-view #flo></app-task-create-view>
 
-<button class="btn btn-secondary" type="button" (click)="back()">Cancel</button>
-<button class="btn btn-primary" type="button" (click)="createTask()">Create task</button>
+<button class="btn btn-secondary" type="button" (click)="back()">{{ 'commons.cancel' | translate }}</button>
+<button class="btn btn-primary" type="button" (click)="createTask()">
+  {{ 'tasks.create.createTask' | translate }}
+</button>
 
 <clr-modal
   [(clrModalOpen)]="isOpen"
@@ -13,10 +15,12 @@
 >
   <h3 class="modal-title">Create task</h3>
   <div *ngIf="isCreating" class="modal-body">
-    <div><clr-spinner clrInline clrSmall></clr-spinner>&nbsp; Creating task...</div>
+    <div><clr-spinner clrInline clrSmall></clr-spinner>&nbsp; {{ 'tasks.create.modal.creating' | translate }}</div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-default" [disabled]="true">Cancel</button>
-      <button type="submit" class="btn btn-primary" [disabled]="true">Create the task</button>
+      <button type="button" class="btn btn-default" [disabled]="true">{{ 'commons.cancel' | translate }}</button>
+      <button type="submit" class="btn btn-primary" [disabled]="true">
+        {{ 'tasks.create.modal.create' | translate }}
+      </button>
     </div>
   </div>
 
@@ -25,31 +29,33 @@
       <div *ngIf="errors && errors.length > 0" class="alert alert-error">
         <div *ngFor="let error of errors">• {{ error }}</div>
       </div>
-      <div style="margin-bottom: 0.8rem">This action will create the following <strong>task</strong>:</div>
+      <div style="margin-bottom: 0.8rem">
+        <div [innerHTML]="'tasks.create.modal.content' | translate"></div>
+      </div>
       <div class="alert alert-danger" *ngIf="form.hasError('uniqueStreamNames')">
         <div class="alert-items">
           <div class="alert-item static">
             <div class="alert-icon-wrapper">
               <clr-icon class="alert-icon" shape="exclamation-circle"></clr-icon>
             </div>
-            <div class="alert-text">Duplicate task name, please check input names.</div>
+            <div class="alert-text">{{ 'tasks.create.modal.duplicateName' | translate }}</div>
           </div>
         </div>
       </div>
       <div class="clr-form-control clr-row" style="margin-top: 0; max-height: 16px">
-        <label class="clr-control-label clr-col-12 clr-col-md-2">Definition</label>
+        <label class="clr-control-label clr-col-12 clr-col-md-2">{{ 'commons.definition' | translate }}</label>
         <div class="clr-control-container form-control input-sm clr-col-md-10 clr-col-12">
           <span class="dsl-text dsl-truncate">{{ dsl }}</span>
         </div>
       </div>
 
       <div class="form-group clr-form-control clr-row">
-        <label class="clr-control-label clr-col-12 clr-col-md-2">Name</label>
+        <label class="clr-control-label clr-col-12 clr-col-md-2">{{ 'commons.name' | translate }}</label>
         <div class="clr-control-container clr-error clr-col-md-10 clr-col-12" [class]="{'clr-error': taskName.errors}">
           <div class="clr-input-wrapper">
             <input
               type="text"
-              placeholder="Task Name"
+              [placeholder]="'tasks.create.modal.taskName' | translate"
               maxlength="255"
               name="name"
               [formControl]="taskName"
@@ -59,38 +65,48 @@
             />
           </div>
           <div class="clr-subtext" *ngIf="!taskName?.errors">
-            The task definition name should be less than 63 characters for Kubernetes or Cloud Foundry platforms.
+            {{ 'tasks.create.modal.maxLength63Name' | translate }}
           </div>
-          <div class="clr-subtext" *ngIf="taskName?.errors && taskName.errors?.required">Task name is required!</div>
+          <div class="clr-subtext" *ngIf="taskName?.errors && taskName.errors?.required">
+            {{ 'tasks.create.modal.requiredTask' | translate }}
+          </div>
           <div class="clr-subtext" *ngIf="taskName?.errors && taskName?.errors?.uniqueResource">
-            Task name is already taken!
+            {{ 'tasks.create.modal.uniqueName' | translate }}
           </div>
-          <div class="clr-subtext" *ngIf="taskName?.errors && taskName?.errors?.pattern">Invalid task name!</div>
+          <div class="clr-subtext" *ngIf="taskName?.errors && taskName?.errors?.pattern">
+            {{ 'tasks.create.modal.invalidName' | translate }}
+          </div>
           <div class="clr-subtext" *ngIf="taskName?.errors && taskName?.errors?.maxlength">
-            Task name must be less than 256 characters long!
+            {{ 'tasks.create.modal.maxLengthName' | translate }}
           </div>
         </div>
       </div>
 
       <clr-control-container class="form-group">
-        <label class="clr-control-label clr-col-12 clr-col-md-2" for="desc">Description</label>
+        <label class="clr-control-label clr-col-12 clr-col-md-2" for="desc">{{
+          'commons.description' | translate
+        }}</label>
         <input
           id="desc"
           name="desc"
           [formControl]="taskDescription"
           clrControl
-          placeholder="Task Description"
+          [placeholder]="'tasks.create.modal.taskDescription' | translate"
           maxlength="255"
           style="width: 560px"
         />
         <clr-control-error *clrIfError="'maxlength'"
-          >Task description must be less than 255 characters long!
+          >{{ 'tasks.create.modal.maxLengthDescription' | translate }}
         </clr-control-error>
       </clr-control-container>
 
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" (click)="close()" [disabled]="isCreating">Cancel</button>
-        <button type="submit" class="btn btn-primary" [disabled]="!form.valid">Create the task</button>
+        <button type="button" class="btn btn-default" (click)="close()" [disabled]="isCreating">
+          {{ 'commons.cancel' | translate }}
+        </button>
+        <button type="submit" class="btn btn-primary" [disabled]="!form.valid">
+          {{ 'tasks.create.modal.create' | translate }}
+        </button>
       </div>
     </form>
   </div>

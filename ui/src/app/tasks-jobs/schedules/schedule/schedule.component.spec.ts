@@ -12,6 +12,8 @@ import {ScheduleServiceMock} from '../../../tests/api/schedule.service.mock';
 import {ScheduleComponent} from './schedule.component';
 import {TaskServiceMock} from '../../../tests/api/task.service.mock';
 import {ContextServiceMock} from '../../../tests/service/context.service.mock';
+import {TranslateTestingModule} from 'ngx-translate-testing';
+import TRANSLATIONS from '../../../../assets/i18n/en.json';
 
 describe('tasks-jobs/schedules/schedule/schedule.component.ts', () => {
   let component: ScheduleComponent;
@@ -21,7 +23,13 @@ describe('tasks-jobs/schedules/schedule/schedule.component.ts', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [ScheduleComponent, DestroyComponent, RoleDirective],
-        imports: [FormsModule, ClarityModule, RouterTestingModule.withRoutes([]), BrowserAnimationsModule],
+        imports: [
+          FormsModule,
+          ClarityModule,
+          RouterTestingModule.withRoutes([]),
+          TranslateTestingModule.withTranslations('en', TRANSLATIONS),
+          BrowserAnimationsModule
+        ],
         providers: [
           SecurityServiceMock.provider,
           AboutServiceMock.provider,

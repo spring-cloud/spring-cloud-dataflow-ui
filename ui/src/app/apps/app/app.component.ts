@@ -7,6 +7,7 @@ import {UnregisterComponent} from '../unregister/unregister.component';
 import {NotificationService} from '../../shared/service/notification.service';
 import {VersionComponent} from '../version/version.component';
 import {HttpError} from '../../shared/model/error.model';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-app',
@@ -30,7 +31,8 @@ export class AppComponent implements OnInit {
     private route: ActivatedRoute,
     private appsService: AppService,
     private router: Router,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private translate: TranslateService
   ) {}
 
   ngOnInit(): void {
@@ -45,7 +47,10 @@ export class AppComponent implements OnInit {
     this.appsService.getAppVersions(this.app.name, this.app.type).subscribe(
       (apps: App[]) => {
         if (apps.length === 0) {
-          this.notificationService.error('An error occurred', 'No application found.');
+          this.notificationService.error(
+            this.translate.instant('commons.message.error'),
+            this.translate.instant('applications.details.notFound')
+          );
           this.back();
         }
         this.versions = apps;
@@ -57,7 +62,7 @@ export class AppComponent implements OnInit {
         this.loading = false;
       },
       error => {
-        this.notificationService.error('An error occurred', error);
+        this.notificationService.error(this.translate.instant('commons.message.error'), error);
         this.back();
       }
     );

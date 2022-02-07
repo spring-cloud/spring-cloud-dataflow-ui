@@ -12,6 +12,8 @@ import {throwError} from 'rxjs';
 import {Stream} from '../../../shared/model/stream.model';
 import {UndeployComponent} from './undeploy.component';
 import {ContextServiceMock} from '../../../tests/service/context.service.mock';
+import {TranslateTestingModule} from 'ngx-translate-testing';
+import TRANSLATIONS from '../../../../assets/i18n/en.json';
 
 describe('apps/undeploy/undeploy.component.ts', () => {
   let component: UndeployComponent;
@@ -22,7 +24,13 @@ describe('apps/undeploy/undeploy.component.ts', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [UndeployComponent],
-        imports: [FormsModule, ClarityModule, RouterTestingModule.withRoutes([]), BrowserAnimationsModule],
+        imports: [
+          FormsModule,
+          ClarityModule,
+          RouterTestingModule.withRoutes([]),
+          BrowserAnimationsModule,
+          TranslateTestingModule.withTranslations('en', TRANSLATIONS)
+        ],
         providers: [
           SecurityServiceMock.provider,
           AboutServiceMock.provider,

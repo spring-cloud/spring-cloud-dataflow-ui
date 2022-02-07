@@ -20,6 +20,8 @@ import {By} from '@angular/platform-browser';
 import {RoleDirective} from '../../security/directive/role.directive';
 import {ContextServiceMock} from '../../tests/service/context.service.mock';
 import {CleanupComponent} from './cleanup/cleanup.component';
+import {TranslateTestingModule} from 'ngx-translate-testing';
+import TRANSLATIONS from '../../../assets/i18n/en.json';
 
 describe('manage/tools/import-export.component.ts', () => {
   let component: ToolsComponent;
@@ -39,7 +41,13 @@ describe('manage/tools/import-export.component.ts', () => {
           CardComponent,
           RoleDirective
         ],
-        imports: [FormsModule, ClarityModule, RouterTestingModule.withRoutes([]), BrowserAnimationsModule],
+        imports: [
+          FormsModule,
+          ClarityModule,
+          RouterTestingModule.withRoutes([]),
+          BrowserAnimationsModule,
+          TranslateTestingModule.withTranslations('en', TRANSLATIONS)
+        ],
         providers: [
           SecurityServiceMock.provider,
           AboutServiceMock.provider,

@@ -12,6 +12,8 @@ import {NotificationServiceMock} from '../../../tests/service/notification.servi
 import {WebsiteStartersComponent} from './website-starters.component';
 import {throwError} from 'rxjs';
 import {ContextServiceMock} from '../../../tests/service/context.service.mock';
+import {TranslateTestingModule} from 'ngx-translate-testing';
+import TRANSLATIONS from '../../../../assets/i18n/en.json';
 
 describe('apps/website-starters/website-starters.component.ts', () => {
   let component: WebsiteStartersComponent;
@@ -26,6 +28,7 @@ describe('apps/website-starters/website-starters.component.ts', () => {
           ReactiveFormsModule,
           FormsModule,
           ClarityModule,
+          TranslateTestingModule.withTranslations('en', TRANSLATIONS),
           RouterTestingModule.withRoutes([]),
           BrowserAnimationsModule
         ],

@@ -12,6 +12,8 @@ import {throwError} from 'rxjs';
 import {Schedule} from '../../../shared/model/schedule.model';
 import {ScheduleServiceMock} from '../../../tests/api/schedule.service.mock';
 import {ContextServiceMock} from '../../../tests/service/context.service.mock';
+import {TranslateTestingModule} from 'ngx-translate-testing';
+import TRANSLATIONS from '../../../../assets/i18n/en.json';
 
 describe('tasks/schedules/destroy/destroy.component.ts', () => {
   let component: DestroyComponent;
@@ -22,7 +24,13 @@ describe('tasks/schedules/destroy/destroy.component.ts', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [DestroyComponent],
-        imports: [FormsModule, ClarityModule, RouterTestingModule.withRoutes([]), BrowserAnimationsModule],
+        imports: [
+          FormsModule,
+          ClarityModule,
+          RouterTestingModule.withRoutes([]),
+          TranslateTestingModule.withTranslations('en', TRANSLATIONS),
+          BrowserAnimationsModule
+        ],
         providers: [
           SecurityServiceMock.provider,
           AboutServiceMock.provider,

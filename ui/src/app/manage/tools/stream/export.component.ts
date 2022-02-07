@@ -3,20 +3,18 @@ import {StreamPage} from '../../../shared/model/stream.model';
 import {StreamService} from '../../../shared/api/stream.service';
 import {ImportExportService} from '../../../shared/service/import-export.service';
 import {NotificationService} from '../../../shared/service/notification.service';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-manage-stream-export',
   template: `
     <clr-modal [(clrModalOpen)]="isOpen" [clrModalClosable]="!isRunning" clrModalSize="lg">
-      <h3 class="modal-title">Export stream(s)</h3>
+      <h3 class="modal-title">{{ 'tools.modal.exportStreams.title' | translate }}</h3>
       <div class="modal-body" *ngIf="!isRunning">
-        <div>
-          You can create an export of your <strong>selected streams</strong>.<br />
-          This operation will generate and download a <strong>JSON file</strong>.
-        </div>
+        <div [innerHTML]="'tools.modal.exportStreams.content' | translate"></div>
         <clr-datagrid [(clrDgSelected)]="selected" *ngIf="streams">
-          <clr-dg-column>Name</clr-dg-column>
-          <clr-dg-column>Definition</clr-dg-column>
+          <clr-dg-column>{{ 'tools.modal.exportStreams.name' | translate }}</clr-dg-column>
+          <clr-dg-column>{{ 'tools.modal.exportStreams.definition' | translate }}</clr-dg-column>
           <clr-dg-row *clrDgItems="let stream of streams.items" [clrDgItem]="stream">
             <clr-dg-cell>{{ stream.name }}</clr-dg-cell>
             <clr-dg-cell>
@@ -27,12 +25,14 @@ import {NotificationService} from '../../../shared/service/notification.service'
       </div>
       <div class="modal-body" *ngIf="isRunning">
         <clr-spinner clrInline clrSmall></clr-spinner>
-        Exporting stream(s) ...
+        {{ 'tools.modal.exportStreams.exporting' | translate }}
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-outline" [disabled]="isRunning" (click)="isOpen = false">Cancel</button>
+        <button type="button" class="btn btn-outline" [disabled]="isRunning" (click)="isOpen = false">
+          {{ 'commons.cancel' | translate }}
+        </button>
         <button type="button" class="btn btn-primary" (click)="run()" [disabled]="isRunning">
-          <span>Export stream(s)</span>
+          <span>{{ 'tools.modal.exportStreams.export' | translate }}</span>
         </button>
       </div>
     </clr-modal>
@@ -47,7 +47,8 @@ export class StreamExportComponent {
   constructor(
     private streamService: StreamService,
     private notificationService: NotificationService,
-    private importExportService: ImportExportService
+    private importExportService: ImportExportService,
+    private translate: TranslateService
   ) {}
 
   open(): void {
@@ -61,11 +62,17 @@ export class StreamExportComponent {
 
   run(): void {
     if (this.selected.length === 0) {
-      this.notificationService.error('No stream selected', 'Please, select stream(s) to export.');
+      this.notificationService.error(
+        this.translate.instant('tools.modal.exportStreams.message.errorNoStreamTitle'),
+        this.translate.instant('tools.modal.exportStreams.message.errorNoStreamContent')
+      );
     } else {
       this.isRunning = true;
       this.importExportService.streamsExport(this.selected).subscribe(() => {
-        this.notificationService.success('Stream(s) export', 'Stream(s) has been exported.');
+        this.notificationService.success(
+          this.translate.instant('tools.modal.exportStreams.message.successTitle'),
+          this.translate.instant('tools.modal.exportStreams.message.successContent')
+        );
         this.isOpen = false;
       });
     }
