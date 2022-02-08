@@ -84,7 +84,7 @@ Cypress.Commands.add('importStreams', () => {
   cy.get('[value="stream.kafka.docker"] + label').click();
   cy.get('button[type=submit]').click();
   cy.checkExistence('app-apps-list');
-  cy.checkExistence('.apps-total');
+  cy.checkExistence('span.pagination-total');
 });
 
 Cypress.Commands.add('registerApplication', () => {
@@ -98,7 +98,7 @@ Cypress.Commands.add('registerApplication', () => {
   );
   cy.get('button[name = "register"]').click();
   cy.checkExistence('app-apps-list');
-  cy.checkExistence('.apps-total');
+  cy.checkExistence('span.pagination-total');
 });
 
 Cypress.Commands.add('importAppsTask', () => {
@@ -107,6 +107,7 @@ Cypress.Commands.add('importAppsTask', () => {
   cy.get('button#btnAddApplications').click();
   cy.get('[value="task.maven"] + label').click();
   cy.get('button[type=submit]').click();
+  cy.checkExistence('span.pagination-total');
 });
 
 Cypress.Commands.add('createTask', (name?: string, dsl?: string, desc?: string) => {
@@ -119,6 +120,7 @@ Cypress.Commands.add('createTask', (name?: string, dsl?: string, desc?: string) 
     cy.get('input[name = "desc"]').type(desc);
   }
   cy.get('button[data-cy=submit]').click();
+  cy.checkExistence('span.pagination-total');
 });
 
 Cypress.Commands.add('createStream', (name?: string, dsl?: string, desc?: string) => {
@@ -158,7 +160,7 @@ Cypress.Commands.add('launchTask', (name: string) => {
 
 Cypress.Commands.add('destroyTasks', () => {
   cy.tasks();
-  cy.get('span[data-cy="totalTasks"]').then(total => {
+  cy.get('span.pagination-total').then(total => {
     if (Number(total.text()) > 0) {
       cy.get('button[data-cy="groupActions"]').click();
       cy.get('input[type="checkbox"] + label').first().click();
@@ -175,7 +177,7 @@ Cypress.Commands.add('destroyTasks', () => {
 
 Cypress.Commands.add('cleanupTaskExecutions', () => {
   cy.taskExecutions();
-  cy.get('span[data-cy="totalTaskExecutions"]').then(total => {
+  cy.get('span.pagination-total').then(total => {
     if (Number(total.text()) > 0) {
       cy.get('button[data-cy="groupActions"]').click();
       cy.get('input[type="checkbox"] + label').first().click();

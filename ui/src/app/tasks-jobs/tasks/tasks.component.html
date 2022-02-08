@@ -178,10 +178,12 @@
       <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]">{{
         'tasks.main.tasksPerPage' | translate
       }}</clr-dg-page-size>
-      {{
-        'tasks.main.pagination'
-          | translate: {first: pagination.firstItem + 1, last: pagination.lastItem + 1, total: page?.total}
-      }}
+      <span
+        [innerHTML]="
+          'tasks.main.pagination'
+            | translate: {first: pagination.firstItem + 1, last: pagination.lastItem + 1, total: page?.total}
+        "
+      ></span>
     </clr-dg-pagination>
   </clr-dg-footer>
 </clr-datagrid>

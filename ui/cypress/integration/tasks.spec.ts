@@ -21,7 +21,7 @@ describe('Tasks/Jobs', () => {
       cy.createTask('task1');
       cy.createTask('task2');
       cy.createTask('task3');
-      cy.get('span[data-cy="totalTasks"]').should(elem => {
+      cy.get('span.pagination-total').should(elem => {
         expect(Number(elem.text())).to.equal(3);
       });
     });
@@ -44,7 +44,7 @@ describe('Tasks/Jobs', () => {
       cy.get('.datagrid-action-overflow button:nth-child(4)').first().click();
       cy.get('.modal-dialog button').should('be.exist');
       cy.get('.modal-dialog button').last().click();
-      cy.get('span[data-cy="totalTasks"]').should(elem => {
+      cy.get('span.pagination-total').should(elem => {
         expect(Number(elem.text())).to.equal(2);
       });
     });
@@ -65,7 +65,7 @@ describe('Tasks/Jobs', () => {
       cy.get('.datagrid-action-overflow button:nth-child(5)').first().click();
       cy.get('.modal-dialog button').should('be.exist');
       cy.get('.modal-dialog button').last().click();
-      cy.get('span[data-cy="totalTasks"]').should(elem => {
+      cy.get('span.pagination-total').should(elem => {
         expect(Number(elem.text())).to.equal(3);
       });
     });
@@ -103,7 +103,7 @@ describe('Tasks/Jobs', () => {
     });
 
     it('should clean up task executions', () => {
-      cy.get('span[data-cy="totalTaskExecutions"]').then(total => {
+      cy.get('span.pagination-total').then(total => {
         expect(Number(total.text())).to.gt(0);
         cy.get('button[data-cy="groupActions"]').click();
         cy.get('input[type="checkbox"] + label').first().click();
@@ -111,9 +111,9 @@ describe('Tasks/Jobs', () => {
         cy.get('button[data-cy="cleanup"]').should('be.exist');
         cy.get('button[data-cy="cleanup"]').click();
         cy.get('app-toast').should('be.visible');
-        cy.get('span[data-cy="totalTaskExecutions"]').should('be.exist');
+        cy.get('span.pagination-total').should('be.exist');
         cy.get('clr-spinner').should('not.exist');
-        cy.get('span[data-cy="totalTaskExecutions"]').then(totalUpdated => {
+        cy.get('span.pagination-total').then(totalUpdated => {
           expect(Number(totalUpdated.text())).to.eq(0);
         });
       });

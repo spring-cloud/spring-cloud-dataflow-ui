@@ -141,10 +141,12 @@
       <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]">{{
         'applications.main.applicationsPerPage' | translate
       }}</clr-dg-page-size>
-      {{
-        'applications.main.pagination'
-          | translate: {first: pagination.firstItem + 1, last: pagination.lastItem + 1, total: page?.total}
-      }}
+      <span
+        [innerHTML]="
+          'applications.main.pagination'
+            | translate: {first: pagination.firstItem + 1, last: pagination.lastItem + 1, total: page?.total}
+        "
+      ></span>
     </clr-dg-pagination>
   </clr-dg-footer>
 </clr-datagrid>

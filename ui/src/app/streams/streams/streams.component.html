@@ -189,10 +189,12 @@
       <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]">{{
         'streams.main.streamsPerPage' | translate
       }}</clr-dg-page-size>
-      {{
-        'streams.main.pagination'
-          | translate: {first: pagination.firstItem + 1, last: pagination.lastItem + 1, total: page?.total}
-      }}
+      <span
+        [innerHTML]="
+          'streams.main.pagination'
+            | translate: {first: pagination.firstItem + 1, last: pagination.lastItem + 1, total: page?.total}
+        "
+      ></span>
     </clr-dg-pagination>
   </clr-dg-footer>
 </clr-datagrid>

@@ -33,7 +33,7 @@ describe('Streams', () => {
     cy.get('button[data-cy=deploy]').click();
     // Waiting 10s for deploying
     cy.wait(10 * 1000).then(() => {
-      cy.checkExistence('span[data-cy=streams-total]');
+      cy.checkExistence('span.pagination-total');
     });
   });
 

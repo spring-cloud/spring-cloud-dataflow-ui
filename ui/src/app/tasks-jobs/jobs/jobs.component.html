@@ -102,10 +102,12 @@
       <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]">{{
         'jobs.main.jobPerPage' | translate
       }}</clr-dg-page-size>
-      {{
-        'jobs.main.pagination'
-          | translate: {first: pagination.firstItem + 1, last: pagination.lastItem + 1, total: page?.total}
-      }}
+      <span
+        [innerHTML]="
+          'jobs.main.pagination'
+            | translate: {first: pagination.firstItem + 1, last: pagination.lastItem + 1, total: page?.total}
+        "
+      ></span>
     </clr-dg-pagination>
   </clr-dg-footer>
 </clr-datagrid>
