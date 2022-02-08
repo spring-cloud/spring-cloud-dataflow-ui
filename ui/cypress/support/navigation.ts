@@ -51,17 +51,12 @@ Cypress.Commands.add('taskExecutions', () => {
 
 Cypress.Commands.add('jobExecutions', () => {
   cy.visit(Cypress.config('baseUrl'));
-  cy.get('a[data-cy=navJoBExecutions]').click();
+  cy.get('a[data-cy=navJobExecutions]').click();
 });
 
 Cypress.Commands.add('schedules', () => {
   cy.visit(Cypress.config('baseUrl'));
   cy.get('a[data-cy=navSchedules]').click();
-});
-
-Cypress.Commands.add('jobExecutions', () => {
-  cy.visit(Cypress.config('baseUrl'));
-  cy.get('a[data-cy=navJoBExecutions]').click();
 });
 
 Cypress.Commands.add('auditRecords', () => {

@@ -52,9 +52,10 @@ declare namespace Cypress {
     createBatchTask(name?: string, dsl?: string, desc?: string): void;
     importStreams(): void;
     createStream(name?: string, dsl?: string, desc?: string): void;
-    cleanupTasks(): void;
+    cleanupTaskExecutions(): void;
     importAppsTask(): void;
     createTask(name?: string, dsl?: string, desc?: string): void;
+    destroyTasks(): void;
     launchTask(name: string): void;
   }
 }
@@ -109,7 +110,7 @@ Cypress.Commands.add('importAppsTask', () => {
 });
 
 Cypress.Commands.add('createTask', (name?: string, dsl?: string, desc?: string) => {
-  cy.get('button[data-cy=createTask]').first().click();
+  cy.get('button[data-cy=createTask]').click();
   cy.checkExistence('pre.CodeMirror-line');
   cy.get('.CodeMirror-line').type(dsl ? dsl : 'timestamp');
   cy.get('button.btn-primary').first().click();
@@ -155,19 +156,36 @@ Cypress.Commands.add('launchTask', (name: string) => {
   cy.get('button#btn-deploy-builder').click();
 });
 
-Cypress.Commands.add('cleanupTasks', () => {
+Cypress.Commands.add('destroyTasks', () => {
   cy.tasks();
-  cy.get('.tasks-total').then(appTotal => {
-    if (+appTotal > 0) {
-      cy.get('clr-datagrid button.btn-secondary').first().click();
+  cy.get('span[data-cy="totalTasks"]').then(total => {
+    if (Number(total.text()) > 0) {
+      cy.get('button[data-cy="groupActions"]').click();
       cy.get('input[type="checkbox"] + label').first().click();
-      cy.get('button.btn-outline-danger').first().click();
-      cy.checkExistence('.modal button.btn-danger');
-      cy.get('.modal button.btn-danger').click();
+      cy.get('button[data-cy="destroyTasks"]').click();
+      cy.get('button[data-cy="destroy"]').should('be.exist');
+      cy.get('button[data-cy="destroy"]').click();
       cy.get('app-toast').should('be.visible');
       cy.get('.content-area').scrollTo('bottom', {ensureScrollable: false});
       cy.get('clr-spinner').should('not.exist');
-      cy.cleanupTasks();
+      cy.destroyTasks();
+    }
+  });
+});
+
+Cypress.Commands.add('cleanupTaskExecutions', () => {
+  cy.taskExecutions();
+  cy.get('span[data-cy="totalTaskExecutions"]').then(total => {
+    if (Number(total.text()) > 0) {
+      cy.get('button[data-cy="groupActions"]').click();
+      cy.get('input[type="checkbox"] + label').first().click();
+      cy.get('button[data-cy="cleanupExecutions"]').click();
+      cy.get('button[data-cy="cleanup"]').should('be.exist');
+      cy.get('button[data-cy="cleanup"]').click();
+      cy.get('app-toast').should('be.visible');
+      cy.get('.content-area').scrollTo('bottom', {ensureScrollable: false});
+      cy.get('clr-spinner').should('not.exist');
+      cy.cleanupTaskExecutions();
     }
   });
 });
