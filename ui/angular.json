@@ -27,16 +27,8 @@
                 "inlineCritical": false
               }
             },
-            "assets": [
-              "src/favicon.ico",
-              "src/assets",
-              "src/logout-success-oauth.html"
-            ],
-            "styles": [
-              "node_modules/@clr/icons/clr-icons.css",
-              "node_modules/@clr/ui/clr-ui.css",
-              "src/styles.scss"
-            ],
+            "assets": ["src/favicon.ico", "src/assets", "src/logout-success-oauth.html"],
+            "styles": ["node_modules/@clr/icons/clr-icons.css", "node_modules/@clr/ui/clr-ui.css", "src/styles.scss"],
             "scripts": [
               "node_modules/@webcomponents/webcomponentsjs/custom-elements-es5-adapter.js",
               "node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js",
@@ -126,24 +118,15 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.spec.json",
             "karmaConfig": "src/karma.conf.js",
-            "styles": [
-              "src/styles.scss"
-            ],
+            "styles": ["src/styles.scss"],
             "scripts": [],
-            "assets": [
-              "src/favicon.ico",
-              "src/assets",
-              "src/logout-success-oauth.html"
-            ]
+            "assets": ["src/favicon.ico", "src/assets", "src/logout-success-oauth.html"]
           }
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "lintFilePatterns": [
-              "src/app/**/*.ts",
-              "src/app/**/*.html"
-            ]
+            "lintFilePatterns": ["src/app/**/*.ts", "src/app/**/*.html"]
           }
         },
         "cypress-run": {
@@ -180,15 +163,14 @@
       }
     },
     "dataflow-e2e": {
-      "root": "e2e/",
+      "root": "cypress/",
       "projectType": "application",
       "architect": {
         "e2e": {
           "builder": "@cypress/schematic:cypress",
           "options": {
             "devServerTarget": "dataflow-e2e:serve",
-            "watch": true,
-            "headless": false
+            "configFile": "cypress.json"
           },
           "configurations": {
             "production": {
@@ -199,17 +181,14 @@
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "lintFilePatterns": [
-              "e2e/src/**/*.ts",
-              "e2e/src/**/*.html"
-            ]
+            "lintFilePatterns": ["cypress/**/*.ts"]
           }
         },
         "cypress-run": {
           "builder": "@cypress/schematic:cypress",
           "options": {
             "devServerTarget": "dataflow-e2e:serve",
-            "configFile": "e2e//cypress.json"
+            "configFile": "cypress.json"
           },
           "configurations": {
             "production": {
@@ -222,7 +201,7 @@
           "options": {
             "watch": true,
             "headless": false,
-            "configFile": "e2e//cypress.json"
+            "configFile": "cypress.json"
           }
         }
       }

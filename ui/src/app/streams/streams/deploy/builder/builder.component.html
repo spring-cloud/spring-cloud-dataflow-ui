@@ -494,7 +494,7 @@
           <a tabindex="200" id="btn-cancel" class="btn btn-default" routerLink="/streams/list">{{
             'commons.cancel' | translate
           }}</a>
-          <button tabindex="200" id="btn-deploy-builder" type="submit" class="btn btn-primary">
+          <button data-cy="deploy" tabindex="200" id="btn-deploy-builder" type="submit" class="btn btn-primary">
             <span *ngIf="!isDeployed">{{ 'streams.deploy.builder.deploy' | translate }}</span>
             <span *ngIf="isDeployed">{{ 'streams.deploy.builder.update' | translate }}</span>
           </button>

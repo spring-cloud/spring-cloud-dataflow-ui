@@ -3,7 +3,7 @@
 <app-stream-flo-create #flo></app-stream-flo-create>
 
 <button class="btn btn-secondary" type="button" (click)="back()">{{ 'commons.cancel' | translate }}</button>
-<button class="btn btn-primary" type="button" (click)="createStream()">
+<button data-cy="createStream" class="btn btn-primary" type="button" (click)="createStream()">
   {{ 'streams.create.create' | translate }}
 </button>
 
@@ -124,7 +124,13 @@
     <button type="button" class="btn btn-default" (click)="cancel()" [disabled]="progressData">
       {{ 'commons.cancel' | translate }}
     </button>
-    <button type="button" class="btn btn-primary" (click)="submit()" [disabled]="progressData || !canSubmit()">
+    <button
+      data-cy="submit"
+      type="button"
+      class="btn btn-primary"
+      (click)="submit()"
+      [disabled]="progressData || !canSubmit()"
+    >
       {{ 'streams.create.modal.create' | translate }}
     </button>
   </div>

@@ -1,25 +1,29 @@
 <h1>{{ 'applications.main.addApplications' | translate }}</h1>
 <clr-accordion>
   <clr-accordion-panel>
-    <clr-accordion-title>{{ 'applications.add.registerOneOrMore' | translate }}</clr-accordion-title>
+    <clr-accordion-title data-cy="register">{{ 'applications.add.registerOneOrMore' | translate }}</clr-accordion-title>
     <clr-accordion-content *clrIfExpanded>
       <app-add-register></app-add-register>
     </clr-accordion-content>
   </clr-accordion-panel>
   <clr-accordion-panel>
-    <clr-accordion-title>{{ 'applications.add.importFromHttp' | translate }}</clr-accordion-title>
+    <clr-accordion-title data-cy="import-uri">{{ 'applications.add.importFromHttp' | translate }}</clr-accordion-title>
     <clr-accordion-content *clrIfExpanded>
       <app-add-uri></app-add-uri>
     </clr-accordion-content>
   </clr-accordion-panel>
   <clr-accordion-panel>
-    <clr-accordion-title>{{ 'applications.add.importFromFile' | translate }}</clr-accordion-title>
+    <clr-accordion-title data-cy="import-properties">{{
+      'applications.add.importFromFile' | translate
+    }}</clr-accordion-title>
     <clr-accordion-content *clrIfExpanded>
       <app-add-props></app-add-props>
     </clr-accordion-content>
   </clr-accordion-panel>
   <clr-accordion-panel clrAccordionPanelOpen="true">
-    <clr-accordion-title>{{ 'applications.add.importFromSpringDataFlow' | translate }}.</clr-accordion-title>
+    <clr-accordion-title data-cy="import-starters"
+      >{{ 'applications.add.importFromSpringDataFlow' | translate }}.</clr-accordion-title
+    >
     <clr-accordion-content>
       <app-add-website-starters></app-add-website-starters>
     </clr-accordion-content>

@@ -1,7 +1,13 @@
 <h1 class="page-title-actions">
   {{ 'tasks.main.title' | translate }}
   <span class="actions">
-    <button type="button" class="btn btn-sm btn-primary" (click)="createTask()" [appRole]="['ROLE_CREATE']">
+    <button
+      data-cy="createTask"
+      type="button"
+      class="btn btn-sm btn-primary"
+      (click)="createTask()"
+      [appRole]="['ROLE_CREATE']"
+    >
       {{ 'tasks.main.create' | translate }}
     </button>
     <button type="button" class="btn btn-sm btn-secondary" grafanaDashboardTasks>
@@ -40,6 +46,7 @@
       class="btn btn-sm btn-outline-danger"
       (click)="destroyTasks(selected)"
       [appRole]="['ROLE_DESTROY']"
+      data-cy="destroyTasks"
     >
       {{ 'tasks.main.destroyTasks' | translate }}
     </button>
@@ -59,6 +66,7 @@
       class="btn btn-sm btn-secondary"
       (click)="setMode(true)"
       [appRole]="['ROLE_DESTROY', 'ROLE_SCHEDULE']"
+      data-cy="groupActions"
     >
       {{ 'commons.groupActions' | translate }}
     </button>

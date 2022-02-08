@@ -33,7 +33,14 @@
     <button type="button" class="btn btn-outline" (click)="isOpen = false" [disabled]="isRunning">
       {{ 'commons.cancel' | translate }}
     </button>
-    <button id="btn-stop" type="button" class="btn btn-danger" (click)="clean()" [disabled]="isRunning">
+    <button
+      data-cy="cleanup"
+      id="btn-stop"
+      type="button"
+      class="btn btn-danger"
+      (click)="clean()"
+      [disabled]="isRunning"
+    >
       <span *ngIf="executions.length === 1">{{ 'executions.cleanup.cleanupExecution' | translate }}</span>
       <span *ngIf="executions.length > 1">{{ 'executions.cleanup.cleanupExecutions' | translate }}</span>
     </button>
