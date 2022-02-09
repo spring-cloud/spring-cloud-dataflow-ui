@@ -53,6 +53,7 @@ describe('Tasks/Jobs', () => {
       cy.get('.datagrid-action-overflow button:nth-child(4)').first().click();
       cy.get('.modal-dialog button').should('be.exist');
       cy.get('.modal-dialog button').last().click();
+      cy.shouldShowToast('Destroy task', 'Successfully removed task "task3".');
       cy.get('clr-spinner').should('not.exist');
       cy.get('span.pagination-total').should(elem => {
         expect(Number(elem.text())).to.equal(2);
@@ -67,6 +68,7 @@ describe('Tasks/Jobs', () => {
       cy.get('.datagrid-action-overflow button:nth-child(6)').first().click();
       cy.get('.modal-dialog').should('be.exist');
       cy.get('button[data-cy=cleanup').click();
+      cy.shouldShowToast()
       // TODO: check state
     });
 
@@ -75,6 +77,7 @@ describe('Tasks/Jobs', () => {
       cy.get('.datagrid-action-overflow button:nth-child(5)').first().click();
       cy.get('.modal-dialog button').should('be.exist');
       cy.get('.modal-dialog button').last().click();
+      cy.shouldShowToast('Task(s) clone', 'Task(s) have been cloned successfully')
       cy.get('clr-spinner').should('not.exist');
       cy.get('span.pagination-total').should(elem => {
         expect(Number(elem.text())).to.equal(3);
@@ -114,6 +117,8 @@ describe('Tasks/Jobs', () => {
     });
 
     it('should clean up task executions', () => {
+      cy.taskExecutions();
+      cy.get('clr-spinner').should('not.exist');
       cy.get('span.pagination-total').then(total => {
         expect(Number(total.text())).to.gt(0);
         cy.get('button[data-cy="groupActions"]').click();
@@ -121,9 +126,8 @@ describe('Tasks/Jobs', () => {
         cy.get('button[data-cy="cleanupExecutions"]').click();
         cy.get('button[data-cy="cleanup"]').should('be.exist');
         cy.get('button[data-cy="cleanup"]').click();
-        cy.get('app-toast').should('be.visible');
+        cy.shouldShowToast();
         cy.get('span.pagination-total').should('be.exist');
-        cy.get('clr-spinner').should('not.exist');
         cy.get('span.pagination-total').then(totalUpdated => {
           expect(Number(totalUpdated.text())).to.eq(0);
         });
@@ -148,7 +152,7 @@ describe('Tasks/Jobs', () => {
     });
 
     it('Should create and launch a task job', () => {
-      cy.createBatchTask('job-sample');
+      cy.createTask('job-sample', 'timestamp-batch');
       cy.launchTask('job-sample');
       cy.wait(10 * 1000);
       // TODO: check state

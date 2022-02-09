@@ -5,7 +5,7 @@ describe('Applications', () => {
    */
   before(() => {
     cy.apps();
-    cy.importStreams();
+    cy.importAppsStream();
   });
 
   /**
@@ -38,7 +38,7 @@ describe('Applications', () => {
     cy.get('select[name = "type0"]').select('source');
     cy.get('input[name = "uri0"]').type('maven://org.springframework.cloud.task.app:timestamp-task:2.1.1.RELEASE');
     cy.get('button[name = "register"]').click();
-    cy.checkToastAnimation();
+    cy.shouldShowToast('Register application(s).', '1 App(s) registered');
     cy.get('app-apps-list').should('be.exist');
 
     cy.apps();
@@ -48,7 +48,7 @@ describe('Applications', () => {
     cy.get('select[name = "type0"]').select('source');
     cy.get('input[name = "uri0"]').type('maven://org.springframework.cloud.task.app:timestamp-task:2.0.0.RELEASE');
     cy.get('button[name = "register"]').click();
-    cy.checkToastAnimation();
+    cy.shouldShowToast('Register application(s).', '1 App(s) registered');
     cy.get('app-apps-list').should('be.exist');
   });
 
@@ -64,7 +64,10 @@ describe('Applications', () => {
     cy.get('.modal-title').contains('Manage versions');
     cy.get('button[data-cy="setDefault"]').first().click();
     cy.get('button[data-cy="confirmYes"]').click();
-    cy.checkToastAnimation();
+    cy.shouldShowToast(
+      'Default version',
+      'The version "2.0.0.RELEASE" is now the default version of the application "aaaa" (source).'
+    );
   });
 
   it('should unregister one version', () => {
@@ -79,6 +82,6 @@ describe('Applications', () => {
     cy.get('.modal-title').contains('Manage versions');
     cy.get('button[data-cy="unregister"]').last().click();
     cy.get('button[data-cy="confirmYes"]').click();
-    cy.checkToastAnimation();
+    cy.shouldShowToast('Unregister version', 'Successfully removed version "2.1.1.RELEASE".');
   });
 });

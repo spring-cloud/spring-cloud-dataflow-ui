@@ -1,31 +1,43 @@
 declare namespace Cypress {
   interface Chainable {
+    shouldShowToast(title?: string, desc?: string): void;
+    // Applications
     registerApplication(): void;
     unregisterApplications(): void;
-    checkToastAnimation(): void;
-    createBatchTask(name?: string, dsl?: string, desc?: string): void;
-    importStreams(): void;
-    destroyStreams(): void;
-    createStream(name?: string, dsl?: string, desc?: string): void;
-    cleanupTaskExecutions(): void;
+    importAppsStream(): void;
     importAppsTask(): void;
+    // Streams
+    createStream(name?: string, dsl?: string, desc?: string): void;
+    destroyStreams(): void;
     createTask(name?: string, dsl?: string, desc?: string): void;
+    // Tasks
     destroyTasks(): void;
     launchTask(name: string): void;
+    cleanupTaskExecutions(): void;
   }
 }
 
-Cypress.Commands.add('checkToastAnimation', () => {
+Cypress.Commands.add('shouldShowToast', (title?: string, desc?: string) => {
   cy.get('app-toast div').should('be.visible');
+  if (title || desc) {
+    cy.get('app-toast div').then(text => {
+      if (title) {
+        expect(text.first().text()).contains(title);
+      }
+      if (desc) {
+        expect(text.last().text()).contains(desc);
+      }
+    });
+  }
   cy.get('app-toast div').should('not.be.visible');
 });
 
-Cypress.Commands.add('importStreams', () => {
+Cypress.Commands.add('importAppsStream', () => {
   cy.get('.nav-content > a[routerlink = "apps"]').click();
   cy.get('button#btnAddApplications').click();
   cy.get('[value="stream.kafka.docker"] + label').click();
   cy.get('button[type=submit]').click();
-  cy.checkToastAnimation();
+  cy.shouldShowToast('Import starters', 'Application(s) Imported.');
   cy.get('app-apps-list').should('be.exist');
   cy.get('span.pagination-total').should('be.exist');
 });
@@ -40,7 +52,7 @@ Cypress.Commands.add('registerApplication', () => {
     'maven://org.springframework.cloud:spring-cloud-dataflow-single-step-batch-job:2.9.0-SNAPSHOT'
   );
   cy.get('button[name = "register"]').click();
-  cy.checkToastAnimation();
+  cy.shouldShowToast('Register application(s).', '1 App(s) registered');
   cy.get('app-apps-list').should('be.exist');
   cy.get('span.pagination-total').should('be.exist');
 });
@@ -54,7 +66,7 @@ Cypress.Commands.add('unregisterApplications', () => {
       cy.get('button[data-cy="unregisterApplications"]').click();
       cy.get('button[data-cy="unregister"]').should('be.exist');
       cy.get('button[data-cy="unregister"]').click();
-      cy.checkToastAnimation();
+      cy.shouldShowToast();
       cy.get('.content-area').scrollTo('bottom', {ensureScrollable: false});
       cy.get('clr-spinner').should('not.exist');
       cy.unregisterApplications();
@@ -68,7 +80,7 @@ Cypress.Commands.add('importAppsTask', () => {
   cy.get('button#btnAddApplications').click();
   cy.get('[value="task.maven"] + label').click();
   cy.get('button[type=submit]').click();
-  cy.checkToastAnimation();
+  cy.shouldShowToast();
   cy.get('span.pagination-total').should('be.exist');
 });
 
@@ -82,7 +94,7 @@ Cypress.Commands.add('createTask', (name?: string, dsl?: string, desc?: string) 
     cy.get('input[name = "desc"]').type(desc);
   }
   cy.get('button[data-cy=submit]').click();
-  cy.checkToastAnimation();
+  cy.shouldShowToast('Task creation', `Task Definition created for ${name}`);
   cy.get('span.pagination-total').should('be.exist');
 });
 
@@ -98,7 +110,7 @@ Cypress.Commands.add('createStream', (name?: string, dsl?: string, desc?: string
     }
     cy.wait(500).then(() => {
       cy.get('button[data-cy=submit]').click();
-      cy.checkToastAnimation();
+      cy.shouldShowToast('Stream(s) creation', 'Stream(s) have been created successfully');
     });
   });
 });
@@ -112,7 +124,7 @@ Cypress.Commands.add('destroyStreams', () => {
       cy.get('button[data-cy="destroyStreams"]').click();
       cy.get('button[data-cy="destroy"]').should('be.exist');
       cy.get('button[data-cy="destroy"]').click();
-      cy.checkToastAnimation();
+      cy.shouldShowToast();
       cy.get('.content-area').scrollTo('bottom', {ensureScrollable: false});
       cy.get('clr-spinner').should('not.exist');
       cy.destroyStreams();
@@ -120,25 +132,12 @@ Cypress.Commands.add('destroyStreams', () => {
   });
 });
 
-Cypress.Commands.add('createBatchTask', (name?: string, dsl?: string, desc?: string) => {
-  cy.get('button.btn-primary').first().click();
-  cy.get('pre.CodeMirror-line').should('be.exist');
-  cy.get('.CodeMirror-line').click().type('timestamp-batch');
-  cy.get('button[data-cy=createTask]').first().click();
-  cy.get('input[name = "name"]').type(name ? name : 'J' + Cypress._.uniqueId(Date.now().toString()));
-  if (desc) {
-    cy.get('input[name = "desc"]').type(desc);
-  }
-  cy.get('button[data-cy=submit]').click();
-  cy.checkToastAnimation();
-});
-
 Cypress.Commands.add('launchTask', (name: string) => {
   cy.visit(Cypress.config('baseUrl') + '#/tasks-jobs/tasks/' + name + '/launch');
   cy.get('app-task-launch-builder').should('be.visible');
   cy.get('button#btn-deploy-builder').should('be.exist');
   cy.get('button#btn-deploy-builder').click();
-  cy.checkToastAnimation();
+  cy.shouldShowToast('Launch success', `Successfully launched task definition "${name}"`);
 });
 
 Cypress.Commands.add('destroyTasks', () => {
@@ -150,7 +149,7 @@ Cypress.Commands.add('destroyTasks', () => {
       cy.get('button[data-cy="destroyTasks"]').click();
       cy.get('button[data-cy="destroy"]').should('be.exist');
       cy.get('button[data-cy="destroy"]').click();
-      cy.checkToastAnimation();
+      cy.shouldShowToast();
       cy.get('.content-area').scrollTo('bottom', {ensureScrollable: false});
       cy.get('clr-spinner').should('not.exist');
       cy.destroyTasks();
@@ -167,7 +166,7 @@ Cypress.Commands.add('cleanupTaskExecutions', () => {
       cy.get('button[data-cy="cleanupExecutions"]').click();
       cy.get('button[data-cy="cleanup"]').should('be.exist');
       cy.get('button[data-cy="cleanup"]').click();
-      cy.checkToastAnimation();
+      cy.shouldShowToast();
       cy.get('.content-area').scrollTo('bottom', {ensureScrollable: false});
       cy.get('clr-spinner').should('not.exist');
       cy.cleanupTaskExecutions();

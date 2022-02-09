@@ -5,7 +5,7 @@ describe('Streams', () => {
    */
   before(() => {
     cy.apps();
-    cy.importStreams();
+    cy.importAppsStream();
   });
 
   /**
@@ -55,7 +55,7 @@ describe('Streams', () => {
     cy.get('.datagrid-action-overflow button:nth-child(3)').first().click();
     cy.get('button[data-cy="undeploy"]').should('be.exist');
     cy.get('button[data-cy="undeploy"]').click();
-    cy.checkToastAnimation();
+    cy.shouldShowToast('Undeploy stream', 'Successfully undeploy stream "bar".');
     cy.get('span.pagination-total').should(elem => {
       expect(Number(elem.text())).to.equal(2);
     });
@@ -66,7 +66,7 @@ describe('Streams', () => {
     cy.get('.datagrid-action-overflow button:nth-child(4)').first().click();
     cy.get('button[data-cy="clone"]').should('be.exist');
     cy.get('button[data-cy="clone"]').click();
-    cy.checkToastAnimation();
+    cy.shouldShowToast('Stream(s) clone', 'Stream(s) have been cloned successfully');
     cy.get('span.pagination-total').should(elem => {
       expect(Number(elem.text())).to.equal(3);
     });
