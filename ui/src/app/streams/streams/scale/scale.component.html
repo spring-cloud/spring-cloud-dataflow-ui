@@ -23,19 +23,13 @@
             {{ item.name }}
           </td>
           <td class="left">
-            <input
-              style="width: 50px"
-              type="number"
-              min="0"
-              class="clr-input ng-pristine ng-valid ng-touched"
-              [(ngModel)]="item.instanceCount"
-            />
+            <input style="width: 50px" type="number" min="0" class="clr-input" [(ngModel)]="item.instanceCount" />
           </td>
           <td nowrap="">
             <button
               type="button"
               class="btn btn-sm btn-secondary"
-              [disabled]="item.currentInstanceCount === item.instanceCount || item.isScaling"
+              [disabled]="instanceCanScale(item)"
               (click)="scale(item)"
             >
               Scale <clr-spinner *ngIf="item.isScaling" clrInline clrSmall></clr-spinner>&nbsp;

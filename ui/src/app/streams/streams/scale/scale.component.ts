@@ -2,11 +2,12 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {StreamService} from '../../../shared/api/stream.service';
 import {NotificationService} from '../../../shared/service/notification.service';
 import {AppStatus, StreamStatus} from '../../../shared/model/metrics.model';
-import { Instance } from 'src/app/shared/model/instance.model';
+import {Instance} from 'src/app/shared/model/instance.model';
 
 @Component({
   selector: 'app-stream-scale',
-  templateUrl: './scale.component.html'
+  templateUrl: './scale.component.html',
+  styleUrls: ['scale.component.scss']
 })
 export class ScaleComponent {
   streamName: string;
@@ -57,5 +58,9 @@ export class ScaleComponent {
         );
       }
     );
+  }
+
+  instanceCanScale(instance: Instance) {
+    return instance.currentInstanceCount === instance.instanceCount || instance.isScaling || !instance.isValid();
   }
 }
