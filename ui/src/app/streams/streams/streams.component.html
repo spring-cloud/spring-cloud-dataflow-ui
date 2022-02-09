@@ -1,7 +1,13 @@
 <h1 class="page-title-actions">
   {{ 'streams.main.title' | translate }}
   <span class="actions">
-    <button type="button" class="btn btn-sm btn-primary" (click)="create()" [appRole]="['ROLE_CREATE']">
+    <button
+      data-cy="createStream"
+      type="button"
+      class="btn btn-sm btn-primary"
+      (click)="create()"
+      [appRole]="['ROLE_CREATE']"
+    >
       {{ 'streams.main.createStreams' | translate }}
     </button>
     <button type="button" class="btn btn-sm btn-secondary" grafanaDashboardStreams>
@@ -48,6 +54,7 @@
       [disabled]="selected?.length === 0"
       (click)="destroy(selected)"
       [appRole]="['ROLE_DESTROY']"
+      data-cy="destroyStreams"
     >
       {{ 'streams.main.destroyStreams' | translate }}
     </button>
@@ -64,6 +71,7 @@
   <clr-dg-action-bar *ngIf="!grouped">
     <button
       type="button"
+      data-cy="groupActions"
       class="btn btn-sm btn-secondary"
       (click)="setMode(true)"
       [appRole]="['ROLE_DEPLOY', 'ROLE_CREATE', 'ROLE_DESTROY']"

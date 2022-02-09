@@ -49,7 +49,7 @@
     <button type="button" class="btn btn-outline" [disabled]="isRunning" (click)="isOpen = false">
       {{ 'commons.cancel' | translate }}
     </button>
-    <button type="button" class="btn btn-danger" (click)="unregister()" [disabled]="isRunning">
+    <button data-cy="unregister" type="button" class="btn btn-danger" (click)="unregister()" [disabled]="isRunning">
       <span *ngIf="apps.length === 1">{{ 'applications.unregister.unregister' | translate }}</span>
       <span *ngIf="apps.length > 1">{{ 'applications.unregister.unregister2' | translate }}</span>
     </button>

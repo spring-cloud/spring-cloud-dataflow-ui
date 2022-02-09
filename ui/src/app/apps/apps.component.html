@@ -27,6 +27,7 @@
     <button
       id="btnUnregisterApplications"
       type="button"
+      data-cy="unregisterApplications"
       [disabled]="selected?.length === 0"
       class="btn btn-sm btn-outline-danger"
       (click)="unregistersApp(selected)"
@@ -39,6 +40,7 @@
   <clr-dg-action-bar *ngIf="!grouped">
     <button
       id="btnGroupActions"
+      data-cy="groupActions"
       type="button"
       class="btn btn-sm btn-secondary"
       (click)="setMode(true)"

@@ -1,54 +1,75 @@
 describe('Streams', () => {
-  const goToStreams = () => {
-    cy.get('clr-vertical-nav-group[appfeature = "streams"]').click();
-  };
-
+  /**
+   * Before hook
+   * Setup the context, import stream apps, create streams
+   */
   before(() => {
-    cy.visit(Cypress.config('baseUrl'));
-    goToStreams();
+    cy.apps();
     cy.importStreams();
-    goToStreams();
-    cy.createStream();
   });
 
+  /**
+   * After hook
+   * Clean the context, remove streams and apps
+   */
+  after(() => {
+    cy.destroyStreams();
+    cy.unregisterApplications();
+  });
+
+  /**
+   * Before Each hook
+   */
   beforeEach(() => {
-    cy.checkVisibility('a[routerlink = "streams/list"]');
-    cy.get('a[routerlink = "streams/list"]').first().click();
+    cy.streams();
   });
 
-  it('should create a stream and render it on table', () => {
-    cy.get('.datagrid clr-dg-cell').should('have.length.gte', 1);
+  it('should create 2 streams', () => {
+    cy.createStream('bar');
+    cy.createStream('foo');
+    cy.get('span.pagination-total').should(elem => {
+      expect(Number(elem.text())).to.equal(2);
+    });
   });
 
   it('should navigate to the View details', () => {
-    cy.get('.datagrid-action-toggle').last().click();
+    cy.get('.datagrid-action-toggle').first().click();
     cy.get('.datagrid-action-overflow button').first().click();
-    cy.checkExistence('app-view-card');
     cy.get('app-view-card').should('have.id', 'info');
   });
 
   it('should deploy a stream', () => {
-    cy.get('.datagrid-action-toggle').last().click();
+    cy.get('.datagrid-action-toggle').first().click();
     cy.get('.datagrid-action-overflow button:nth-child(2)').first().click();
     cy.get('button[data-cy=deploy]').click();
     // Waiting 10s for deploying
     cy.wait(10 * 1000).then(() => {
-      cy.checkExistence('span.pagination-total');
+      cy.get('span.pagination-total').should(elem => {
+        expect(Number(elem.text())).to.equal(2);
+      });
     });
   });
 
-  it('should destroy a stream', () => {
-    cy.get('.datagrid-action-toggle').last().click();
+  it('should undeploy a stream', () => {
+    cy.get('.datagrid-action-toggle').first().click();
     cy.get('.datagrid-action-overflow button:nth-child(3)').first().click();
-    cy.checkExistence('.modal-dialog button');
-    cy.get('.modal-dialog button').last().click();
+    cy.get('button[data-cy="undeploy"]').should('be.exist');
+    cy.get('button[data-cy="undeploy"]').click();
+    cy.checkToastAnimation();
+    cy.get('span.pagination-total').should(elem => {
+      expect(Number(elem.text())).to.equal(2);
+    });
   });
 
   it('should clone a stream', () => {
-    cy.get('.datagrid-action-toggle').last().click();
+    cy.get('.datagrid-action-toggle').first().click();
     cy.get('.datagrid-action-overflow button:nth-child(4)').first().click();
-    cy.checkExistence('.modal-dialog button');
-    cy.get('.modal-dialog button').last().click();
+    cy.get('button[data-cy="clone"]').should('be.exist');
+    cy.get('button[data-cy="clone"]').click();
+    cy.checkToastAnimation();
+    cy.get('span.pagination-total').should(elem => {
+      expect(Number(elem.text())).to.equal(3);
+    });
   });
 
   // it('Group action for deploy streams', () => {

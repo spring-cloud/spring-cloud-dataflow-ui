@@ -35,7 +35,7 @@
     <button type="button" class="btn btn-outline" (click)="isOpen = false" [disabled]="isRunning">
       {{ 'commons.cancel' | translate }}
     </button>
-    <button type="button" class="btn btn-danger" (click)="unregister()" [disabled]="isRunning">
+    <button data-cy="destroy" type="button" class="btn btn-danger" (click)="unregister()" [disabled]="isRunning">
       <span *ngIf="streams.length === 1">{{ 'streams.destroy.destroy' | translate }}</span>
       <span *ngIf="streams.length > 1">{{ 'streams.destroy.destroy2' | translate }}</span>
     </button>

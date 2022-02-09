@@ -1,56 +1,11 @@
-// ***********************************************
-// This example namespace declaration will help
-// with Intellisense and code completion in your
-// IDE or Text Editor.
-// ***********************************************
-// declare namespace Cypress {
-//   interface Chainable<Subject = any> {
-//     customCommand(param: any): typeof customCommand;
-//   }
-// }
-//
-// function customCommand(param: any): void {
-//   console.warn(param);
-// }
-//
-// NOTE: You can use it like so:
-// Cypress.Commands.add('customCommand', customCommand);
-//
-// ***********************************************
-// This example commands.js shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add("login", (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add("drag", { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add("dismiss", { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
-
 declare namespace Cypress {
   interface Chainable {
-    checkVisibility(selector: string): void;
-    checkExistence(selector: string): void;
     registerApplication(): void;
+    unregisterApplications(): void;
     checkToastAnimation(): void;
-    checkLoadingDone(): void;
     createBatchTask(name?: string, dsl?: string, desc?: string): void;
     importStreams(): void;
+    destroyStreams(): void;
     createStream(name?: string, dsl?: string, desc?: string): void;
     cleanupTaskExecutions(): void;
     importAppsTask(): void;
@@ -59,19 +14,6 @@ declare namespace Cypress {
     launchTask(name: string): void;
   }
 }
-
-Cypress.Commands.add('checkVisibility', (selector: string) => {
-  cy.get(selector).should('be.visible');
-});
-
-Cypress.Commands.add('checkExistence', (selector: string) => {
-  cy.get(selector).should('be.exist');
-});
-
-Cypress.Commands.add('checkLoadingDone', () => {
-  cy.get('clr-spinner').should('be.visible');
-  cy.get('clr-spinner').should('not.exist');
-});
 
 Cypress.Commands.add('checkToastAnimation', () => {
   cy.get('app-toast div').should('be.visible');
@@ -83,8 +25,9 @@ Cypress.Commands.add('importStreams', () => {
   cy.get('button#btnAddApplications').click();
   cy.get('[value="stream.kafka.docker"] + label').click();
   cy.get('button[type=submit]').click();
-  cy.checkExistence('app-apps-list');
-  cy.checkExistence('span.pagination-total');
+  cy.checkToastAnimation();
+  cy.get('app-apps-list').should('be.exist');
+  cy.get('span.pagination-total').should('be.exist');
 });
 
 Cypress.Commands.add('registerApplication', () => {
@@ -97,22 +40,41 @@ Cypress.Commands.add('registerApplication', () => {
     'maven://org.springframework.cloud:spring-cloud-dataflow-single-step-batch-job:2.9.0-SNAPSHOT'
   );
   cy.get('button[name = "register"]').click();
-  cy.checkExistence('app-apps-list');
-  cy.checkExistence('span.pagination-total');
+  cy.checkToastAnimation();
+  cy.get('app-apps-list').should('be.exist');
+  cy.get('span.pagination-total').should('be.exist');
+});
+
+Cypress.Commands.add('unregisterApplications', () => {
+  cy.apps();
+  cy.get('span.pagination-total').then(total => {
+    if (Number(total.text()) > 0) {
+      cy.get('button[data-cy="groupActions"]').click();
+      cy.get('input[type="checkbox"] + label').first().click();
+      cy.get('button[data-cy="unregisterApplications"]').click();
+      cy.get('button[data-cy="unregister"]').should('be.exist');
+      cy.get('button[data-cy="unregister"]').click();
+      cy.checkToastAnimation();
+      cy.get('.content-area').scrollTo('bottom', {ensureScrollable: false});
+      cy.get('clr-spinner').should('not.exist');
+      cy.unregisterApplications();
+    }
+  });
 });
 
 Cypress.Commands.add('importAppsTask', () => {
   cy.get('.nav-content > a[routerlink = "apps"]').click();
-  cy.checkExistence('button#btnAddApplications');
+  cy.get('button#btnAddApplications').should('be.exist');
   cy.get('button#btnAddApplications').click();
   cy.get('[value="task.maven"] + label').click();
   cy.get('button[type=submit]').click();
-  cy.checkExistence('span.pagination-total');
+  cy.checkToastAnimation();
+  cy.get('span.pagination-total').should('be.exist');
 });
 
 Cypress.Commands.add('createTask', (name?: string, dsl?: string, desc?: string) => {
   cy.get('button[data-cy=createTask]').click();
-  cy.checkExistence('pre.CodeMirror-line');
+  cy.get('pre.CodeMirror-line').should('be.exist');
   cy.get('.CodeMirror-line').type(dsl ? dsl : 'timestamp');
   cy.get('button.btn-primary').first().click();
   cy.get('input[name = "name"]').type(name ? name : 'T' + Cypress._.uniqueId(Date.now().toString()));
@@ -120,12 +82,13 @@ Cypress.Commands.add('createTask', (name?: string, dsl?: string, desc?: string) 
     cy.get('input[name = "desc"]').type(desc);
   }
   cy.get('button[data-cy=submit]').click();
-  cy.checkExistence('span.pagination-total');
+  cy.checkToastAnimation();
+  cy.get('span.pagination-total').should('be.exist');
 });
 
 Cypress.Commands.add('createStream', (name?: string, dsl?: string, desc?: string) => {
-  cy.get('button.btn-primary').first().click();
-  cy.checkExistence('pre.CodeMirror-line');
+  cy.get('button[data-cy="createStream"]').first().click();
+  cy.get('pre.CodeMirror-line').should('be.exist');
   cy.get('.CodeMirror-line').type(dsl ? dsl : 'file|filter|log');
   cy.wait(500).then(() => {
     cy.get('button[data-cy=createStream]').first().click();
@@ -135,13 +98,31 @@ Cypress.Commands.add('createStream', (name?: string, dsl?: string, desc?: string
     }
     cy.wait(500).then(() => {
       cy.get('button[data-cy=submit]').click();
+      cy.checkToastAnimation();
     });
+  });
+});
+
+Cypress.Commands.add('destroyStreams', () => {
+  cy.streams();
+  cy.get('span.pagination-total').then(total => {
+    if (Number(total.text()) > 0) {
+      cy.get('button[data-cy="groupActions"]').click();
+      cy.get('input[type="checkbox"] + label').first().click();
+      cy.get('button[data-cy="destroyStreams"]').click();
+      cy.get('button[data-cy="destroy"]').should('be.exist');
+      cy.get('button[data-cy="destroy"]').click();
+      cy.checkToastAnimation();
+      cy.get('.content-area').scrollTo('bottom', {ensureScrollable: false});
+      cy.get('clr-spinner').should('not.exist');
+      cy.destroyStreams();
+    }
   });
 });
 
 Cypress.Commands.add('createBatchTask', (name?: string, dsl?: string, desc?: string) => {
   cy.get('button.btn-primary').first().click();
-  cy.checkExistence('pre.CodeMirror-line');
+  cy.get('pre.CodeMirror-line').should('be.exist');
   cy.get('.CodeMirror-line').click().type('timestamp-batch');
   cy.get('button[data-cy=createTask]').first().click();
   cy.get('input[name = "name"]').type(name ? name : 'J' + Cypress._.uniqueId(Date.now().toString()));
@@ -149,13 +130,15 @@ Cypress.Commands.add('createBatchTask', (name?: string, dsl?: string, desc?: str
     cy.get('input[name = "desc"]').type(desc);
   }
   cy.get('button[data-cy=submit]').click();
+  cy.checkToastAnimation();
 });
 
 Cypress.Commands.add('launchTask', (name: string) => {
   cy.visit(Cypress.config('baseUrl') + '#/tasks-jobs/tasks/' + name + '/launch');
   cy.get('app-task-launch-builder').should('be.visible');
-  cy.checkExistence('button#btn-deploy-builder');
+  cy.get('button#btn-deploy-builder').should('be.exist');
   cy.get('button#btn-deploy-builder').click();
+  cy.checkToastAnimation();
 });
 
 Cypress.Commands.add('destroyTasks', () => {
@@ -167,7 +150,7 @@ Cypress.Commands.add('destroyTasks', () => {
       cy.get('button[data-cy="destroyTasks"]').click();
       cy.get('button[data-cy="destroy"]').should('be.exist');
       cy.get('button[data-cy="destroy"]').click();
-      cy.get('app-toast').should('be.visible');
+      cy.checkToastAnimation();
       cy.get('.content-area').scrollTo('bottom', {ensureScrollable: false});
       cy.get('clr-spinner').should('not.exist');
       cy.destroyTasks();
@@ -184,7 +167,7 @@ Cypress.Commands.add('cleanupTaskExecutions', () => {
       cy.get('button[data-cy="cleanupExecutions"]').click();
       cy.get('button[data-cy="cleanup"]').should('be.exist');
       cy.get('button[data-cy="cleanup"]').click();
-      cy.get('app-toast').should('be.visible');
+      cy.checkToastAnimation();
       cy.get('.content-area').scrollTo('bottom', {ensureScrollable: false});
       cy.get('clr-spinner').should('not.exist');
       cy.cleanupTaskExecutions();

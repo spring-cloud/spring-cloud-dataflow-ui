@@ -1,15 +1,24 @@
 describe('Tasks/Jobs', () => {
+  /**
+   * Before hook
+   * Setup the context
+   */
   before(() => {
-    // Open dashboard UI and import Apps
-    cy.visit(Cypress.config('baseUrl'));
+    cy.apps();
     cy.importAppsTask();
   });
 
+  /**
+   * After hook
+   * Clean the context
+   */
   after(() => {
     // Clean up all executions
     cy.cleanupTaskExecutions();
     // Destroy all tasks
     cy.destroyTasks();
+    // Destroy all applications
+    cy.unregisterApplications();
   });
 
   describe('Tasks', () => {
@@ -35,7 +44,7 @@ describe('Tasks/Jobs', () => {
 
     it('should launch a task', () => {
       cy.launchTask('task1');
-      cy.checkLoadingDone();
+      cy.get('clr-spinner').should('not.exist');
       cy.get('app-view-card').invoke('attr', 'keycontext').should('eq', 'execution');
     });
 
@@ -44,6 +53,7 @@ describe('Tasks/Jobs', () => {
       cy.get('.datagrid-action-overflow button:nth-child(4)').first().click();
       cy.get('.modal-dialog button').should('be.exist');
       cy.get('.modal-dialog button').last().click();
+      cy.get('clr-spinner').should('not.exist');
       cy.get('span.pagination-total').should(elem => {
         expect(Number(elem.text())).to.equal(2);
       });
@@ -65,6 +75,7 @@ describe('Tasks/Jobs', () => {
       cy.get('.datagrid-action-overflow button:nth-child(5)').first().click();
       cy.get('.modal-dialog button').should('be.exist');
       cy.get('.modal-dialog button').last().click();
+      cy.get('clr-spinner').should('not.exist');
       cy.get('span.pagination-total').should(elem => {
         expect(Number(elem.text())).to.equal(3);
       });
