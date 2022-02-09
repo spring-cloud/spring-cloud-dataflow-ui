@@ -2,6 +2,7 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {StreamService} from '../../../shared/api/stream.service';
 import {NotificationService} from '../../../shared/service/notification.service';
 import {AppStatus, StreamStatus} from '../../../shared/model/metrics.model';
+import { Instance } from 'src/app/shared/model/instance.model';
 
 @Component({
   selector: 'app-stream-scale',
@@ -56,20 +57,5 @@ export class ScaleComponent {
         );
       }
     );
-  }
-}
-
-class Instance {
-  name: string;
-  currentInstanceCount: number;
-  instanceCount: number;
-  isScaling = false;
-
-  static fromAppStatus(appStatus: AppStatus): Instance {
-    return {
-      currentInstanceCount: appStatus.instances.length,
-      instanceCount: appStatus.instances.length,
-      name: appStatus.name
-    } as Instance;
   }
 }
