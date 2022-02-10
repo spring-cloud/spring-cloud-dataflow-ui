@@ -147,10 +147,7 @@ export class ExecutionComponent implements OnInit {
   }
 
   hasLog(): boolean {
-    return (
-      (this.taskExecution.taskExecutionStatus === 'COMPLETE' || this.taskExecution.taskExecutionStatus === 'ERROR') &&
-      this.taskExecution.externalExecutionId !== ''
-    );
+    return this.taskExecution.externalExecutionId !== '';
   }
 
   viewLog(): void {
