@@ -1,8 +1,9 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Output} from '@angular/core';
 import {StreamService} from '../../../shared/api/stream.service';
 import {NotificationService} from '../../../shared/service/notification.service';
-import {AppStatus, StreamStatus} from '../../../shared/model/metrics.model';
+import {StreamStatus} from '../../../shared/model/metrics.model';
 import {Instance} from 'src/app/shared/model/instance.model';
+import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-stream-scale',
@@ -11,11 +12,18 @@ import {Instance} from 'src/app/shared/model/instance.model';
 })
 export class ScaleComponent {
   streamName: string;
-  instances: Array<Instance> = [];
   isOpen = false;
   isRunning = false;
   isLoading = false;
   @Output() onScale = new EventEmitter();
+
+  instances: Array<Instance> = [];
+
+  scaleForm: FormGroup = new FormGroup({
+    instanceCount: new FormArray([])
+  });
+
+  instancesForm: FormArray = this.scaleForm.get('instanceCount') as FormArray;
 
   constructor(private streamService: StreamService, private notificationService: NotificationService) {}
 
@@ -23,10 +31,16 @@ export class ScaleComponent {
     this.isLoading = true;
     this.streamName = streamName;
     this.instances = [];
+
     this.streamService.getRuntimeStreamStatuses([streamName]).subscribe(
       (metrics: StreamStatus[]) => {
         if (metrics && metrics.length > 0) {
-          this.instances = metrics[0].applications.map(appStatus => Instance.fromAppStatus(appStatus));
+          metrics[0].applications.forEach(appStatus => {
+            const instance = Instance.fromAppStatus(appStatus);
+
+            this.instances.push(instance);
+            this.instancesForm.push(new FormControl(instance.instanceCount, [Validators.required, Validators.min(0)]));
+          });
         }
         this.isLoading = false;
       },
@@ -41,11 +55,13 @@ export class ScaleComponent {
     this.isOpen = true;
   }
 
-  scale(instance: Instance) {
+  scale(instanceNumber: number) {
+    const instance = this.instances[instanceNumber];
+    const scaleTo = this.instancesForm.controls[instanceNumber].value;
     instance.isScaling = true;
-    this.streamService.scaleAppInstance(this.streamName, instance.name, instance.instanceCount).subscribe(
+    this.streamService.scaleAppInstance(this.streamName, instance.name, scaleTo).subscribe(
       data => {
-        instance.currentInstanceCount = instance.instanceCount;
+        instance.instanceCount = scaleTo;
         this.onScale.emit();
         this.notificationService.success('Scale stream', `${instance.name} app scaled to ${instance.instanceCount}.`);
         instance.isScaling = false;
@@ -60,7 +76,7 @@ export class ScaleComponent {
     );
   }
 
-  instanceCanScale(instance: Instance) {
-    return instance.currentInstanceCount === instance.instanceCount || instance.isScaling || !instance.isValid();
+  isValueNotChanged(instanceNumber: number) {
+    return this.instances[instanceNumber].instanceCount === this.instancesForm.controls[instanceNumber].value;
   }
 }

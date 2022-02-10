@@ -9,35 +9,46 @@
       <clr-spinner clrInline clrSmall></clr-spinner>&nbsp;
       <span>Fetching stream runtime statuses ...</span>
     </div>
-    <table class="table table-striped" *ngIf="!isLoading">
-      <thead>
-        <tr>
-          <th class="left">Name</th>
-          <th class="left" style="width: 60px">Instances</th>
-          <th class="left" style="width: 30px">&nbsp;</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of instances">
-          <td class="left">
-            {{ item.name }}
-          </td>
-          <td class="left">
-            <input style="width: 50px" type="number" min="0" class="clr-input" [(ngModel)]="item.instanceCount" />
-          </td>
-          <td nowrap="">
-            <button
-              type="button"
-              class="btn btn-sm btn-secondary"
-              [disabled]="instanceCanScale(item)"
-              (click)="scale(item)"
-            >
-              Scale <clr-spinner *ngIf="item.isScaling" clrInline clrSmall></clr-spinner>&nbsp;
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <form [formGroup]="scaleForm">
+      <table class="table table-striped" *ngIf="!isLoading">
+        <thead>
+          <tr>
+            <th class="left">Name</th>
+            <th class="left" style="width: 60px">Instances</th>
+            <th class="left" style="width: 30px">&nbsp;</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container formArrayName="instanceCount">
+            <tr *ngFor="let instance of instances; index as i">
+              <td class="left">
+                {{ instance.name }}
+              </td>
+              <td class="left">
+                <input
+                  style="width: 50px"
+                  type="number"
+                  min="0"
+                  class="clr-input ng-pristine ng-valid ng-touched"
+                  [formControlName]="i"
+                />
+              </td>
+              <td nowrap="">
+                <button
+                  type="button"
+                  class="btn btn-sm btn-secondary"
+                  [disabled]="instancesForm.controls[i].invalid || isValueNotChanged(i)"
+                  (click)="scale(i)"
+                >
+                  Scale
+                  <clr-spinner *ngIf="instance.isScaling" clrInline clrSmall></clr-spinner>&nbsp;
+                </button>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </form>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-outline" (click)="isOpen = false">Close</button>
