@@ -15,6 +15,8 @@ import {ContextServiceMock} from '../../../tests/service/context.service.mock';
 import {By} from '@angular/platform-browser';
 import {InstanceStatus} from '../../../shared/model/metrics.model';
 import {of, throwError} from 'rxjs';
+import TRANSLATIONS from '../../../../assets/i18n/en.json';
+import {TranslateTestingModule} from 'ngx-translate-testing';
 
 describe('ScaleComponent', () => {
   let component: ScaleComponent;
@@ -30,7 +32,8 @@ describe('ScaleComponent', () => {
           ClarityModule,
           RouterTestingModule.withRoutes([]),
           BrowserAnimationsModule,
-          ReactiveFormsModule
+          ReactiveFormsModule,
+          TranslateTestingModule.withTranslations('en', TRANSLATIONS)
         ],
         providers: [
           SecurityServiceMock.provider,

@@ -4,6 +4,7 @@ import {NotificationService} from '../../../shared/service/notification.service'
 import {StreamStatus} from '../../../shared/model/metrics.model';
 import {Instance} from '../../../shared/model/instance.model';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-stream-scale',
@@ -21,7 +22,11 @@ export class ScaleComponent {
 
   form: FormGroup = new FormGroup({});
 
-  constructor(private streamService: StreamService, private notificationService: NotificationService) {}
+  constructor(
+    private streamService: StreamService,
+    private notificationService: NotificationService,
+    private translate: TranslateService
+  ) {}
 
   initForm(metrics: StreamStatus[]): void {
     this.instances = [];
@@ -48,8 +53,8 @@ export class ScaleComponent {
       () => {
         this.isLoading = false;
         this.notificationService.error(
-          'An error occurred',
-          'An error occurred while fetching Stream runtime statuses. Please check the server logs for more details.'
+          this.translate.instant('commons.message.error'),
+          this.translate.instant('streams.scale.message.loadingErrorContent')
         );
       }
     );
@@ -64,14 +69,20 @@ export class ScaleComponent {
       () => {
         instance.instanceCount = scaleTo;
         this.onScale.emit();
-        this.notificationService.success('Scale stream', `${instance.name} app scaled to ${instance.instanceCount}.`);
+        this.notificationService.success(
+          this.translate.instant('streams.scale.message.successTitle'),
+          this.translate.instant('streams.scale.message.successContent', {
+            name: instance.name,
+            count: instance.instanceCount
+          })
+        );
         instance.isScaling = false;
         this.isRunning = false;
       },
       error => {
         instance.isScaling = false;
         this.isRunning = false;
-        this.notificationService.error('An error occurred', error);
+        this.notificationService.error(this.translate.instant('commons.message.error'), error);
       }
     );
   }

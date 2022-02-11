@@ -27,6 +27,7 @@
     "destroy": "Destroy",
     "launch": "Launch",
     "schedule": "Schedule",
+    "scaleInstance": "Scale instance(s)",
     "description": "Description",
     "status": "Status",
     "clone": "Clone",
@@ -531,6 +532,20 @@
         "errorContent": "An error occurred while undeploying Streams. Please check the server logs for more details."
       }
     },
+    "scale": {
+      "title": "Scale instance(s) for app",
+      "loading": "Fetching stream runtime statuses",
+      "description": "You can scale an application between 1 and 9 instances.",
+      "scale": "Scale",
+      "scaling": "Scaling",
+      "name": "Name",
+      "instance": "Instance",
+      "message": {
+        "loadingErrorContent": "An error occurred while fetching Stream runtime statuses. Please check the server logs for more details.",
+        "successTitle": "Scale stream",
+        "successContent": "{{ name }} app scaled to {{ count }}."
+      }
+    },
     "create": {
       "title": "Create stream(s)",
       "create": "Create stream(s)",
@@ -566,6 +581,7 @@
       "update": "Update stream",
       "undeploy": "Undeploy stream",
       "destroy": "Destroy stream",
+      "scale": "Scale instance(s)",
       "showPipeline": "Show Data Pipeline",
       "relatedStreams": "Related stream(s)",
       "deploymentInfo": "Deployment Info",

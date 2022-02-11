@@ -1,20 +1,20 @@
 <clr-modal [(clrModalOpen)]="isOpen" *ngIf="streamName" [clrModalClosable]="!isRunning">
   <h3 class="modal-title">
-    Scale instance(s) for app
+    {{ 'streams.scale.title' | translate }}
     <strong>{{ streamName }}</strong>
   </h3>
   <div class="modal-body">
     <div *ngIf="isLoading">
       <clr-spinner clrInline clrSmall></clr-spinner>&nbsp;
-      <span>Fetching stream runtime statuses ...</span>
+      <span>{{ 'streams.scale.loading' | translate }}</span>
     </div>
     <form [formGroup]="form" *ngIf="!isLoading">
-      <div>You can scale an application between 1 and 9 instances.</div>
+      <div>{{ 'streams.scale.description' | translate }}</div>
       <table class="table table-striped">
         <thead>
           <tr>
-            <th class="left">Name</th>
-            <th class="left" style="width: 60px">Instances</th>
+            <th class="left">{{ 'streams.scale.name' | translate }}</th>
+            <th class="left" style="width: 60px">{{ 'streams.scale.instance' | translate }}</th>
             <th class="left" style="width: 30px">&nbsp;</th>
           </tr>
         </thead>
@@ -44,8 +44,8 @@
                   (click)="scale(instance)"
                 >
                   <clr-spinner *ngIf="instance.isScaling" clrInline clrSmall></clr-spinner>&nbsp;
-                  <span *ngIf="!instance.isScaling">Scale</span>
-                  <span *ngIf="instance.isScaling">Scaling</span>
+                  <span *ngIf="!instance.isScaling">{{ 'streams.scale.scale' | translate }}</span>
+                  <span *ngIf="instance.isScaling">{{ 'streams.scale.scaling' | translate }}</span>
                 </button>
               </td>
             </tr>
@@ -55,6 +55,6 @@
     </form>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline" (click)="isOpen = false">Close</button>
+    <button type="button" class="btn btn-outline" (click)="isOpen = false">{{ 'commons.cancel' | translate }}</button>
   </div>
 </clr-modal>
