@@ -3,7 +3,7 @@
 <app-task-create-view #flo></app-task-create-view>
 
 <button class="btn btn-secondary" type="button" (click)="back()">{{ 'commons.cancel' | translate }}</button>
-<button class="btn btn-primary" type="button" (click)="createTask()">
+<button data-cy="createTask" class="btn btn-primary" type="button" (click)="createTask()">
   {{ 'tasks.create.createTask' | translate }}
 </button>
 
@@ -104,7 +104,7 @@
         <button type="button" class="btn btn-default" (click)="close()" [disabled]="isCreating">
           {{ 'commons.cancel' | translate }}
         </button>
-        <button type="submit" class="btn btn-primary" [disabled]="!form.valid">
+        <button data-cy="submit" type="submit" class="btn btn-primary" [disabled]="!form.valid">
           {{ 'tasks.create.modal.create' | translate }}
         </button>
       </div>

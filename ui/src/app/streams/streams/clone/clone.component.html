@@ -69,7 +69,7 @@
     <button type="button" class="btn btn-outline" (click)="isOpen = false" [disabled]="isRunning">
       {{ 'commons.cancel' | translate }}
     </button>
-    <button type="button" class="btn btn-primary" (click)="submit()" [disabled]="isRunning">
+    <button data-cy="clone" type="button" class="btn btn-primary" (click)="submit()" [disabled]="isRunning">
       <span *ngIf="streams.length === 1">{{ 'streams.clone.clone' | translate }}</span>
       <span *ngIf="streams.length > 1">{{ 'streams.clone.clone2' | translate }}</span>
     </button>

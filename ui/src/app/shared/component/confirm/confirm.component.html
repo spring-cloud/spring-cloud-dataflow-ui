@@ -4,10 +4,10 @@
     <ng-content></ng-content>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline" (click)="isOpen = false">
+    <button data-cy="confirmCancel" type="button" class="btn btn-outline" (click)="isOpen = false">
       {{ 'commons.cancel' | translate }}
     </button>
-    <button type="button" class="btn btn-primary" (click)="confirm()">
+    <button data-cy="confirmYes" type="button" class="btn btn-primary" (click)="confirm()">
       {{ yes }}
     </button>
   </div>

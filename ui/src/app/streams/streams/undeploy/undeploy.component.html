@@ -35,7 +35,7 @@
     <button type="button" class="btn btn-outline" (click)="isOpen = false" [disabled]="isRunning">
       {{ 'commons.cancel' | translate }}
     </button>
-    <button type="button" class="btn btn-primary" (click)="unregister()" [disabled]="isRunning">
+    <button data-cy="undeploy" type="button" class="btn btn-primary" (click)="unregister()" [disabled]="isRunning">
       <span *ngIf="streams.length === 1">{{ 'streams.undeploy.undeploy' | translate }}</span>
       <span *ngIf="streams.length > 1">{{ 'streams.undeploy.undeploy2' | translate }}</span>
     </button>

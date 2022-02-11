@@ -7,6 +7,7 @@
       class="btn btn-sm btn-primary"
       (click)="add()"
       [appRole]="['ROLE_CREATE']"
+      data-cy="addApps"
     >
       {{ 'applications.main.addApplications' | translate }}
     </button>
@@ -26,6 +27,7 @@
     <button
       id="btnUnregisterApplications"
       type="button"
+      data-cy="unregisterApplications"
       [disabled]="selected?.length === 0"
       class="btn btn-sm btn-outline-danger"
       (click)="unregistersApp(selected)"
@@ -38,6 +40,7 @@
   <clr-dg-action-bar *ngIf="!grouped">
     <button
       id="btnGroupActions"
+      data-cy="groupActions"
       type="button"
       class="btn btn-sm btn-secondary"
       (click)="setMode(true)"
@@ -140,10 +143,12 @@
       <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]">{{
         'applications.main.applicationsPerPage' | translate
       }}</clr-dg-page-size>
-      {{
-        'applications.main.pagination'
-          | translate: {first: pagination.firstItem + 1, last: pagination.lastItem + 1, total: page?.total}
-      }}
+      <span
+        [innerHTML]="
+          'applications.main.pagination'
+            | translate: {first: pagination.firstItem + 1, last: pagination.lastItem + 1, total: page?.total}
+        "
+      ></span>
     </clr-dg-pagination>
   </clr-dg-footer>
 </clr-datagrid>
