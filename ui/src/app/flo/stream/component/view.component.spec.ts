@@ -11,6 +11,8 @@ import {StreamFloViewComponent} from './view.component';
 import {StreamService} from '../../../shared/api/stream.service';
 import {NotificationServiceMock} from '../../../tests/service/notification.service.mock';
 import {NodeHelper} from '../node-helper.service';
+import {TranslateTestingModule} from 'ngx-translate-testing';
+import TRANSLATIONS from '../../../../assets/i18n/en.json';
 
 /**
  * Test {@link StreamGraphComponent}.
@@ -30,7 +32,11 @@ describe('StreamGraphComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [StreamFloViewComponent, GraphViewComponent],
-        imports: [RouterTestingModule.withRoutes([]), FloModule],
+        imports: [
+          RouterTestingModule.withRoutes([]),
+          FloModule,
+          TranslateTestingModule.withTranslations('en', TRANSLATIONS)
+        ],
         providers: [
           {provide: StreamService, useValue: streamsService},
           {provide: NotificationService, useValue: notificationService},

@@ -3,6 +3,7 @@ import {App, ApplicationType} from '../../shared/model/app.model';
 import {AppService} from '../../shared/api/app.service';
 import {NotificationService} from '../../shared/service/notification.service';
 import {ConfirmComponent} from '../../shared/component/confirm/confirm.component';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-version',
@@ -19,7 +20,11 @@ export class VersionComponent {
   @ViewChild('unregisterModal', {static: true}) unregisterModal: ConfirmComponent;
   @ViewChild('makeDefaultModal', {static: true}) makeDefaultModal: ConfirmComponent;
 
-  constructor(private appService: AppService, private notificationService: NotificationService) {}
+  constructor(
+    private appService: AppService,
+    private notificationService: NotificationService,
+    private translate: TranslateService
+  ) {}
 
   open(name: string, type: ApplicationType): void {
     this.loading = true;
@@ -30,7 +35,7 @@ export class VersionComponent {
         this.loading = false;
       },
       error => {
-        this.notificationService.error('An error occurred', error);
+        this.notificationService.error(this.translate.instant('commons.message.error'), error);
         this.isOpen = false;
       }
     );
@@ -50,8 +55,10 @@ export class VersionComponent {
     this.appService.unregisterApp(this.selected).subscribe(
       () => {
         this.notificationService.success(
-          'Unregister version',
-          'Successfully removed version "' + this.selected.version + '".'
+          this.translate.instant('applications.version.message.unregisterSuccessTitle'),
+          this.translate.instant('applications.version.message.unregisterSuccessContent', {
+            version: this.selected.version
+          })
         );
         this.open(this.versions[0].name, this.versions[0].type);
         this.selected = null;
@@ -61,7 +68,7 @@ export class VersionComponent {
         this.onChange.emit(true);
       },
       error => {
-        this.notificationService.error('An error occurred', error);
+        this.notificationService.error(this.translate.instant('commons.message.error'), error);
         this.isOpen = false;
         this.selected = null;
       }
@@ -72,16 +79,19 @@ export class VersionComponent {
     this.appService.defaultVersion(this.selected).subscribe(
       () => {
         this.notificationService.success(
-          'Default version',
-          `The version <strong>${this.selected.version}</strong> ` +
-            `is now the default version of the application <strong>${this.versions[0].name}</strong> (${this.versions[0].type}).`
+          this.translate.instant('applications.version.message.defaultSuccessTitle'),
+          this.translate.instant('applications.version.message.defaultSuccessContent', {
+            version: this.selected.version,
+            app: this.versions[0].name,
+            type: this.versions[0].type
+          })
         );
         this.open(this.versions[0].name, this.versions[0].type);
         this.selected = null;
         this.onChange.emit(true);
       },
       error => {
-        this.notificationService.error('An error occurred', error);
+        this.notificationService.error(this.translate.instant('commons.message.error'), error);
         this.isOpen = false;
         this.selected = null;
       }

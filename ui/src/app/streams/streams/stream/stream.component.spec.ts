@@ -21,6 +21,8 @@ import {DatetimePipe} from '../../../shared/pipe/datetime.pipe';
 import {StreamDslComponent} from '../../../shared/component/stream-dsl/stream-dsl.component';
 import {ParserService} from '../../../flo/shared/service/parser.service';
 import {ContextServiceMock} from '../../../tests/service/context.service.mock';
+import {TranslateTestingModule} from 'ngx-translate-testing';
+import TRANSLATIONS from '../../../../assets/i18n/en.json';
 
 describe('streams/streams/stream/stream.component.ts', () => {
   let component: StreamComponent;
@@ -39,7 +41,13 @@ describe('streams/streams/stream/stream.component.ts', () => {
           DatetimePipe,
           StreamDslComponent
         ],
-        imports: [FormsModule, ClarityModule, RouterTestingModule.withRoutes([]), BrowserAnimationsModule],
+        imports: [
+          FormsModule,
+          ClarityModule,
+          RouterTestingModule.withRoutes([]),
+          BrowserAnimationsModule,
+          TranslateTestingModule.withTranslations('en', TRANSLATIONS)
+        ],
         providers: [
           SecurityServiceMock.provider,
           AboutServiceMock.provider,

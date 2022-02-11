@@ -31,6 +31,7 @@ import {PlatformFilterComponent} from './schedules/platform.filter';
 import {CloneComponent} from './tasks/clone/clone.component';
 import {SharedFloModule} from '../flo/shared-flo.module';
 import {ErrorsComponent} from './tasks/launch/builder/errors/errors.component';
+import {TranslateModule} from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
@@ -65,6 +66,7 @@ import {ErrorsComponent} from './tasks/launch/builder/errors/errors.component';
     SharedModule,
     SharedFloModule,
     TasksJobsRoutingModule,
+    TranslateModule,
     FormsModule,
     TaskFloModule,
     SecurityModule

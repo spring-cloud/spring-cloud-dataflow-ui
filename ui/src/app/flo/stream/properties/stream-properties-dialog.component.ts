@@ -16,6 +16,7 @@ import 'codemirror-minified/mode/groovy/groovy';
 import 'codemirror-minified/mode/javascript/javascript';
 import 'codemirror-minified/mode/ruby/ruby';
 import 'codemirror-minified/mode/python/python';
+import {TranslateService} from '@ngx-translate/core';
 
 /**
  * Utility class for working with Properties.
@@ -24,7 +25,11 @@ import 'codemirror-minified/mode/python/python';
  * @author Andy Clement
  */
 export class StreamPropertiesGroupModel extends PropertiesGroupModel {
-  constructor(propertiesSource: StreamAppPropertiesSource, private streamService: StreamService) {
+  constructor(
+    propertiesSource: StreamAppPropertiesSource,
+    private streamService: StreamService,
+    private translate: TranslateService
+  ) {
     super(propertiesSource);
   }
 
@@ -38,7 +43,7 @@ export class StreamPropertiesGroupModel extends PropertiesGroupModel {
       if (property.id === 'label') {
         validation = {
           validator: Validators.pattern(/^[\w_]+[\w_-]*$/),
-          errorData: [{id: 'pattern', message: 'Invalid app label!'}]
+          errorData: [{id: 'pattern', message: this.translate.instant('flo.stream.invalidAppLabel')}]
         };
       } else if (property.id === 'stream-name') {
         validation = {
@@ -50,9 +55,9 @@ export class StreamPropertiesGroupModel extends PropertiesGroupModel {
           ],
           asyncValidator: Properties.Validators.uniqueResource(value => this.isUniqueStreamName(value), 500),
           errorData: [
-            {id: 'pattern', message: 'Invalid stream name!'},
-            {id: 'uniqueResource', message: 'Stream name already exists!'},
-            {id: 'noneOf', message: 'Stream name already exists on the canvas'}
+            {id: 'pattern', message: this.translate.instant('flo.stream.invalidStreamName')},
+            {id: 'uniqueResource', message: this.translate.instant('flo.stream.uniqueStreamName')},
+            {id: 'noneOf', message: this.translate.instant('flo.stream.noneOfStreamName')}
           ]
         };
       }
@@ -100,12 +105,12 @@ export class StreamPropertiesGroupModel extends PropertiesGroupModel {
 export class StreamPropertiesDialogComponent extends PropertiesDialogComponent {
   public title: string;
 
-  constructor(private streamsService: StreamService) {
+  constructor(private streamsService: StreamService, private translate: TranslateService) {
     super();
   }
 
   setData(propertiesSource: StreamAppPropertiesSource): void {
-    this.propertiesGroupModel = new StreamPropertiesGroupModel(propertiesSource, this.streamsService);
+    this.propertiesGroupModel = new StreamPropertiesGroupModel(propertiesSource, this.streamsService, this.translate);
     this.propertiesGroupModel.load();
     this.propertiesGroupModel.loadedSubject.subscribe(() => {
       this.setGroupedProperties();

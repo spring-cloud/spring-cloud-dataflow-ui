@@ -14,6 +14,7 @@ import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import * as fromSecurity from './store/security.reducer';
 import {SecurityEffect} from './store/security.effect';
 import {SecurityInterceptor} from './support/security.interceptor';
+import {TranslateModule} from '@ngx-translate/core';
 
 @NgModule({
   declarations: [RoleDirective, RolesMissingComponent, FeatureDisabledComponent, AuthenticationRequiredComponent],
@@ -22,6 +23,7 @@ import {SecurityInterceptor} from './support/security.interceptor';
     ClarityModule,
     SharedModule,
     SecurityRoutingModule,
+    TranslateModule,
     StoreModule.forFeature(fromSecurity.securityFeatureKey, fromSecurity.reducer),
     EffectsModule.forFeature([SecurityEffect])
   ],

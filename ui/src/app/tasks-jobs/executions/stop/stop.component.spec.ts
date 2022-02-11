@@ -12,6 +12,8 @@ import {TaskServiceMock} from '../../../tests/api/task.service.mock';
 import {TaskExecution} from '../../../shared/model/task-execution.model';
 import {StopComponent} from './stop.component';
 import {ContextServiceMock} from '../../../tests/service/context.service.mock';
+import {TranslateTestingModule} from 'ngx-translate-testing';
+import TRANSLATIONS from '../../../../assets/i18n/en.json';
 
 describe('tasks-jobs/executions/stop/stop.component.ts', () => {
   let component: StopComponent;
@@ -21,7 +23,13 @@ describe('tasks-jobs/executions/stop/stop.component.ts', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [StopComponent],
-        imports: [FormsModule, ClarityModule, RouterTestingModule.withRoutes([]), BrowserAnimationsModule],
+        imports: [
+          FormsModule,
+          ClarityModule,
+          RouterTestingModule.withRoutes([]),
+          TranslateTestingModule.withTranslations('en', TRANSLATIONS),
+          BrowserAnimationsModule
+        ],
         providers: [
           SecurityServiceMock.provider,
           AboutServiceMock.provider,

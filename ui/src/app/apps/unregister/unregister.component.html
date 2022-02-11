@@ -1,26 +1,32 @@
 <clr-modal [(clrModalOpen)]="isOpen" *ngIf="apps" [clrModalClosable]="!isRunning">
-  <h3 *ngIf="apps?.length === 1" class="modal-title">Confirm Unregister Application</h3>
-  <h3 *ngIf="apps?.length > 1" class="modal-title">Confirm Unregister Applications</h3>
+  <h3 *ngIf="apps?.length === 1" class="modal-title">
+    {{ 'applications.unregister.title' | translate }}
+  </h3>
+  <h3 *ngIf="apps?.length > 1" class="modal-title">
+    {{ 'applications.unregister.title2' | translate }}
+  </h3>
   <div class="modal-body" *ngIf="apps.length === 1 && !isRunning">
-    This action will unregister and delete application
+    {{ 'applications.unregister.content' | translate }}
     <u
       ><strong>{{ apps[0].name }}</strong></u
     >
-    of type <span class="{{ apps[0].labelTypeClass() }}">{{ apps[0].type }}</span
-    >. Are you sure?
+    {{ 'commons.ofType' | translate }} <span class="{{ apps[0].labelTypeClass() }}">{{ apps[0].type }}</span
+    >. {{ 'commons.areYouSure' | translate }}
   </div>
   <div class="modal-body" *ngIf="apps?.length > 1 && !isRunning">
-    This action will unregister and delete the
+    {{ 'applications.unregister.content2' | translate }}
     <u
-      ><strong>{{ apps.length }} application{{ apps?.length > 1 ? 's' : '' }}</strong></u
+      ><strong
+        >{{ apps.length }} {{ 'applications.main.application' | translate }}{{ apps?.length > 1 ? 's' : '' }}</strong
+      ></u
     >
-    listed below.<br />Are you sure?
+    {{ 'commons.listedBelow' | translate }}.<br />{{ 'commons.areYouSure' | translate }}
     <br />
     <table class="table table-striped">
       <thead>
         <tr>
-          <th class="left">Name</th>
-          <th class="left">Type</th>
+          <th class="left">{{ 'applications.main.name' | translate }}</th>
+          <th class="left">{{ 'applications.main.type' | translate }}</th>
         </tr>
       </thead>
       <tbody>
@@ -37,13 +43,15 @@
   </div>
   <div class="modal-body" *ngIf="isRunning">
     <clr-spinner clrInline clrSmall></clr-spinner>
-    Unregistering application(s) ...
+    {{ 'applications.unregister.unregistering' | translate }}
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline" [disabled]="isRunning" (click)="isOpen = false">Cancel</button>
+    <button type="button" class="btn btn-outline" [disabled]="isRunning" (click)="isOpen = false">
+      {{ 'commons.cancel' | translate }}
+    </button>
     <button type="button" class="btn btn-danger" (click)="unregister()" [disabled]="isRunning">
-      <span *ngIf="apps.length === 1">Unregister the application</span>
-      <span *ngIf="apps.length > 1">Unregister the applications</span>
+      <span *ngIf="apps.length === 1">{{ 'applications.unregister.unregister' | translate }}</span>
+      <span *ngIf="apps.length > 1">{{ 'applications.unregister.unregister2' | translate }}</span>
     </button>
   </div>
 </clr-modal>

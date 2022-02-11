@@ -11,6 +11,7 @@ import get from 'lodash.get';
 import {StreamStatus} from '../../../shared/model/metrics.model';
 import {RollbackComponent} from '../rollback/rollback.component';
 import {ScaleComponent} from '../scale/scale.component';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-stream',
@@ -43,7 +44,8 @@ export class StreamComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private notificationService: NotificationService,
-    private streamService: StreamService
+    private streamService: StreamService,
+    private translate: TranslateService
   ) {}
 
   ngOnInit(): void {
@@ -72,7 +74,7 @@ export class StreamComponent implements OnInit {
           this.loading = false;
         },
         error => {
-          this.notificationService.error('An error occurred', error);
+          this.notificationService.error(this.translate.instant('commons.message.error'), error);
           if (HttpError.is404(error)) {
             this.back();
           }

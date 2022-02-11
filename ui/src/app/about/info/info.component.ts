@@ -4,6 +4,7 @@ import {AboutService} from '../../shared/api/about.service';
 import {NotificationService} from '../../shared/service/notification.service';
 import {ClipboardCopyService} from '../../shared/service/clipboard-copy.service';
 import {JsonPipe} from '@angular/common';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-about-info',
@@ -19,7 +20,8 @@ export class InfoComponent implements OnInit {
   constructor(
     private aboutService: AboutService,
     private clipboardCopyService: ClipboardCopyService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private translate: TranslateService
   ) {}
 
   ngOnInit(): void {
@@ -32,7 +34,10 @@ export class InfoComponent implements OnInit {
   copyToClipboard(): void {
     if (this.about) {
       this.clipboardCopyService.executeCopy(new JsonPipe().transform(this.about), this.container.nativeElement);
-      this.notificationService.success('Copy to clipboard', 'Copied About Details to Clipboard (As JSON).');
+      this.notificationService.success(
+        this.translate.instant('commons.copyToClipboard'),
+        this.translate.instant('about.info.message.copyContent')
+      );
     }
   }
 }

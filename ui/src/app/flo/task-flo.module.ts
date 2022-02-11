@@ -17,6 +17,7 @@ import {TaskFloCreateComponent} from './task/component/create.component';
 import {ToolsService} from './task/tools.service';
 import {SharedFloModule} from './shared-flo.module';
 import {SharedModule} from '../shared/shared.module';
+import {TranslateModule} from '@ngx-translate/core';
 
 @NgModule({
   declarations: [TaskNodeComponent, TaskPropertiesDialogComponent, ViewComponent, TaskFloCreateComponent],
@@ -28,6 +29,7 @@ import {SharedModule} from '../shared/shared.module';
     ClarityModule,
     FloModule,
     SharedFloModule,
+    TranslateModule,
     SharedModule
   ],
   providers: [

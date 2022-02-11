@@ -1,6 +1,6 @@
 import {BrowserModule, By} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {HttpClientModule} from '@angular/common/http';
+import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {FormsModule} from '@angular/forms';
 import {TestBed, waitForAsync} from '@angular/core/testing';
 import {RouterTestingModule} from '@angular/router/testing';
@@ -19,6 +19,8 @@ import {ROOT_REDUCERS, metaReducers} from './reducers/reducer';
 import * as fromSecurity from './security/store/security.reducer';
 import * as fromAbout from './shared/store/about.reducer';
 import {EffectsModule} from '@ngrx/effects';
+import {TranslateTestingModule} from 'ngx-translate-testing';
+import TRANSLATIONS from '../assets/i18n/en.json';
 
 describe('app.component.ts', () => {
   const initialState = {
@@ -118,6 +120,7 @@ describe('app.component.ts', () => {
           ManageModule,
           SecurityModule,
           RouterTestingModule,
+          TranslateTestingModule.withTranslations('en', TRANSLATIONS),
           StoreModule.forRoot(ROOT_REDUCERS, {metaReducers}),
           EffectsModule.forRoot([])
         ],

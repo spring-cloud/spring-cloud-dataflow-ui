@@ -8,6 +8,7 @@ import {ScheduleService} from '../../../shared/api/schedule.service';
 import {HttpError} from '../../../shared/model/error.model';
 import {NotificationService} from '../../../shared/service/notification.service';
 import {DestroyComponent} from '../destroy/destroy.component';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-schedule',
@@ -24,7 +25,8 @@ export class ScheduleComponent implements OnInit {
     private router: Router,
     private scheduleService: ScheduleService,
     private notificationService: NotificationService,
-    private taskService: TaskService
+    private taskService: TaskService,
+    private translate: TranslateService
   ) {}
 
   ngOnInit(): void {
@@ -52,7 +54,7 @@ export class ScheduleComponent implements OnInit {
           this.isLoading = false;
         },
         error => {
-          this.notificationService.error('An error occurred', error);
+          this.notificationService.error(this.translate.instant('commons.message.errors'), error);
           if (HttpError.is404(error)) {
             this.back();
           }

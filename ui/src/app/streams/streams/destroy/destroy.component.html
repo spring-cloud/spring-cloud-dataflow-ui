@@ -1,18 +1,16 @@
 <clr-modal [(clrModalOpen)]="isOpen" *ngIf="streams" [clrModalClosable]="!isRunning">
-  <h3 *ngIf="streams?.length === 1" class="modal-title">Confirm Destroy Stream</h3>
-  <h3 *ngIf="streams?.length > 1" class="modal-title">Confirm Destroy Streams</h3>
+  <h3 *ngIf="streams?.length === 1" class="modal-title">{{ 'streams.destroy.title' | translate }}</h3>
+  <h3 *ngIf="streams?.length > 1" class="modal-title">{{ 'streams.destroy.title2' | translate }}</h3>
   <div class="modal-body" *ngIf="streams.length === 1 && !isRunning">
-    This action will destroy and delete the stream <strong>{{ streams[0].name }}</strong
-    >. Are you sure?
+    <div [innerHTML]="'streams.destroy.content' | translate: {name: streams[0].name}"></div>
   </div>
   <div class="modal-body" *ngIf="streams?.length > 1 && !isRunning">
-    This action will destroy the <strong>{{ streams.length }} stream definitions</strong> listed below. Are you sure?
-    <br />
+    <div [innerHTML]="'streams.destroy.content2' | translate: {count: streams.length}"></div>
     <table class="table table-striped">
       <thead>
         <tr>
-          <th class="left">Name</th>
-          <th class="left">Definition</th>
+          <th class="left">{{ 'commons.name' | translate }}</th>
+          <th class="left">{{ 'commons.definition' | translate }}</th>
         </tr>
       </thead>
       <tbody>
@@ -31,13 +29,15 @@
   </div>
   <div class="modal-body" *ngIf="isRunning">
     <clr-spinner clrInline clrSmall></clr-spinner>
-    Destroying stream(s) ...
+    {{ 'streams.destroy.destroying' | translate }}
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline" (click)="isOpen = false" [disabled]="isRunning">Cancel</button>
+    <button type="button" class="btn btn-outline" (click)="isOpen = false" [disabled]="isRunning">
+      {{ 'commons.cancel' | translate }}
+    </button>
     <button type="button" class="btn btn-danger" (click)="unregister()" [disabled]="isRunning">
-      <span *ngIf="streams.length === 1">Destroy the stream</span>
-      <span *ngIf="streams.length > 1">Destroy the streams</span>
+      <span *ngIf="streams.length === 1">{{ 'streams.destroy.destroy' | translate }}</span>
+      <span *ngIf="streams.length > 1">{{ 'streams.destroy.destroy2' | translate }}</span>
     </button>
   </div>
 </clr-modal>

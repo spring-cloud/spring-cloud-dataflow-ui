@@ -3,6 +3,8 @@ import {FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {KeyValueComponent} from './key-value.component';
 import {ClipboardCopyService} from '../../service/clipboard-copy.service';
 import {NotificationServiceMock} from '../../../tests/service/notification.service.mock';
+import {TranslateTestingModule} from 'ngx-translate-testing';
+import TRANSLATIONS from '../../../../assets/i18n/en.json';
 
 describe('KeyValueComponent', () => {
   let component: KeyValueComponent;
@@ -12,7 +14,7 @@ describe('KeyValueComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [KeyValueComponent],
-        imports: [FormsModule, ReactiveFormsModule],
+        imports: [FormsModule, TranslateTestingModule.withTranslations('en', TRANSLATIONS), ReactiveFormsModule],
         providers: [NotificationServiceMock.provider, ClipboardCopyService]
       }).compileComponents();
     })

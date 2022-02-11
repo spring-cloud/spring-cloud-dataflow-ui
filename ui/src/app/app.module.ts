@@ -6,7 +6,7 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {ClarityModule} from '@clr/angular';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {HttpClientModule} from '@angular/common/http';
+import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {LayoutModule} from './layout/layout.module';
 import {FormsModule} from '@angular/forms';
 import {AboutModule} from './about/about.module';
@@ -24,7 +24,10 @@ import {of} from 'rxjs';
 import {ROOT_REDUCERS, metaReducers} from './reducers/reducer';
 import {EffectsModule} from '@ngrx/effects';
 import {SettingsService} from './settings/settings.service';
+import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
+import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {AppsModule} from './apps/apps.module';
+import {UrlUtilities} from './url-utilities.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -55,6 +58,15 @@ import {AppsModule} from './apps/apps.module';
         strictActionTypeUniqueness: true
       }
     }),
+    TranslateModule.forRoot({
+      useDefaultLang: true,
+      defaultLanguage: 'en',
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    }),
     StoreRouterConnectingModule.forRoot(),
     EffectsModule.forRoot([])
   ],
@@ -74,7 +86,7 @@ import {AppsModule} from './apps/apps.module';
                   security.roles
                 );
                 if (security.authenticated || !security.authenticationEnabled) {
-                  return aboutService.load().pipe(map(about => security));
+                  return aboutService.load().pipe(map(() => security));
                 }
                 return of(security);
               })
@@ -88,3 +100,8 @@ import {AppsModule} from './apps/apps.module';
   bootstrap: [AppComponent]
 })
 export class AppModule {}
+
+// required for AOT compilation
+export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
+  return new TranslateHttpLoader(http, UrlUtilities.calculateAssetUrl() + '/i18n/');
+}

@@ -10,6 +10,8 @@ import {NotificationServiceMock} from '../../../../../tests/service/notification
 import {RuntimeServiceMock} from '../../../../../tests/api/runtime.service.mock.spec';
 import {GrafanaServiceMock} from '../../../../../tests/service/grafana.service.mock';
 import {RoleDirective} from '../../../../../security/directive/role.directive';
+import {TranslateTestingModule} from 'ngx-translate-testing';
+import TRANSLATIONS from '../../../../../../assets/i18n/en.json';
 
 describe('streams/deploy/builder/errors/errors.component.ts', () => {
   let component: ErrorsComponent;
@@ -24,6 +26,7 @@ describe('streams/deploy/builder/errors/errors.component.ts', () => {
           ReactiveFormsModule,
           ClarityModule,
           RouterTestingModule.withRoutes([]),
+          TranslateTestingModule.withTranslations('en', TRANSLATIONS),
           BrowserAnimationsModule
         ],
         providers: [

@@ -11,6 +11,7 @@ import {TaskPage} from '../../model/task.model';
 import {Router} from '@angular/router';
 import {timer} from 'rxjs';
 import {NotificationService} from '../../service/notification.service';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-search',
@@ -59,7 +60,8 @@ export class SearchComponent implements OnInit {
     private streamService: StreamService,
     private taskService: TaskService,
     private notificationService: NotificationService,
-    private router: Router
+    private router: Router,
+    private translate: TranslateService
   ) {}
 
   ngOnInit(): void {
@@ -99,7 +101,7 @@ export class SearchComponent implements OnInit {
               this.searching.apps = false;
             },
             error => {
-              this.notificationService.error('An error occurred', error);
+              this.notificationService.error(this.translate.instant('commons.message.error'), error);
               this.searching.apps = false;
             }
           );
@@ -110,7 +112,7 @@ export class SearchComponent implements OnInit {
                 this.searching.streams = false;
               },
               error => {
-                this.notificationService.error('An error occurred', error);
+                this.notificationService.error(this.translate.instant('commons.message.error'), error);
                 this.searching.streams = false;
               }
             );
@@ -124,7 +126,7 @@ export class SearchComponent implements OnInit {
                 this.searching.tasks = false;
               },
               error => {
-                this.notificationService.error('An error occurred', error);
+                this.notificationService.error(this.translate.instant('commons.message.error'), error);
                 this.searching.tasks = false;
               }
             );

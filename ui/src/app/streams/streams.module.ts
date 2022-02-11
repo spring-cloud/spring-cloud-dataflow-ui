@@ -23,6 +23,7 @@ import {StatusComponent} from './streams/status/status.component';
 import {RollbackComponent} from './streams/rollback/rollback.component';
 import {CloneComponent} from './streams/clone/clone.component';
 import {ScaleComponent} from './streams/scale/scale.component';
+import {TranslateModule} from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import {ScaleComponent} from './streams/scale/scale.component';
     StreamsRoutingModule,
     SharedFloModule,
     StreamFloModule,
-    SecurityModule
+    SecurityModule,
+    TranslateModule
   ]
 })
 export class StreamsModule {}

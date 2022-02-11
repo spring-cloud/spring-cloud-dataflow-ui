@@ -6,6 +6,7 @@ import {Router} from '@angular/router';
 import {Properties} from 'spring-flo';
 import {Observable} from 'rxjs';
 import {TaskFloCreateComponent} from '../../../flo/task/component/create.component';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-create',
@@ -33,7 +34,8 @@ export class CreateComponent implements OnInit {
     private fb: FormBuilder,
     private taskService: TaskService,
     private router: Router,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private translate: TranslateService
   ) {
     this.form = fb.group({
       taskName: this.taskName,
@@ -51,19 +53,19 @@ export class CreateComponent implements OnInit {
     //   this.notificationService.error('An error occurred.', 'Some field(s) are missing or invalid.');
     // } else {
     this.isCreating = true;
-    this.taskService
-      .createTask(this.taskName.value, this.dsl, this.taskDescription.value)
-      // .pipe(takeUntil(this.ngUnsubscribe$), finalize(() => this.blockerService.unlock()))
-      .subscribe(
-        () => {
-          this.notificationService.success('Task creation', 'Task Definition created for ' + this.taskName.value);
-          this.back();
-        },
-        error => {
-          this.isCreating = false;
-          this.notificationService.error('An error occurred', error);
-        }
-      );
+    this.taskService.createTask(this.taskName.value, this.dsl, this.taskDescription.value).subscribe(
+      () => {
+        this.notificationService.success(
+          this.translate.instant('tasks.create.message.successTitle'),
+          this.translate.instant('tasks.create.message.successContent', {name: this.taskName.value})
+        );
+        this.back();
+      },
+      error => {
+        this.isCreating = false;
+        this.notificationService.error(this.translate.instant('commons.message.error'), error);
+      }
+    );
     // }
   }
 
@@ -93,7 +95,10 @@ export class CreateComponent implements OnInit {
 
   createTask(): void {
     if (!this.flo.dsl || !this.flo.dsl.trim()) {
-      this.notificationService.error('An error occurred', 'Please, enter a valid task.');
+      this.notificationService.error(
+        this.translate.instant('commons.message.error'),
+        this.translate.instant('tasks.create.message.errorContent')
+      );
       return;
     }
     this.taskName.setValue('');

@@ -20,6 +20,8 @@ import {LoggerService} from '../../../shared/service/logger.service';
 import {AppServiceMock} from '../../../tests/api/app.service.mock';
 import {ParserService} from '../../../flo/shared/service/parser.service';
 import {Task} from '../../../shared/model/task.model';
+import {TranslateTestingModule} from 'ngx-translate-testing';
+import TRANSLATIONS from '../../../../assets/i18n/en.json';
 
 @Component({
   selector: 'app-launch-builder',
@@ -65,7 +67,13 @@ describe('streams/streams/deploy/deploy.component.ts', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [LaunchComponent, BuilderMockComponent, FreeTextMockComponent],
-        imports: [FormsModule, ClarityModule, RouterTestingModule.withRoutes([]), BrowserAnimationsModule],
+        imports: [
+          FormsModule,
+          ClarityModule,
+          RouterTestingModule.withRoutes([]),
+          TranslateTestingModule.withTranslations('en', TRANSLATIONS),
+          BrowserAnimationsModule
+        ],
         providers: [
           SecurityServiceMock.provider,
           AboutServiceMock.provider,

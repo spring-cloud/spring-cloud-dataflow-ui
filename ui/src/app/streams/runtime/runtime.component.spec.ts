@@ -13,6 +13,8 @@ import {By} from '@angular/platform-browser';
 import {GrafanaRuntimeAppDirective, GrafanaRuntimeInstanceDirective} from '../../shared/grafana/grafana.directive';
 import {GrafanaServiceMock} from '../../tests/service/grafana.service.mock';
 import {ContextServiceMock} from '../../tests/service/context.service.mock';
+import {TranslateTestingModule} from 'ngx-translate-testing';
+import TRANSLATIONS from '../../../assets/i18n/en.json';
 
 describe('streams/runtime/runtime.component.ts', () => {
   let component: RuntimeComponent;
@@ -22,7 +24,13 @@ describe('streams/runtime/runtime.component.ts', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [RuntimeComponent, DetailsComponent, GrafanaRuntimeAppDirective, GrafanaRuntimeInstanceDirective],
-        imports: [FormsModule, ClarityModule, RouterTestingModule.withRoutes([]), BrowserAnimationsModule],
+        imports: [
+          FormsModule,
+          ClarityModule,
+          TranslateTestingModule.withTranslations('en', TRANSLATIONS),
+          RouterTestingModule.withRoutes([]),
+          BrowserAnimationsModule
+        ],
         providers: [
           SecurityServiceMock.provider,
           AboutServiceMock.provider,

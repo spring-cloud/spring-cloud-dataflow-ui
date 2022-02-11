@@ -29,6 +29,7 @@ import {StreamAppPropertiesSource, StreamHead} from '../../../../flo/stream/prop
 import {TaskPropertiesDialogComponent} from '../../../../flo/task/properties/task-properties-dialog-component';
 import {ValuedConfigurationMetadataProperty} from '../../../../shared/model/detailed-app.model';
 import {get} from 'lodash';
+import {TranslateService} from '@ngx-translate/core';
 
 export class AppPropertiesSource implements StreamAppPropertiesSource {
   private options: Array<any>;
@@ -168,7 +169,8 @@ export class BuilderComponent implements OnInit, OnDestroy {
   constructor(
     private taskLaunchService: TaskLaunchService,
     private changeDetector: ChangeDetectorRef,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private translate: TranslateService
   ) {}
 
   /**
@@ -890,15 +892,15 @@ export class BuilderComponent implements OnInit, OnDestroy {
     if (control instanceof FormGroup) {
       if (control.get('property')) {
         if (control.get('property') && control.get('property').invalid) {
-          arr.push(`The field "property" is not valid.`);
+          arr.push(this.translate.instant('tasks.launch.builder.tooltip.invalidProperty'));
         }
       }
       if (control.get('global') && control.get('global').invalid) {
-        arr.push(`The field "global" is not valid.`);
+        arr.push(this.translate.instant('tasks.launch.builder.tooltip.invalidGlobal'));
       }
       taskLaunchConfig.apps.forEach(app => {
         if (control.get(app.name).invalid) {
-          arr.push(`The field "${app.name}" is not valid.`);
+          arr.push(this.translate.instant('tasks.launch.builder.tooltip.invalidField', {name: app.name}));
         }
       });
     } else {
@@ -993,7 +995,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
       this.changeDetector.markForCheck();
     });
     this.groupsPropertiesModal.setData(groupPropertiesSources);
-    this.groupsPropertiesModal.title = `Deployment properties for platform`;
+    this.groupsPropertiesModal.title = this.translate.instant('tasks.launch.builder.deploymentPropertiesTitle');
     this.groupsPropertiesModal.isOpen = true;
   }
 
@@ -1033,7 +1035,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
     });
 
     this.ctrPropertiesModal.setData(propertiesSource);
-    this.ctrPropertiesModal.title = `Ctr properties`;
+    this.ctrPropertiesModal.title = this.translate.instant('tasks.launch.builder.ctrPropertiesTitle');
     this.ctrPropertiesModal.isOpen = true;
   }
 
@@ -1114,7 +1116,10 @@ export class BuilderComponent implements OnInit, OnDestroy {
    */
   launchTask() {
     if (!this.isSubmittable(this.refBuilder)) {
-      this.notificationService.error('An error occurred', 'Some field(s) are invalid.');
+      this.notificationService.error(
+        this.translate.instant('commons.message.invalidFieldsTitle'),
+        this.translate.instant('commons.message.invalidFieldsContent')
+      );
     } else {
       this.launch.emit({props: this.getProperties(), args: this.getArguments()});
     }
@@ -1123,9 +1128,9 @@ export class BuilderComponent implements OnInit, OnDestroy {
   getLabelAppVersion(taskLaunchConfig, app) {
     const lastVersion = get(taskLaunchConfig?.lastExecution?.deploymentProperties, `version.${app.name}`);
     if (lastVersion && app.version !== lastVersion) {
-      return `Last launch (${lastVersion})`;
+      return this.translate.instant('tasks.launch.builder.lastVersionLabel', {version: lastVersion});
     }
-    return `Default version (${app.version})`;
+    return this.translate.instant('tasks.launch.builder.defaultVersionLabel', {version: app.version});
   }
 
   hasMigrations(): boolean {

@@ -13,6 +13,8 @@ import {MockSharedAppService} from '../../../tests/service/app.service.mock';
 import {RenderService} from '../../stream/render.service';
 import {NodeHelper} from '../../stream/node-helper.service';
 import {PropertiesEditor} from '../../stream/properties-editor.service';
+import {TranslateTestingModule} from 'ngx-translate-testing';
+import TRANSLATIONS from '../../../../assets/i18n/en.json';
 
 /**
  * Test {@link GraphViewComponent}.
@@ -34,6 +36,7 @@ describe('StreamGraphViewComponent', () => {
           FloModule,
           SharedModule,
           StreamsModule,
+          TranslateTestingModule.withTranslations('en', TRANSLATIONS),
           RouterTestingModule,
           StoreModule.forRoot({}),
           EffectsModule.forRoot([])

@@ -8,6 +8,7 @@ import {DatagridComponent} from '../../shared/component/datagrid/datagrid.compon
 import {ContextService} from '../../shared/service/context.service';
 import {SettingsService} from '../../settings/settings.service';
 import {NotificationService} from '../../shared/service/notification.service';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-schedules',
@@ -23,7 +24,8 @@ export class SchedulesComponent extends DatagridComponent {
     protected settingsService: SettingsService,
     protected changeDetectorRef: ChangeDetectorRef,
     protected contextService: ContextService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private translate: TranslateService
   ) {
     super(contextService, settingsService, changeDetectorRef, 'tasks-jobs/schedules');
   }
@@ -45,7 +47,7 @@ export class SchedulesComponent extends DatagridComponent {
           this.loading = false;
         },
         error => {
-          this.notificationService.error('An error occurred', error);
+          this.notificationService.error(this.translate.instant('commons.message.error'), error);
         }
       );
     }

@@ -1,18 +1,16 @@
 <clr-modal [(clrModalOpen)]="isOpen" *ngIf="streams" [clrModalClosable]="!isRunning">
-  <h3 *ngIf="streams?.length === 1" class="modal-title">Confirm Undeploy Stream</h3>
-  <h3 *ngIf="streams?.length > 1" class="modal-title">Confirm Undeploy Streams</h3>
+  <h3 *ngIf="streams?.length === 1" class="modal-title">{{ 'streams.undeploy.title' | translate }}</h3>
+  <h3 *ngIf="streams?.length > 1" class="modal-title">{{ 'streams.undeploy.title2' | translate }}</h3>
   <div class="modal-body" *ngIf="streams.length === 1 && !isRunning">
-    This action will undeploy the stream <strong>{{ streams[0].name }}</strong
-    >. Are you sure?
+    <div [innerHTML]="'streams.undeploy.content' | translate: {name: streams[0].name}"></div>
   </div>
   <div class="modal-body" *ngIf="streams?.length > 1 && !isRunning">
-    This action will undeploy the <strong>{{ streams.length }} stream definitions</strong> listed below. Are you sure?
-    <br />
+    <div [innerHTML]="'streams.undeploy.content' | translate: {count: streams.length}"></div>
     <table class="table table-striped">
       <thead>
         <tr>
-          <th class="left">Name</th>
-          <th class="left">Definition</th>
+          <th class="left">{{ 'commons.name' | translate }}</th>
+          <th class="left">{{ 'commons.definition' | translate }}</th>
         </tr>
       </thead>
       <tbody>
@@ -31,13 +29,15 @@
   </div>
   <div class="modal-body" *ngIf="isRunning">
     <clr-spinner clrInline clrSmall></clr-spinner>
-    Undeploying stream(s) ...
+    {{ 'streams.undeploy.undeploying' | translate }}
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline" (click)="isOpen = false" [disabled]="isRunning">Cancel</button>
+    <button type="button" class="btn btn-outline" (click)="isOpen = false" [disabled]="isRunning">
+      {{ 'commons.cancel' | translate }}
+    </button>
     <button type="button" class="btn btn-primary" (click)="unregister()" [disabled]="isRunning">
-      <span *ngIf="streams.length === 1">Undeploy the stream</span>
-      <span *ngIf="streams.length > 1">Undeploy the streams</span>
+      <span *ngIf="streams.length === 1">{{ 'streams.undeploy.undeploy' | translate }}</span>
+      <span *ngIf="streams.length > 1">{{ 'streams.undeploy.undeploy2' | translate }}</span>
     </button>
   </div>
 </clr-modal>

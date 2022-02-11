@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, ElementRef} from '@angular/core';
 import {SecurityService} from './security/service/security.service';
 import {ModalService} from './shared/service/modal.service';
 import {SettingsComponent} from './settings/settings/settings.component';
@@ -13,7 +13,11 @@ export class AppComponent {
   securityEnabled = this.securityService.securityEnabled();
   baseApiUrl = UrlUtilities.calculateBaseApiUrl();
 
-  constructor(private securityService: SecurityService, private modalService: ModalService) {}
+  constructor(
+    private securityService: SecurityService,
+    private modalService: ModalService,
+    public elementRef: ElementRef
+  ) {}
 
   openSettings(): void {
     this.modalService.show(SettingsComponent);

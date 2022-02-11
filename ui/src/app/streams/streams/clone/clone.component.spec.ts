@@ -7,11 +7,10 @@ import {SecurityServiceMock} from '../../../tests/api/security.service.mock';
 import {AboutServiceMock} from '../../../tests/api/about.service.mock';
 import {NotificationServiceMock} from '../../../tests/service/notification.service.mock';
 import {StreamServiceMock} from '../../../tests/api/stream.service.mock';
-import {By} from '@angular/platform-browser';
-import {throwError} from 'rxjs';
-import {Stream} from '../../../shared/model/stream.model';
 import {ContextServiceMock} from '../../../tests/service/context.service.mock';
 import {CloneComponent} from './clone.component';
+import {TranslateTestingModule} from 'ngx-translate-testing';
+import TRANSLATIONS from '../../../../assets/i18n/en.json';
 
 describe('apps/streams/clone/clone.component.ts', () => {
   let component: CloneComponent;
@@ -26,7 +25,8 @@ describe('apps/streams/clone/clone.component.ts', () => {
           ClarityModule,
           RouterTestingModule.withRoutes([]),
           BrowserAnimationsModule,
-          ReactiveFormsModule
+          ReactiveFormsModule,
+          TranslateTestingModule.withTranslations('en', TRANSLATIONS)
         ],
         providers: [
           SecurityServiceMock.provider,

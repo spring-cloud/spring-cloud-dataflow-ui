@@ -1,8 +1,4 @@
-<p>
-  Provide a URI that points to the location of the properties file.<br />
-  This properties file is formatted so that the keys represent the type and the name of the application, e.g. type.name.
-  The property values are the URIs of the app.
-</p>
+<p [innerHTML]="'applications.add.uri.desc' | translate"></p>
 
 <form role="form" (ngSubmit)="submit()" clrForm [formGroup]="form" clrLayout="horizontal" clrLabelSize="2">
   <clr-input-container>
@@ -15,31 +11,30 @@
       [dataflowFocus]="true"
       class="clr-col-6"
       style="width: 100%"
-      placeholder="https://url.to.properties"
+      placeholder="{{ 'applications.add.uri.placeholderUri' | translate }}"
     />
-    <clr-control-helper> e.g.: <code> https://dataflow.spring.io/kafka-maven-latest</code> </clr-control-helper>
-    <clr-control-error> Please provide a valid URI pointing to the respective properties file. </clr-control-error>
+    <clr-control-helper
+      >{{ 'applications.add.uri.eg' | translate }}: <code> {{ 'applications.add.uri.egValue' | translate }}</code>
+    </clr-control-helper>
+    <clr-control-error>{{ 'applications.add.uri.invalidUri' | translate }}</clr-control-error>
   </clr-input-container>
   <clr-checkbox-container>
     <clr-checkbox-wrapper>
       <input id="forceInput" formControlName="force" type="checkbox" clrCheckbox value="false" name="force" />
-      <label
-        >Force, the applications will be imported and installed even if it already exists but only if not being used
-        already.</label
-      >
+      <label>{{ 'applications.add.uri.force' | translate }}</label>
     </clr-checkbox-wrapper>
   </clr-checkbox-container>
   <div class="clr-accordion-footer">
-    <button class="btn btn-secondary" type="button" (click)="back()">Cancel</button>
-    <button class="btn btn-primary" type="submit">Import Application(s)</button>
+    <button class="btn btn-secondary" type="button" (click)="back()">{{ 'commons.cancel' | translate }}</button>
+    <button class="btn btn-primary" type="submit">{{ 'applications.add.uri.import' | translate }}</button>
   </div>
 </form>
 <clr-modal [(clrModalOpen)]="isImporting" *ngIf="isImporting" clrModalClosable="false" clrModalSize="md">
-  <h3 class="modal-title">Import application(s)</h3>
+  <h3 class="modal-title">{{ 'applications.add.uri.force' | translate }}</h3>
   <div class="modal-body">
-    <div><clr-spinner clrInline clrSmall></clr-spinner>&nbsp; Importing application(s)...</div>
+    <div><clr-spinner clrInline clrSmall></clr-spinner>&nbsp;{{ 'applications.add.uri.importing' | translate }}</div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-default" [disabled]="true">Cancel</button>
+      <button type="button" class="btn btn-default" [disabled]="true">{{ 'commons.cancel' | translate }}</button>
     </div>
   </div>
 </clr-modal>

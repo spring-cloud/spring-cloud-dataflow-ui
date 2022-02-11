@@ -12,6 +12,8 @@ import {throwError} from 'rxjs';
 import {Task} from '../../../shared/model/task.model';
 import {TaskServiceMock} from '../../../tests/api/task.service.mock';
 import {ContextServiceMock} from '../../../tests/service/context.service.mock';
+import {TranslateTestingModule} from 'ngx-translate-testing';
+import TRANSLATIONS from '../../../../assets/i18n/en.json';
 
 describe('tasks/tasks/destroy/destroy.component.ts', () => {
   let component: DestroyComponent;
@@ -22,7 +24,13 @@ describe('tasks/tasks/destroy/destroy.component.ts', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [DestroyComponent],
-        imports: [FormsModule, ClarityModule, RouterTestingModule.withRoutes([]), BrowserAnimationsModule],
+        imports: [
+          FormsModule,
+          ClarityModule,
+          RouterTestingModule.withRoutes([]),
+          TranslateTestingModule.withTranslations('en', TRANSLATIONS),
+          BrowserAnimationsModule
+        ],
         providers: [
           SecurityServiceMock.provider,
           AboutServiceMock.provider,
@@ -56,8 +64,8 @@ describe('tasks/tasks/destroy/destroy.component.ts', () => {
     fixture.debugElement.query(By.css('.modal-footer .btn-danger')).nativeElement.click();
     fixture.detectChanges();
     await fixture.whenStable();
-    expect(NotificationServiceMock.mock.successNotifications[0].title).toBe('Destroy task(s)');
-    expect(NotificationServiceMock.mock.successNotifications[0].message).toBe('1 task definition(s) destroyed.');
+    expect(NotificationServiceMock.mock.successNotifications[0].title).toBe('Destroy task');
+    expect(NotificationServiceMock.mock.successNotifications[0].message).toBe('Successfully removed task "foo".');
     done();
   });
 
@@ -71,7 +79,7 @@ describe('tasks/tasks/destroy/destroy.component.ts', () => {
     fixture.debugElement.query(By.css('.modal-footer .btn-danger')).nativeElement.click();
     fixture.detectChanges();
     await fixture.whenStable();
-    expect(NotificationServiceMock.mock.successNotifications[0].title).toBe('Destroy task(s)');
+    expect(NotificationServiceMock.mock.successNotifications[0].title).toBe('Destroy tasks');
     expect(NotificationServiceMock.mock.successNotifications[0].message).toBe('2 task definition(s) destroyed.');
     done();
   });

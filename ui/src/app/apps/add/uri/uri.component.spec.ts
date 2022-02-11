@@ -12,6 +12,8 @@ import {UriComponent} from './uri.component';
 import {throwError} from 'rxjs';
 import {FocusDirective} from '../../../shared/directive/focus.directive';
 import {ContextServiceMock} from '../../../tests/service/context.service.mock';
+import {TranslateTestingModule} from 'ngx-translate-testing';
+import TRANSLATIONS from '../../../../assets/i18n/en.json';
 
 describe('apps/uri/uri.component.ts', () => {
   let component: UriComponent;
@@ -26,6 +28,7 @@ describe('apps/uri/uri.component.ts', () => {
           ReactiveFormsModule,
           FormsModule,
           ClarityModule,
+          TranslateTestingModule.withTranslations('en', TRANSLATIONS),
           RouterTestingModule.withRoutes([]),
           BrowserAnimationsModule
         ],
@@ -69,7 +72,7 @@ describe('apps/uri/uri.component.ts', () => {
       expect(inputs.force.checked).toBe(a.force);
       component.submit();
       fixture.detectChanges();
-      expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('Invalid field');
+      expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('Invalid field(s)');
       expect(NotificationServiceMock.mock.errorNotification[0].message).toBe('Some field(s) are missing or invalid.');
     });
   });
@@ -86,7 +89,7 @@ describe('apps/uri/uri.component.ts', () => {
     fixture.detectChanges();
     expect(spy).toHaveBeenCalledTimes(1);
     expect(navigate.calls.mostRecent().args[0].toString()).toBe('apps');
-    expect(NotificationServiceMock.mock.successNotifications[0].title).toBe('Import application(s)');
+    expect(NotificationServiceMock.mock.successNotifications[0].title).toBe('Import Application(s)');
     expect(NotificationServiceMock.mock.successNotifications[0].message).toBe('Application(s) Imported.');
     done();
   });

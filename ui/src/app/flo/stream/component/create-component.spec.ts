@@ -14,6 +14,8 @@ import {SharedModule} from '../../../shared/shared.module';
 import {StreamService} from '../../../shared/api/stream.service';
 import {MockStreamsService} from '../../../tests/service/stream.service.mock';
 import {NotificationServiceMock} from '../../../tests/service/notification.service.mock';
+import {TranslateTestingModule} from 'ngx-translate-testing';
+import TRANSLATIONS from '../../../../assets/i18n/en.json';
 
 /**
  * Test {@link StreamCreateComponent}.
@@ -41,6 +43,7 @@ describe('StreamCreateComponent', () => {
         SharedModule,
         StreamsModule,
         StoreModule.forRoot({}),
+        TranslateTestingModule.withTranslations('en', TRANSLATIONS),
         EffectsModule.forRoot([])
       ],
       providers: [

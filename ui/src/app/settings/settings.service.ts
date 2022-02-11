@@ -7,6 +7,10 @@ import {loaded, update} from './store/settings.action';
 import {SettingModel} from '../shared/model/setting.model';
 import {LocalStorageService} from 'angular-2-local-storage';
 
+export const LANGUAGES = ['en'];
+// export const LANGUAGES = ['en', 'fr', 'de'];
+const DEFAULT_LANG = 'en';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -15,12 +19,27 @@ export class SettingsService {
 
   load(): Observable<SettingModel[]> {
     const isDarkConfig = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-    let activeValue: string = isDarkConfig ? 'dark' : 'default';
-    if (this.localStorageService.get('themeActiveValue')) {
-      activeValue = this.localStorageService.get('themeActiveValue');
+    let activeThemeValue: string = isDarkConfig ? 'dark' : 'default';
+
+    let activeLanguageValue: string = DEFAULT_LANG;
+    if (navigator?.language) {
+      activeLanguageValue = navigator.language.split('-')[0];
     }
+    if (LANGUAGES.indexOf(activeLanguageValue) === -1) {
+      activeLanguageValue = DEFAULT_LANG;
+    }
+
+    if (this.localStorageService.get('themeActiveValue')) {
+      activeThemeValue = this.localStorageService.get('themeActiveValue');
+    }
+
+    if (this.localStorageService.get('languageActiveValue')) {
+      activeLanguageValue = this.localStorageService.get('languageActiveValue');
+    }
+
     const settings: SettingModel[] = [
-      {name: 'theme-active', value: activeValue},
+      {name: 'language-active', value: activeLanguageValue},
+      {name: 'theme-active', value: activeThemeValue},
       {name: 'results-per-page', value: '20'}
     ];
     return of(settings).pipe(tap(sett => this.store.dispatch(loaded({settings: sett}))));
@@ -29,6 +48,9 @@ export class SettingsService {
   update(setting: SettingModel): Observable<void> {
     if (setting.name === 'theme-active') {
       this.localStorageService.set('themeActiveValue', setting.value);
+    }
+    if (setting.name === 'language-active') {
+      this.localStorageService.set('languageActiveValue', setting.value);
     }
     return from(new Promise<void>(resolve => resolve()));
   }

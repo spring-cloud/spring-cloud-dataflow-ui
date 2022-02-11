@@ -11,6 +11,8 @@ import {GrafanaServiceMock} from '../../../../tests/service/grafana.service.mock
 import {FreeTextComponent} from './free-text.component';
 import {RoleDirective} from '../../../../security/directive/role.directive';
 import {ContextServiceMock} from '../../../../tests/service/context.service.mock';
+import {TranslateTestingModule} from 'ngx-translate-testing';
+import TRANSLATIONS from '../../../../../assets/i18n/en.json';
 
 describe('streams/deploy/free-text/free-text.component.ts', () => {
   let component: FreeTextComponent;
@@ -24,6 +26,7 @@ describe('streams/deploy/free-text/free-text.component.ts', () => {
           FormsModule,
           ReactiveFormsModule,
           ClarityModule,
+          TranslateTestingModule.withTranslations('en', TRANSLATIONS),
           RouterTestingModule.withRoutes([]),
           BrowserAnimationsModule
         ],

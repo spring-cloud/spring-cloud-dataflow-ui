@@ -5,6 +5,8 @@ import {RouterTestingModule} from '@angular/router/testing';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FreeTextComponent} from './free-text.component';
 import {RoleDirective} from '../../../../security/directive/role.directive';
+import {TranslateTestingModule} from 'ngx-translate-testing';
+import TRANSLATIONS from '../../../../../assets/i18n/en.json';
 
 describe('tasks-jobs/tasks/launch/free-text/free-text.component.ts', () => {
   let component: FreeTextComponent;
@@ -19,6 +21,7 @@ describe('tasks-jobs/tasks/launch/free-text/free-text.component.ts', () => {
           ReactiveFormsModule,
           ClarityModule,
           RouterTestingModule.withRoutes([]),
+          TranslateTestingModule.withTranslations('en', TRANSLATIONS),
           BrowserAnimationsModule
         ],
         providers: []

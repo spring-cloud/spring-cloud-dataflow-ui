@@ -3,20 +3,26 @@
     <clr-icon shape="info-standard"></clr-icon>
   </a>
   <clr-signpost-content #signpost class="signpost-about" clrPosition="bottom-left" *clrIfOpen>
-    <h3 style="margin-top: 0">Spring Cloud Data Flow</h3>
+    <h3 style="margin-top: 0">{{ 'appRoot.fullName' | translate }}</h3>
     <p>
-      Data Flow Server Implementation<br />
-      <strong>Name</strong>: {{ about.versions.implementation.name || 'n/a' }}<br />
-      <strong>Version</strong>: {{ about.versions.implementation.version || 'n/a' }}<br />
-      <button class="btn btn-sm btn-primary" (click)="more()">More info</button>
+      {{ 'about.signpost.title' | translate }}<br />
+      <strong>{{ 'about.signpost.name' | translate }}</strong
+      >: {{ about.versions.implementation.name || 'n/a' }}<br />
+      <strong>{{ 'about.signpost.version' | translate }}</strong
+      >: {{ about.versions.implementation.version || 'n/a' }}<br />
+      <button class="btn btn-sm btn-primary" (click)="more()">{{ 'about.signpost.moreInfo' | translate }}</button>
     </p>
     <ul>
       <ul>
         <li>
-          <a target="_blank" href="https://cloud.spring.io/spring-cloud-dataflow/"> Project Page </a>
+          <a target="_blank" href="https://cloud.spring.io/spring-cloud-dataflow/">{{
+            'about.signpost.projectPage' | translate
+          }}</a>
         </li>
         <li>
-          <a target="_blank" href="https://github.com/spring-cloud/spring-cloud-dataflow"> Source Code </a>
+          <a target="_blank" href="https://github.com/spring-cloud/spring-cloud-dataflow">{{
+            'about.signpost.sourceCode' | translate
+          }}</a>
         </li>
         <li>
           <a
@@ -25,7 +31,7 @@
               about.versions.core.version
             }}/reference/htmlsingle/"
           >
-            Documentation
+            {{ 'about.signpost.documentation' | translate }}
           </a>
         </li>
         <li>
@@ -35,14 +41,18 @@
               about.versions.core.version
             }}/reference/htmlsingle/#api-guide-resources"
           >
-            API Docs
+            {{ 'about.signpost.apiDocs' | translate }}
           </a>
         </li>
         <li>
-          <a target="_blank" href="https://stackoverflow.com/questions/tagged/spring-cloud-dataflow"> Support Forum </a>
+          <a target="_blank" href="https://stackoverflow.com/questions/tagged/spring-cloud-dataflow">{{
+            'about.signpost.supportForum' | translate
+          }}</a>
         </li>
         <li>
-          <a target="_blank" href="https://github.com/spring-cloud/spring-cloud-dataflow/issues"> Issue Tracker </a>
+          <a target="_blank" href="https://github.com/spring-cloud/spring-cloud-dataflow/issues">{{
+            'about.signpost.issueTracker' | translate
+          }}</a>
         </li>
       </ul>
     </ul>

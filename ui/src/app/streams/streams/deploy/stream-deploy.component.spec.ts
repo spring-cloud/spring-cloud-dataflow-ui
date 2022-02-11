@@ -19,6 +19,8 @@ import {ParserService} from '../../../flo/shared/service/parser.service';
 import {ActivatedRoute} from '@angular/router';
 import {of} from 'rxjs';
 import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {TranslateTestingModule} from 'ngx-translate-testing';
+import TRANSLATIONS from '../../../../assets/i18n/en.json';
 
 @Component({
   selector: 'app-stream-deploy-builder',
@@ -60,7 +62,13 @@ describe('streams/streams/deploy/deploy.component.ts', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [DeployComponent, BuilderMockComponent, FreeTextMockComponent],
-        imports: [FormsModule, ClarityModule, RouterTestingModule.withRoutes([]), BrowserAnimationsModule],
+        imports: [
+          FormsModule,
+          ClarityModule,
+          RouterTestingModule.withRoutes([]),
+          TranslateTestingModule.withTranslations('en', TRANSLATIONS),
+          BrowserAnimationsModule
+        ],
         providers: [
           SecurityServiceMock.provider,
           AboutServiceMock.provider,
@@ -115,7 +123,7 @@ describe('streams/streams/deploy/deploy.component.ts', () => {
     await fixture.whenStable();
     expect(spy).toHaveBeenCalled();
     expect(navigate).toHaveBeenCalledWith(['streams/list']);
-    expect(NotificationServiceMock.mock.successNotifications[0].title).toContain('Deploy success');
+    expect(NotificationServiceMock.mock.successNotifications[0].title).toContain('Update success');
     done();
   });
 

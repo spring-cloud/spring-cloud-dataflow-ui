@@ -1,13 +1,15 @@
-<h1>Create stream(s)</h1>
+<h1>{{ 'streams.create.title' | translate }}</h1>
 
 <app-stream-flo-create #flo></app-stream-flo-create>
 
-<button class="btn btn-secondary" type="button" (click)="back()">Cancel</button>
-<button class="btn btn-primary" type="button" (click)="createStream()">Create stream(s)</button>
+<button class="btn btn-secondary" type="button" (click)="back()">{{ 'commons.cancel' | translate }}</button>
+<button class="btn btn-primary" type="button" (click)="createStream()">
+  {{ 'streams.create.create' | translate }}
+</button>
 
 <clr-modal [(clrModalOpen)]="isOpen" *ngIf="isOpen" [clrModalClosable]="!progressData" clrModalSize="lg">
-  <h3 class="modal-title" *ngIf="!progressData">Create Stream(s)</h3>
-  <h3 class="modal-title" *ngIf="progressData">Creating Stream(s)...</h3>
+  <h3 class="modal-title" *ngIf="!progressData">{{ 'streams.create.create' | translate }}</h3>
+  <h3 class="modal-title" *ngIf="progressData">{{ 'streams.create.modal.creating' | translate }}</h3>
   <div *ngIf="progressData" class="modal-body">
     <div>
       <div class="progress-static labeled">
@@ -22,29 +24,30 @@
       <div *ngIf="errors && errors.length > 0" class="alert alert-error">
         <div *ngFor="let error of errors">• {{ error }}</div>
       </div>
-      <div style="margin-bottom: 0.8rem">This action will create the following <strong>stream(s)</strong>:</div>
+      <div style="margin-bottom: 0.8rem">
+        <div [innerHTML]="'streams.create.modal.content' | translate"></div>
+      </div>
       <div class="alert alert-danger" *ngIf="form.hasError('uniqueStreamNames')">
         <div class="alert-items">
           <div class="alert-item static">
             <div class="alert-icon-wrapper">
               <clr-icon class="alert-icon" shape="exclamation-circle"></clr-icon>
             </div>
-            <div class="alert-text">Duplicate stream name, please check input names.</div>
+            <div class="alert-text">{{ 'streams.create.modal.duplicateName' | translate }}</div>
           </div>
         </div>
       </div>
       <div *ngFor="let def of getStreams(); let i = index" class="card" style="padding: 10px 0">
         <div class="card-block">
           <div class="clr-form-control clr-row" style="margin-top: 0; max-height: 16px">
-            <label class="clr-control-label clr-col-12 clr-col-md-2">Definition</label>
+            <label class="clr-control-label clr-col-12 clr-col-md-2">{{ 'commons.definition' | translate }}</label>
             <div class="clr-control-container form-control input-sm clr-col-md-10 clr-col-12">
-              <!--                <app-stream-dsl>{{def.def | truncate: 90}}</app-stream-dsl>-->
               <span class="dsl-text dsl-truncate">{{ def.def }}</span>
             </div>
           </div>
 
           <div class="form-group clr-form-control clr-row">
-            <label class="clr-control-label clr-col-12 clr-col-md-2">Name</label>
+            <label class="clr-control-label clr-col-12 clr-col-md-2">{{ 'commons.name' | translate }}</label>
             <div
               class="clr-control-container clr-error clr-col-md-10 clr-col-12"
               [class]="{'clr-error': getControl(def.index.toString()).errors}"
@@ -52,7 +55,7 @@
               <div class="clr-input-wrapper">
                 <input
                   type="text"
-                  placeholder="Stream Name"
+                  [placeholder]="'streams.create.modal.placeholderName' | translate"
                   maxlength="255"
                   [name]="def.index.toString()"
                   [formControlName]="def.index.toString()"
@@ -69,7 +72,7 @@
                 class="clr-subtext"
                 *ngIf="getControl(def.index.toString()).errors && getControl(def.index.toString()).errors.required"
               >
-                Stream name is required!
+                {{ 'streams.create.modal.requiredName' | translate }}
               </div>
               <div
                 class="clr-subtext"
@@ -77,27 +80,27 @@
                   getControl(def.index.toString()).errors && getControl(def.index.toString()).errors.uniqueResource
                 "
               >
-                Stream name is already taken!
+                {{ 'streams.create.modal.uniqueName' | translate }}
               </div>
               <div
                 class="clr-subtext"
                 *ngIf="getControl(def.index.toString()).errors && getControl(def.index.toString()).errors.pattern"
               >
-                Invalid stream name!
+                {{ 'streams.create.modal.invalidName' | translate }}
               </div>
               <div
                 class="clr-subtext"
                 *ngIf="getControl(def.index.toString()).errors && getControl(def.index.toString()).errors.maxlength"
               >
-                Stream name must be less than 255 characters long!
+                {{ 'streams.create.modal.maxLengthName' | translate }}
               </div>
             </div>
           </div>
 
           <clr-control-container class="form-group">
-            <label class="clr-control-label clr-col-12 clr-col-md-2" [for]="def.index.toString() + '_desc'"
-              >Description</label
-            >
+            <label class="clr-control-label clr-col-12 clr-col-md-2" [for]="def.index.toString() + '_desc'">{{
+              'commons.description' | translate
+            }}</label>
             <input
               [id]="def.index.toString() + '_desc'"
               [name]="def.index.toString() + '_desc'"
@@ -105,12 +108,12 @@
               clrControl
               [ngModel]="def.description"
               (ngModelChange)="changeStreamDescription(def.index, $event)"
-              placeholder="Stream Description"
+              [placeholder]="'streams.create.modal.placeholderDescription' | translate"
               maxlength="255"
               style="width: 560px"
             />
-            <clr-control-error *clrIfError="'maxlength'"
-              >Stream description must be less than 255 characters long!
+            <clr-control-error *clrIfError="'maxlength'">
+              {{ 'streams.create.modal.maxLengthDescription' | translate }}
             </clr-control-error>
           </clr-control-container>
         </div>
@@ -118,9 +121,11 @@
     </form>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-default" (click)="cancel()" [disabled]="progressData">Cancel</button>
+    <button type="button" class="btn btn-default" (click)="cancel()" [disabled]="progressData">
+      {{ 'commons.cancel' | translate }}
+    </button>
     <button type="button" class="btn btn-primary" (click)="submit()" [disabled]="progressData || !canSubmit()">
-      Create the stream(s)
+      {{ 'streams.create.modal.create' | translate }}
     </button>
   </div>
 </clr-modal>

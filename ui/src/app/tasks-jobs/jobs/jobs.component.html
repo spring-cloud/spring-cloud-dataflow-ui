@@ -1,40 +1,42 @@
-<h1>Jobs</h1>
+<h1>{{ 'jobs.main.title' | translate }}</h1>
 <clr-datagrid (clrDgRefresh)="refresh($event)" [clrDgLoading]="loading" *ngIf="isInit" #datagrid>
   <clr-dg-action-bar>
-    <button type="button" class="btn btn-sm btn-secondary" (click)="refresh(state)">Refresh</button>
+    <button type="button" class="btn btn-sm btn-secondary" (click)="refresh(state)">
+      {{ 'commons.refresh' | translate }}
+    </button>
   </clr-dg-action-bar>
   <clr-dg-column
     (clrDgColumnResize)="updateContext('sizeId', $event)"
     [style.width.px]="context.sizeId | datagridcolumn: datagrid:contextName | async"
   >
-    <ng-container> Execution Id </ng-container>
+    <ng-container>{{ 'jobs.main.executionId' | translate }}</ng-container>
   </clr-dg-column>
   <clr-dg-column
     (clrDgColumnResize)="updateContext('sizeName', $event)"
     [style.width.px]="context.sizeName | datagridcolumn: datagrid:contextName | async"
   >
-    <ng-container> Name </ng-container>
+    <ng-container>{{ 'commons.name' | translate }}</ng-container>
     <clr-dg-filter style="display: none"></clr-dg-filter>
   </clr-dg-column>
   <clr-dg-column
     (clrDgColumnResize)="updateContext('sizeTaskId', $event)"
     [style.width.px]="context.sizeTaskId | datagridcolumn: datagrid:contextName | async"
   >
-    <ng-container> Task Id </ng-container>
+    <ng-container>{{ 'jobs.main.taskId' | translate }}</ng-container>
     <clr-dg-filter style="display: none"></clr-dg-filter>
   </clr-dg-column>
   <clr-dg-column
     (clrDgColumnResize)="updateContext('sizeInstanceId', $event)"
     [style.width.px]="context.sizeInstanceId | datagridcolumn: datagrid:contextName | async"
   >
-    <ng-container> Instance Id </ng-container>
+    <ng-container>{{ 'jobs.main.instanceId' | translate }}</ng-container>
     <clr-dg-filter style="display: none"></clr-dg-filter>
   </clr-dg-column>
   <clr-dg-column
     (clrDgColumnResize)="updateContext('sizeStart', $event)"
     [style.width.px]="context.sizeStart | datagridcolumn: datagrid:contextName | async"
   >
-    <ng-container> Job Start Time </ng-container>
+    <ng-container>{{ 'jobs.main.startTime' | translate }}</ng-container>
     <clr-dg-filter [clrDgFilter]="dateFilter">
       <app-clr-datagrid-date-filter property="dates" [value]="context.dates" #dateFilter>
       </app-clr-datagrid-date-filter>
@@ -44,14 +46,14 @@
     (clrDgColumnResize)="updateContext('sizeStepCount', $event)"
     [style.width.px]="context.sizeStepCount | datagridcolumn: datagrid:contextName | async"
   >
-    <ng-container> Step Execution Count </ng-container>
+    <ng-container>{{ 'jobs.main.stepExecutionCount' | translate }}</ng-container>
     <clr-dg-filter style="display: none"></clr-dg-filter>
   </clr-dg-column>
   <clr-dg-column
     (clrDgColumnResize)="updateContext('sizeStatus', $event)"
     [style.width.px]="context.sizeStatus | datagridcolumn: datagrid:contextName | async"
   >
-    <ng-container> Status </ng-container>
+    <ng-container>{{ 'commons.status' | translate }}</ng-container>
     <clr-dg-filter style="display: none"></clr-dg-filter>
   </clr-dg-column>
   <clr-dg-row *ngFor="let execution of page?.items" [clrDgItem]="execution">
@@ -69,25 +71,27 @@
       ><span class="{{ execution.labelStatusClass() }}">{{ execution.status }}</span></clr-dg-cell
     >
     <clr-dg-action-overflow>
-      <button class="action-item" (click)="details(execution)">Details</button>
+      <button class="action-item" (click)="details(execution)">{{ 'commons.details' | translate }}</button>
       <button
         class="action-item"
         (click)="restart(execution)"
         [disabled]="execution.status !== 'FAILED' && execution.status !== 'STOPPED' && execution.status !== 'ERROR'"
       >
-        Restart
+        {{ 'commons.restart' | translate }}
       </button>
       <button
         class="action-item"
         (click)="stop(execution)"
         [disabled]="execution.status === 'FAILED' || execution.status === 'ERROR' || execution.status === 'COMPLETED'"
       >
-        Stop
+        {{ 'commons.stop' | translate }}
       </button>
-      <button class="action-item" grafanaDashboardJobExecution [jobExecution]="execution">Grafana Dashboard</button>
+      <button class="action-item" grafanaDashboardJobExecution [jobExecution]="execution">
+        {{ 'commons.grafanaDashboard' | translate }}
+      </button>
     </clr-dg-action-overflow>
   </clr-dg-row>
-  <clr-dg-placeholder>No results found.</clr-dg-placeholder>
+  <clr-dg-placeholder>{{ 'commons.noResultFound' | translate }}</clr-dg-placeholder>
   <clr-dg-footer>
     <clr-dg-pagination
       #pagination
@@ -95,20 +99,35 @@
       [clrDgPageSize]="context.size"
       [clrDgPage]="context.current"
     >
-      <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]">Job executions per page</clr-dg-page-size>
-      {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of {{ page?.total }} job executions
+      <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]">{{
+        'jobs.main.jobPerPage' | translate
+      }}</clr-dg-page-size>
+      {{
+        'jobs.main.pagination'
+          | translate: {first: pagination.firstItem + 1, last: pagination.lastItem + 1, total: page?.total}
+      }}
     </clr-dg-pagination>
   </clr-dg-footer>
 </clr-datagrid>
 
-<app-confirm #restartModal (onConfirmed)="restartJob()" title="Confirm restart the job execution" yes="Restart">
-  This action will restart the steps failed of the job execution
-  <strong>{{ selection?.name }} ({{ selection?.jobExecutionId }})</strong>.<br />
-  Are you sure?
+<app-confirm
+  #restartModal
+  (onConfirmed)="restartJob()"
+  [title]="'jobs.main.restartConfirmTitle' | translate"
+  [yes]="'commons.restart' | translate"
+>
+  <div
+    [innerHTML]="'jobs.main.restartConfirmContent' | translate: {name: selection?.name, id: selection?.jobExecutionId}"
+  ></div>
 </app-confirm>
 
-<app-confirm #stopModal (onConfirmed)="stopJob()" title="Confirm stop the job execution" yes="Stop">
-  This action will stop the job execution
-  <strong>{{ selection?.name }} ({{ selection?.jobExecutionId }})</strong>.<br />
-  Are you sure?
+<app-confirm
+  #stopModal
+  (onConfirmed)="stopJob()"
+  [title]="'jobs.main.stopConfirmTitle' | translate"
+  [yes]="'commons.stop' | translate"
+>
+  <div
+    [innerHTML]="'jobs.main.stopConfirmContent' | translate: {name: selection?.name, id: selection?.jobExecutionId}"
+  ></div>
 </app-confirm>

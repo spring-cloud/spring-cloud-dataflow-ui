@@ -1,4 +1,4 @@
-<h1>Task executions</h1>
+<h1>{{ 'executions.main.title' | translate }}</h1>
 
 <clr-datagrid
   (clrDgRefresh)="refresh($event)"
@@ -8,7 +8,9 @@
   #datagrid
 >
   <clr-dg-action-bar *ngIf="grouped">
-    <button type="button" class="btn btn-sm btn-secondary" (click)="setMode(false)">Cancel</button>
+    <button type="button" class="btn btn-sm btn-secondary" (click)="setMode(false)">
+      {{ 'commons.cancel' | translate }}
+    </button>
     <button
       type="button"
       [disabled]="selected?.length === 0"
@@ -16,14 +18,16 @@
       (click)="cleanup(selected)"
       [appRole]="['ROLE_DESTROY']"
     >
-      Clean Up task execution(s)
+      {{ 'executions.main.cleanupExecutions' | translate }}
     </button>
   </clr-dg-action-bar>
   <clr-dg-action-bar *ngIf="!grouped">
     <button type="button" class="btn btn-sm btn-secondary" (click)="setMode(true)" [appRole]="['ROLE_DESTROY']">
-      Group Actions
+      {{ 'commons.groupActions' | translate }}
     </button>
-    <button type="button" class="btn btn-sm btn-secondary" (click)="refresh(state)">Refresh</button>
+    <button type="button" class="btn btn-sm btn-secondary" (click)="refresh(state)">
+      {{ 'commons.refresh' | translate }}
+    </button>
   </clr-dg-action-bar>
   <clr-dg-column
     [clrDgField]="'TASK_EXECUTION_ID'"
@@ -31,7 +35,7 @@
     (clrDgColumnResize)="updateContext('sizeId', $event)"
     [style.width.px]="context.sizeId | datagridcolumn: datagrid:contextName | async"
   >
-    <ng-container> Execution ID </ng-container>
+    <ng-container>{{ 'executions.main.executionId' | translate }}</ng-container>
     <clr-dg-filter style="display: none"></clr-dg-filter>
   </clr-dg-column>
   <clr-dg-column
@@ -40,14 +44,14 @@
     (clrDgColumnResize)="updateContext('sizeName', $event)"
     [style.width.px]="context.sizeName | datagridcolumn: datagrid:contextName | async"
   >
-    <ng-container> Task name </ng-container>
+    <ng-container>{{ 'executions.main.taskName' | translate }}</ng-container>
     <clr-dg-filter style="display: none"></clr-dg-filter>
   </clr-dg-column>
   <clr-dg-column
     (clrDgColumnResize)="updateContext('sizeDuration', $event)"
     [style.width.px]="context.sizeDuration | datagridcolumn: datagrid:contextName | async"
   >
-    <ng-container> Duration </ng-container>
+    <ng-container>{{ 'executions.main.duration' | translate }}</ng-container>
     <clr-dg-filter style="display: none"></clr-dg-filter>
   </clr-dg-column>
   <clr-dg-column
@@ -56,7 +60,7 @@
     (clrDgColumnResize)="updateContext('sizeStart', $event)"
     [style.width.px]="context.sizeStart | datagridcolumn: datagrid:contextName | async"
   >
-    <ng-container> Start Date </ng-container>
+    <ng-container>{{ 'executions.main.startDate' | translate }}</ng-container>
     <clr-dg-filter style="display: none"></clr-dg-filter>
   </clr-dg-column>
   <clr-dg-column
@@ -65,7 +69,7 @@
     (clrDgColumnResize)="updateContext('sizeEnd', $event)"
     [style.width.px]="context.sizeEnd | datagridcolumn: datagrid:contextName | async"
   >
-    <ng-container> End Date </ng-container>
+    <ng-container>{{ 'executions.main.endDate' | translate }}</ng-container>
     <clr-dg-filter style="display: none"></clr-dg-filter>
   </clr-dg-column>
   <clr-dg-column
@@ -74,7 +78,7 @@
     (clrDgColumnResize)="updateContext('sizeExit', $event)"
     [style.width.px]="context.sizeExit | datagridcolumn: datagrid:contextName | async"
   >
-    <ng-container> Exit Code </ng-container>
+    <ng-container>{{ 'executions.main.exitCode' | translate }}</ng-container>
     <clr-dg-filter style="display: none"></clr-dg-filter>
   </clr-dg-column>
   <clr-dg-row *ngFor="let execution of page?.items" [clrDgItem]="execution">
@@ -89,27 +93,33 @@
     <clr-dg-cell>{{ execution.endTime | datetime }}</clr-dg-cell>
     <clr-dg-cell>{{ execution.exitCode }}</clr-dg-cell>
     <clr-dg-action-overflow *ngIf="!grouped">
-      <button class="action-item" (click)="details(execution)">Details</button>
-      <button class="action-item" (click)="taskDetails(execution)">Task details</button>
-      <button class="action-item" (click)="relaunch(execution)" [appRole]="['ROLE_DEPLOY']">Relaunch task</button>
+      <button class="action-item" (click)="details(execution)">{{ 'commons.details' | translate }}</button>
+      <button class="action-item" (click)="taskDetails(execution)">
+        {{ 'executions.main.taskDetails' | translate }}
+      </button>
+      <button class="action-item" (click)="relaunch(execution)" [appRole]="['ROLE_DEPLOY']">
+        {{ 'executions.main.relaunch' | translate }}
+      </button>
       <button
         class="action-item"
         (click)="stop(execution)"
         [appRole]="['ROLE_DEPLOY']"
         [disabled]="!(execution.taskExecutionStatus !== 'COMPLETE' && execution.taskExecutionStatus !== 'ERROR')"
       >
-        Stop task
+        {{ 'executions.main.stop' | translate }}
       </button>
       <button class="action-item" (click)="cleanup([execution])" [appRole]="['ROLE_DESTROY']">
-        Clean up task execution
+        {{ 'executions.main.cleanup' | translate }}
       </button>
-      <button class="action-item" grafanaDashboardTaskExecution [taskExecution]="execution">Grafana Dashboard</button>
+      <button class="action-item" grafanaDashboardTaskExecution [taskExecution]="execution">
+        {{ 'commons.grafanaDashboard' | translate }}
+      </button>
       <button class="action-item" wavefrontDashboardTaskExecution [taskExecution]="execution">
-        Wavefront Dashboard
+        {{ 'commons.main.wavefrontDashboard' | translate }}
       </button>
     </clr-dg-action-overflow>
   </clr-dg-row>
-  <clr-dg-placeholder>No results found.</clr-dg-placeholder>
+  <clr-dg-placeholder>{{ 'commons.noResultFound' | translate }}</clr-dg-placeholder>
   <clr-dg-footer>
     <clr-dg-pagination
       #pagination
@@ -117,8 +127,13 @@
       [clrDgPageSize]="context.size"
       [clrDgPage]="context.current"
     >
-      <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]">Task executions per page</clr-dg-page-size>
-      {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of {{ page?.total }} task executions
+      <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]">{{
+        'executions.main.executionPerPage' | translate
+      }}</clr-dg-page-size>
+      {{
+        'executions.main.pagination'
+          | translate: {first: pagination.firstItem + 1, last: pagination.lastItem + 1, total: page?.total}
+      }}
     </clr-dg-pagination>
   </clr-dg-footer>
 </clr-datagrid>

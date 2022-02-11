@@ -10,6 +10,8 @@ import {RecordServiceMock} from '../../tests/api/record.service.mock';
 import {By} from '@angular/platform-browser';
 import {OperationFilterComponent} from './operation.filter';
 import {ContextServiceMock} from '../../tests/service/context.service.mock';
+import {TranslateTestingModule} from 'ngx-translate-testing';
+import TRANSLATIONS from '../../../assets/i18n/en.json';
 
 describe('manage/records/operation.filter.ts', () => {
   let component: OperationFilterComponent;
@@ -19,7 +21,12 @@ describe('manage/records/operation.filter.ts', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [OperationFilterComponent],
-        imports: [FormsModule, ClarityModule, BrowserAnimationsModule],
+        imports: [
+          FormsModule,
+          ClarityModule,
+          BrowserAnimationsModule,
+          TranslateTestingModule.withTranslations('en', TRANSLATIONS)
+        ],
         providers: [
           SecurityServiceMock.provider,
           AboutServiceMock.provider,

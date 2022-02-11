@@ -10,17 +10,26 @@ describe('settings/store/settings.reducer.ts', () => {
 
   it('should load and update', () => {
     let expectedState: fromSettings.SettingsState = {
-      settings: [{name: fromSettings.themeActiveKey, value: 'value1'}]
+      settings: [
+        {name: fromSettings.themeActiveKey, value: 'value1'},
+        {name: fromSettings.languageActiveKey, value: 'value1'}
+      ]
     };
     let newState = fromSettings.reducer(
       undefined,
       SettingsActions.loaded({
-        settings: [{name: fromSettings.themeActiveKey, value: 'value1'}]
+        settings: [
+          {name: fromSettings.themeActiveKey, value: 'value1'},
+          {name: fromSettings.languageActiveKey, value: 'value1'}
+        ]
       })
     );
     expect(newState).toEqual(expectedState);
     expectedState = {
-      settings: [{name: fromSettings.themeActiveKey, value: 'value2'}]
+      settings: [
+        {name: fromSettings.themeActiveKey, value: 'value2'},
+        {name: fromSettings.languageActiveKey, value: 'value1'}
+      ]
     };
     newState = fromSettings.reducer(
       newState,

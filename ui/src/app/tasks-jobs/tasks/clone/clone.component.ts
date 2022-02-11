@@ -6,6 +6,7 @@ import {concatAll} from 'rxjs/operators';
 import {Utils} from '../../../flo/stream/support/utils';
 import {TaskService} from '../../../shared/api/task.service';
 import {TaskPage} from '../../../shared/model/task.model';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-task-clone',
@@ -24,7 +25,8 @@ export class CloneComponent {
   constructor(
     private taskService: TaskService,
     private notificationService: NotificationService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private translate: TranslateService
   ) {}
 
   open(tasks: Array<any>): void {
@@ -73,20 +75,32 @@ export class CloneComponent {
   done(success: number, error: number): void {
     if (success > 0) {
       if (error > 0) {
-        this.notificationService.success('Task(s) clone', 'Task(s) have been cloned partially');
+        this.notificationService.success(
+          this.translate.instant('tasks.clone.message.partialSuccessTitle'),
+          this.translate.instant('tasks.clone.message.partialSuccessContent')
+        );
       } else {
-        this.notificationService.success('Task(s) clone', 'Task(s) have been cloned successfully');
+        this.notificationService.success(
+          this.translate.instant('tasks.clone.message.successTitle'),
+          this.translate.instant('tasks.clone.message.successContent')
+        );
       }
       this.onCloned.emit(true);
       this.cancel();
     } else {
-      this.notificationService.error('Error(s) occurred', 'No task(s) cloned.');
+      this.notificationService.error(
+        this.translate.instant('commons.message.error'),
+        this.translate.instant('tasks.clone.message.errorContent')
+      );
     }
   }
 
   submit(): void {
     if (this.form.invalid) {
-      this.notificationService.error('Invalid field', 'Some field(s) are missing or invalid.');
+      this.notificationService.error(
+        this.translate.instant('commons.message.invalidFieldsTitle'),
+        this.translate.instant('commons.message.invalidFieldsContent')
+      );
       return;
     }
     const requests = this.tasks.map(task => {
@@ -110,7 +124,7 @@ export class CloneComponent {
         err => {
           count++;
           error++;
-          this.notificationService.error('Error(s) occurred', err);
+          this.notificationService.error(this.translate.instant('commons.message.error'), err);
           if (count === requests.length) {
             this.done(success, error);
           }

@@ -10,7 +10,7 @@
       (keydown)="onKeyDown($event)"
       id="quick_search"
       type="text"
-      placeholder="Search for keywords ..."
+      placeholder="{{ 'layout.quicksearch.input' | translate }}"
       #inputQuickSearch
     />
     <button type="button" (click)="clear()" (mousedown)="onInputFocus()" class="btn-clear" *ngIf="isSearch()">
@@ -20,15 +20,15 @@
   <div></div>
   <div class="result" *ngIf="isFocus && isSearch()">
     <div *ngIf="isSearching()">
-      <div class="searching">Searching for results...</div>
+      <div class="searching">{{ 'layout.quicksearch.searching' | translate }}</div>
     </div>
     <div *ngIf="!isSearching()">
       <div class="no-result" *ngIf="isNoResult()">
-        There are no search results for "<strong>{{ search.value }}</strong
+        {{ 'layout.quicksearch.noResult' | translate }} "<strong>{{ search.value }}</strong
         >"
       </div>
       <div *ngIf="results.apps && results.apps.total > 0">
-        <h4>Application(s)</h4>
+        <h4>{{ 'layout.quicksearch.application' | translate }}</h4>
         <ul>
           <li *ngFor="let app of results.apps.items; let i = index" [class.active]="selected === i">
             <a (mouseover)="selected = i" (click)="navigate('/apps/' + app.type + '/' + app.name)">
@@ -41,7 +41,7 @@
         </ul>
       </div>
       <div *ngIf="results.streams && results.streams.total > 0">
-        <h4>Streams(s)</h4>
+        <h4>{{ 'layout.quicksearch.stream' | translate }}</h4>
         <ul>
           <li
             *ngFor="let stream of results.streams.items; let i = index"
@@ -59,7 +59,7 @@
         </ul>
       </div>
       <div *ngIf="results.tasks && results.tasks.total > 0">
-        <h4>Task(s)</h4>
+        <h4>{{ 'layout.quicksearch.task' | translate }}</h4>
         <ul>
           <li
             *ngFor="let task of results.tasks.items; let i = index"

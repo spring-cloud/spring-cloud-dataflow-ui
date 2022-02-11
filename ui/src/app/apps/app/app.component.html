@@ -1,6 +1,6 @@
 <h1 class="page-title">
   <span class="text-truncate">
-    Application <strong>{{ app.name }}</strong
+    {{ 'applications.details.title' | translate }} <strong>{{ app.name }}</strong
     >&nbsp;
     <span class="{{ app.labelTypeClass() }}">{{ app.type }}</span>
     <span *ngIf="defaultApp" class="label">{{ defaultApp.version }}</span>
@@ -10,7 +10,7 @@
 <div *ngIf="!loading">
   <div class="datagrid-action-bar" [appRole]="['ROLE_DESTROY']">
     <button id="btnUnregister" type="button" class="btn btn-sm btn-outline-danger" (click)="unregister()">
-      Unregister Application
+      {{ 'applications.details.unregister' | translate }}
     </button>
     <button
       id="btnVersion"
@@ -19,16 +19,16 @@
       (click)="manageVersions()"
       *ngIf="versions?.length > 1"
     >
-      Manage versions
+      {{ 'applications.details.manageVersions' | translate }}
     </button>
   </div>
 
   <div class="title-select" *ngIf="detailedApp && versions?.length > 1">
-    Version
+    {{ 'applications.main.version' | translate }}
     <clr-dropdown>
       <button class="btn btn-sm btn-secondary" clrDropdownTrigger>
         {{ detailedApp.version }}&nbsp;
-        <span *ngIf="detailedApp.defaultVersion">(DEFAULT)</span>
+        <span *ngIf="detailedApp.defaultVersion">({{ 'applications.details.default' | translate | uppercase }})</span>
         <clr-icon shape="caret down"></clr-icon>
       </button>
       <clr-dropdown-menu *clrIfOpen>
@@ -39,7 +39,7 @@
           (click)="getProperties(version)"
         >
           {{ version.version }}&nbsp;
-          <span *ngIf="version.defaultVersion">(DEFAULT)</span>
+          <span *ngIf="version.defaultVersion">({{ 'applications.details.default' | translate | uppercase }})</span>
         </button>
       </clr-dropdown-menu>
     </clr-dropdown>
@@ -47,39 +47,44 @@
 
   <div class="clr-row">
     <div class="clr-col-lg-6 clr-col-md-12 clr-col-12">
-      <app-view-card titleModal="Information" name="{{ app.name }}.{{ app.type }}" keyContext="app" id="info">
+      <app-view-card
+        [titleModal]="'applications.details.information' | translate"
+        name="{{ app.name }}.{{ app.type }}"
+        keyContext="app"
+        id="info"
+      >
         <ng-template>
           <div *ngIf="!loadingProperties">
             <div class="block card-block-keyvalue">
               <div class="row">
-                <div class="key">Type</div>
+                <div class="key">{{ 'applications.main.type' | translate }}</div>
                 <div class="value">
                   <span class="{{ app.labelTypeClass() }}">{{ app.type }}</span>
                 </div>
               </div>
               <div class="row">
-                <div class="key">Version</div>
+                <div class="key">{{ 'applications.main.version' | translate }}</div>
                 <div class="value">
                   <span *ngIf="defaultApp" class="label">{{ defaultApp.version }}</span>
                 </div>
               </div>
               <div *ngIf="detailedApp.uri" class="row">
-                <div class="key">Uri</div>
+                <div class="key">{{ 'applications.main.uri' | translate }}</div>
                 <div class="value">{{ detailedApp.uri }}</div>
               </div>
               <div class="row">
-                <div class="key">Metadata Uri</div>
+                <div class="key">{{ 'applications.main.metadataURI' | translate }}</div>
                 <div class="value">{{ detailedApp.metaDataUri || 'N/A' }}</div>
               </div>
               <div class="row" *ngIf="versions">
-                <div class="key">Version(s)</div>
+                <div class="key">{{ 'applications.main.version' | translate }}(s)</div>
                 <div class="value">{{ versions.length }}</div>
               </div>
             </div>
           </div>
           <div *ngIf="loadingProperties">
             <clr-spinner clrInline clrSmall></clr-spinner>
-            Loading information...
+            {{ 'commons.loading' | translate }}
           </div>
         </ng-template>
       </app-view-card>
@@ -90,7 +95,7 @@
     <div class="clr-row">
       <div class="clr-col-lg-12 clr-col-md-12 clr-col-12">
         <app-view-card
-          titleModal="Application properties"
+          [titleModal]="'applications.details.appProperties' | translate"
           name="{{ app.name }}.{{ app.type }}"
           keyContext="app"
           id="props"
@@ -110,8 +115,8 @@
                         <clr-icon class="alert-icon" shape="info-circle"></clr-icon>
                       </div>
                       <div class="alert-text">
-                        There are <strong>more than 50 properties</strong> to display, the UI can be slow.<br />Do you
-                        want to <strong>display all the properties</strong> ?
+                        {{ 'applications.details.tooManyProperties' | translate }}<br />
+                        {{ 'applications.details.tooManyProperties2' | translate }}
                       </div>
                     </div>
                     <div class="alert-item static">
@@ -120,7 +125,7 @@
                       </div>
                       <div class="alert-text">
                         <button class="btn btn-primary btn-sm" (click)="showAllProperties = true">
-                          Show all the properties
+                          {{ 'applications.details.showAll' | translate }}
                         </button>
                       </div>
                     </div>
@@ -134,16 +139,23 @@
                         <td class="key">
                           {{ getReadableId(property.id) }}
                           <div *ngIf="property.isDeprecated">
-                            <span class="label label-warning">Deprecation level: {{ property.deprecation.level }}</span>
+                            <span class="label label-warning"
+                              >{{ 'applications.details.deprecatedLevel' | translate }}:
+                              {{ property.deprecation.level }}</span
+                            >
                           </div>
                         </td>
                         <td class="value">
                           <div class="value">
-                            <div>{{ property.description ? property.description : '(No Description Available)' }}</div>
+                            <div *ngIf="property.description">{{ property.description }}</div>
+                            <div *ngIf="!property.description">
+                              ({{ 'applications.details.noDescription' | translate }})
+                            </div>
                             <div class="type-block">
                               <code>{{ property.type }}</code
                               >&nbsp;<span *ngIf="property.defaultValue"
-                                >(Default value: <code>{{ property.defaultValue }}</code
+                                >({{ 'applications.details.defaultValue' | translate }}:
+                                <code>{{ property.defaultValue }}</code
                                 >)</span
                               >
                             </div>
@@ -154,11 +166,11 @@
                   </table>
                 </div>
               </div>
-              <div *ngIf="!(detailedApp.options?.length > 0)">No property</div>
+              <div *ngIf="!(detailedApp.options?.length > 0)">{{ 'applications.details.noProperty' | translate }}</div>
             </div>
             <div *ngIf="loadingProperties">
               <clr-spinner clrInline clrSmall></clr-spinner>
-              Loading properties...
+              {{ 'commons.loading' | translate }}
             </div>
           </ng-template>
         </app-view-card>
@@ -169,7 +181,7 @@
 
 <div *ngIf="loading" style="padding: 1rem 0">
   <clr-spinner clrInline clrSmall></clr-spinner>
-  Loading application...
+  {{ 'commons.loading' | translate }}
 </div>
 
 <app-unregister #unregisterModal (onUnregistered)="back()"></app-unregister>

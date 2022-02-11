@@ -8,7 +8,7 @@ import {forkJoin, Observable, throwError} from 'rxjs';
 import {FormControl, FormGroup} from '@angular/forms';
 import {StreamDeployService} from '../stream-deploy.service';
 import {NotificationService} from '../../../shared/service/notification.service';
-import {ParserService} from '../../../flo/shared/service/parser.service';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-stream-multi-deploy',
@@ -30,8 +30,8 @@ export class MultiDeployComponent implements OnInit {
     private route: ActivatedRoute,
     private notificationService: NotificationService,
     private streamDeployService: StreamDeployService,
-    private parserService: ParserService,
-    private groupService: GroupService
+    private groupService: GroupService,
+    private translate: TranslateService
   ) {}
 
   ngOnInit(): void {
@@ -93,7 +93,10 @@ export class MultiDeployComponent implements OnInit {
 
   runDeploy(): void {
     if (!this.isValid()) {
-      this.notificationService.error('Invalid properties', 'Some field(s) are missing or invalid.');
+      this.notificationService.error(
+        this.translate.instant('commons.message.invalidFieldsTitle'),
+        this.translate.instant('commons.message.invalidFieldsContent')
+      );
     } else {
       this.isRunning = true;
       const cleanValue = v =>
@@ -130,12 +133,15 @@ export class MultiDeployComponent implements OnInit {
       });
       forkJoin([...requests]).subscribe(
         () => {
-          this.notificationService.success('Deploy success', `Successfully deployed ${requests.length} stream(s).`);
+          this.notificationService.success(
+            this.translate.instant('streams.multiDeploy.successTitle'),
+            this.translate.instant('streams.multiDeploy.successContent', {count: requests.length})
+          );
           this.back();
         },
         error => {
           this.isRunning = false;
-          this.notificationService.error('An error occurred', error);
+          this.notificationService.error(this.translate.instant('commons.message.error'), error);
         }
       );
     }

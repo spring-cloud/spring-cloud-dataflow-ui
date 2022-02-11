@@ -1,5 +1,5 @@
 <form [formGroup]="formGroup" (submit)="launchTask()">
-  <p>Enter the list of properties into the text area field below.</p>
+  <p>{{ 'tasks.launch.freetext.propertiesDescription' | translate }}</p>
   <div class="form-textarea">
     <div class="numbers">
       <ng-template ngFor let-item [ngForOf]="plines">
@@ -28,23 +28,23 @@
             #propertiesFile
             (change)="propertiesFileChange($event)"
           />
-          Import a local file
+          {{ 'commons.importFile' | translate }}
         </button>
         <clr-tooltip-content clrPosition="top-right" clrSize="lg" *clrIfOpen>
-          <span
-            >Please provide a text file containing properties. This will be used to populate the text area above.</span
-          >
+          <span>{{ 'tasks.launch.freetext.propertiesTooltip' | translate }}</span>
         </clr-tooltip-content>
       </clr-tooltip>
 
-      <button id="btn-export" type="button" class="btn btn-sm btn btn-secondary" (click)="exportProps()">Export</button>
+      <button id="btn-export" type="button" class="btn btn-sm btn btn-secondary" (click)="exportProps()">
+        {{ 'tasks.launch.main.export' | translate }}
+      </button>
       <button id="btn-copy" type="button" class="btn btn-sm btn btn-secondary" (click)="copyPropsToClipboard()">
-        Copy to Clipboard
+        {{ 'commons.copyToClipboard' | translate }}
       </button>
     </div>
   </div>
 
-  <p>Enter the list of arguments into the text area field below.</p>
+  <p>{{ 'tasks.launch.freetext.argumentsDescription' | translate }}</p>
   <div class="form-textarea">
     <div class="numbers">
       <ng-template ngFor let-item [ngForOf]="alines">
@@ -73,26 +73,26 @@
             #argumentsFile
             (change)="argumentsFileChange($event)"
           />
-          Import a local file
+          {{ 'commons.importFile' | translate }}
         </button>
         <clr-tooltip-content clrPosition="top-right" clrSize="lg" *clrIfOpen>
-          <span
-            >Please provide a text file containing arguments. This will be used to populate the text area above.</span
-          >
+          <span>{{ 'tasks.launch.freetext.argumentsTooltip' | translate }}</span>
         </clr-tooltip-content>
       </clr-tooltip>
 
-      <button id="btn-export" type="button" class="btn btn-sm btn btn-secondary" (click)="exportProps()">Export</button>
+      <button id="btn-export" type="button" class="btn btn-sm btn btn-secondary" (click)="exportArgs()">
+        {{ 'tasks.launch.main.export' | translate }}
+      </button>
       <button id="btn-copy" type="button" class="btn btn-sm btn btn-secondary" (click)="copyArgsToClipboard()">
-        Copy to Clipboard
+        {{ 'commons.copyToClipboard' | translate }}
       </button>
     </div>
   </div>
 
   <div>
-    <a id="btn-cancel" class="btn btn-default" routerLink="/tasks-jobs/tasks">Cancel</a>
+    <a id="btn-cancel" class="btn btn-default" routerLink="/tasks-jobs/tasks">{{ 'commons.cancel' | translate }}</a>
     <button id="btn-deploy" type="submit" class="btn btn-primary">
-      <span>Launch Task</span>
+      <span>{{ 'tasks.launch.freetext.launch' | translate }}</span>
     </button>
   </div>
 </form>

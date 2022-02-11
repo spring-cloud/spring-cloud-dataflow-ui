@@ -1,6 +1,7 @@
 <h1 class="page-title">
   <span class="text-truncate">
-    Stream <strong>{{ stream?.name }}</strong
+    {{ 'streams.stream.title' | translate }}
+    <strong>{{ stream?.name }}</strong
     >&nbsp;
     <span *ngIf="stream?.status" class="{{ stream.labelStatusClass() }}">{{ stream.status }}</span>
   </span>
@@ -16,7 +17,7 @@
       (click)="deploy()"
       [appRole]="['ROLE_DEPLOY']"
     >
-      Deploy stream
+      {{ 'streams.stream.deploy' | translate }}
     </button>
     <button
       id="btn-update"
@@ -26,7 +27,7 @@
       (click)="deploy()"
       [appRole]="['ROLE_MODIFY']"
     >
-      Update stream
+      {{ 'streams.stream.update' | translate }}
     </button>
     <button
       id="btn-scale"
@@ -46,7 +47,7 @@
       (click)="undeploy()"
       [appRole]="['ROLE_CREATE']"
     >
-      Undeploy stream
+      {{ 'streams.stream.undeploy' | translate }}
     </button>
     <button
       id="btn-destroy"
@@ -55,10 +56,10 @@
       (click)="destroy()"
       [appRole]="['ROLE_DESTROY']"
     >
-      Destroy stream
+      {{ 'streams.stream.destroy' | translate }}
     </button>
     <button id="btn-grafana" type="button" class="btn btn-sm btn-secondary" grafanaDashboardStream [stream]="stream">
-      Grafana Dashboard
+      {{ 'commons.grafanaDashboard' | translate }}
     </button>
     <button
       id="btn-wavefront"
@@ -67,33 +68,38 @@
       wavefrontDashboardStream
       [stream]="stream"
     >
-      Wavefront Dashboard
+      {{ 'commons.wavefrontDashboard' | translate }}
     </button>
   </div>
 
   <div class="clr-row">
     <div class="clr-col-lg-6 clr-col-md-12 clr-col-12">
-      <app-view-card titleModal="Information" name="{{ stream.name }}" keyContext="stream" id="info">
+      <app-view-card
+        [titleModal]="'commons.information' | translate"
+        name="{{ stream.name }}"
+        keyContext="stream"
+        id="info"
+      >
         <ng-template>
           <div class="block card-block-keyvalue">
             <div *ngIf="stream.description" class="row">
-              <div class="key">Description</div>
+              <div class="key">{{ 'commons.description' | translate }}</div>
               <div class="value">{{ stream.description }}</div>
             </div>
             <div class="row">
-              <div class="key">Definition</div>
+              <div class="key">{{ 'commons.definition' | translate }}</div>
               <div class="value">
                 <span class="dsl-text"><app-stream-dsl [dsl]="stream.dslText"></app-stream-dsl></span>
               </div>
             </div>
             <div class="row">
-              <div class="key">Status</div>
+              <div class="key">{{ 'commons.status' | translate }}</div>
               <div class="value">
                 <span class="{{ stream.labelStatusClass() }}">{{ stream.status }}</span>
               </div>
             </div>
             <div class="row">
-              <div class="key">Applications</div>
+              <div class="key">{{ 'commons.applications' | translate }}</div>
               <div class="value">
                 <div *ngIf="!loadingApps">
                   <div *ngFor="let app of applications">
@@ -104,7 +110,7 @@
                 </div>
                 <div *ngIf="loadingApps">
                   <clr-spinner clrInline clrSmall></clr-spinner>
-                  Loading applications...
+                  {{ 'commons.loading' | translate }}
                 </div>
               </div>
             </div>
@@ -114,7 +120,12 @@
     </div>
 
     <div class="clr-col-lg-6 clr-col-md-12 clr-col-12" *ngIf="streamsRelated?.length > 1">
-      <app-view-card titleModal="Related stream(s)" name="{{ stream.name }}" keyContext="stream" id="related">
+      <app-view-card
+        [titleModal]="'streams.stream.relatedStreams' | translate"
+        name="{{ stream.name }}"
+        keyContext="stream"
+        id="related"
+      >
         <ng-template>
           <div class="block card-block-keyvalue">
             <div *ngFor="let related of streamsRelated" class="clr-row list-item">
@@ -134,7 +145,12 @@
     </div>
 
     <div class="clr-col-lg-12 clr-col-md-12 clr-col-12">
-      <app-view-card name="{{ stream.name }}" keyContext="stream" id="visualize" titleModal="Show Data Pipeline">
+      <app-view-card
+        name="{{ stream.name }}"
+        keyContext="stream"
+        id="visualize"
+        [titleModal]="'streams.stream.showPipeline' | translate"
+      >
         <ng-template>
           <app-stream-flo-view [id]="stream.name" class="stream-details"></app-stream-flo-view>
         </ng-template>
@@ -142,7 +158,12 @@
     </div>
 
     <div class="clr-col-xl-6 clr-col-lg-12 clr-col-md-12 clr-col-12" *ngIf="canShowDeploymentInfo()">
-      <app-view-card titleModal="Deployment Info" keyContext="stream" name="{{ stream.name }}" id="deploymentInfo">
+      <app-view-card
+        [titleModal]="'streams.stream.deploymentInfo' | translate"
+        keyContext="stream"
+        name="{{ stream.name }}"
+        id="deploymentInfo"
+      >
         <ng-template>
           <div class="block card-block-keyvalue">
             <div *ngIf="!loadingDeploymentInfo">
@@ -166,14 +187,19 @@
             </div>
             <div *ngIf="loadingDeploymentInfo">
               <clr-spinner clrInline clrSmall></clr-spinner>
-              Loading deployment info...
+              {{ 'commons.loading' | translate }}
             </div>
           </div>
         </ng-template>
       </app-view-card>
     </div>
     <div class="clr-col-xl-6 clr-col-lg-12 clr-col-md-12 clr-col-12" *ngIf="canShowDeploymentInfo()">
-      <app-view-card titleModal="Runtime" keyContext="stream" name="{{ stream.name }}" id="runtime">
+      <app-view-card
+        [titleModal]="'streams.stream.runtime' | translate"
+        keyContext="stream"
+        name="{{ stream.name }}"
+        id="runtime"
+      >
         <ng-template>
           <div class="block card-block-keyvalue">
             <div *ngIf="!loadingRuntime && !loadingApps">
@@ -188,14 +214,16 @@
                       }}</span>
                     </td>
                     <td class="left">{{ app.deploymentId }}</td>
-                    <td class="left">{{ app.instances?.length || 'n/a' }} instance(s)</td>
-                    <td>
+                    <td class="left">
+                      {{ app.instances?.length || 'n/a' }} {{ 'streams.stream.instances' | translate }}
+                    </td>
+                    <td class="left" style="width: 20px">
                       <button
                         type="button"
                         (click)="showLog(app.deploymentId, getAppType(app.name))"
                         class="btn btn-sm btn-secondary"
                       >
-                        View Log
+                        {{ 'streams.stream.viewLog' | translate }}
                       </button>
                     </td>
                   </tr>
@@ -204,7 +232,7 @@
             </div>
             <div *ngIf="loadingRuntime || loadingApps">
               <clr-spinner clrInline clrSmall></clr-spinner>
-              Loading runtime...
+              {{ 'commons.loading' | translate }}
             </div>
           </div>
         </ng-template>
@@ -212,17 +240,22 @@
     </div>
 
     <div class="clr-col-lg-12 clr-col-md-12 clr-col-12">
-      <app-view-card titleModal="History" keyContext="stream" name="{{ stream.name }}" id="history">
+      <app-view-card
+        [titleModal]="'streams.stream.history' | translate"
+        keyContext="stream"
+        name="{{ stream.name }}"
+        id="history"
+      >
         <ng-template>
           <div class="block card-block-keyvalue" *ngIf="!loadingHistory">
             <table *ngIf="history.length > 0" class="table table-noborder" style="margin-top: 0">
               <thead>
                 <tr>
-                  <th class="left">Version</th>
-                  <th class="left">Date</th>
-                  <th class="left">Stream status</th>
-                  <th class="left">Description</th>
-                  <th class="left">Platform</th>
+                  <th class="left">{{ 'commons.version' | translate }}</th>
+                  <th class="left">{{ 'commons.date' | translate }}</th>
+                  <th class="left">{{ 'streams.stream.streamStatus' | translate }}</th>
+                  <th class="left">{{ 'commons.description' | translate }}</th>
+                  <th class="left">{{ 'commons.platform' | translate }}</th>
                   <th class="left" style="width: 20px">&nbsp;</th>
                 </tr>
               </thead>
@@ -242,17 +275,17 @@
                       class="btn btn-sm btn-secondary"
                       [disabled]="!canRollback(hist)"
                     >
-                      Rollback
+                      {{ 'streams.stream.rollback' | translate }}
                     </button>
                   </td>
                 </tr>
               </tbody>
             </table>
-            <div *ngIf="history.length === 0">There is no history yet.</div>
+            <div *ngIf="history.length === 0">{{ 'streams.stream.noHistory' | translate }}</div>
           </div>
           <div *ngIf="loadingHistory">
             <clr-spinner clrInline clrSmall></clr-spinner>
-            Loading history...
+            {{ 'commons.loading' | translate }}
           </div>
         </ng-template>
       </app-view-card>
@@ -262,26 +295,28 @@
 
 <div *ngIf="loading" style="padding: 1rem 0">
   <clr-spinner clrInline clrSmall></clr-spinner>
-  Loading stream...
+  {{ 'commons.loading' | translate }}
 </div>
 
 <clr-modal [(clrModalOpen)]="isLogOpen" *ngIf="log" clrModalSize="xl">
   <h3 class="modal-title">
-    Log {{ log.name }}
+    {{ 'streams.stream.logStream' | translate: {name: log.name} }}
     <span class="label label-app {{ log.type }}">{{ log.type }}</span>
   </h3>
   <div class="modal-body" *ngIf="!loadingLogs">
     <div *ngIf="hasLog(log.name)">
       <pre style="overflow: scroll; max-height: 500px; font-size: 13px"><code>{{log.log}}</code></pre>
     </div>
-    <div *ngIf="!hasLog(log.name)">No log.</div>
+    <div *ngIf="!hasLog(log.name)">{{ 'streams.stream.noLog' | translate }}</div>
   </div>
   <div class="modal-body" *ngIf="loadingLogs">
     <clr-spinner clrInline clrSmall></clr-spinner>
-    Loading log(s)...
+    {{ 'commons.loading' | translate }}
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline" (click)="isLogOpen = false">Close</button>
+    <button type="button" class="btn btn-outline" (click)="isLogOpen = false">
+      {{ 'commons.close' | translate }}
+    </button>
   </div>
 </clr-modal>
 

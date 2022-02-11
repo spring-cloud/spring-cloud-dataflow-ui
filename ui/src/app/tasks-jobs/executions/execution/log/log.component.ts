@@ -13,11 +13,13 @@ import {TaskExecution} from '../../../../shared/model/task-execution.model';
       </div>
       <div *ngIf="loading">
         <clr-spinner clrInline clrSmall></clr-spinner>
-        Loading logs...
+        {{ 'commons.loading' | translate }}
       </div>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" (click)="isOpen = false">Close</button>
+      <button type="button" class="btn btn-secondary" (click)="isOpen = false">
+        {{ 'commons.close' | translate }}
+      </button>
     </div>
   </clr-modal>`
 })

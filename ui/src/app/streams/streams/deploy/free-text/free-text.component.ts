@@ -2,6 +2,7 @@ import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnIn
 import {FormControl, FormGroup} from '@angular/forms';
 import {StreamDeployValidator} from '../stream-deploy.validator';
 import {NotificationService} from '../../../../shared/service/notification.service';
+import {TranslateService} from '@ngx-translate/core';
 
 /**
  * Free Text Component
@@ -81,7 +82,7 @@ export class FreeTextComponent implements OnInit, OnDestroy {
    * Constructor
    * Initialize FormGroup
    */
-  constructor(private notificationService: NotificationService) {
+  constructor(private notificationService: NotificationService, private translate: TranslateService) {
     this.formGroup = new FormGroup({
       input: new FormControl(),
       file: new FormControl('')
@@ -178,7 +179,10 @@ export class FreeTextComponent implements OnInit, OnDestroy {
    */
   deployStream(): void {
     if (!this.isSubmittable) {
-      this.notificationService.error('Invalid properties', 'Some line(s) are invalid.');
+      this.notificationService.error(
+        this.translate.instant('streams.deploy.freetext.message.errorDeployTitle'),
+        this.translate.instant('streams.deploy.freetext.message.errorDeployContent')
+      );
     } else {
       this.deploy.emit(this.getCleanProperties());
     }

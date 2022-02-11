@@ -1,5 +1,5 @@
 <h1>
-  Task execution - Execution ID: <strong *ngIf="execution">{{ execution?.executionId }}</strong>
+  {{ 'executions.execution.title' | translate }}: <strong *ngIf="execution">{{ execution?.executionId }}</strong>
 </h1>
 
 <div *ngIf="!loading">
@@ -11,7 +11,7 @@
       [disabled]="!task"
       [appRole]="['ROLE_DEPLOY']"
     >
-      Relaunch task
+      {{ 'executions.execution.relaunch' | translate }}
     </button>
     <button
       type="button"
@@ -20,7 +20,7 @@
       [disabled]="execution.taskExecutionStatus === 'ERROR' || execution.taskExecutionStatus === 'COMPLETE'"
       [appRole]="['ROLE_DEPLOY']"
     >
-      Stop execution
+      {{ 'executions.execution.stop' | translate }}
     </button>
     <button
       type="button"
@@ -29,28 +29,33 @@
       *ngIf="!execution.parentExecutionId"
       [appRole]="['ROLE_DESTROY']"
     >
-      Clean up task execution
+      {{ 'executions.execution.cleanup' | translate }}
     </button>
     <button type="button" class="btn btn-sm btn-secondary" grafanaDashboardTaskExecution [taskExecution]="execution">
-      Grafana Dashboard
+      {{ 'commons.grafanaDashboard' | translate }}
     </button>
     <button type="button" class="btn btn-sm btn-secondary" wavefrontDashboardTaskExecution [taskExecution]="execution">
-      Wavefront Dashboard
+      {{ 'commons.wavefrontDashboard' | translate }}
     </button>
   </div>
 
   <div class="clr-row">
     <div class="clr-col-lg-6 clr-col-md-12 clr-col-12">
-      <app-view-card titleModal="Information" keyContext="execution" name="{{ execution?.executionId }}" id="info">
+      <app-view-card
+        [titleModal]="'commons.information' | translate"
+        keyContext="execution"
+        name="{{ execution?.executionId }}"
+        id="info"
+      >
         <ng-template>
           <div class="block card-block-keyvalue lg-key">
             <div *ngIf="execution">
               <div class="row">
-                <div class="key">Execution Id</div>
+                <div class="key">{{ 'executions.main.executionId' | translate }}</div>
                 <div class="value">{{ execution.executionId }}</div>
               </div>
               <div class="row">
-                <div class="key">Arguments</div>
+                <div class="key">{{ 'executions.main.arguments' | translate }}</div>
                 <div class="value">
                   <div *ngIf="execution.getArgumentsToArray().length > 0">
                     <div *ngFor="let arg of execution.getArgumentsToArray()">
@@ -62,7 +67,7 @@
                 </div>
               </div>
               <div class="row">
-                <div class="key">External Execution Id</div>
+                <div class="key">{{ 'executions.main.externalExecutionId' | translate }}</div>
                 <div class="value">
                   {{ execution.externalExecutionId || 'N/A' }}
                 </div>
@@ -75,7 +80,7 @@
                 </div>
               </div>
               <div class="row">
-                <div class="key">Job Execution Ids</div>
+                <div class="key">{{ 'executions.main.jobExecutionIds' | translate }}</div>
                 <div class="value">
                   <a
                     [routerLink]="'/tasks-jobs/job-executions/' + jobExecutionId"
@@ -87,37 +92,37 @@
                 </div>
               </div>
               <div class="row">
-                <div class="key">Start Time</div>
+                <div class="key">{{ 'executions.main.startTime' | translate }}</div>
                 <div class="value">
                   {{ execution.startTime | datetime }}
                 </div>
               </div>
               <div class="row">
-                <div class="key">End Time</div>
+                <div class="key">{{ 'executions.main.endTime' | translate }}</div>
                 <div class="value">
                   {{ execution.endTime | datetime }}
                 </div>
               </div>
               <div class="row">
-                <div class="key">Duration</div>
+                <div class="key">{{ 'executions.main.duration' | translate }}</div>
                 <div class="value">
                   {{ execution.startTime | duration: execution.endTime }}
                 </div>
               </div>
               <div class="row">
-                <div class="key">Exit Code</div>
+                <div class="key">{{ 'executions.main.exitCode' | translate }}</div>
                 <div class="value">
                   {{ execution.exitCode }}
                 </div>
               </div>
               <div class="row">
-                <div class="key">Exit Message</div>
+                <div class="key">{{ 'executions.main.exitMessage' | translate }}</div>
                 <div class="value">
                   {{ execution.exitMessage || 'N/A' }}
                 </div>
               </div>
               <div class="row" *ngIf="this.execution.externalExecutionId || execution.resourceUrl">
-                <div class="key">Resource URL</div>
+                <div class="key">{{ 'executions.main.resourceUrl' | translate }}</div>
                 <div class="value">
                   {{ execution.resourceUrl || 'N/A' }}
                 </div>
@@ -126,7 +131,7 @@
                 class="row"
                 *ngIf="this.execution.externalExecutionId || execution.getAppPropertiesToArray().length > 0"
               >
-                <div class="key">Application Properties</div>
+                <div class="key">{{ 'executions.main.applicationProperties' | translate }}</div>
                 <div class="value">
                   <div *ngIf="execution.getAppPropertiesToArray().length > 0">
                     <div *ngFor="let arg of execution.getAppPropertiesToArray()">
@@ -141,7 +146,7 @@
                 class="row"
                 *ngIf="this.execution.externalExecutionId || execution.getDeploymentPropertiesToArray().length > 0"
               >
-                <div class="key">Platform Properties</div>
+                <div class="key">{{ 'executions.main.platformProperties' | translate }}</div>
                 <div class="value">
                   <div *ngIf="execution.getDeploymentPropertiesToArray().length > 0">
                     <div *ngFor="let arg of execution.getDeploymentPropertiesToArray()">
@@ -153,41 +158,48 @@
                 </div>
               </div>
             </div>
-            <div *ngIf="!execution">No execution yet.</div>
+            <div *ngIf="!execution">{{ 'executions.main.noExecution' | translate }}</div>
           </div>
         </ng-template>
         <div class="card-footer" *ngIf="hasLog()">
-          <button class="btn btn-sm btn-secondary" (click)="log()">View log</button>
+          <button class="btn btn-sm btn-secondary" (click)="log()">
+            {{ 'executions.main.viewLog' | translate }}
+          </button>
         </div>
       </app-view-card>
     </div>
     <div class="clr-col-lg-6 clr-col-md-12 clr-col-12">
-      <app-view-card titleModal="Task" keyContext="execution" name="{{ execution?.executionId }}" id="task">
+      <app-view-card
+        [titleModal]="'executions.execution.task' | translate"
+        keyContext="execution"
+        name="{{ execution?.executionId }}"
+        id="task"
+      >
         <ng-template>
           <div *ngIf="!loadingTask">
             <div class="block card-block-keyvalue" *ngIf="task">
               <div class="row">
-                <div class="key">Name</div>
+                <div class="key">{{ 'commons.name' | translate }}</div>
                 <div class="value">{{ task.name }}</div>
               </div>
               <div *ngIf="task.description" class="row">
-                <div class="key">Description</div>
+                <div class="key">{{ 'commons.description' | translate }}</div>
                 <div class="value">{{ task.description }}</div>
               </div>
               <div class="row">
-                <div class="key">Definition</div>
+                <div class="key">{{ 'commons.definition' | translate }}</div>
                 <div class="value">
                   <span class="dsl-text">{{ task.dslText }}</span>
                 </div>
               </div>
               <div class="row">
-                <div class="key">Status</div>
+                <div class="key">{{ 'commons.status' | translate }}</div>
                 <div class="value">
                   <span class="{{ task.labelStatusClass() }}">{{ task.status }}</span>
                 </div>
               </div>
               <div class="row">
-                <div class="key">Applications</div>
+                <div class="key">{{ 'commons.applications' | translate }}</div>
                 <div class="value">
                   <div *ngIf="!loadingApplication">
                     <div *ngFor="let app of applications">
@@ -198,21 +210,25 @@
                   </div>
                   <div *ngIf="loadingApplication">
                     <clr-spinner clrInline clrSmall></clr-spinner>
-                    Loading application(s)...
+                    {{ 'commons.loading' | translate }}
                   </div>
                 </div>
               </div>
             </div>
-            <div *ngIf="!task">No task found.</div>
+            <div *ngIf="!task">{{ 'executions.execution.noTask' | translate }}</div>
           </div>
           <div *ngIf="loadingTask">
             <clr-spinner clrInline clrSmall></clr-spinner>
-            Loading task...
+            {{ 'commons.loading' | translate }}
           </div>
         </ng-template>
         <div class="card-footer" *ngIf="task">
-          <button class="btn btn-sm btn-secondary" (click)="navigateTask()">View task</button>
-          <button type="button" class="btn btn-sm btn-secondary" (click)="relaunch()">Relaunch Task</button>
+          <button class="btn btn-sm btn-secondary" (click)="navigateTask()">
+            {{ 'executions.execution.viewTask' | translate }}
+          </button>
+          <button type="button" class="btn btn-sm btn-secondary" (click)="relaunch()">
+            {{ 'executions.execution.relaunch' | translate }}
+          </button>
         </div>
       </app-view-card>
     </div>
@@ -221,7 +237,7 @@
 
 <div *ngIf="loading" style="padding: 1rem 0">
   <clr-spinner clrInline clrSmall></clr-spinner>
-  Loading execution...
+  {{ 'commons.loading' | translate }}
 </div>
 
 <app-task-execution-log #logModal></app-task-execution-log>

@@ -32,7 +32,7 @@ import {PropertiesDialogComponent} from '../../shared/properties/properties-dial
         (contentValidated)="contentValidated = $event"
         (onProperties)="handleLinkEvent($event)"
         (validationMarkers)="markersFromGraphChanged($event)"
-        searchFilterPlaceHolder="Search for applications..."
+        [searchFilterPlaceHolder]="'flo.commons.searchForApplications' | translate"
       >
         <div header class="flow-definition-container">
           <dsl-editor
@@ -40,7 +40,7 @@ import {PropertiesDialogComponent} from '../../shared/properties/properties-dial
             line-numbers="true"
             line-wrapping="true"
             (focus)="editorContext.graphToTextSync = false"
-            placeholder="Enter stream definition..."
+            [placeholder]="'flo.stream.enterStreamDefinition' | translate"
             (blur)="editorContext.graphToTextSync = true"
             [hintOptions]="hintOptions"
             [lintOptions]="lintOptions"
@@ -81,10 +81,14 @@ import {PropertiesDialogComponent} from '../../shared/properties/properties-dial
           <clr-icon shape="plus-circle"></clr-icon>
         </button>
         <div class="divider"></div>
-        <button (click)="arrangeAll()" class="btn btn-sm btn-secondary" type="button">Fit to Content</button>
+        <button (click)="arrangeAll()" class="btn btn-sm btn-secondary" type="button">
+          {{ 'flo.commons.fitToContent' | translate }}
+        </button>
       </div>
       <div class="overlay-loader" *ngIf="!isReady">
-        <div style="padding: 10px 0;"><clr-spinner clrSmall clrInline></clr-spinner>&nbsp; Loading editor...</div>
+        <div style="padding: 10px 0;">
+          <clr-spinner clrSmall clrInline></clr-spinner>&nbsp;{{ 'commons.loading' | translate }}
+        </div>
       </div>
       <app-properties-dialog-content #propertiesDialog></app-properties-dialog-content>
     </div>

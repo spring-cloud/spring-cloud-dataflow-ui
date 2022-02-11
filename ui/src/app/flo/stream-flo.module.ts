@@ -23,6 +23,7 @@ import {RuntimeStreamFloViewComponent} from './stream/component/runtime-view.com
 import {NodeHelper} from './stream/node-helper.service';
 import {PropertiesEditor} from './stream/properties-editor.service';
 import {SanitizeDsl} from './stream/dsl-sanitize.service';
+import {TranslateModule} from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import {SanitizeDsl} from './stream/dsl-sanitize.service';
     ClarityModule,
     FloModule,
     SharedFloModule,
+    TranslateModule,
     SharedModule
   ],
   providers: [
