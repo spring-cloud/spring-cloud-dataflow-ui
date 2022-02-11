@@ -2,8 +2,8 @@ import {Component, EventEmitter, Output} from '@angular/core';
 import {StreamService} from '../../../shared/api/stream.service';
 import {NotificationService} from '../../../shared/service/notification.service';
 import {StreamStatus} from '../../../shared/model/metrics.model';
-import {Instance} from 'src/app/shared/model/instance.model';
-import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
+import {Instance} from '../../../shared/model/instance.model';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-stream-scale',
@@ -19,32 +19,33 @@ export class ScaleComponent {
 
   instances: Array<Instance> = [];
 
-  scaleForm: FormGroup = new FormGroup({
-    instanceCount: new FormArray([])
-  });
-
-  instancesForm: FormArray = this.scaleForm.get('instanceCount') as FormArray;
+  form: FormGroup = new FormGroup({});
 
   constructor(private streamService: StreamService, private notificationService: NotificationService) {}
+
+  initForm(metrics: StreamStatus[]): void {
+    this.instances = [];
+    if (metrics && metrics.length > 0) {
+      metrics[0].applications.forEach(appStatus => {
+        const instance = Instance.fromAppStatus(appStatus);
+        this.instances.push(instance);
+        this.form.addControl(
+          `instance${instance.name}`,
+          new FormControl(instance.instanceCount, [Validators.required, Validators.min(0), Validators.max(9)])
+        );
+      });
+    }
+  }
 
   open(streamName: string): void {
     this.isLoading = true;
     this.streamName = streamName;
-    this.instances = [];
-
     this.streamService.getRuntimeStreamStatuses([streamName]).subscribe(
       (metrics: StreamStatus[]) => {
-        if (metrics && metrics.length > 0) {
-          metrics[0].applications.forEach(appStatus => {
-            const instance = Instance.fromAppStatus(appStatus);
-
-            this.instances.push(instance);
-            this.instancesForm.push(new FormControl(instance.instanceCount, [Validators.required, Validators.min(0)]));
-          });
-        }
+        this.initForm(metrics);
         this.isLoading = false;
       },
-      error => {
+      () => {
         this.isLoading = false;
         this.notificationService.error(
           'An error occurred',
@@ -55,28 +56,27 @@ export class ScaleComponent {
     this.isOpen = true;
   }
 
-  scale(instanceNumber: number) {
-    const instance = this.instances[instanceNumber];
-    const scaleTo = this.instancesForm.controls[instanceNumber].value;
+  scale(instance: Instance) {
+    const scaleTo = this.form.get(`instance${instance.name}`).value;
     instance.isScaling = true;
+    this.isRunning = true;
     this.streamService.scaleAppInstance(this.streamName, instance.name, scaleTo).subscribe(
-      data => {
+      () => {
         instance.instanceCount = scaleTo;
         this.onScale.emit();
         this.notificationService.success('Scale stream', `${instance.name} app scaled to ${instance.instanceCount}.`);
         instance.isScaling = false;
+        this.isRunning = false;
       },
       error => {
         instance.isScaling = false;
-        this.notificationService.error(
-          'An error occurred',
-          'An error occurred while scaling Stream. Please check the server logs for more details.'
-        );
+        this.isRunning = false;
+        this.notificationService.error('An error occurred', error);
       }
     );
   }
 
-  isValueNotChanged(instanceNumber: number) {
-    return this.instances[instanceNumber].instanceCount === this.instancesForm.controls[instanceNumber].value;
+  isValueNotChanged(instance: Instance) {
+    return instance?.instanceCount === this.form?.get(`instance${instance.name}`)?.value;
   }
 }

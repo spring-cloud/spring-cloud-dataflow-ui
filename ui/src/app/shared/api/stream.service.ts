@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams, HttpResponse} from '@angular/common/http';
 import {HttpUtils} from '../support/http.utils';
-import {catchError, delay, map} from 'rxjs/operators';
+import {catchError, map} from 'rxjs/operators';
 import {Stream, StreamHistory, StreamPage} from '../model/stream.model';
-import {forkJoin, Observable, timer} from 'rxjs';
+import {forkJoin, Observable} from 'rxjs';
 import {ErrorUtils} from '../support/error.utils';
 import {DataflowEncoder} from '../support/encoder.utils';
 import {Platform, PlatformList} from '../model/platform.model';

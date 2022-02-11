@@ -150,7 +150,7 @@
         *ngIf="stream.status !== 'UNDEPLOYED' && stream.status !== 'INCOMPLETE'"
         [appRole]="['ROLE_CREATE']"
       >
-        Scale
+        Scale instance(s)
       </button>
       <button class="action-item" (click)="destroy([stream])" [appRole]="['ROLE_DESTROY']">Destroy</button>
       <button class="action-item" (click)="clone([stream])" [appRole]="['ROLE_CREATE']">Clone</button>

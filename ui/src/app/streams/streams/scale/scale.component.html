@@ -1,16 +1,16 @@
 <clr-modal [(clrModalOpen)]="isOpen" *ngIf="streamName" [clrModalClosable]="!isRunning">
   <h3 class="modal-title">
-    Scale instances for app
-    <strong>{{ streamName }}</strong
-    >&nbsp;
+    Scale instance(s) for app
+    <strong>{{ streamName }}</strong>
   </h3>
   <div class="modal-body">
     <div *ngIf="isLoading">
       <clr-spinner clrInline clrSmall></clr-spinner>&nbsp;
       <span>Fetching stream runtime statuses ...</span>
     </div>
-    <form [formGroup]="scaleForm">
-      <table class="table table-striped" *ngIf="!isLoading">
+    <form [formGroup]="form" *ngIf="!isLoading">
+      <div>You can scale an application between 1 and 9 instances.</div>
+      <table class="table table-striped">
         <thead>
           <tr>
             <th class="left">Name</th>
@@ -19,9 +19,9 @@
           </tr>
         </thead>
         <tbody>
-          <ng-container formArrayName="instanceCount">
+          <ng-container>
             <tr *ngFor="let instance of instances; index as i">
-              <td class="left">
+              <td class="left middle">
                 {{ instance.name }}
               </td>
               <td class="left">
@@ -29,19 +29,23 @@
                   style="width: 50px"
                   type="number"
                   min="0"
+                  max="9"
                   class="clr-input ng-pristine ng-valid ng-touched"
-                  [formControlName]="i"
+                  [formControlName]="'instance' + instance.name"
                 />
               </td>
               <td nowrap="">
                 <button
                   type="button"
                   class="btn btn-sm btn-secondary"
-                  [disabled]="instancesForm.controls[i].invalid || isValueNotChanged(i)"
-                  (click)="scale(i)"
+                  [disabled]="
+                    form.get('instance' + instance.name)?.invalid || isValueNotChanged(instance) || instance.isScaling
+                  "
+                  (click)="scale(instance)"
                 >
-                  Scale
                   <clr-spinner *ngIf="instance.isScaling" clrInline clrSmall></clr-spinner>&nbsp;
+                  <span *ngIf="!instance.isScaling">Scale</span>
+                  <span *ngIf="instance.isScaling">Scaling</span>
                 </button>
               </td>
             </tr>

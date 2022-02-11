@@ -1,10 +1,9 @@
 import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
-
 import {ScaleComponent} from './scale.component';
 import {Stream} from '../../../shared/model/stream.model';
 import {UpperCasePipe} from '@angular/common';
 import {RoleDirective} from '../../../security/directive/role.directive';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ClarityModule} from '@clr/angular';
 import {RouterTestingModule} from '@angular/router/testing';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -14,7 +13,7 @@ import {NotificationServiceMock} from '../../../tests/service/notification.servi
 import {StreamServiceMock} from '../../../tests/api/stream.service.mock';
 import {ContextServiceMock} from '../../../tests/service/context.service.mock';
 import {By} from '@angular/platform-browser';
-import {AppStatus, InstanceStatus, StreamStatus} from 'src/app/shared/model/metrics.model';
+import {InstanceStatus} from '../../../shared/model/metrics.model';
 import {of, throwError} from 'rxjs';
 
 describe('ScaleComponent', () => {
@@ -26,7 +25,13 @@ describe('ScaleComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [ScaleComponent, UpperCasePipe, RoleDirective],
-        imports: [FormsModule, ClarityModule, RouterTestingModule.withRoutes([]), BrowserAnimationsModule],
+        imports: [
+          FormsModule,
+          ClarityModule,
+          RouterTestingModule.withRoutes([]),
+          BrowserAnimationsModule,
+          ReactiveFormsModule
+        ],
         providers: [
           SecurityServiceMock.provider,
           AboutServiceMock.provider,
@@ -80,7 +85,7 @@ describe('ScaleComponent', () => {
     component.open(streams[0].name);
     fixture.detectChanges();
     const title = fixture.debugElement.query(By.css('.modal-title-wrapper')).nativeElement;
-    expect(title.textContent).toContain('Scale instances for app');
+    expect(title.textContent).toContain('Scale instance(s) for app');
 
     await fixture.whenStable();
     fixture.detectChanges();
@@ -166,7 +171,7 @@ describe('ScaleComponent', () => {
     component.open(streams[0].name);
     fixture.detectChanges();
     const title = fixture.debugElement.query(By.css('.modal-title-wrapper')).nativeElement;
-    expect(title.textContent).toContain('Scale instances for app');
+    expect(title.textContent).toContain('Scale instance(s) for app');
 
     await fixture.whenStable();
     fixture.detectChanges();
@@ -196,9 +201,6 @@ describe('ScaleComponent', () => {
     await fixture.whenStable();
     fixture.detectChanges();
     expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
-    expect(NotificationServiceMock.mock.errorNotification[0].message).toBe(
-      'An error occurred while scaling Stream. Please check the server logs for more details.'
-    );
     expect(spy1).toHaveBeenCalledWith(['foo']);
     expect(spy2).toHaveBeenCalledWith('foo', 'file', 3);
     done();
