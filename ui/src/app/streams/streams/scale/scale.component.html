@@ -1,0 +1,60 @@
+<clr-modal [(clrModalOpen)]="isOpen" *ngIf="streamName" [clrModalClosable]="!isRunning">
+  <h3 class="modal-title">
+    {{ 'streams.scale.title' | translate }}
+    <strong>{{ streamName }}</strong>
+  </h3>
+  <div class="modal-body">
+    <div *ngIf="isLoading">
+      <clr-spinner clrInline clrSmall></clr-spinner>&nbsp;
+      <span>{{ 'streams.scale.loading' | translate }}</span>
+    </div>
+    <form [formGroup]="form" *ngIf="!isLoading">
+      <div>{{ 'streams.scale.description' | translate }}</div>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th class="left">{{ 'streams.scale.name' | translate }}</th>
+            <th class="left" style="width: 60px">{{ 'streams.scale.instance' | translate }}</th>
+            <th class="left" style="width: 30px">&nbsp;</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container>
+            <tr *ngFor="let instance of instances; index as i">
+              <td class="left middle">
+                {{ instance.name }}
+              </td>
+              <td class="left">
+                <input
+                  style="width: 50px"
+                  type="number"
+                  min="1"
+                  max="9"
+                  class="clr-input ng-pristine ng-valid ng-touched"
+                  [formControlName]="'instance' + instance.name"
+                />
+              </td>
+              <td nowrap="">
+                <button
+                  type="button"
+                  class="btn btn-sm btn-secondary"
+                  [disabled]="
+                    form.get('instance' + instance.name)?.invalid || isValueNotChanged(instance) || instance.isScaling
+                  "
+                  (click)="scale(instance)"
+                >
+                  <clr-spinner *ngIf="instance.isScaling" clrInline clrSmall></clr-spinner>&nbsp;
+                  <span *ngIf="!instance.isScaling">{{ 'streams.scale.scale' | translate }}</span>
+                  <span *ngIf="instance.isScaling">{{ 'streams.scale.scaling' | translate }}</span>
+                </button>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="isOpen = false">{{ 'commons.cancel' | translate }}</button>
+  </div>
+</clr-modal>

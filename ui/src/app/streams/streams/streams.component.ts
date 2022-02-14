@@ -13,6 +13,7 @@ import {DatagridComponent} from '../../shared/component/datagrid/datagrid.compon
 import {ContextService} from '../../shared/service/context.service';
 import {SettingsService} from '../../settings/settings.service';
 import {CloneComponent} from './clone/clone.component';
+import {ScaleComponent} from './scale/scale.component';
 
 @Component({
   selector: 'app-streams-list',
@@ -25,6 +26,7 @@ export class StreamsComponent extends DatagridComponent implements OnDestroy, On
   @ViewChild('undeployModal', {static: true}) undeployModal: UndeployComponent;
   @ViewChild('statusModal', {static: true}) statusModal: StatusComponent;
   @ViewChild('cloneModal', {static: true}) cloneModal: CloneComponent;
+  @ViewChild('scaleModal', {static: true}) scaleModal: ScaleComponent;
   metricsSubscription: Subscription;
   streamStatuses: StreamStatus[] = [];
   timeSubscription: Subscription;
@@ -98,6 +100,9 @@ export class StreamsComponent extends DatagridComponent implements OnDestroy, On
       const group = this.groupService.create(streams.map(stream => stream.name));
       this.router.navigateByUrl(`streams/list/${group}/multi-deploy`);
     }
+  }
+  scale(stream: Stream): void {
+    this.scaleModal.open(stream.name);
   }
 
   undeploy(streams: Stream[]): void {

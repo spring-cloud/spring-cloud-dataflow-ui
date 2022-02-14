@@ -30,6 +30,16 @@
       {{ 'streams.stream.update' | translate }}
     </button>
     <button
+      id="btn-scale"
+      *ngIf="stream.status !== 'UNDEPLOYED'"
+      type="button"
+      class="btn btn-sm btn-secondary"
+      (click)="scale()"
+      [appRole]="['ROLE_MODIFY']"
+    >
+      {{ 'streams.stream.scale' | translate }}
+    </button>
+    <button
       id="btn-undeploy"
       *ngIf="stream.status !== 'UNDEPLOYED' && stream.status !== 'INCOMPLETE'"
       type="button"
@@ -313,3 +323,4 @@
 <app-stream-destroy #destroyModal (onDestroyed)="back()"></app-stream-destroy>
 <app-stream-undeploy #undeployModal (onUndeployed)="refresh()"></app-stream-undeploy>
 <app-stream-rollback #rollbackModal (onRollback)="refresh()"></app-stream-rollback>
+<app-stream-scale #scaleModal (onScale)="refresh()"></app-stream-scale>

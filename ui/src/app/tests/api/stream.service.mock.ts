@@ -92,6 +92,10 @@ export class StreamServiceMock {
     return of({});
   }
 
+  scaleAppInstance(streamName: string, appName: string, count: number): Observable<any> {
+    return of({});
+  }
+
   static get provider(): any {
     if (!StreamServiceMock.mock) {
       StreamServiceMock.mock = new StreamServiceMock();
