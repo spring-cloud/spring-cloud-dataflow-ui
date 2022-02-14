@@ -152,10 +152,7 @@ export class TaskComponent implements OnInit {
   }
 
   hasLog(execution: TaskExecution): boolean {
-    return (
-      (execution.taskExecutionStatus === 'COMPLETE' || execution.taskExecutionStatus === 'ERROR') &&
-      execution.externalExecutionId !== ''
-    );
+    return execution.externalExecutionId !== '';
   }
 
   openLog(execution: TaskExecution): void {

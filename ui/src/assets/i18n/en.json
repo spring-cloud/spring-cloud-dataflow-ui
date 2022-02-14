@@ -106,7 +106,7 @@
       "applicationsPerPage": "Applications per page",
       "application": "application",
       "details": "Details",
-      "pagination": "{{ first }} - {{ last }} of {{ total }} applications"
+      "pagination": "{{ first }} - {{ last }} of <span class=\"pagination-total\">{{ total }}</span> applications"
     },
     "add": {
       "registerOneOrMore": "Register one or more applications",
@@ -453,7 +453,7 @@
       "cloneStreams": "Clone stream(s)",
       "noResult": "No results found.",
       "streamsPerPage": "Streams per page",
-      "pagination": "{{ first }} - {{ last }} of {{ total }} streams"
+      "pagination": "{{ first }} - {{ last }} of <span class=\"pagination-total\">{{ total }}</span> streams"
     },
     "clone": {
       "title": "Clone Stream",
@@ -677,7 +677,7 @@
       "destroyTasks": "Destroy task(s)",
       "cloneTasks": "Clone task(s)",
       "tasksPerPage": "Tasks per page",
-      "pagination": "{{ first }} - {{ last }} of {{ total }} tasks"
+      "pagination": "{{ first }} - {{ last }} of <span class=\"pagination-total\">{{ total }}</span> tasks"
     },
     "cleanup": {
       "title": "Confirm Clean Up Execution(s)",
@@ -860,7 +860,7 @@
       "relaunch": "Relaunch task",
       "stop": "Stop task",
       "executionPerPage": "Task executions per page",
-      "pagination": "{{ first }} - {{ last }} of {{ total }} task executions"
+      "pagination": "{{ first }} - {{ last }} of <span class=\"pagination-total\">{{ total }}</span> task executions"
     },
     "stop": {
       "title": "Confirm Stop Task Execution",
@@ -913,7 +913,7 @@
       "exitMessage": "Exit Message",
       "stepExecutionCount": "Step Execution Count",
       "jobPerPage": "Job executions per page",
-      "pagination": "{{ first }} - {{ last }} of {{ total }} job executions",
+      "pagination": "{{ first }} - {{ last }} of <span class=\"pagination-total\">{{ total }}</span> job executions",
       "restartConfirmTitle": "Confirm restart the job execution",
       "restartConfirmContent": "This action will restart the steps failed of the job execution <strong>{{ name }} ({{ id }})</strong>.<br />Are you sure?",
       "stopConfirmTitle": "Confirm stop the job execution",

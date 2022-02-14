@@ -26,7 +26,14 @@
     <button type="button" class="btn btn-outline" (click)="isOpen = false" [disabled]="isRunning">
       {{ 'commons.cancel' | translate }}
     </button>
-    <button id="btn-stop" type="button" class="btn btn-danger" (click)="clean()" [disabled]="isRunning">
+    <button
+      data-cy="cleanup"
+      id="btn-stop"
+      type="button"
+      class="btn btn-danger"
+      (click)="clean()"
+      [disabled]="isRunning"
+    >
       <span>{{ 'tasks.cleanup.cleanup' | translate }}</span>
     </button>
   </div>

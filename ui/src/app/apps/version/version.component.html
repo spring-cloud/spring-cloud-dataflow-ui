@@ -1,7 +1,7 @@
 <clr-modal [(clrModalOpen)]="isOpen" [clrModalClosable]="!isRunning" clrModalSize="lg">
   <h3 class="modal-title">{{ 'applications.version.manageVersions' | translate }}</h3>
   <div class="modal-body" *ngIf="versions?.length > 1 && !isRunning && !loading">
-    <table class="table table-striped">
+    <table data-cy="tableVersions" class="table table-striped">
       <thead>
         <tr>
           <th class="left">&nbsp;</th>
@@ -11,7 +11,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let app of versions">
+        <tr *ngFor="let app of versions; let i = index">
           <td class="left">
             <clr-icon *ngIf="app.defaultVersion" shape="star" class="is-solid"></clr-icon>
           </td>
@@ -24,11 +24,17 @@
             </span>
           </td>
           <td nowrap="">
-            <button type="button" class="btn btn-sm btn-secondary" (click)="unregisterConfirm(app)">
+            <button
+              data-cy="unregister"
+              type="button"
+              class="btn btn-sm btn-secondary"
+              (click)="unregisterConfirm(app)"
+            >
               {{ 'applications.main.unregister' | translate }}
             </button>
             <button
               type="button"
+              data-cy="setDefault"
               [disabled]="app.defaultVersion"
               (click)="makeDefaultConfirm(app)"
               class="btn btn-sm btn-secondary"

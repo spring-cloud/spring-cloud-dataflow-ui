@@ -4,7 +4,7 @@
   <!--    Dashboard-->
   <!--  </a>-->
 
-  <a clrVerticalNavLink routerLink="apps" routerLinkActive="active">
+  <a data-cy="navApplications" clrVerticalNavLink routerLink="apps" routerLinkActive="active">
     <clr-icon shape="applications" class="is-solid" clrVerticalNavIcon></clr-icon>
     {{ 'layout.nav.applications' | translate }}
   </a>
@@ -18,10 +18,10 @@
     <clr-icon shape="cloud-scale" clrVerticalNavIcon></clr-icon>
     {{ 'layout.nav.streams' | translate }}
     <clr-vertical-nav-group-children>
-      <a clrVerticalNavLink routerLinkActive="active" routerLink="streams/list">
+      <a data-cy="navStreams" clrVerticalNavLink routerLinkActive="active" routerLink="streams/list">
         {{ 'layout.nav.streams' | translate }}
       </a>
-      <a clrVerticalNavLink routerLinkActive="active" routerLink="streams/runtime">
+      <a data-cy="navRuntime" clrVerticalNavLink routerLinkActive="active" routerLink="streams/runtime">
         {{ 'layout.nav.runtime' | translate }}
       </a>
     </clr-vertical-nav-group-children>
@@ -36,13 +36,18 @@
     <clr-icon shape="blocks-group" clrVerticalNavIcon></clr-icon>
     {{ 'layout.nav.tasksJobs' | translate }}
     <clr-vertical-nav-group-children>
-      <a clrVerticalNavLink routerLinkActive="active" routerLink="tasks-jobs/tasks">
+      <a data-cy="navTasks" clrVerticalNavLink routerLinkActive="active" routerLink="tasks-jobs/tasks">
         {{ 'layout.nav.tasks' | translate }}
       </a>
-      <a clrVerticalNavLink routerLinkActive="active" routerLink="tasks-jobs/task-executions">
+      <a
+        data-cy="navTaskExecutions"
+        clrVerticalNavLink
+        routerLinkActive="active"
+        routerLink="tasks-jobs/task-executions"
+      >
         {{ 'layout.nav.taskExecution' | translate }}
       </a>
-      <a clrVerticalNavLink routerLinkActive="active" routerLink="tasks-jobs/job-executions">
+      <a data-cy="navJobExecutions" clrVerticalNavLink routerLinkActive="active" routerLink="tasks-jobs/job-executions">
         {{ 'layout.nav.jobExecution' | translate }}
       </a>
       <a
@@ -51,6 +56,7 @@
         routerLink="tasks-jobs/schedules"
         [appRole]="[]"
         appFeature="schedules"
+        data-cy="navSchedules"
       >
         {{ 'layout.nav.schedules' | translate }}
       </a>
@@ -61,7 +67,7 @@
     <clr-icon shape="briefcase" clrVerticalNavIcon></clr-icon>
     {{ 'layout.nav.manage' | translate }}
     <clr-vertical-nav-group-children>
-      <a clrVerticalNavLink routerLinkActive="active" routerLink="manage/records">
+      <a data-cy="navAuditRecords" clrVerticalNavLink routerLinkActive="active" routerLink="manage/records">
         {{ 'layout.nav.auditRecords' | translate }}
       </a>
       <a
@@ -70,6 +76,7 @@
         routerLink="manage/tools"
         [appRole]="[]"
         appFeature="streams,tasks"
+        data-cy="navTools"
       >
         {{ 'layout.nav.tools' | translate }}
       </a>
