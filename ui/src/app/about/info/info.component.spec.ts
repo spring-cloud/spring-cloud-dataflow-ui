@@ -12,7 +12,7 @@ import {SharedModule} from '../../shared/shared.module';
 import {TranslateTestingModule} from 'ngx-translate-testing';
 import TRANSLATIONS from '../../../assets/i18n/en.json';
 import {StoreModule} from '@ngrx/store';
-import {ROOT_REDUCERS, metaReducers} from 'src/app/reducers/reducer';
+import {ROOT_REDUCERS, metaReducers} from '../../reducers/reducer';
 
 describe('about/info/info.component.ts', () => {
   let component: InfoComponent;
