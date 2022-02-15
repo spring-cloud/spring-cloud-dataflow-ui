@@ -13,7 +13,7 @@
             <div class="line-toggle">
               <a class="toggle" (click)="state.platform = !state.platform">
                 <clr-icon shape="angle" [class.active]="state.platform"></clr-icon>
-                {{ 'streams.deploy.builder.platform' | translate }}
+                {{ 'commons.platform' | translate }}
               </a>
             </div>
 
@@ -27,7 +27,7 @@
                   </clr-tooltip-content>
                 </clr-tooltip>
               </div>
-              <div class="form-control form-control-label">{{ 'streams.deploy.builder.platform' | translate }}</div>
+              <div class="form-control form-control-label">{{ 'commons.platform' | translate }}</div>
             </div>
 
             <!-- 3 -->
@@ -93,7 +93,7 @@
             <!-- 6 -->
             <div *ngIf="state.specificPlatform">
               <div *ngIf="builder.builderDeploymentProperties.global.length > 0" class="line-body">
-                <div class="form-control form-control-label">{{ 'streams.deploy.builder.properties' | translate }}</div>
+                <div class="form-control form-control-label">{{ 'commons.properties' | translate }}</div>
               </div>
             </div>
             <div *ngIf="state.specificPlatform" formArrayName="specificPlatform">
@@ -148,10 +148,10 @@
                   </clr-tooltip>
                 </div>
 
-                <div class="form-control form-control-label">{{ 'streams.deploy.builder.version' | translate }}</div>
+                <div class="form-control form-control-label">{{ 'commons.version' | translate }}</div>
               </div>
               <div class="line-body">
-                <div class="form-control form-control-label">{{ 'streams.deploy.builder.properties' | translate }}</div>
+                <div class="form-control form-control-label">{{ 'commons.properties' | translate }}</div>
               </div>
               <div formArrayName="global">
                 <div
@@ -253,7 +253,7 @@
               <div class="form-control form-control-label">
                 <strong>{{ getDeploymentProperties(builder.builderDeploymentProperties).length }}</strong>
                 <span> /</span> {{ builder.builderDeploymentProperties.global.length }}
-                {{ 'streams.deploy.builder.properties' | translate | lowercase }}
+                {{ 'commons.properties' | translate | lowercase }}
                 <button
                   tabindex="{{ 101 }}"
                   type="button"

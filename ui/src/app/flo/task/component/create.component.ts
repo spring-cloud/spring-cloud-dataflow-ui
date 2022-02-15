@@ -37,7 +37,7 @@ import {TaskGraphPropertiesSource} from '../properties/task-properties-source';
             line-numbers="true"
             line-wrapping="true"
             (focus)="editorContext.graphToTextSync = false"
-            [placeholder]="'flo.stream.enterTaskDefinition' | translate"
+            [placeholder]="'flo.task.enterTaskDefinition' | translate"
             (blur)="editorContext.graphToTextSync = true"
             [lintOptions]="lintOptions"
           ></dsl-editor>
