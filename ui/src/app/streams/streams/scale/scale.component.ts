@@ -36,7 +36,7 @@ export class ScaleComponent {
         this.instances.push(instance);
         this.form.addControl(
           `instance${instance.name}`,
-          new FormControl(instance.instanceCount, [Validators.required, Validators.min(1), Validators.max(9)])
+          new FormControl(instance.instanceCount, [Validators.required, Validators.min(1), Validators.max(10000)])
         );
       });
     }
