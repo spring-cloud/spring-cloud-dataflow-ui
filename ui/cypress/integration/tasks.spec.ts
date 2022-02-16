@@ -68,7 +68,7 @@ describe('Tasks/Jobs', () => {
       cy.get('.datagrid-action-overflow button:nth-child(6)').first().click();
       cy.get('.modal-dialog').should('be.exist');
       cy.get('button[data-cy=cleanup').click();
-      cy.shouldShowToast()
+      cy.shouldShowToast();
       // TODO: check state
     });
 
@@ -77,7 +77,7 @@ describe('Tasks/Jobs', () => {
       cy.get('.datagrid-action-overflow button:nth-child(5)').first().click();
       cy.get('.modal-dialog button').should('be.exist');
       cy.get('.modal-dialog button').last().click();
-      cy.shouldShowToast('Task(s) clone', 'Task(s) have been cloned successfully')
+      cy.shouldShowToast('Task(s) clone', 'Task(s) have been cloned successfully');
       cy.get('clr-spinner').should('not.exist');
       cy.get('span.pagination-total').should(elem => {
         expect(Number(elem.text())).to.equal(3);
