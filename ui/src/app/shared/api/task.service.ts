@@ -65,7 +65,7 @@ export class TaskService {
 
   launch(taskName: string, args: string, props: string): Observable<number | unknown> {
     const headers = HttpUtils.getDefaultHttpHeaders();
-    let params = new HttpParams().append('name', taskName);
+    let params = new HttpParams({encoder: new DataflowEncoder()}).append('name', taskName);
     if (args) {
       params = params.append('arguments', args);
     }
