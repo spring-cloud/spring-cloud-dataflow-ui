@@ -361,7 +361,7 @@
                 <div class="form-control form-control-label">
                   <strong>{{ getDeploymentProperties(builder.builderDeploymentProperties, app.name).length }}</strong>
                   <span> /</span> {{ builder.builderDeploymentProperties.apps[app.name].length }}
-                  {{ 'streams.deploy.builder.properties' | translate | lowercase }}
+                  {{ 'commons.properties' | translate | lowercase }}
                   <button
                     tabindex="{{ 101 }}"
                     type="button"
@@ -432,7 +432,7 @@
                     <div *ngIf="app.options.length > 0">
                       <strong>{{ getAppProperties(builder.builderAppsProperties, app.name).length }}</strong>
                       <span> /</span> {{ app.options.length }}
-                      {{ 'streams.deploy.builder.properties' | translate | lowercase }}
+                      {{ 'commons.properties' | translate | lowercase }}
                       <button
                         tabindex="{{ 101 }}"
                         type="button"
