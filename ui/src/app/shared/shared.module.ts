@@ -44,7 +44,6 @@ import {DatagridColumnPipe} from './pipe/datagrid-column.pipe';
 import {TranslateModule} from '@ngx-translate/core';
 
 @NgModule({
-  entryComponents: [ToastComponent],
   declarations: [
     KeyValueComponent,
     DatetimePipe,
