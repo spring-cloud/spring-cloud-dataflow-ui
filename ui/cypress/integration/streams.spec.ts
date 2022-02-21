@@ -52,7 +52,7 @@ describe('Streams', () => {
 
   it('should undeploy a stream', () => {
     cy.get('.datagrid-action-toggle').first().click();
-    cy.get('.datagrid-action-overflow button:nth-child(3)').first().click();
+    cy.get('.datagrid-action-overflow button:nth-child(4)').first().click();
     cy.get('button[data-cy="undeploy"]').should('be.exist');
     cy.get('button[data-cy="undeploy"]').click();
     cy.shouldShowToast('Undeploy stream', 'Successfully undeploy stream "bar".');
