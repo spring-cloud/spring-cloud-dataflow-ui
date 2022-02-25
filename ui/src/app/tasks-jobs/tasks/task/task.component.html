@@ -122,20 +122,20 @@
               <div class="row">
                 <div class="key">{{ 'executions.main.batchJob' | translate }}</div>
                 <div class="value">
-                  <clr-icon *ngIf="taskExecution.jobExecutionIds?.length > 0" shape="success-standard"></clr-icon>
-                  <clr-icon *ngIf="taskExecution.jobExecutionIds?.length === 0" shape="times-circle"></clr-icon>
+                  <clr-icon *ngIf="taskExecution?.jobExecutionIds?.length > 0" shape="success-standard"></clr-icon>
+                  <clr-icon *ngIf="taskExecution?.jobExecutionIds?.length === 0" shape="times-circle"></clr-icon>
                 </div>
               </div>
               <div class="row">
                 <div class="key">{{ 'executions.main.jobExecutionIds' | translate }}</div>
                 <div class="value">
                   <a
-                    [routerLink]="'/jobs/executions/' + jobExecutionId"
-                    *ngFor="let jobExecutionId of taskExecution.jobExecutionIds"
+                    [routerLink]="'/tasks-jobs/job-executions/' + jobExecutionId"
+                    *ngFor="let jobExecutionId of taskExecution?.jobExecutionIds"
                   >
                     {{ jobExecutionId }}
                   </a>
-                  <div *ngIf="taskExecution.jobExecutionIds?.length === 0">N/A</div>
+                  <div *ngIf="taskExecution?.jobExecutionIds?.length === 0">N/A</div>
                 </div>
               </div>
               <div class="row">
