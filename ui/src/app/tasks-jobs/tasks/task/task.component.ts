@@ -79,7 +79,7 @@ export class TaskComponent implements OnInit {
           this.task = task;
           this.getExecutions();
           this.getApplications();
-          this.getExecution(task.lastTaskExecution.executionId.toString());
+          this.getExecution(task.lastTaskExecution?.executionId.toString());
           if (scheduleEnabled) {
             this.getSchedules();
           }

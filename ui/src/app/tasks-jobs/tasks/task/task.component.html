@@ -99,7 +99,7 @@
             <div *ngIf="task.lastTaskExecution">
               <div class="row">
                 <div class="key">{{ 'executions.main.executionId' | translate }}</div>
-                <div class="value">{{ task.lastTaskExecution.executionId }}</div>
+                <div class="value">{{ task.lastTaskExecution?.executionId }}</div>
               </div>
               <div class="row">
                 <div class="key">{{ 'executions.main.arguments' | translate }}</div>
@@ -203,7 +203,7 @@
           </div>
         </ng-template>
         <div class="card-footer" *ngIf="task.lastTaskExecution">
-          <button class="btn btn-sm btn-secondary" (click)="navigateExecution(task.lastTaskExecution.executionId)">
+          <button class="btn btn-sm btn-secondary" (click)="navigateExecution(task.lastTaskExecution?.executionId)">
             {{ 'tasks.task.viewTaskExecution' | translate }}
           </button>
           <button
