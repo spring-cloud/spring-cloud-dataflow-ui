@@ -49,6 +49,18 @@ describe('Streams', () => {
       });
     });
   });
+  it('should scale a deployed stream', () => {
+    cy.get('.datagrid-action-toggle').first().click();
+    cy.get('.datagrid-action-overflow button:nth-child(3)').first().click();
+    cy.get('table > input[type=number]').each(inputElem => {
+      const appName = inputElem.parent().prev('td').text();
+      const instancesToBeScaled = inputElem.text() + 1;
+      inputElem.val(instancesToBeScaled);
+      inputElem.next('button').trigger('click');
+      cy.shouldShowToast('Scale stream', `${appName} app scaled to ${instancesToBeScaled}`);
+    })
+    cy.get('button.close').click();
+  });
 
   it('should undeploy a stream', () => {
     cy.get('.datagrid-action-toggle').first().click();
