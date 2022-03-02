@@ -147,7 +147,7 @@ export class ExecutionComponent implements OnInit {
   }
 
   hasLog(): boolean {
-    return this.taskExecution.externalExecutionId !== '';
+    return this.taskExecution?.externalExecutionId !== '';
   }
 
   viewLog(): void {
