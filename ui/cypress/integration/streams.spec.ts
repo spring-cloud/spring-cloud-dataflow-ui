@@ -53,13 +53,15 @@ describe('Streams', () => {
     cy.get('.datagrid-action-toggle').first().click();
     cy.get('.datagrid-action-overflow button:nth-child(3)').first().click();
     cy.get('table input[type=number]').should('be.exist');
-    cy.get('table input[type=number]').first().then(appNameElement => {
-      const appName = appNameElement.parent().prev('td').text();
-      cy.get('table input[type=number]').eq(0).clear().type('2');
-      cy.get('table input[type=number]').eq(0).parent().next('td').children('button').first().click();
-      cy.shouldShowToast('Scale stream', `${appName} app scaled to 2.`);
-      cy.get('button.close').click();
-    });
+    cy.get('table input[type=number]')
+      .first()
+      .then(appNameElement => {
+        const appName = appNameElement.parent().prev('td').text();
+        cy.get('table input[type=number]').eq(0).clear().type('2');
+        cy.get('table input[type=number]').eq(0).parent().next('td').children('button').first().click();
+        cy.shouldShowToast('Scale stream', `${appName} app scaled to 2.`);
+        cy.get('button.close').click();
+      });
   });
 
   it('should prevent scaling to negative instances', () => {
