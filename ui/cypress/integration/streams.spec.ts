@@ -52,13 +52,33 @@ describe('Streams', () => {
   it('should scale a deployed stream', () => {
     cy.get('.datagrid-action-toggle').first().click();
     cy.get('.datagrid-action-overflow button:nth-child(3)').first().click();
-    cy.get('table > input[type=number]').each(inputElem => {
-      const appName = inputElem.parent().prev('td').text();
-      const instancesToBeScaled = inputElem.text() + 1;
-      inputElem.val(instancesToBeScaled);
-      inputElem.next('button').trigger('click');
-      cy.shouldShowToast('Scale stream', `${appName} app scaled to ${instancesToBeScaled}`);
-    })
+    cy.get('table input[type=number]').should('be.exist');
+    cy.get('table input[type=number]').first().then(appNameElement => {
+      const appName = appNameElement.parent().prev('td').text();
+      cy.get('table input[type=number]').eq(0).clear().type('2');
+      cy.get('table input[type=number]').eq(0).parent().next('td').children('button').first().click();
+      cy.shouldShowToast('Scale stream', `${appName} app scaled to 2.`);
+      cy.get('button.close').click();
+    });
+  });
+
+  it('should prevent scaling to negative instances', () => {
+    cy.get('.datagrid-action-toggle').first().click();
+    cy.get('.datagrid-action-overflow button:nth-child(3)').first().click();
+    cy.get('table input[type=number]').should('be.exist');
+    cy.get('table input[type=number]').eq(0).clear().type('-1');
+    cy.get('table input[type=number]').eq(0).parent().next('td').children('button').first().click();
+    cy.shouldShowToast('An error occurred');
+    cy.get('button.close').click();
+  });
+
+  it('should prevent scaling to more than 9 instances', () => {
+    cy.get('.datagrid-action-toggle').first().click();
+    cy.get('.datagrid-action-overflow button:nth-child(3)').first().click();
+    cy.get('table input[type=number]').should('be.exist');
+    cy.get('table input[type=number]').eq(0).clear().type('10');
+    cy.get('table input[type=number]').eq(0).parent().next('td').children('button').first().click();
+    cy.shouldShowToast('An error occurred');
     cy.get('button.close').click();
   });
 
