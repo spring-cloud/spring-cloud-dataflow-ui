@@ -6,7 +6,9 @@
   "pluginsFile": "cypress/plugins/index.ts",
   "fixturesFolder": "cypress/fixtures",
   "baseUrl": "http://localhost:4200",
-  "defaultCommandTimeout": 10000,
+  "chromeWebSecurity": "false",
+  "defaultCommandTimeout": 60000,
+  "pageLoadTimeout": 60000,
   "viewportWidth": 1400,
   "viewportHeight": 800
 }
