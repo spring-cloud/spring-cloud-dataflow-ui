@@ -7,7 +7,7 @@
     "start": "ng serve --proxy-config proxy.conf.json",
     "build": "ng build",
     "test": "ng test",
-    "ci:start-server": "angular-http-server --path ./dist/index.html -p 4200",
+    "ci:start-server": "npm run-s build && angular-http-server --path ./dist/ -p 4200",
     "cy:run": "cypress run --headless --browser chrome",
     "ci:cy-run": "start-server-and-test ci:start-server http://localhost:4200 cy:run",
     "pretty": "pretty-quick",
