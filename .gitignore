@@ -55,4 +55,5 @@ ui/.vscode/*
 
 # Cypress e2e tests
 ui/cypress/videos
+ui/cypress/downloads
 ui/cypress/screenshots
