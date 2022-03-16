@@ -52,3 +52,7 @@ ui/.vscode/*
 !ui/.vscode/tasks.json
 !ui/.vscode/launch.json
 !ui/.vscode/extensions.json
+
+# Cypress e2e tests
+ui/cypress/videos
+ui/cypress/screenshots
