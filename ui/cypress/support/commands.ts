@@ -35,7 +35,7 @@ Cypress.Commands.add('shouldShowToast', (title?: string, desc?: string) => {
 Cypress.Commands.add('importAppsStream', () => {
   cy.get('.nav-content > a[routerlink = "apps"]').click();
   cy.get('button#btnAddApplications').click();
-  cy.get('[value="stream.kafka.docker"] + label').click();
+  cy.get('[value="stream.rabbitmq.maven"] + label').click();
   cy.get('button[type=submit]').click();
   cy.shouldShowToast('Import starters', 'Application(s) Imported.');
   cy.get('app-apps-list').should('be.exist');
