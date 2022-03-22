@@ -5,7 +5,7 @@
   "screenshotsFolder": "cypress/screenshots",
   "pluginsFile": "cypress/plugins/index.ts",
   "fixturesFolder": "cypress/fixtures",
-  "baseUrl": "http://localhost:4200",
+  "baseUrl": "http://localhost:9393/dashboard/index.html",
   "chromeWebSecurity": false,
   "defaultCommandTimeout": 60000,
   "pageLoadTimeout": 60000,

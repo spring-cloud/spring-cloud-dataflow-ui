@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+
+  rabbitmq-server:
+    image: rabbitmq:management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  skipper-server:
+    image: springcloud/spring-cloud-skipper-server:2.9.0-SNAPSHOT
+    ports:
+      - "7577:7577"
+      - "8888:8888"
+      - "8889:8889"
+      - "20000-20099:20000-20099"
+    environment:
+      - SPRING_CLOUD_SKIPPER_SERVER_PLATFORM_LOCAL_ACCOUNTS_DEFAULT_PORTRANGE_LOW=20000
+      - SPRING_CLOUD_SKIPPER_SERVER_PLATFORM_LOCAL_ACCOUNTS_DEFAULT_PORTRANGE_HIGH=20100
+
+  dataflow-server:
+    image: springcloud/spring-cloud-dataflow-server:2.10.0-SNAPSHOT
+    ports:
+      - "9393:9393"
+      - "20100-20199:20100-20199"
+    environment:
+      - MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE=*
+      - SPRING_CLOUD_DATAFLOW_FEATURES_SCHEDULES_ENABLED=true
+      - SPRING_CLOUD_SKIPPER_CLIENT_SERVER_URI=http://skipper-server:7577/api
+      - SPRING_CLOUD_DATAFLOW_APPLICATIONPROPERTIES_STREAM_SPRING_RABBITMQ_ADDRESSES=rabbitmq-server:5672
