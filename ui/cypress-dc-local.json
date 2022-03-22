@@ -1,0 +1,14 @@
+{
+  "integrationFolder": "cypress/integration",
+  "supportFile": "cypress/support/index.ts",
+  "videosFolder": "cypress/videos",
+  "screenshotsFolder": "cypress/screenshots",
+  "pluginsFile": "cypress/plugins/index.ts",
+  "fixturesFolder": "cypress/fixtures",
+  "baseUrl": "http://localhost:9393/dashboard/index.html",
+  "chromeWebSecurity": false,
+  "defaultCommandTimeout": 60000,
+  "pageLoadTimeout": 60000,
+  "viewportWidth": 1400,
+  "viewportHeight": 800
+}
