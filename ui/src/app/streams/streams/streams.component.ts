@@ -92,8 +92,8 @@ export class StreamsComponent extends DatagridComponent implements OnDestroy, On
               this.timeSubscription = timer(0, 10 * 1000).subscribe(() => this.updateMetrics());
             }
           },
-          (error: HttpError) => {
-            this.notificationService.error(this.translate.instant('commons.message.error'), error.message);
+          error => {
+            this.notificationService.error(this.translate.instant('commons.message.error'), error);
             this.loading = false;
           }
         );

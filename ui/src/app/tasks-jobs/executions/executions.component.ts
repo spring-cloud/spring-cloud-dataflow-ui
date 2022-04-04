@@ -53,8 +53,8 @@ export class ExecutionsComponent extends DatagridComponent {
             this.selected = [];
             this.loading = false;
           },
-          (error: HttpError) => {
-            this.notificationService.error(this.translate.instant('commons.message.error'), error.message);
+          (error) => {
+            this.notificationService.error(this.translate.instant('commons.message.error'), error);
             this.loading = false;
           }
         );
