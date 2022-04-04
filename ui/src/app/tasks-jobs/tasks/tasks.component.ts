@@ -11,6 +11,9 @@ import {ContextService} from '../../shared/service/context.service';
 import {SettingsService} from '../../settings/settings.service';
 import {CloneComponent} from './clone/clone.component';
 import {CleanupComponent} from './cleanup/cleanup.component';
+import {HttpError} from 'src/app/shared/model/error.model';
+import {TranslateService} from '@ngx-translate/core';
+import {NotificationService} from 'src/app/shared/service/notification.service';
 
 @Component({
   selector: 'app-tasks',
@@ -29,7 +32,9 @@ export class TasksComponent extends DatagridComponent {
     private groupService: GroupService,
     protected settingsService: SettingsService,
     protected changeDetectorRef: ChangeDetectorRef,
-    protected contextService: ContextService
+    protected contextService: ContextService,
+    private translate: TranslateService,
+    private notificationService: NotificationService
   ) {
     super(contextService, settingsService, changeDetectorRef, 'tasks-jobs/tasks');
   }
@@ -46,12 +51,18 @@ export class TasksComponent extends DatagridComponent {
           `${params.by || ''}`,
           `${params.reverse ? 'DESC' : 'ASC'}`
         )
-        .subscribe((page: TaskPage) => {
-          this.page = page;
-          this.updateGroupContext(params);
-          this.selected = [];
-          this.loading = false;
-        });
+        .subscribe(
+          (page: TaskPage) => {
+            this.page = page;
+            this.updateGroupContext(params);
+            this.selected = [];
+            this.loading = false;
+          },
+          (error: HttpError) => {
+            this.notificationService.error(this.translate.instant('commons.message.error'), error.message);
+            this.loading = false;
+          }
+        );
     }
   }
 

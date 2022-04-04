@@ -8,6 +8,9 @@ import {CleanupComponent} from './cleanup/cleanup.component';
 import {DatagridComponent} from '../../shared/component/datagrid/datagrid.component';
 import {ContextService} from '../../shared/service/context.service';
 import {SettingsService} from '../../settings/settings.service';
+import {HttpError} from 'src/app/shared/model/error.model';
+import {TranslateService} from '@ngx-translate/core';
+import {NotificationService} from 'src/app/shared/service/notification.service';
 
 @Component({
   selector: 'app-executions',
@@ -24,6 +27,8 @@ export class ExecutionsComponent extends DatagridComponent {
     protected contextService: ContextService,
     protected settingsService: SettingsService,
     protected changeDetectorRef: ChangeDetectorRef,
+    private translate: TranslateService,
+    private notificationService: NotificationService,
     private router: Router
   ) {
     super(contextService, settingsService, changeDetectorRef, 'tasks-jobs/executions');
@@ -41,12 +46,18 @@ export class ExecutionsComponent extends DatagridComponent {
           `${params?.by || ''}`,
           `${params?.reverse ? 'DESC' : 'ASC'}`
         )
-        .subscribe((page: TaskExecutionPage) => {
-          this.page = page;
-          this.updateGroupContext(params);
-          this.selected = [];
-          this.loading = false;
-        });
+        .subscribe(
+          (page: TaskExecutionPage) => {
+            this.page = page;
+            this.updateGroupContext(params);
+            this.selected = [];
+            this.loading = false;
+          },
+          (error: HttpError) => {
+            this.notificationService.error(this.translate.instant('commons.message.error'), error.message);
+            this.loading = false;
+          }
+        );
     }
   }
 
