@@ -19,6 +19,8 @@ import {SettingsServiceMock} from '../../tests/service/settings.service.mock';
 import {DatagridColumnPipe} from '../../shared/pipe/datagrid-column.pipe';
 import {TranslateTestingModule} from 'ngx-translate-testing';
 import TRANSLATIONS from '../../../assets/i18n/en.json';
+import {throwError} from 'rxjs';
+import {AppError} from 'src/app/shared/model/error.model';
 
 describe('streams/streams/streams.component.ts', () => {
   let component: StreamsComponent;
@@ -84,6 +86,15 @@ describe('streams/streams/streams.component.ts', () => {
     expect(title.textContent).toContain('Streams');
     expect(rows.length === 4).toBeTruthy();
     expect(cols.length === 4).toBeTruthy();
+    done();
+  });
+
+  it('should catch API error and display a message', async done => {
+    spyOn(StreamServiceMock.mock, 'getStreams').and.callFake(() => throwError(new AppError('Fake error')));
+    await fixture.whenStable();
+    fixture.detectChanges();
+    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
+    expect(NotificationServiceMock.mock.errorNotification[0].message.toString()).toBe('Fake error');
     done();
   });
 });

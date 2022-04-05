@@ -14,6 +14,9 @@ import {ContextService} from '../../shared/service/context.service';
 import {SettingsService} from '../../settings/settings.service';
 import {CloneComponent} from './clone/clone.component';
 import {ScaleComponent} from './scale/scale.component';
+import {NotificationService} from 'src/app/shared/service/notification.service';
+import {HttpError} from 'src/app/shared/model/error.model';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-streams-list',
@@ -37,6 +40,8 @@ export class StreamsComponent extends DatagridComponent implements OnDestroy, On
     protected settingsService: SettingsService,
     protected changeDetectorRef: ChangeDetectorRef,
     private groupService: GroupService,
+    private notificationService: NotificationService,
+    private translate: TranslateService,
     private router: Router
   ) {
     super(contextService, settingsService, changeDetectorRef, 'streams/list');
@@ -69,23 +74,29 @@ export class StreamsComponent extends DatagridComponent implements OnDestroy, On
           `${params.by || ''}`,
           `${params.reverse ? 'DESC' : 'ASC'}`
         )
-        .subscribe((page: StreamPage) => {
-          const mergeExpanded = {};
-          page.items.forEach(item => {
-            if (expanded[item.name]) {
-              mergeExpanded[item.name] = true;
+        .subscribe(
+          (page: StreamPage) => {
+            const mergeExpanded = {};
+            page.items.forEach(item => {
+              if (expanded[item.name]) {
+                mergeExpanded[item.name] = true;
+              }
+            });
+            this.expanded = {...mergeExpanded};
+            this.page = page;
+            this.updateGroupContext({...params, expanded: this.expanded});
+            this.selected = [];
+            this.loading = false;
+            if (!this.timeSubscription) {
+              this.updateMetrics();
+              this.timeSubscription = timer(0, 10 * 1000).subscribe(() => this.updateMetrics());
             }
-          });
-          this.expanded = {...mergeExpanded};
-          this.page = page;
-          this.updateGroupContext({...params, expanded: this.expanded});
-          this.selected = [];
-          this.loading = false;
-          if (!this.timeSubscription) {
-            this.updateMetrics();
-            this.timeSubscription = timer(0, 10 * 1000).subscribe(() => this.updateMetrics());
+          },
+          error => {
+            this.notificationService.error(this.translate.instant('commons.message.error'), error);
+            this.loading = false;
           }
-        });
+        );
     }
   }
 
