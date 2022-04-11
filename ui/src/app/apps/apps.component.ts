@@ -6,8 +6,10 @@ import {UnregisterComponent} from './unregister/unregister.component';
 import {Router} from '@angular/router';
 import {VersionComponent} from './version/version.component';
 import {DatagridComponent} from '../shared/component/datagrid/datagrid.component';
+import {NotificationService} from 'src/app/shared/service/notification.service';
 import {ContextService} from '../shared/service/context.service';
 import {SettingsService} from '../settings/settings.service';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-apps-list',
@@ -23,7 +25,9 @@ export class AppsComponent extends DatagridComponent {
     private router: Router,
     protected settingsService: SettingsService,
     protected changeDetectorRef: ChangeDetectorRef,
-    protected contextService: ContextService
+    protected contextService: ContextService,
+    private notificationService: NotificationService,
+    private translate: TranslateService,
   ) {
     super(contextService, settingsService, changeDetectorRef, 'apps');
   }
@@ -46,6 +50,10 @@ export class AppsComponent extends DatagridComponent {
           this.page = page;
           this.updateGroupContext(params);
           this.selected = [];
+          this.loading = false;
+        },
+        error => {
+          this.notificationService.error(this.translate.instant('commons.message.error'), error);
           this.loading = false;
         });
     }

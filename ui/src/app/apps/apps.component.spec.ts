@@ -12,6 +12,8 @@ import {UnregisterComponent} from './unregister/unregister.component';
 import {NotificationServiceMock} from '../tests/service/notification.service.mock';
 import {By} from '@angular/platform-browser';
 import {DebugElement} from '@angular/core';
+import {throwError} from 'rxjs';
+import {AppError} from 'src/app/shared/model/error.model';
 import {VersionComponent} from './version/version.component';
 import {ConfirmComponent} from '../shared/component/confirm/confirm.component';
 import {ContextServiceMock} from '../tests/service/context.service.mock';
@@ -19,6 +21,7 @@ import {SettingsServiceMock} from '../tests/service/settings.service.mock';
 import {DatagridColumnPipe} from '../shared/pipe/datagrid-column.pipe';
 import {TranslateTestingModule} from 'ngx-translate-testing';
 import TRANSLATIONS from '../../assets/i18n/en.json';
+
 
 describe('apps/apps.component.ts', () => {
   let component: AppsComponent;
@@ -243,4 +246,15 @@ describe('apps/apps.component.ts', () => {
     });
     done();
   });
+
+  it('should catch API error and display a message', async done => {
+    spyOn(AppServiceMock.mock, 'getApps').and.callFake(() => throwError(new AppError('Fake error')));
+    await fixture.whenStable();
+    fixture.detectChanges();
+    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
+    expect(NotificationServiceMock.mock.errorNotification[0].message.toString()).toBe('Fake error');
+    done();
+  });
+
+
 });
