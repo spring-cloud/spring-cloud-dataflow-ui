@@ -2,6 +2,8 @@ import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {StreamExportComponent} from './export.component';
 import {FormsModule} from '@angular/forms';
 import {ClarityModule} from '@clr/angular';
+import {throwError} from 'rxjs';
+import {AppError} from 'src/app/shared/model/error.model';
 import {RouterTestingModule} from '@angular/router/testing';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {SecurityServiceMock} from '../../../tests/api/security.service.mock';
@@ -81,4 +83,5 @@ describe('manage/tools/stream/export.component.ts', () => {
       done();
     }, 200);
   });
+
 });

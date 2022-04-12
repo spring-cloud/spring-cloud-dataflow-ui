@@ -57,7 +57,12 @@ export class StreamExportComponent {
     this.streamService.getStreams(0, 100000, '', 'name', 'ASC').subscribe((page: StreamPage) => {
       this.streams = page;
       this.selected = [...page.items];
-    });
+    },
+      error => {
+        this.notificationService.error(this.translate.instant('commons.message.error'), error);
+        this.isOpen = false;
+      }
+    );
   }
 
   run(): void {
@@ -74,7 +79,13 @@ export class StreamExportComponent {
           this.translate.instant('tools.modal.exportStreams.message.successContent')
         );
         this.isOpen = false;
-      });
+      },
+        error => {
+          this.notificationService.error(this.translate.instant('commons.message.error'), error);
+          this.isRunning = false;
+          this.isOpen = false;
+        }
+      );
     }
   }
 }

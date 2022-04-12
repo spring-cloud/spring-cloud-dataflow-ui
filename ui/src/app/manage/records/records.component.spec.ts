@@ -186,13 +186,4 @@ describe('manage/records/records.component.ts', () => {
     done();
   });
 
-  it('should catch API error and display a message', async done => {
-    spyOn(RecordServiceMock.mock, 'getRecords').and.callFake(() => throwError(new AppError('Fake error')));
-    await fixture.whenStable();
-    fixture.detectChanges();
-    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
-    expect(NotificationServiceMock.mock.errorNotification[0].message.toString()).toBe('Fake error');
-    done();
-  });
-
 });

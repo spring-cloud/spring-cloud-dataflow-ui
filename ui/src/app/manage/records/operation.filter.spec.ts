@@ -8,6 +8,8 @@ import {AppServiceMock} from '../../tests/api/app.service.mock';
 import {NotificationServiceMock} from '../../tests/service/notification.service.mock';
 import {RecordServiceMock} from '../../tests/api/record.service.mock';
 import {By} from '@angular/platform-browser';
+import {throwError} from 'rxjs';
+import {AppError} from 'src/app/shared/model/error.model';
 import {OperationFilterComponent} from './operation.filter';
 import {ContextServiceMock} from '../../tests/service/context.service.mock';
 import {TranslateTestingModule} from 'ngx-translate-testing';
@@ -69,4 +71,5 @@ describe('manage/records/operation.filter.ts', () => {
     expect(component.accepts(null)).toBeTruthy();
     done();
   });
+
 });

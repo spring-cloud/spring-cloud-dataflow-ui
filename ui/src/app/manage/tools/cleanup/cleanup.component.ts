@@ -34,7 +34,13 @@ export class CleanupComponent {
         );
         this.isOpen = false;
       }
-    });
+    },
+      error => {
+        this.notificationService.error(this.translate.instant('commons.message.error'), error);
+        this.loading = false;
+        this.isOpen = false;
+      }
+    );
     this.isRunning = false;
     this.isOpen = true;
   }

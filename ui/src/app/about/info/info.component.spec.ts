@@ -57,8 +57,7 @@ describe('about/info/info.component.ts', () => {
     spyOn(AboutServiceMock.mock, 'getAbout').and.callFake(() => throwError(new AppError('Fake error')));
     await fixture.whenStable();
     fixture.detectChanges();
-    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
-    expect(NotificationServiceMock.mock.errorNotification[0].message.toString()).toBe('Fake error');
+    expect(NotificationServiceMock.mock.errorNotification[0].title).toContain('error');
     done();
   });
 

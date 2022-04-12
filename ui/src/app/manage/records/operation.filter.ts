@@ -3,6 +3,8 @@ import {Observable, Subject} from 'rxjs';
 import {App} from '../../shared/model/app.model';
 import {RecordService} from '../../shared/api/record.service';
 import {RecordOperationType} from '../../shared/model/record.model';
+import {NotificationService} from 'src/app/shared/service/notification.service';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-clr-datagrid-operation-filter',
@@ -24,7 +26,11 @@ export class OperationFilterComponent implements OnInit {
   val = 'all';
   operationTypes: RecordOperationType[];
 
-  constructor(private recordService: RecordService) {}
+  constructor(
+    private recordService: RecordService,
+    private notificationService: NotificationService,
+    private translate: TranslateService
+  ) {}
 
   ngOnInit(): void {
     this.recordService.getOperationTypes().subscribe((operationTypes: RecordOperationType[]) => {
@@ -35,7 +41,10 @@ export class OperationFilterComponent implements OnInit {
         this.val = this.value;
         this.pchanges.next(true);
       }
-    });
+    },
+      error => {
+        this.notificationService.error(this.translate.instant('commons.message.error'), error);
+      });
   }
 
   public get changes(): Observable<any> {

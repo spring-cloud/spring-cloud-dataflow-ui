@@ -252,7 +252,7 @@ describe('apps/apps.component.ts', () => {
     await fixture.whenStable();
     fixture.detectChanges();
     expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
-    expect(NotificationServiceMock.mock.errorNotification[0].message.toString()).toBe('Fake error');
+    expect(NotificationServiceMock.mock.errorNotification[0].message.toString()).toContain('Fake error');
     done();
   });
 

@@ -57,7 +57,13 @@ export class TaskExportComponent {
     this.taskService.getTasks(0, 100000, '', 'taskName', 'ASC').subscribe((page: TaskPage) => {
       this.tasks = page;
       this.selected = [...page.items];
-    });
+    },
+      error => {
+        this.notificationService.error(this.translate.instant('commons.message.error'), error);
+        this.isRunning = false;
+        this.isOpen = false;
+      }
+    );
   }
 
   run(): void {
@@ -74,7 +80,13 @@ export class TaskExportComponent {
           this.translate.instant('tools.modal.exportTasks.message.successContent')
         );
         this.isOpen = false;
-      });
+      },
+        error => {
+          this.notificationService.error(this.translate.instant('commons.message.error'), error);
+          this.isRunning = false;
+          this.isOpen = false;
+        }
+      );
     }
   }
 }
