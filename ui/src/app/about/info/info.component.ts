@@ -3,7 +3,6 @@ import {AboutState} from '../../shared/store/about.reducer';
 import {AboutService} from '../../shared/api/about.service';
 import {NotificationService} from '../../shared/service/notification.service';
 import {ClipboardCopyService} from '../../shared/service/clipboard-copy.service';
-import {AppError} from 'src/app/shared/model/error.model';
 import {JsonPipe} from '@angular/common';
 import {TranslateService} from '@ngx-translate/core';
 

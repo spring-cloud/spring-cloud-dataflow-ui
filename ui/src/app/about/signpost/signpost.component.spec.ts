@@ -13,6 +13,8 @@ import {SharedModule} from '../../shared/shared.module';
 import {TranslateTestingModule} from 'ngx-translate-testing';
 import TRANSLATIONS from '../../../assets/i18n/en.json';
 import {StoreModule} from '@ngrx/store';
+import {throwError} from 'rxjs';
+import {AppError} from 'src/app/shared/model/error.model';
 import {ROOT_REDUCERS, metaReducers} from '../../reducers/reducer';
 
 describe('about/signpost/signpost.component.ts', () => {
@@ -51,4 +53,14 @@ describe('about/signpost/signpost.component.ts', () => {
     fixture.detectChanges();
     expect(component).toBeTruthy();
   });
+
+  it('should catch API error and display a message', async done => {
+    spyOn(AboutServiceMock.mock, 'getAbout').and.callFake(() => throwError(new AppError('Fake error')));
+    await fixture.whenStable();
+    fixture.detectChanges();
+    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
+    expect(NotificationServiceMock.mock.errorNotification[0].message.toString()).toBe('Fake error');
+    done();
+  });
+
 });

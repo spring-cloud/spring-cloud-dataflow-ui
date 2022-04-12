@@ -54,7 +54,7 @@ describe('about/info/info.component.ts', () => {
   });
 
   it('should catch API error and display a message', async done => {
-    spyOn(AppServiceMock.mock, 'getAbout').and.callFake(() => throwError(new AppError('Fake error')));
+    spyOn(AboutServiceMock.mock, 'getAbout').and.callFake(() => throwError(new AppError('Fake error')));
     await fixture.whenStable();
     fixture.detectChanges();
     expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
