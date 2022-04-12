@@ -256,5 +256,4 @@ describe('apps/apps.component.ts', () => {
     done();
   });
 
-
 });

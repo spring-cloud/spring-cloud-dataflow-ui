@@ -3,6 +3,7 @@ import {AboutState} from '../../shared/store/about.reducer';
 import {AboutService} from '../../shared/api/about.service';
 import {NotificationService} from '../../shared/service/notification.service';
 import {ClipboardCopyService} from '../../shared/service/clipboard-copy.service';
+import {AppError} from 'src/app/shared/model/error.model';
 import {JsonPipe} from '@angular/common';
 import {TranslateService} from '@ngx-translate/core';
 
@@ -28,6 +29,9 @@ export class InfoComponent implements OnInit {
     this.aboutService.getAbout().subscribe((about: AboutState) => {
       this.about = about;
       this.loading = false;
+    }, error => {
+        this.notificationService.error(this.translate.instant('commons.message.error'), error);
+        this.loading = false;
     });
   }
 
