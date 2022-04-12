@@ -5,6 +5,8 @@ import {RecordPage} from '../../shared/model/record.model';
 import {DatagridComponent} from '../../shared/component/datagrid/datagrid.component';
 import {ContextService} from '../../shared/service/context.service';
 import {SettingsService} from '../../settings/settings.service';
+import {NotificationService} from 'src/app/shared/service/notification.service';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-records-list',
@@ -17,7 +19,9 @@ export class RecordsComponent extends DatagridComponent {
     private recordService: RecordService,
     protected settingsService: SettingsService,
     protected changeDetectorRef: ChangeDetectorRef,
-    protected contextService: ContextService
+    protected contextService: ContextService,
+    private notificationService: NotificationService,
+    private translate: TranslateService
   ) {
     super(contextService, settingsService, changeDetectorRef, 'manage/records');
   }
@@ -42,6 +46,10 @@ export class RecordsComponent extends DatagridComponent {
           this.page = page;
           this.updateGroupContext(params);
           this.loading = false;
+        },
+          error => {
+            this.notificationService.error(this.translate.instant('commons.message.error'), error);
+            this.loading = false;
         });
     }
   }
