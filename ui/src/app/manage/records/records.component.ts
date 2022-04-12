@@ -42,15 +42,17 @@ export class RecordsComponent extends DatagridComponent {
           `${params?.by || ''}`,
           `${params?.reverse ? 'DESC' : 'ASC'}`
         )
-        .subscribe((page: RecordPage) => {
-          this.page = page;
-          this.updateGroupContext(params);
-          this.loading = false;
-        },
+        .subscribe(
+          (page: RecordPage) => {
+            this.page = page;
+            this.updateGroupContext(params);
+            this.loading = false;
+          },
           error => {
             this.notificationService.error(this.translate.instant('commons.message.error'), error);
             this.loading = false;
-        });
+          }
+        );
     }
   }
 }

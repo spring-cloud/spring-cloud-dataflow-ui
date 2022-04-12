@@ -24,17 +24,18 @@ export class CleanupComponent {
   open(status: string): void {
     this.status = status;
     this.loading = true;
-    this.taskService.getTaskExecutionsCount().subscribe((count: {completed: number; all: number}) => {
-      this.count = count;
-      this.loading = false;
-      if (this.count.all === 0) {
-        this.notificationService.warning(
-          this.translate.instant('tools.modal.cleanUp.message.warningNoExecutionTitle'),
-          this.translate.instant('tools.modal.cleanUp.message.warningNoExecutionContent')
-        );
-        this.isOpen = false;
-      }
-    },
+    this.taskService.getTaskExecutionsCount().subscribe(
+      (count: {completed: number; all: number}) => {
+        this.count = count;
+        this.loading = false;
+        if (this.count.all === 0) {
+          this.notificationService.warning(
+            this.translate.instant('tools.modal.cleanUp.message.warningNoExecutionTitle'),
+            this.translate.instant('tools.modal.cleanUp.message.warningNoExecutionContent')
+          );
+          this.isOpen = false;
+        }
+      },
       error => {
         this.notificationService.error(this.translate.instant('commons.message.error'), error);
         this.loading = false;

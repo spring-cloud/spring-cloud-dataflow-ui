@@ -21,11 +21,13 @@ export class UserComponent {
   ) {}
 
   logout(): void {
-    this.securityService.logout().subscribe(security => {
-      this.router.navigate(['/']);
-    },
-    error => {
-      this.notificationService.error(this.translate.instant('commons.message.error'), error);
-    });
+    this.securityService.logout().subscribe(
+      security => {
+        this.router.navigate(['/']);
+      },
+      error => {
+        this.notificationService.error(this.translate.instant('commons.message.error'), error);
+      }
+    );
   }
 }

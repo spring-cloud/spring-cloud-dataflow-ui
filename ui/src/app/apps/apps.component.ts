@@ -27,7 +27,7 @@ export class AppsComponent extends DatagridComponent {
     protected changeDetectorRef: ChangeDetectorRef,
     protected contextService: ContextService,
     private notificationService: NotificationService,
-    private translate: TranslateService,
+    private translate: TranslateService
   ) {
     super(contextService, settingsService, changeDetectorRef, 'apps');
   }
@@ -46,16 +46,18 @@ export class AppsComponent extends DatagridComponent {
           `${params.reverse ? 'DESC' : 'ASC'}`,
           true
         )
-        .subscribe((page: AppPage) => {
-          this.page = page;
-          this.updateGroupContext(params);
-          this.selected = [];
-          this.loading = false;
-        },
-        error => {
-          this.notificationService.error(this.translate.instant('commons.message.error'), error);
-          this.loading = false;
-        });
+        .subscribe(
+          (page: AppPage) => {
+            this.page = page;
+            this.updateGroupContext(params);
+            this.selected = [];
+            this.loading = false;
+          },
+          error => {
+            this.notificationService.error(this.translate.instant('commons.message.error'), error);
+            this.loading = false;
+          }
+        );
     }
   }
 

@@ -33,18 +33,20 @@ export class OperationFilterComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.recordService.getOperationTypes().subscribe((operationTypes: RecordOperationType[]) => {
-      this.operationTypes = operationTypes;
-      if (this.value === 'all' || this.value === '' || !this.value) {
-        this.value = null;
-      } else {
-        this.val = this.value;
-        this.pchanges.next(true);
-      }
-    },
+    this.recordService.getOperationTypes().subscribe(
+      (operationTypes: RecordOperationType[]) => {
+        this.operationTypes = operationTypes;
+        if (this.value === 'all' || this.value === '' || !this.value) {
+          this.value = null;
+        } else {
+          this.val = this.value;
+          this.pchanges.next(true);
+        }
+      },
       error => {
         this.notificationService.error(this.translate.instant('commons.message.error'), error);
-      });
+      }
+    );
   }
 
   public get changes(): Observable<any> {

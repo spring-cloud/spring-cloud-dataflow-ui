@@ -80,5 +80,4 @@ describe('manage/tools/task/export.component.ts', () => {
       done();
     }, 200);
   });
-
 });

@@ -183,5 +183,4 @@ describe('manage/records/records.component.ts', () => {
     });
     done();
   });
-
 });

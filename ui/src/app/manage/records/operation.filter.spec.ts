@@ -69,5 +69,4 @@ describe('manage/records/operation.filter.ts', () => {
     expect(component.accepts(null)).toBeTruthy();
     done();
   });
-
 });

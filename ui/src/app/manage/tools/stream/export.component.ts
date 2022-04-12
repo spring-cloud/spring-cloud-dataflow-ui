@@ -54,10 +54,11 @@ export class StreamExportComponent {
   open(): void {
     this.isRunning = false;
     this.isOpen = true;
-    this.streamService.getStreams(0, 100000, '', 'name', 'ASC').subscribe((page: StreamPage) => {
-      this.streams = page;
-      this.selected = [...page.items];
-    },
+    this.streamService.getStreams(0, 100000, '', 'name', 'ASC').subscribe(
+      (page: StreamPage) => {
+        this.streams = page;
+        this.selected = [...page.items];
+      },
       error => {
         this.notificationService.error(this.translate.instant('commons.message.error'), error);
         this.isOpen = false;
@@ -73,13 +74,14 @@ export class StreamExportComponent {
       );
     } else {
       this.isRunning = true;
-      this.importExportService.streamsExport(this.selected).subscribe(() => {
-        this.notificationService.success(
-          this.translate.instant('tools.modal.exportStreams.message.successTitle'),
-          this.translate.instant('tools.modal.exportStreams.message.successContent')
-        );
-        this.isOpen = false;
-      },
+      this.importExportService.streamsExport(this.selected).subscribe(
+        () => {
+          this.notificationService.success(
+            this.translate.instant('tools.modal.exportStreams.message.successTitle'),
+            this.translate.instant('tools.modal.exportStreams.message.successContent')
+          );
+          this.isOpen = false;
+        },
         error => {
           this.notificationService.error(this.translate.instant('commons.message.error'), error);
           this.isRunning = false;

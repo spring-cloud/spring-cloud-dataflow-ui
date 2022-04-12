@@ -81,5 +81,4 @@ describe('manage/tools/stream/export.component.ts', () => {
       done();
     }, 200);
   });
-
 });

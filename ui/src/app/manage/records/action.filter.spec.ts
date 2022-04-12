@@ -80,5 +80,4 @@ describe('manage/records/action.filter.ts', () => {
     expect(NotificationServiceMock.mock.errorNotification[0].message.toString()).toContain('Fake error');
     done();
   });
-
 });

@@ -34,18 +34,20 @@ export class ActionFilterComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.recordService.getActionTypes().subscribe((actionTypes: RecordActionType[]) => {
-      this.actionTypes = actionTypes;
-      if (this.value === 'all' || this.value === '' || !this.value) {
-        this.value = null;
-      } else {
-        this.val = this.value;
-        this.pchanges.next(true);
-      }
-    },
+    this.recordService.getActionTypes().subscribe(
+      (actionTypes: RecordActionType[]) => {
+        this.actionTypes = actionTypes;
+        if (this.value === 'all' || this.value === '' || !this.value) {
+          this.value = null;
+        } else {
+          this.val = this.value;
+          this.pchanges.next(true);
+        }
+      },
       error => {
         this.notificationService.error(this.translate.instant('commons.message.error'), error);
-      });
+      }
+    );
   }
 
   public get changes(): Observable<any> {

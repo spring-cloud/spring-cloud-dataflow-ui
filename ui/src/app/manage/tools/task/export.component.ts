@@ -54,10 +54,11 @@ export class TaskExportComponent {
   open(): void {
     this.isRunning = false;
     this.isOpen = true;
-    this.taskService.getTasks(0, 100000, '', 'taskName', 'ASC').subscribe((page: TaskPage) => {
-      this.tasks = page;
-      this.selected = [...page.items];
-    },
+    this.taskService.getTasks(0, 100000, '', 'taskName', 'ASC').subscribe(
+      (page: TaskPage) => {
+        this.tasks = page;
+        this.selected = [...page.items];
+      },
       error => {
         this.notificationService.error(this.translate.instant('commons.message.error'), error);
         this.isRunning = false;
@@ -74,13 +75,14 @@ export class TaskExportComponent {
       );
     } else {
       this.isRunning = true;
-      this.importExportService.tasksExport(this.selected).subscribe(() => {
-        this.notificationService.success(
-          this.translate.instant('tools.modal.exportTasks.message.successTitle'),
-          this.translate.instant('tools.modal.exportTasks.message.successContent')
-        );
-        this.isOpen = false;
-      },
+      this.importExportService.tasksExport(this.selected).subscribe(
+        () => {
+          this.notificationService.success(
+            this.translate.instant('tools.modal.exportTasks.message.successTitle'),
+            this.translate.instant('tools.modal.exportTasks.message.successContent')
+          );
+          this.isOpen = false;
+        },
         error => {
           this.notificationService.error(this.translate.instant('commons.message.error'), error);
           this.isRunning = false;

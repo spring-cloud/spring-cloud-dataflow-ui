@@ -22,7 +22,6 @@ import {DatagridColumnPipe} from '../shared/pipe/datagrid-column.pipe';
 import {TranslateTestingModule} from 'ngx-translate-testing';
 import TRANSLATIONS from '../../assets/i18n/en.json';
 
-
 describe('apps/apps.component.ts', () => {
   let component: AppsComponent;
   let fixture: ComponentFixture<AppsComponent>;
@@ -255,5 +254,4 @@ describe('apps/apps.component.ts', () => {
     expect(NotificationServiceMock.mock.errorNotification[0].message.toString()).toContain('Fake error');
     done();
   });
-
 });

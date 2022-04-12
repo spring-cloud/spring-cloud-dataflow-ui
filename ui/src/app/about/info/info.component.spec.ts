@@ -60,5 +60,4 @@ describe('about/info/info.component.ts', () => {
     expect(NotificationServiceMock.mock.errorNotification[0].title).toContain('error');
     done();
   });
-
 });

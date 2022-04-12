@@ -24,10 +24,7 @@ describe('UserComponent', () => {
           TranslateTestingModule.withTranslations('en', TRANSLATIONS),
           RouterTestingModule.withRoutes([])
         ],
-        providers: [
-          SecurityServiceMock.provider,
-          NotificationServiceMock.provider
-        ]
+        providers: [SecurityServiceMock.provider, NotificationServiceMock.provider]
       }).compileComponents();
     })
   );
@@ -41,5 +38,4 @@ describe('UserComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
 });
