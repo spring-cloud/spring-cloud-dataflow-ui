@@ -62,9 +62,9 @@ describe('about/signpost/signpost.component.ts', () => {
     expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
     expect(
       notificationMessage === 'Fake error' ||
-      notificationMessage.indexOf('An error occured') > 0 ||
-      notificationMessage.indexOf('Invalid field(s)') > 0)
-    .toBeTruthy();
+        notificationMessage.indexOf('An error occured') > 0 ||
+        notificationMessage.indexOf('Invalid field(s)') > 0
+    ).toBeTruthy();
     done();
   });
 });

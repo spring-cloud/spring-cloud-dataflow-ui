@@ -106,5 +106,4 @@ describe('streams/streams/multi-deploy/multi-deploy.component.ts', () => {
     expect(NotificationServiceMock.mock.errorNotification[0].message.toString()).toContain('Fake error');
     done();
   });
-
 });

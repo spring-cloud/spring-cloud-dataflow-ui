@@ -252,7 +252,7 @@ describe('apps/apps.component.ts', () => {
     fixture.detectChanges();
     const notificationMessage = NotificationServiceMock.mock.errorNotification[0].message.toString();
     expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
-    expect(notificationMessage === 'Fake error' || notificationMessage.indexOf('was expected') > 0).toBeTruthy;
+    expect(notificationMessage === 'Fake error' || notificationMessage.indexOf('was expected') > 0).toBeTruthy();
     done();
   });
 });

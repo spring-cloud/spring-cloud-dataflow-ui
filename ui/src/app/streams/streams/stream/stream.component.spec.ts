@@ -128,5 +128,4 @@ describe('streams/streams/stream/stream.component.ts', () => {
     expect(NotificationServiceMock.mock.errorNotification[0].message.toString()).toBe('Fake error');
     done();
   });
-
 });

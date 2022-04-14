@@ -39,22 +39,23 @@ export class CloneComponent {
   }
 
   refresh(): void {
-    this.taskService.getTasks(0, 10000).subscribe((page: TaskPage) => {
-      this.names = page.items.map(task => task.name);
-      this.tasks.forEach(task => {
-        const newName = this.generateName(task.name);
-        this.form.addControl(
-          task.name,
-          new FormControl(newName, [
-            Validators.required,
-            this.uniqueTaskName(),
-            Validators.pattern(/^[a-zA-Z0-9\-]+$/),
-            Validators.maxLength(255)
-          ])
-        );
-      });
-      this.loading = false;
-    },
+    this.taskService.getTasks(0, 10000).subscribe(
+      (page: TaskPage) => {
+        this.names = page.items.map(task => task.name);
+        this.tasks.forEach(task => {
+          const newName = this.generateName(task.name);
+          this.form.addControl(
+            task.name,
+            new FormControl(newName, [
+              Validators.required,
+              this.uniqueTaskName(),
+              Validators.pattern(/^[a-zA-Z0-9\-]+$/),
+              Validators.maxLength(255)
+            ])
+          );
+        });
+        this.loading = false;
+      },
       error => {
         this.notificationService.error(this.translate.instant('commons.message.error'), error);
         this.loading = false;
