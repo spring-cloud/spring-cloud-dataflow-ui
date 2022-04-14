@@ -73,11 +73,11 @@ describe('Streams', () => {
     cy.get('button.close').click();
   });
 
-  it('should prevent scaling to more than 9 instances', () => {
+  it('should prevent scaling to more than 10000 instances', () => {
     cy.get('.datagrid-action-toggle').first().click();
     cy.get('.datagrid-action-overflow button:nth-child(3)').first().click();
     cy.get('table input[type=number]').should('be.exist');
-    cy.get('table input[type=number]').eq(0).clear().type('10000');
+    cy.get('table input[type=number]').eq(0).clear().type('100001');
     cy.get('table input[type=number]').eq(0).parent().next('td').children('button').first().should('be.disabled');
     cy.get('button.close').click();
   });
