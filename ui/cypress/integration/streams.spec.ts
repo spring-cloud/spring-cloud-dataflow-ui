@@ -69,8 +69,7 @@ describe('Streams', () => {
     cy.get('.datagrid-action-overflow button:nth-child(3)').first().click();
     cy.get('table input[type=number]').should('be.exist');
     cy.get('table input[type=number]').eq(0).clear().type('-1');
-    cy.get('table input[type=number]').eq(0).parent().next('td').children('button').first().click();
-    cy.shouldShowToast('An error occurred');
+    cy.get('table input[type=number]').eq(0).parent().next('td').children('button').first().should('be.disabled');
     cy.get('button.close').click();
   });
 
@@ -78,9 +77,8 @@ describe('Streams', () => {
     cy.get('.datagrid-action-toggle').first().click();
     cy.get('.datagrid-action-overflow button:nth-child(3)').first().click();
     cy.get('table input[type=number]').should('be.exist');
-    cy.get('table input[type=number]').eq(0).clear().type('10');
-    cy.get('table input[type=number]').eq(0).parent().next('td').children('button').first().click();
-    cy.shouldShowToast('An error occurred');
+    cy.get('table input[type=number]').eq(0).clear().type('10000');
+    cy.get('table input[type=number]').eq(0).parent().next('td').children('button').first().should('be.disabled');
     cy.get('button.close').click();
   });
 
