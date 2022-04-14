@@ -73,6 +73,10 @@ export class MultiDeployComponent implements OnInit {
     this.streamService.getPlatforms().subscribe((platforms: Platform[]) => {
       this.platforms = platforms;
       this.isLoading = !(this.streamConfigs !== null && this.platforms !== null);
+    },
+    error => {
+      this.notificationService.error(this.translate.instant('commons.message.error'), error);
+      this.isLoading = false;
     });
   }
 

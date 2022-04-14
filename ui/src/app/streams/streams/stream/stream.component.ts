@@ -90,7 +90,7 @@ export class StreamComponent implements OnInit {
         this.loadingApps = false;
       },
       error => {
-        // Error: TODO
+        this.notificationService.error(this.translate.instant('commons.message.error'), error);
         this.loadingApps = false;
       }
     );
@@ -113,7 +113,7 @@ export class StreamComponent implements OnInit {
         this.loadingDeploymentInfo = false;
       },
       error => {
-        // Error: TODO
+        this.notificationService.error(this.translate.instant('commons.message.error'), error);
         this.loadingDeploymentInfo = false;
       }
     );
@@ -130,7 +130,7 @@ export class StreamComponent implements OnInit {
         this.loadingLogs = false;
       },
       error => {
-        // Error: TODO
+        this.notificationService.error(this.translate.instant('commons.message.error'), error);
         this.loadingLogs = false;
       }
     );
@@ -145,7 +145,7 @@ export class StreamComponent implements OnInit {
         this.loadingRuntime = false;
       },
       error => {
-        // Error: TODO
+        this.notificationService.error(this.translate.instant('commons.message.error'), error);
         this.loadingRuntime = false;
       }
     );
@@ -160,6 +160,7 @@ export class StreamComponent implements OnInit {
         this.history = history;
       },
       error => {
+        this.notificationService.error(this.translate.instant('commons.message.error'), error);
         this.loadingHistory = false;
         this.history = [];
       }
@@ -174,7 +175,7 @@ export class StreamComponent implements OnInit {
         this.loadingStreamsRelated = false;
       },
       error => {
-        // Error: TODO
+        this.notificationService.error(this.translate.instant('commons.message.error'), error);
         this.loadingStreamsRelated = false;
       }
     );

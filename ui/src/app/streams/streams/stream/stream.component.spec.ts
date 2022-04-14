@@ -13,6 +13,7 @@ import {UndeployComponent} from '../undeploy/undeploy.component';
 import {GrafanaStreamDirective} from '../../../shared/grafana/grafana.directive';
 import {GrafanaServiceMock} from '../../../tests/service/grafana.service.mock';
 import {throwError} from 'rxjs';
+import {AppError} from 'src/app/shared/model/error.model';
 import {HttpError} from '../../../shared/model/error.model';
 import {RollbackComponent} from '../rollback/rollback.component';
 import {By} from '@angular/platform-browser';
@@ -118,4 +119,14 @@ describe('streams/streams/stream/stream.component.ts', () => {
     expect(fixture.debugElement.query(By.css('app-stream-undeploy .modal-title')).nativeElement).toBeTruthy();
     done();
   });
+
+  it('should catch API error and display a message', async done => {
+    spyOn(StreamServiceMock.mock, 'getStream').and.callFake(() => throwError(new AppError('Fake error')));
+    await fixture.whenStable();
+    fixture.detectChanges();
+    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
+    expect(NotificationServiceMock.mock.errorNotification[0].message.toString()).toBe('Fake error');
+    done();
+  });
+
 });

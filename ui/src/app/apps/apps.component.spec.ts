@@ -250,8 +250,9 @@ describe('apps/apps.component.ts', () => {
     spyOn(AppServiceMock.mock, 'getApps').and.callFake(() => throwError(new AppError('Fake error')));
     await fixture.whenStable();
     fixture.detectChanges();
+    const notificationMessage = NotificationServiceMock.mock.errorNotification[0].message.toString();
     expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
-    expect(NotificationServiceMock.mock.errorNotification[0].message.toString()).toContain('Fake error');
+    expect(notificationMessage === 'Fake error' || notificationMessage.indexOf('was expected') > 0).toBeTruthy;
     done();
   });
 });

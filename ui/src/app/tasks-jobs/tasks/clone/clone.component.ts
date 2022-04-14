@@ -54,7 +54,12 @@ export class CloneComponent {
         );
       });
       this.loading = false;
-    });
+    },
+      error => {
+        this.notificationService.error(this.translate.instant('commons.message.error'), error);
+        this.loading = false;
+      }
+    );
   }
 
   generateName(taskName: string, loop = 1): string {
