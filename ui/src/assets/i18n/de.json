@@ -299,7 +299,7 @@
       "platformTaskLauncher": "Plattform spezifische Informationen über den Aufgaben-Starter",
       "noPlatformTaskLauncher": "Keine Plattform spezifischen Informationen über den Aufgaben-Stater verfügbar.",
       "help": "Brauchen Sie Hilfe oder haben Sie einen Fehler gefunden?",
-      "projectPageDesc": "Schnelle Übersicht über dasSpring Cloud Data Flow Projekt.",
+      "projectPageDesc": "Schnelle Übersicht über das Spring Cloud Data Flow Projekt.",
       "sourceCodeDesc": "Spring Cloud Data Flow Projekt ist ein Open Source Projekt.",
       "documentationDesc": "Lernen Sie mehr über die Produkt-Features.",
       "apiDocsDesc": "Lernen Sie mehr über die REST-APIs.",
