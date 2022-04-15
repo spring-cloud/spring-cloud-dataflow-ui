@@ -47,6 +47,7 @@ describe('about/signpost/signpost.component.ts', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SignpostComponent);
     component = fixture.componentInstance;
+    NotificationServiceMock.mock.clearAll();
   });
 
   it('should be created', () => {

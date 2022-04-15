@@ -42,6 +42,7 @@ describe('manage/records/action.filter.ts', () => {
   );
 
   beforeEach(() => {
+    NotificationServiceMock.mock.clearAll();
     fixture = TestBed.createComponent(ActionFilterComponent);
     component = fixture.componentInstance;
   });

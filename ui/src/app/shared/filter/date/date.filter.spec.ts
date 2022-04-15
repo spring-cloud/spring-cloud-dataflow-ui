@@ -40,6 +40,7 @@ describe('manage/records/action.filter.ts', () => {
   );
 
   beforeEach(() => {
+    NotificationServiceMock.mock.clearAll();
     fixture = TestBed.createComponent(DateFilterComponent);
     component = fixture.componentInstance;
   });

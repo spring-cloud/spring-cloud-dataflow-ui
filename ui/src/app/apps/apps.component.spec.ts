@@ -59,6 +59,7 @@ describe('apps/apps.component.ts', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AppsComponent);
     component = fixture.componentInstance;
+    NotificationServiceMock.mock.clearAll();
   });
 
   it('should be created', () => {

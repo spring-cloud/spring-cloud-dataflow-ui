@@ -46,6 +46,7 @@ describe('about/info/info.component.ts', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(InfoComponent);
     component = fixture.componentInstance;
+    NotificationServiceMock.mock.clearAll();
   });
 
   it('should be created', () => {

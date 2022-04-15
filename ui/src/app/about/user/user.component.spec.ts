@@ -30,6 +30,7 @@ describe('UserComponent', () => {
   );
 
   beforeEach(() => {
+    NotificationServiceMock.mock.clearAll();
     fixture = TestBed.createComponent(UserComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

@@ -37,6 +37,7 @@ describe('security/component/feature-disabled.component.ts', () => {
   );
 
   beforeEach(() => {
+    NotificationServiceMock.mock.clearAll();
     fixture = TestBed.createComponent(FeatureDisabledComponent);
     component = fixture.componentInstance;
   });

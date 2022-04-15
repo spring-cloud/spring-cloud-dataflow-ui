@@ -37,6 +37,7 @@ describe('security/component/authentication-required.component.ts', () => {
   );
 
   beforeEach(() => {
+    NotificationServiceMock.mock.clearAll();
     fixture = TestBed.createComponent(AuthenticationRequiredComponent);
     component = fixture.componentInstance;
   });
