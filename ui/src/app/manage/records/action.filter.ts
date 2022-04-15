@@ -3,6 +3,8 @@ import {Observable, Subject} from 'rxjs';
 import {App, ApplicationType} from '../../shared/model/app.model';
 import {RecordService} from '../../shared/api/record.service';
 import {RecordActionType} from '../../shared/model/record.model';
+import {NotificationService} from 'src/app/shared/service/notification.service';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-clr-datagrid-action-filter',
@@ -25,18 +27,27 @@ export class ActionFilterComponent implements OnInit {
   val = 'all';
   actionTypes: RecordActionType[];
 
-  constructor(private recordService: RecordService) {}
+  constructor(
+    private recordService: RecordService,
+    private notificationService: NotificationService,
+    private translate: TranslateService
+  ) {}
 
   ngOnInit(): void {
-    this.recordService.getActionTypes().subscribe((actionTypes: RecordActionType[]) => {
-      this.actionTypes = actionTypes;
-      if (this.value === 'all' || this.value === '' || !this.value) {
-        this.value = null;
-      } else {
-        this.val = this.value;
-        this.pchanges.next(true);
+    this.recordService.getActionTypes().subscribe(
+      (actionTypes: RecordActionType[]) => {
+        this.actionTypes = actionTypes;
+        if (this.value === 'all' || this.value === '' || !this.value) {
+          this.value = null;
+        } else {
+          this.val = this.value;
+          this.pchanges.next(true);
+        }
+      },
+      error => {
+        this.notificationService.error(this.translate.instant('commons.message.error'), error);
       }
-    });
+    );
   }
 
   public get changes(): Observable<any> {

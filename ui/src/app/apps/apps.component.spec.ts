@@ -12,6 +12,8 @@ import {UnregisterComponent} from './unregister/unregister.component';
 import {NotificationServiceMock} from '../tests/service/notification.service.mock';
 import {By} from '@angular/platform-browser';
 import {DebugElement} from '@angular/core';
+import {throwError} from 'rxjs';
+import {AppError} from 'src/app/shared/model/error.model';
 import {VersionComponent} from './version/version.component';
 import {ConfirmComponent} from '../shared/component/confirm/confirm.component';
 import {ContextServiceMock} from '../tests/service/context.service.mock';
@@ -57,6 +59,7 @@ describe('apps/apps.component.ts', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AppsComponent);
     component = fixture.componentInstance;
+    NotificationServiceMock.mock.clearAll();
   });
 
   it('should be created', () => {
@@ -241,6 +244,16 @@ describe('apps/apps.component.ts', () => {
       page: {from: 0, to: 19, size: 20, current: 1},
       sort: {by: 'uri', reverse: true}
     });
+    done();
+  });
+
+  it('should catch API error and display a message', async done => {
+    spyOn(AppServiceMock.mock, 'getApps').and.callFake(() => throwError(new AppError('Fake error')));
+    await fixture.whenStable();
+    fixture.detectChanges();
+    const notificationMessage = NotificationServiceMock.mock.errorNotification[0].message.toString();
+    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
+    expect(notificationMessage === 'Fake error' || notificationMessage.indexOf('was expected') > 0).toBeTruthy();
     done();
   });
 });

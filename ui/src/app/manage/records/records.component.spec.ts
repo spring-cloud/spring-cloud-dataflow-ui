@@ -56,6 +56,7 @@ describe('manage/records/records.component.ts', () => {
   );
 
   beforeEach(() => {
+    NotificationServiceMock.mock.clearAll();
     fixture = TestBed.createComponent(RecordsComponent);
     component = fixture.componentInstance;
   });

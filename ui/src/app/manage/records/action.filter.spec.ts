@@ -9,8 +9,10 @@ import {NotificationServiceMock} from '../../tests/service/notification.service.
 import {ActionFilterComponent} from './action.filter';
 import {RecordServiceMock} from '../../tests/api/record.service.mock';
 import {By} from '@angular/platform-browser';
+import {throwError} from 'rxjs';
 import {ContextServiceMock} from '../../tests/service/context.service.mock';
 import {TranslateTestingModule} from 'ngx-translate-testing';
+import {AppError} from 'src/app/shared/model/error.model';
 import TRANSLATIONS from '../../../assets/i18n/en.json';
 
 describe('manage/records/action.filter.ts', () => {
@@ -40,6 +42,7 @@ describe('manage/records/action.filter.ts', () => {
   );
 
   beforeEach(() => {
+    NotificationServiceMock.mock.clearAll();
     fixture = TestBed.createComponent(ActionFilterComponent);
     component = fixture.componentInstance;
   });
@@ -67,6 +70,15 @@ describe('manage/records/action.filter.ts', () => {
     expect(`${component.value}`).toBe('CREATE');
     expect(component.isActive()).toBeTruthy();
     expect(component.accepts(null)).toBeTruthy();
+    done();
+  });
+
+  it('should catch API error and display a message', async done => {
+    spyOn(RecordServiceMock.mock, 'getActionTypes').and.callFake(() => throwError(new AppError('Fake error')));
+    await fixture.whenStable();
+    fixture.detectChanges();
+    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
+    expect(NotificationServiceMock.mock.errorNotification[0].message.toString()).toContain('Fake error');
     done();
   });
 });

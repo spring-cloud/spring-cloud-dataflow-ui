@@ -20,7 +20,7 @@ export class RecordServiceMock {
     sort?: string,
     order?: string
   ): Observable<RecordPage | unknown> {
-    return of(GET_RECORDS).pipe(delay(1), map(RecordPage.parse), catchError(ErrorUtils.catchError));
+    return of(GET_RECORDS).pipe(delay(1), map(RecordPage.parse));
   }
 
   getOperationTypes(): Observable<RecordOperationType[]> {

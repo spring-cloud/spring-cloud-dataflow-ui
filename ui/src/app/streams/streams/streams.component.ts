@@ -15,7 +15,6 @@ import {SettingsService} from '../../settings/settings.service';
 import {CloneComponent} from './clone/clone.component';
 import {ScaleComponent} from './scale/scale.component';
 import {NotificationService} from 'src/app/shared/service/notification.service';
-import {HttpError} from 'src/app/shared/model/error.model';
 import {TranslateService} from '@ngx-translate/core';
 
 @Component({

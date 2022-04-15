@@ -11,6 +11,8 @@ import {InfoComponent} from './info.component';
 import {SharedModule} from '../../shared/shared.module';
 import {TranslateTestingModule} from 'ngx-translate-testing';
 import TRANSLATIONS from '../../../assets/i18n/en.json';
+import {throwError} from 'rxjs';
+import {AppError} from 'src/app/shared/model/error.model';
 import {StoreModule} from '@ngrx/store';
 import {ROOT_REDUCERS, metaReducers} from '../../reducers/reducer';
 
@@ -44,10 +46,19 @@ describe('about/info/info.component.ts', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(InfoComponent);
     component = fixture.componentInstance;
+    NotificationServiceMock.mock.clearAll();
   });
 
   it('should be created', () => {
     fixture.detectChanges();
     expect(component).toBeTruthy();
+  });
+
+  it('should catch API error and display a message', async done => {
+    spyOn(AboutServiceMock.mock, 'getAbout').and.callFake(() => throwError(new AppError('Fake error')));
+    await fixture.whenStable();
+    fixture.detectChanges();
+    expect(NotificationServiceMock.mock.errorNotification[0].title).toContain('error');
+    done();
   });
 });

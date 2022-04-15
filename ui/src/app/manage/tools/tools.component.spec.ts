@@ -62,6 +62,7 @@ describe('manage/tools/import-export.component.ts', () => {
   );
 
   beforeEach(() => {
+    NotificationServiceMock.mock.clearAll();
     fixture = TestBed.createComponent(ToolsComponent);
     component = fixture.componentInstance;
   });

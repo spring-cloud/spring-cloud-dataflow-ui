@@ -1,5 +1,7 @@
 import {SecurityService} from '../../security/service/security.service';
 import {Observable, of} from 'rxjs';
+import {catchError} from 'rxjs/operators';
+import {ErrorUtils} from '../../shared/support/error.utils';
 import {Security} from '../../shared/model/security.model';
 import {LOAD} from '../data/security';
 
@@ -16,8 +18,8 @@ export class SecurityServiceMock {
     return of(LOAD as Security);
   }
 
-  logout(): Observable<any> {
-    return of(LOAD as Security);
+  logout(): Observable<Security | unknown> {
+    return of(LOAD as Security).pipe(catchError(ErrorUtils.catchError));
   }
 
   loggedinUser(): Observable<string> {

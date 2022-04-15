@@ -16,6 +16,7 @@ import {AppServiceMock} from '../../../tests/api/app.service.mock';
 import {GroupServiceMock} from '../../../tests/service/group.service.mock';
 import {StreamDeployServiceMock} from '../../../tests/service/stream-deploy.service.mock';
 import {of, throwError} from 'rxjs';
+import {AppError} from 'src/app/shared/model/error.model';
 import {HttpError} from '../../../shared/model/error.model';
 import {RoleDirective} from '../../../security/directive/role.directive';
 import {ContextServiceMock} from '../../../tests/service/context.service.mock';
@@ -94,6 +95,15 @@ describe('streams/streams/multi-deploy/multi-deploy.component.ts', () => {
     await fixture.whenStable();
     fixture.detectChanges();
     expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
+    done();
+  });
+
+  it('should catch API error and display a message', async done => {
+    spyOn(StreamServiceMock.mock, 'getPlatforms').and.callFake(() => throwError(new AppError('Fake error')));
+    await fixture.whenStable();
+    fixture.detectChanges();
+    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
+    expect(NotificationServiceMock.mock.errorNotification[0].message.toString()).toContain('Fake error');
     done();
   });
 });

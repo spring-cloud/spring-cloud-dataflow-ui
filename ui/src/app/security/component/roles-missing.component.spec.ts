@@ -37,6 +37,7 @@ describe('security/component/roles-missing.component.ts', () => {
   );
 
   beforeEach(() => {
+    NotificationServiceMock.mock.clearAll();
     fixture = TestBed.createComponent(RolesMissingComponent);
     component = fixture.componentInstance;
   });
