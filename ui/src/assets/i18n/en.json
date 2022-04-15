@@ -282,7 +282,7 @@
       "dashboard": "Dashboard",
       "shell": "Shell",
       "shellChecksumSha1": "Shell Checksum Sha1",
-      "shellChecksumSha255": "Shell Checksum Sha255",
+      "shellChecksumSha256": "Shell Checksum Sha256",
       "runtimeSkipperDeployer": "Runtime Environment - Skipper Deployer",
       "spiVersion": "Spi Version",
       "javaVersion": "Java Version",
