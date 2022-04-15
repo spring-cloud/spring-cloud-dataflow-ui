@@ -39,7 +39,7 @@
     "details": "Details",
     "version": "Version",
     "platform": "Plattform",
-    "properties": "Eingeschaften",
+    "properties": "Eigenschaften",
     "definition": "Definition",
     "information": "Informationen",
     "applications": "Anwendungen",
@@ -60,7 +60,7 @@
   "appRoot": {
     "welcomeTo": "Willkommen zu",
     "appTitle": "Data Flow UI",
-    "youHaveToLogin": "Sie müssen sich einloggen um Zugang zur Anwendung zu erhalten.",
+    "youHaveToLogin": "Sie müssen sich einloggen, um Zugang zur Anwendung zu erhalten.",
     "title": "Data Flow",
     "fullName": "Spring Cloud Data Flow"
   },
@@ -132,9 +132,9 @@
         }
       },
       "props": {
-        "desc": "Geben Sie eine Liste von Eigenschaften in das hier drunter liegende Textfeld ein.",
+        "desc": "Geben Sie eine Liste von Eigenschaften in das darunter liegende Textfeld ein.",
         "desc2": "Alternativ können Sie eine Datei von dem lokalen Dateisystem wählen welches in das Textfeld eingefügt wird.",
-        "appsAsProperties": "Anwendungen als Eingeschaften",
+        "appsAsProperties": "Anwendungen als Eigenschaften",
         "example": "Beispiel",
         "example1": "task.timestamp=maven://o.s.cloud.task.app:timestamp-task:1.2.3.RELEASE",
         "example2": "task.spark-client=maven://o.s.cloud.task.app:spark-client-task:1.2.3.RELEASE",
@@ -149,11 +149,11 @@
         }
       },
       "register": {
-        "desc": "Eine oder mehr Anwendung(en) registrieren unter angabe von <strong>Name</strong>, <strong>Typ</strong> und <strong>App URI</strong> von der Anwendungs-Jar. Sie können auch eine optionale <strong>metadata artifact URI</strong> angeben. <br />Die Anwendungs-<strong>URI</strong> &amp; die <strong>Metadata Artifact URI</strong> werden typischerweise zur Verfügung gestellt unter verwendung der Maven Koordinaten der Jar, können jedoch auch über eine lokale Datei oder eine Docker Image URI zur Verfügung gestellt werden.",
+        "desc": "Eine oder mehr Anwendung(en) registrieren unter Angabe von <strong>Name</strong>, <strong>Typ</strong> und <strong>App URI</strong> von der Anwendungs-Jar. Sie können auch eine optionale <strong>metadata artifact URI</strong> angeben. <br />Die Anwendungs-<strong>URI</strong> &amp; die <strong>Metadata Artifact URI</strong> werden typischerweise zur Verfügung gestellt unter Verwendung der Maven Koordinaten der Jar, können jedoch auch über eine lokale Datei oder eine Docker-Image-URI zur Verfügung gestellt werden.",
         "invalidName": "Bitte geben Sie einen gültigen Namen der Anwendung an.",
         "invalidType": "Bitte geben Sie einen gültigen Typ an.",
-        "invalidUri": "Bitte geben sie eine gültige URI an, welche auf eine Eigenschaften-Datei verweist.",
-        "invalidMetadataURI": "Bitte geben sie eine gültige URI an, welche auf eine Eigenschaften-Datei verweist.",
+        "invalidUri": "Bitte geben Sie eine gültige URI an, die auf eine Eigenschaften-Datei verweist.",
+        "invalidMetadataURI": "Bitte geben Sie eine gültige URI an, die auf eine Eigenschaften-Datei verweist.",
         "force": "Forcieren, Anwendungen werden importiert und installiert auch wenn sie bereits existieren aber nicht verwendet werden.",
         "newApp": "Neue Anwendung",
         "import": "Importiere Anwendung(en)",
@@ -167,11 +167,11 @@
         }
       },
       "uri": {
-        "desc": "Geben Sie eine URI an die auf eine Eigenschaften-Datei verweist.<br />Die Eingeschaften-Datei ist formatiert, sodass jeder Schlüssel einen Typen und den Namen der Anwendung representiert, z.B. type.name. Die Werte sind die URIs der Anwendungen.",
+        "desc": "Geben Sie eine URI an die auf eine Eigenschaften-Datei verweist.<br />Die Eigenschaften-Datei ist formatiert, sodass jeder Schlüssel einen Typen und den Namen der Anwendung representiert, z.B. type.name. Die Werte sind die URIs der Anwendungen.",
         "placeholderUri": "https://url.to.properties",
         "eg": "e.g.",
         "egValue": "https://dataflow.spring.io/kafka-maven-latest",
-        "invalidUri": "Bitte geben sie eine gültige URI an, welche auf eine Properties Datei verweist.",
+        "invalidUri": "Bitte geben sie eine gültige URI an, die auf eine Properties Datei verweist.",
         "force": "Forcieren, Anwendungen werden importiert und installiert auch wenn sie bereits existieren aber nicht verwendet werden.",
         "importing": "Importiere gerade Anwendung(en)",
         "import": "Importiere Anwendung(en)",
@@ -282,7 +282,7 @@
       "dashboard": "Dashboard",
       "shell": "Shell",
       "shellChecksumSha1": "Shell Checksumme Sha1",
-      "shellChecksumSha256": "Shell Checksumme Sha256",
+      "shellChecksumSha255": "Shell Checksumme Sha255",
       "runtimeSkipperDeployer": "Laufzeit-Umgebung - Skipper Deployer",
       "spiVersion": "Spi Version",
       "javaVersion": "Java Version",
@@ -343,7 +343,7 @@
       "cleanUp": {
         "title": "Bestätige Aufräumen der Aufgaben-Ausführung(en)",
         "content": "Diese Aktion entfernt <strong>{{ count }} Ausführung(en)</strong>. Sind Sie sicher?",
-        "processing": "ntferne Daten...",
+        "processing": "Entferne Daten...",
         "cleanUp": "Aufräumen der Ausführung(en)",
         "message": {
           "warningNoExecutionTitle": "Keine Ausführung",
@@ -360,7 +360,7 @@
         "exporting": "Exportiere gerade Stream(s)",
         "export": "Exportiere Stream(s)",
         "message": {
-          "errorNoStreamTitle": "Kein stream ausgewählt",
+          "errorNoStreamTitle": "Kein Stream ausgewählt",
           "errorNoStreamContent": "Bitte wählen Sie ein Stream(s) zum exportieren aus",
           "successTitle": "Stream(s) exportieren",
           "successContent": "Stream(s) wurden exportiert."
@@ -476,10 +476,10 @@
       }
     },
     "destroy": {
-      "title": "Bestätigung zum Löschen vom Stream",
-      "title2": "Bestätigung zum Löschen vom Streams",
+      "title": "Bestätigung zum Löschen des Stream",
+      "title2": "Bestätigung zum Löschen der Streams",
       "content": "Diese Aktion wird den Stream zerstören und löschen <strong>{{ name }}</strong>. Sind Sie sicher?",
-      "content2": "Diese Aktion zerstört die <strong>{{ count }} Stream-Definitionen</strong> unterhalb aufgeführt. Sind Sie sicher?",
+      "content2": "Diese Aktion zerstört die unterhalb aufgeführen <strong>{{ count }} Stream-Definitionen</strong>. Sind Sie sicher?",
       "destroying": "Zerstöre gerade Stream(s)",
       "destroy": "Zerstöre den Stream",
       "destroy2": "Zerstöre die Streams",
@@ -492,7 +492,7 @@
       }
     },
     "rollback": {
-      "title": "Bestätige Sie das Zurückrollen des Streams",
+      "title": "Bestätigen Sie das Zurückrollen des Streams",
       "content": " Diese Aktion wird den Stream <strong>{{ name }}</strong> zur Version {{ version }} zurückrollen. Sind Sie sicher?",
       "rollbacking": "Zurückrollen der/des Stream(s) ...",
       "rollback": "Zurückrollen",
@@ -527,9 +527,9 @@
       "message": {
         "successTitle": "Zurückziehen des Streams",
         "successContent": "Stream \"{{ name }}\" wurden erfolgreich zurückgezogen.",
-        "successTitle2": "urückziehen der Streams",
+        "successTitle2": "Zurückziehen der Streams",
         "successContent2": "{{ count }} Stream(s) zurückgezogen.",
-        "errorContent": "Ein Fehler ist beim Zurückziehen von Streams aufgetreten. Bitte prüfen Sie die Server-Logs für mehr Informationen."
+        "errorContent": "Ein Fehler ist beim Zurückziehen der Streams aufgetreten. Bitte prüfen Sie die Server-Logs für mehr Informationen."
       }
     },
     "scale": {
@@ -555,7 +555,7 @@
         "create": "Erstelle den/die Stream(s)",
         "placeholderName": "Stream-Name",
         "placeholderDescription": "Stream-Beschreibung",
-        "duplicateName": "Doppelter Stream Name, bitte prüfen Sie die Eingabe-Namen.",
+        "duplicateName": "Doppelter Stream-Name, bitte prüfen Sie die Eingabe-Namen.",
         "requiredName": "Stream-Name wird benötigt",
         "uniqueName": "Stream-Name wird bereits verwendet",
         "invalidName": "Ungültiger Stream-Name",
@@ -632,8 +632,8 @@
         }
       },
       "freetext": {
-        "description": "Geben Sie eine Liste von Eigenschaften in das Textfeld an. Alternativ können Sie eine Datei vom lokalen Dateisystem wählen, welche in das Textfeld übernommen wird.",
-        "tooltip": "Bitte stellen Sie eine Textdatei mit Eingeschaften zur Verfügung. Diese Eigenschaft werden im überliegenden Textfeld verwendet.",
+        "description": "Geben Sie eine Liste von Eigenschaften in das Textfeld an. Alternativ können Sie eine Datei vom lokalen Dateisystem wählen, die in das Textfeld übernommen wird.",
+        "tooltip": "Bitte stellen Sie eine Textdatei mit Eigenschaften zur Verfügung. Diese Eigenschaft werden im überliegenden Textfeld verwendet.",
         "deploy": "Rolle den Stream aus",
         "update": "Aktualisiere den Stream",
         "message": {
@@ -754,7 +754,7 @@
         "taskDescription": "Aufgaben-Beschreibung",
         "content": "Diese Aktion wird die folgende <strong>Aufgabe</strong> erstellen:",
         "duplicateName": "Doppelter Aufgaben-Name, bitte prüfen Sie die Eingabe-Namen.",
-        "maxLengthName": "Der Aufgaben-Name muss weniger als 256 Zeichen lang sein.",
+        "maxLengthName": "Der Aufgaben-Name muss weniger als 255 Zeichen lang sein.",
         "invalidName": "Ungültiger Aufgaben-Name.",
         "requiredTask": "Aufgaben-Name wird benötigt.",
         "maxLength63Name": "Der Aufgaben-Definitions-Name muss weniger als 63 Zeichen für Kubernetes oder Cloud Foundry Plattformen betragen.",
@@ -793,7 +793,7 @@
       "freetext": {
         "propertiesDescription": "Geben Sie eine Liste von Eigenschaften in das hier drunter liegende Textfeld ein.",
         "argumentsDescription": "Geben Sie eine Liste an Argumenten in der unterhalb liegende Feld an.",
-        "propertiesTooltip": "Bitte stellen Sie eine Textdatei mit Eingeschaften zur Verfügung. Diese Eigenschaft werden im überliegenden Textfeld verwendet.",
+        "propertiesTooltip": "Bitte stellen Sie eine Textdatei mit Eigenschaften zur Verfügung. Diese Eigenschaft werden im überliegenden Textfeld verwendet.",
         "argumentsTooltip": "Bitte geben Sie eine Text-Datei mit Argumenten an. Diese wird verwendet um Sie in das oberhalb liegende Textfeld zu übernehmen.",
         "launch": "Starte Aufgabe"
       },
@@ -1054,15 +1054,15 @@
     },
     "rolesMissing": {
       "title": "Rollen fehlen",
-      "description": "Es scheint als ob nötige Rollen fehlen. Bitte kontaktieren Sie ihren Administrator um die Situation zu klären."
+      "description": "Es scheint als ob nötige Rollen fehlen. Bitte kontaktieren Sie ihren Administrator, um die Situation zu klären."
     }
   },
   "flo": {
     "commons": {
       "invalidValue": "Ungültiger Wert.",
       "searchForApplications": "Suche nach Anwendungen",
-      "fitToContent": "Dem Inhalt anpassen",
-      "instanceDown": "Anwendungs-Instanz ist nicht ausgerollt oder runter gefahren"
+      "fitToContent": "Den Inhalt anpassen",
+      "instanceDown": "Anwendungs-Instanz ist nicht ausgerollt oder herrunter gefahren"
     },
     "properties": {
       "title": "Eigenschaften für",
