@@ -742,7 +742,8 @@
       "viewTaskExecution": "View task execution",
       "viewLog": "View log",
       "latestExecutions": "Latest execution(s)",
-      "schedules": "Schedule(s)"
+      "schedules": "Schedule(s)",
+      "lastExecutionStatus": "Last Execution Status"
     },
     "create": {
       "title": "Create a task",
