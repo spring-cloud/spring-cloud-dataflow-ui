@@ -742,7 +742,8 @@
       "viewTaskExecution": "Zeige Aufgaben-Ausführung",
       "viewLog": "Zeige Log",
       "latestExecutions": "Neuesten Ausführung(en)",
-      "schedules": "Zeitpläne"
+      "schedules": "Zeitpläne",
+      "lastExecutionStatus": "Letzter Ausführungs-Status"
     },
     "create": {
       "title": "Erstelle eine Aufgabe",
