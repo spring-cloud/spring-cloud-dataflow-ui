@@ -87,7 +87,7 @@
     (clrDgColumnResize)="updateContext('sizeDescription', $event)"
     [style.width.px]="context.sizeDescription | datagridcolumn: datagrid:contextName:15 | async"
   >
-    <ng-container> Description </ng-container>
+    <ng-container>{{ 'commons.description' | translate }}</ng-container>
     <clr-dg-filter style="display: none"></clr-dg-filter>
   </clr-dg-column>
   <clr-dg-column
@@ -113,7 +113,7 @@
       </a>
     </clr-dg-cell>
     <clr-dg-cell
-      ><span class="text-truncate">{{ task.description }}</span></clr-dg-cell
+      ><span class="text-truncate">{{ commons.description }}</span></clr-dg-cell
     >
     <clr-dg-cell
       ><span class="dsl-text dsl-truncate">{{ task.dslText }}</span></clr-dg-cell
