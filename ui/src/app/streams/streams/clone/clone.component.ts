@@ -39,22 +39,28 @@ export class CloneComponent {
   }
 
   refresh(): void {
-    this.streamService.getStreams(0, 10000).subscribe((page: StreamPage) => {
-      this.names = page.items.map(stream => stream.name);
-      this.streams.forEach(stream => {
-        const newName = this.generateName(stream.name);
-        this.form.addControl(
-          stream.name,
-          new FormControl(newName, [
-            Validators.required,
-            this.uniqueStreamName(),
-            Validators.pattern(/^[a-zA-Z0-9\-]+$/),
-            Validators.maxLength(255)
-          ])
-        );
-      });
-      this.loading = false;
-    });
+    this.streamService.getStreams(0, 10000).subscribe(
+      (page: StreamPage) => {
+        this.names = page.items.map(stream => stream.name);
+        this.streams.forEach(stream => {
+          const newName = this.generateName(stream.name);
+          this.form.addControl(
+            stream.name,
+            new FormControl(newName, [
+              Validators.required,
+              this.uniqueStreamName(),
+              Validators.pattern(/^[a-zA-Z0-9\-]+$/),
+              Validators.maxLength(255)
+            ])
+          );
+        });
+        this.loading = false;
+      },
+      error => {
+        this.notificationService.error(this.translate.instant('commons.message.error'), error);
+        this.loading = false;
+      }
+    );
   }
 
   generateName(streamName: string, loop = 1): string {

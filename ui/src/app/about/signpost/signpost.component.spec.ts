@@ -13,6 +13,8 @@ import {SharedModule} from '../../shared/shared.module';
 import {TranslateTestingModule} from 'ngx-translate-testing';
 import TRANSLATIONS from '../../../assets/i18n/en.json';
 import {StoreModule} from '@ngrx/store';
+import {throwError} from 'rxjs';
+import {AppError} from 'src/app/shared/model/error.model';
 import {ROOT_REDUCERS, metaReducers} from '../../reducers/reducer';
 
 describe('about/signpost/signpost.component.ts', () => {
@@ -45,10 +47,25 @@ describe('about/signpost/signpost.component.ts', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SignpostComponent);
     component = fixture.componentInstance;
+    NotificationServiceMock.mock.clearAll();
   });
 
   it('should be created', () => {
     fixture.detectChanges();
     expect(component).toBeTruthy();
+  });
+
+  it('should catch API error and display a message', async done => {
+    spyOn(AboutServiceMock.mock, 'getAbout').and.callFake(() => throwError(new AppError('Fake error')));
+    await fixture.whenStable();
+    fixture.detectChanges();
+    const notificationMessage = NotificationServiceMock.mock.errorNotification[0].message.toString().trim();
+    expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
+    expect(
+      notificationMessage === 'Fake error' ||
+        notificationMessage.indexOf('An error occured') > 0 ||
+        notificationMessage.indexOf('Invalid field(s)') > 0
+    ).toBeTruthy();
+    done();
   });
 });

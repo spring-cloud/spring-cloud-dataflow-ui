@@ -25,10 +25,16 @@ export class InfoComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.aboutService.getAbout().subscribe((about: AboutState) => {
-      this.about = about;
-      this.loading = false;
-    });
+    this.aboutService.getAbout().subscribe(
+      (about: AboutState) => {
+        this.about = about;
+        this.loading = false;
+      },
+      error => {
+        this.notificationService.error(this.translate.instant('commons.message.error'), error);
+        this.loading = false;
+      }
+    );
   }
 
   copyToClipboard(): void {

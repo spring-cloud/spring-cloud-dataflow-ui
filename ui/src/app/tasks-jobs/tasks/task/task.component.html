@@ -36,7 +36,7 @@
         id="info"
       >
         <ng-template>
-          <div class="block card-block-keyvalue">
+          <div class="block card-block-keyvalue lg-key">
             <div *ngIf="task.description" class="row">
               <div class="key">{{ 'commons.description' | translate }}</div>
               <div class="value">{{ task.description }}</div>
@@ -48,7 +48,7 @@
               </div>
             </div>
             <div class="row">
-              <div class="key">{{ 'commons.status' | translate }}</div>
+              <div class="key">{{ 'tasks.task.lastExecutionStatus' | translate }}</div>
               <div class="value">
                 <span class="{{ task.labelStatusClass() }}">{{ task.status }}</span>
               </div>

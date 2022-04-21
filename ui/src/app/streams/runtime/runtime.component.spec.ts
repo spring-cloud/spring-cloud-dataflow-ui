@@ -44,6 +44,7 @@ describe('streams/runtime/runtime.component.ts', () => {
   );
 
   beforeEach(() => {
+    NotificationServiceMock.mock.clearAll();
     fixture = TestBed.createComponent(RuntimeComponent);
     component = fixture.componentInstance;
   });

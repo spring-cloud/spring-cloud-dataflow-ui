@@ -29,6 +29,7 @@ describe('apps/type.filter.ts', () => {
   );
 
   beforeEach(() => {
+    NotificationServiceMock.mock.clearAll();
     fixture = TestBed.createComponent(TypeFilterComponent);
     component = fixture.componentInstance;
   });

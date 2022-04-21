@@ -91,6 +91,7 @@ export class ExecutionComponent implements OnInit {
         this.loadingTask = false;
       },
       error => {
+        this.notificationService.error(this.translate.instant('commons.message.error'), error);
         this.loadingTask = false;
       }
     );
