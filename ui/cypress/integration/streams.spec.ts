@@ -76,7 +76,13 @@ describe('Streams', () => {
       .then(appNameElement => {
         const appName = appNameElement.parent().prev('td').text();
         cy.get('table input[type=number]').eq(0).clear().type('2');
-        cy.get('table input[type=number]').eq(0).parent().next('td').children('button').first().should('not.be.disabled');
+        cy.get('table input[type=number]')
+          .eq(0)
+          .parent()
+          .next('td')
+          .children('button')
+          .first()
+          .should('not.be.disabled');
         cy.get('button.close').click();
       });
   });
