@@ -7,8 +7,7 @@ import {loaded, update} from './store/settings.action';
 import {SettingModel} from '../shared/model/setting.model';
 import {LocalStorageService} from 'angular-2-local-storage';
 
-export const LANGUAGES = ['en'];
-// export const LANGUAGES = ['en', 'fr', 'de'];
+export const LANGUAGES = ['en', 'de'];
 const DEFAULT_LANG = 'en';
 
 @Injectable({

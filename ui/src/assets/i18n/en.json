@@ -755,7 +755,7 @@
         "taskDescription": "Task Description",
         "content": "This action will create the following <strong>task</strong>:",
         "duplicateName": "Duplicate task name, please check input names.",
-        "maxLengthName": "Task name must be less than 256 characters long.",
+        "maxLengthName": "Task name must be less than 255 characters long.",
         "invalidName": "Invalid task name.",
         "requiredTask": "Task name is required.",
         "maxLength63Name": "The task definition name should be less than 63 characters for Kubernetes or Cloud Foundry platforms.",
@@ -993,7 +993,7 @@
       "cronExp": "Cron Expr.",
       "arguments": "Arguments",
       "noSchedule": "No schedule yet.",
-      "deleteSchedules": "Delete schedules(s)",
+      "deleteSchedules": "Delete schedule(s)",
       "taskDetails": "Task details",
       "addNewSchedule": "Add new schedule",
       "pagination": "{{ count }} schedules"

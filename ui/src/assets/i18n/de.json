@@ -1,0 +1,1083 @@
+{
+  "commons": {
+    "id": "Id",
+    "ok": "Ok",
+    "of": "von",
+    "yes": "Ja",
+    "ofType": "vom Typ",
+    "refresh": "Aktualisieren",
+    "cancel": "Abbrechen",
+    "remove": "Entfernen",
+    "edit": "Editieren",
+    "close": "Schließen",
+    "loading": "lade",
+    "listedBelow": "unterhalb aufgeführt",
+    "areYouSure": "Sind Sie sicher?",
+    "setDefault": "Als Standard setzen",
+    "makeDefault": "Zum Standard machen",
+    "importFile": "Importiere eine Datei",
+    "selectFile": "Selektiere eine Datei",
+    "minDate": "Min Datum",
+    "maxDate": "Max Datum",
+    "actions": "Aktionen",
+    "restart": "Neustarten",
+    "update": "Updaten",
+    "deploy": "Ausrollen",
+    "undeploy": "Zurückziehen",
+    "destroy": "Zerstören",
+    "launch": "Starten",
+    "schedule": "Zeitplan",
+    "scaleInstance": "Skaliere Instanz(en)",
+    "description": "Beschreibung",
+    "status": "Status",
+    "clone": "Klonen",
+    "date": "Datum",
+    "name": "Name",
+    "type": "Typ",
+    "stop": "Stopp",
+    "cleanup": "Aufräumen",
+    "details": "Details",
+    "version": "Version",
+    "platform": "Plattform",
+    "properties": "Eigenschaften",
+    "definition": "Definition",
+    "information": "Informationen",
+    "applications": "Anwendungen",
+    "groupActions": "Gruppen Aktionen",
+    "confirmAction": "Bestätige Aktion",
+    "noResultFound": "Keine Ergebnisse gefunden.",
+    "copyToClipboard": "In die Zwischenablage kopieren",
+    "grafanaDashboard": "Grafana Dashboard",
+    "wavefrontDashboard": "Wafefront Dashboard",
+    "message": {
+      "error": "Ein Fehler ist aufgetreten",
+      "copiedTitle": "Inhalt kopiert",
+      "copiedContent": "Der Inhalt wurde in die Zwischenablage kopiert.",
+      "invalidFieldsTitle": "Ungültige(s) Feld(er)",
+      "invalidFieldsContent": "Feld(er) fehlen oder sind ungültig."
+    }
+  },
+  "appRoot": {
+    "welcomeTo": "Willkommen zu",
+    "appTitle": "Data Flow UI",
+    "youHaveToLogin": "Sie müssen sich einloggen, um Zugang zur Anwendung zu erhalten.",
+    "title": "Data Flow",
+    "fullName": "Spring Cloud Data Flow"
+  },
+  "layout": {
+    "logo": {
+      "title": "Spring Cloud Dataflow UI"
+    },
+    "nav": {
+      "applications": "Anwendungen",
+      "streams": "Streams",
+      "runtime": "Laufzeit",
+      "tasks": "Aufgaben",
+      "tasksJobs": "Aufgaben / Jobs",
+      "taskExecution": "Aufgaben-Ausführungen",
+      "jobExecution": "Job-Ausführungen",
+      "schedules": "Zeitpläne",
+      "manage": "Verwalten",
+      "auditRecords": "Audit-Einträge",
+      "tools": "Tools"
+    },
+    "quicksearch": {
+      "input": "Such nach Schlüsselworten...",
+      "searching": "Suche nach Ergebnissen...",
+      "application": "Anwendung(en)",
+      "stream": "Stream(s)",
+      "task": "Aufgabe(n)",
+      "noResult": "Es gibt keine Suchergebnisse für"
+    }
+  },
+  "applications": {
+    "main": {
+      "title": "Anwendungen",
+      "addApplications": "Anwendung(en) hinzufügen",
+      "unregisterApplications": "Anwendung(en) deregistrieren",
+      "name": "Name",
+      "type": "Typ",
+      "version": "Version",
+      "uri": "URI",
+      "metadataURI": "Metainformationen URI",
+      "manageVersion": "Version verwalten",
+      "unregister": "Deregistrieren",
+      "noResult": "Keine Ergebnisse gefunden",
+      "applicationsPerPage": "Anwendungen pro Seite",
+      "application": "Anwendung",
+      "details": "Details",
+      "pagination": "{{ first }} - {{ last }} von <span class=\"pagination-total\">{{ total }}</span> Anwendungen"
+    },
+    "add": {
+      "registerOneOrMore": "Registriere eine oder mehr Anwendungen",
+      "importFromHttp": "Anwendung von einer HTTP URI Zielkoordinate importieren",
+      "importFromFile": "Anwendung von einer Properties-Datei importieren",
+      "importFromSpringDataFlow": "Anwendung von dataflow.spring.io-Starter importieren.",
+      "websiteStarters": {
+        "usePredefined": "Benutze vordefinierte Anwendungs-URIs (für Maven oder Docker) für alle  out-of-the-box Stream/Aufgaben/Batch-Anwendungen.",
+        "startersForKafkaMaven": "Stream Anwendungen-Starter für Kafka/Maven",
+        "startersForKafkaDocker": "Stream Anwendungen-Starter für Kafka/Docker",
+        "startersForRabbitMQMaven": "Stream Anwendungen-Starter für RabbitMQ/Maven",
+        "startersForRabbitMQDocker": "Stream Anwendungen-Starter für RabbitMQ/Docker",
+        "startersForMaven": "Aufgaben Anwendungen-Starter für Maven",
+        "startersForDocker": "Aufgaben Anwendungen-Starter für Docker",
+        "forceImport": "Forcieren, Anwendungen werden importiert und installiert auch wenn sie bereits existieren aber nicht verwendet werden.",
+        "importApplications": "Importiere Anwendung(en)",
+        "importingApplications": "Importiere gerade Anwendung(en)",
+        "message": {
+          "successTitle": "Importiere Starter",
+          "successContent": "Anwendung(en) importiert.",
+          "noStarterTitle": "Kein Starter ausgewählt",
+          "noStarterContent": "Bitte wählen Sie ein Starter Packet aus."
+        }
+      },
+      "props": {
+        "desc": "Geben Sie eine Liste von Eigenschaften in das darunter liegende Textfeld ein.",
+        "desc2": "Alternativ können Sie eine Datei von dem lokalen Dateisystem wählen welches in das Textfeld eingefügt wird.",
+        "appsAsProperties": "Anwendungen als Eigenschaften",
+        "example": "Beispiel",
+        "example1": "task.timestamp=maven://o.s.cloud.task.app:timestamp-task:1.2.3.RELEASE",
+        "example2": "task.spark-client=maven://o.s.cloud.task.app:spark-client-task:1.2.3.RELEASE",
+        "force": "Forcieren, Anwendungen werden importiert und installiert auch wenn sie bereits existieren aber nicht verwendet werden.",
+        "import": "Importiere Anwendung(en)",
+        "importing": "Importiere gerade Anwendun(en)",
+        "requiredApp": "Eine oder mehrere Anwendung(en) werden benötigt.",
+        "message": {
+          "successTitle": "Imprtiere Anwendung(en)",
+          "successContent": "Anwendung(en) importiert.",
+          "errorContent": "Ein Fehler ist während des Importierens der Anwedungen aufgetreten. Bitte prüfen Sie die Server-Logs für mehr Informationen."
+        }
+      },
+      "register": {
+        "desc": "Eine oder mehr Anwendung(en) registrieren unter Angabe von <strong>Name</strong>, <strong>Typ</strong> und <strong>App URI</strong> von der Anwendungs-Jar. Sie können auch eine optionale <strong>metadata artifact URI</strong> angeben. <br />Die Anwendungs-<strong>URI</strong> &amp; die <strong>Metadata Artifact URI</strong> werden typischerweise zur Verfügung gestellt unter Verwendung der Maven Koordinaten der Jar, können jedoch auch über eine lokale Datei oder eine Docker-Image-URI zur Verfügung gestellt werden.",
+        "invalidName": "Bitte geben Sie einen gültigen Namen der Anwendung an.",
+        "invalidType": "Bitte geben Sie einen gültigen Typ an.",
+        "invalidUri": "Bitte geben Sie eine gültige URI an, die auf eine Eigenschaften-Datei verweist.",
+        "invalidMetadataURI": "Bitte geben Sie eine gültige URI an, die auf eine Eigenschaften-Datei verweist.",
+        "force": "Forcieren, Anwendungen werden importiert und installiert auch wenn sie bereits existieren aber nicht verwendet werden.",
+        "newApp": "Neue Anwendung",
+        "import": "Importiere Anwendung(en)",
+        "register": "Registriere Anwendung(en)",
+        "registering": "Registriere gerade Anwendung(en)",
+        "message": {
+          "invalidAppTitle": "Ungültige Anwendung",
+          "invalidAppContent": "Bitte registrieren Sie mindestens eine Anwendung.",
+          "successTitle": "Register Anwendung(en).",
+          "successContent": "{{count}} Anwendung(en) registriert"
+        }
+      },
+      "uri": {
+        "desc": "Geben Sie eine URI an die auf eine Eigenschaften-Datei verweist.<br />Die Eigenschaften-Datei ist formatiert, sodass jeder Schlüssel einen Typen und den Namen der Anwendung representiert, z.B. type.name. Die Werte sind die URIs der Anwendungen.",
+        "placeholderUri": "https://url.to.properties",
+        "eg": "e.g.",
+        "egValue": "https://dataflow.spring.io/kafka-maven-latest",
+        "invalidUri": "Bitte geben sie eine gültige URI an, die auf eine Properties Datei verweist.",
+        "force": "Forcieren, Anwendungen werden importiert und installiert auch wenn sie bereits existieren aber nicht verwendet werden.",
+        "importing": "Importiere gerade Anwendung(en)",
+        "import": "Importiere Anwendung(en)",
+        "message": {
+          "successTitle": "Importiere Anwendung(en)",
+          "successContent": "Anwendung(en) importiert."
+        }
+      }
+    },
+    "unregister": {
+      "title": "Bestätige Deregistrierung der Anwendung",
+      "title2": "Bestätige Deregistrierung der Anwendungen",
+      "content": "Diese Aktion wird die Anwendung deregistrieren und löschen",
+      "content2": "Diese Aktion wird die Löschung und Deregistrierung vornehmen für",
+      "unregistering": "Deregistrierung der Anwendung(en) ...",
+      "unregister": "Deregistrierung der Anwendung",
+      "unregister2": "Deregistrierung der Anwendungen",
+      "message": {
+        "successTitle": "Deregistrierung der Anwendung",
+        "successContent": "Die Anwendung \"{{name}}\" vom Typ \"{{type}}\" wurde erfolgreich entfernt.",
+        "successTitle2": "Deregistrierung der Anwendungen",
+        "successContent2": "{{count}} Anwendung(en) deregistriert"
+      }
+    },
+    "details": {
+      "title": "Anwendung",
+      "unregister": "Deregistrierung der Anwendung",
+      "manageVersions": "Verwalte Versionen",
+      "notFound": "Keine Anwendung gefunden.",
+      "information": "Informationen",
+      "appProperties": "Anwendungs-Eigenschaften",
+      "tooManyProperties": "Es gibt mehr als 50 Eigenschaften zur Anzeige, das User-Interface könnte langsam sein.",
+      "tooManyProperties2": "Möchten Sie alle Eigenschaften anzeigen?",
+      "showAll": "Alle Eigenschaften anzeigen",
+      "default": "Standard",
+      "deprecatedLevel": "Abwertungsstufe",
+      "noDescription": "Keine Beschreibung verfügbar",
+      "defaultValue": "Standard Wert",
+      "noProperty": "Keine Eigenschaft"
+    },
+    "version": {
+      "manageVersions": "Verwalte Versionen",
+      "loadingVersions": "Lade Version(en) ...",
+      "thisActionWillUnregisterThe": "Diese Aktion wird die Löschung und Deregistrierung vornehmen von",
+      "ofTheApplication": "von der Anwendung",
+      "thisActionWillMakeTheVersion": "Diese Aktion wird die Version",
+      "asTheDefaultVersion": "als Standard Version für die Anwendung",
+      "version": "version",
+      "message": {
+        "unregisterSuccessTitle": "Deregistriere Version",
+        "unregisterSuccessContent": "Erfolgreich entfernte Version \"{{version}}\".",
+        "defaultSuccessTitle": "Standard Version",
+        "defaultSuccessContent": "Die Version \"{{version}}\" ist nun die Standard Version der Anwendung \"{{app}}\" ({{type}})."
+      }
+    }
+  },
+  "settings": {
+    "title": "Einstellungen",
+    "close": "Schließen",
+    "language": "Sprache",
+    "languageDescription": "Sie können Ihre bevorzugte Sprache auswählen.",
+    "en": "Englisch",
+    "de": "Deutsch",
+    "fr": "Französisch",
+    "theme": "Erscheinungsbild",
+    "themeDescription": "Sie können zwischen einem Dunkeln und dem Standard Erscheinungsbild wählen.",
+    "darkTheme": "Dunkel",
+    "defaultTheme": "Standard",
+    "results": "Ergebnisse",
+    "resultsDescription": "Sie können die Anzahl pro Seite wählen."
+  },
+  "about": {
+    "user": {
+      "logOut": "Ausloggen",
+      "logIn": "Einloggen"
+    },
+    "signpost": {
+      "title": "Data Flow Server Implementierung",
+      "name": "Name",
+      "version": "Version",
+      "moreInfo": "Mehr Informationen",
+      "projectPage": "Projekt Seite",
+      "sourceCode": "Quellcode",
+      "documentation": "Dokumentation",
+      "apiDocs": "API Dokumentationen",
+      "supportForum": "Hilfsforum",
+      "issueTracker": "Issue Tracker"
+    },
+    "info": {
+      "title": "Über Spring Cloud Data Flow",
+      "serverImpTitle": "Data Flow Server Implementierung",
+      "name": "Name",
+      "version": "Version",
+      "features": "Features",
+      "streams": "Streams",
+      "tasks": "Aufgaben",
+      "schedules": "Zeitpläne",
+      "monitoring": "Monitoring Dashboard",
+      "grafana": "Grafana",
+      "wavefront": "Wavefront",
+      "security": "Sicherheit",
+      "authentificationEnabled": "Authentifizierung Eingeschaltet",
+      "authenticated": "Authentifizierung",
+      "username": "Benutzername",
+      "roles": "Rolle",
+      "impVersion": "Implementierungs-Version",
+      "core": "Kern",
+      "dashboard": "Dashboard",
+      "shell": "Shell",
+      "shellChecksumSha1": "Shell Checksumme Sha1",
+      "shellChecksumSha256": "Shell Checksumme Sha256",
+      "runtimeSkipperDeployer": "Laufzeit-Umgebung - Skipper Deployer",
+      "spiVersion": "Spi Version",
+      "javaVersion": "Java Version",
+      "platformApiVersion": "Plattform Api Version",
+      "platformClientVersion": "Plattform Client Version",
+      "platformHostVersion": "Platform Host Version",
+      "platformType": "Plattform Typ",
+      "springBootVersion": "Spring Boot Version",
+      "springVersion": "Spring Version",
+      "platformSkipperDeployer": "Plattform spezifische Informationen über den Skipper Deployer",
+      "noPlatform": "Keine Plattform spezifischen Informationen über den Anwendungs-Deployer verfügbar.",
+      "runtimeTaskLauncher": "Laufzeit-Umgebung - Aufgaben-Starter",
+      "noLauncher": "Keine Aufgaben-Starter informationen verfügbar.",
+      "platformTaskLauncher": "Plattform spezifische Informationen über den Aufgaben-Starter",
+      "noPlatformTaskLauncher": "Keine Plattform spezifischen Informationen über den Aufgaben-Stater verfügbar.",
+      "help": "Brauchen Sie Hilfe oder haben Sie einen Fehler gefunden?",
+      "projectPageDesc": "Schnelle Übersicht über das Spring Cloud Data Flow Projekt.",
+      "sourceCodeDesc": "Spring Cloud Data Flow Projekt ist ein Open Source Projekt.",
+      "documentationDesc": "Lernen Sie mehr über die Produkt-Features.",
+      "apiDocsDesc": "Lernen Sie mehr über die REST-APIs.",
+      "supportFormDesc": "Brauchen Sie Hilfe??",
+      "issueTrackerDesc": "Melden Sie einen Fehler oder eine Anfrage für ein neues Feature.",
+      "copy": "Kopiere Details in die Zwischenablage",
+      "message": {
+        "copyContent": "Kopiere Über-Details in die Zwischenablage(Als JSON)."
+      }
+    }
+  },
+  "auditRecords": {
+    "title": "Audit Einträge",
+    "id": "ID",
+    "createdOn": "Erstellt am",
+    "actions": "Aktionen",
+    "operations": "Operationen",
+    "operationID": "Operations-ID",
+    "createdBy": "Erstellt von",
+    "platformName": "Plattform Name",
+    "noResult": "Keine Ergebnisse gefunden.",
+    "data": "Daten",
+    "property": "Eigenschaften",
+    "recordsPerPage": "Einträge pro Seite",
+    "pagination": "{{ first }} - {{ last }} von {{ total }} Einträgen",
+    "allActions": "Alle Aktionen",
+    "allOperations": "Alle Operationen"
+  },
+  "tools": {
+    "title": "Tools",
+    "exportStreams": "Exportiere Stream(s): Erstellt eine JSON-Datei basierend auf den ausgewählten Streams",
+    "importStreams": "Importiere Stream(s): Importiere Streams von einer JSON-Datei",
+    "cleanUpAll": "Räume alle Aufgabe/Job-Ausführungen auf",
+    "cleanUpCompleted": "Räume alle beendeten Aufgabe/Job-Ausführungen auf",
+    "exportTasks": "Exportiere Aufgabe(n): Erstellt eine JSON-Datei basierend auf den ausgewählten Aufgaben",
+    "importTasks": "Importiere Aufgabe(n): Importiere Aufgaben von einer JSON-Datei",
+    "streams": "Streams",
+    "tasks": "Aufgaben",
+    "cleanUp": "Aufgaben-Ausführung aufräumen",
+    "modal": {
+      "cleanUp": {
+        "title": "Bestätige Aufräumen der Aufgaben-Ausführung(en)",
+        "content": "Diese Aktion entfernt <strong>{{ count }} Ausführung(en)</strong>. Sind Sie sicher?",
+        "processing": "Entferne Daten...",
+        "cleanUp": "Aufräumen der Ausführung(en)",
+        "message": {
+          "warningNoExecutionTitle": "Keine Ausführung",
+          "warningNoExecutionContent": "Es gibt keine Ausführung.",
+          "successTitle": "Aufräumen der Ausführung(en)",
+          "successContent": "{{count}} Ausführung(en) wurden aufgeräumt."
+        }
+      },
+      "exportStreams": {
+        "title": "Exportiere Stream(s)",
+        "content": "Sie können einen Export von Ihren <strong>ausgewählten Streams</strong> erstellen.<br />Diese Operation wird eine <strong>JSON Datei</strong> generieren und zum Download zur Verfügung stellen..",
+        "name": "Name",
+        "definition": "Definitionen",
+        "exporting": "Exportiere gerade Stream(s)",
+        "export": "Exportiere Stream(s)",
+        "message": {
+          "errorNoStreamTitle": "Kein Stream ausgewählt",
+          "errorNoStreamContent": "Bitte wählen Sie ein Stream(s) zum exportieren aus",
+          "successTitle": "Stream(s) exportieren",
+          "successContent": "Stream(s) wurden exportiert."
+        }
+      },
+      "importStreams": {
+        "title": "Importiere Stream(s)",
+        "content": "Sie können Streams von einer <strong>JSON Datei</strong> importieren.<br />Die Datei muss vor dem Import wegen sensitiver Eigenschaften angepasst werden.",
+        "options": "Optionen",
+        "jsonFile": "JSON Datei",
+        "file": "Datei",
+        "optimize": "Optimieren",
+        "duration": "Dauer",
+        "errors": "{{count}} Fehler",
+        "description": "Beschreibung",
+        "errorMessage": "Nachricht",
+        "index": "Index",
+        "success": "{{count}} Stream(s) erstellt",
+        "imnporting": "Importiere Stream(s)",
+        "import": "Importiere Stream(s)",
+        "message": {
+          "errorInvalidFileTitle": "Ungültige Datei",
+          "errorInvalidFileContent": "Die Datei ist nicht gültig.",
+          "errorSelectFileTitle": "Ungültige Datei",
+          "errorSelectFileContent": "Bitte wählen Sie eine Datei aus."
+        }
+      },
+      "exportTasks": {
+        "title": "Exportiere Aufgabe(n)",
+        "content": "Sie können einen Export von Ihren <strong>ausgewählte Aufgabe</strong> exportieren.<br />iese Operation wird eine <strong>JSON Datei</strong> generieren und zum Download zur Verfügung stellen.",
+        "name": "Name",
+        "definition": "Definition",
+        "exporting": "Exportiere gerade Aufgabe(n)",
+        "export": "Exportiere Aufgabe(n)",
+        "message": {
+          "errorNoTaskTitle": "Keine Aufgabe ausgewählt",
+          "errorNoTaskContent": "Bitte wählen Sie Aufgabe(n) zum exportieren.",
+          "successTitle": "Aufgabe(n) exportieren",
+          "successContent": "Aufgabe(n) wurden exportiert."
+        }
+      },
+      "importTasks": {
+        "title": "Importere Aufgabe(n)",
+        "content": "Sie können Ihre Aufgaben von einer <strong>JSON Datei</strong> importieren.<br />Die Datei muss vor dem Import wegen sensitiver Eigenschaften angepasst werden.",
+        "options": "Optionen",
+        "jsonFile": "JSON Datei",
+        "file": "Datei",
+        "excludeChildren": "Kind-Elemente ausschließen",
+        "duration": "Dauer",
+        "errors": "{{count}} Fehler",
+        "description": "Beschreibung",
+        "errorMessage": "Nachricht",
+        "index": "Index",
+        "success": "{{count}} Aufgabe(n) erstellt",
+        "imnporting": "Importiere gerade Aufgabe(n)",
+        "import": "Importiere Aufgabe(n)",
+        "message": {
+          "errorInvalidFileTitle": "Ungültige Datei",
+          "errorInvalidFileContent": "Die Datei ist nicht gültig.",
+          "errorSelectFileTitle": "Ungültige Datei",
+          "errorSelectFileContent": "Bitte wählen Sie eine Datei aus."
+        }
+      }
+    }
+  },
+  "runtime": {
+    "main": {
+      "title": "Laufzeit",
+      "stream": "Stream <strong>{{ name }}</strong>",
+      "instance": "Instanz",
+      "instances": "Instanzen",
+      "viewDetails": "Zeige Details",
+      "grafana": "Grafana Dashboard",
+      "wavefront": "Wavefront Dashboard",
+      "noApp": "Es sind derzeit keine <strong>laufenden Anwendungen</strong> vorhanden.",
+      "loading": "Lade Laufzeit"
+    },
+    "details": {
+      "title": "Instanzen für Anwendung",
+      "instance": "Instanz"
+    }
+  },
+  "streams": {
+    "main": {
+      "title": "Streams",
+      "createStreams": "Erstelle Stream(s)",
+      "deployStreams": "Stream(s) ausrollen",
+      "undeployStreams": "Stream(s) zurückziehen",
+      "destroyStreams": "Stream(s) zerstören",
+      "cloneStreams": "Stream(s) klonen",
+      "noResult": "Keine Ergebnisse gefunden.",
+      "streamsPerPage": "Streams pro Seite",
+      "pagination": "{{ first }} - {{ last }} von <span class=\"pagination-total\">{{ total }}</span> Streams"
+    },
+    "clone": {
+      "title": "Stream klonen",
+      "title2": "Streams klonen",
+      "content": "Diese Aktion wird die folgenden <strong>Stream(s)</strong> erstellen",
+      "duplicate": "Dupliziere Stream-Namen, bitte Eingabenamen überprüfen.",
+      "requiredName": "Stream-Name wird benötigt.",
+      "invalidName": "Ungültiger Stream-Name (keine Leer-/Sonderzeichen).",
+      "maxLengthName": "Stream-Name muss weniger als 255 Zeichen lang sein.",
+      "uniqueName": "Stream-Name wurde bereits verwendet.",
+      "cloning": "Klone gerade Stream(s)",
+      "clone": "Den Stream klonen",
+      "clone2": "Die Streams klonen",
+      "message": {
+        "partialSuccessTitle": "Stream(s) klonen",
+        "partialSuccessContent": "Stream(s) wurde teilweise geklont",
+        "successTitle": "Stream(s) klonen",
+        "successContent": "Stream(s) wurden erfolgreich geklont",
+        "errorContent": "Keine Stream(s) geklont."
+      }
+    },
+    "destroy": {
+      "title": "Bestätigung zum Löschen des Stream",
+      "title2": "Bestätigung zum Löschen der Streams",
+      "content": "Diese Aktion wird den Stream zerstören und löschen <strong>{{ name }}</strong>. Sind Sie sicher?",
+      "content2": "Diese Aktion zerstört die unterhalb aufgeführen <strong>{{ count }} Stream-Definitionen</strong>. Sind Sie sicher?",
+      "destroying": "Zerstöre gerade Stream(s)",
+      "destroy": "Zerstöre den Stream",
+      "destroy2": "Zerstöre die Streams",
+      "message": {
+        "successTitle": "Zerstöre Stream",
+        "successContent": "Stream wurde erfolgreich entfernt \"{{ name }}\".",
+        "successTitle2": "Zerstöre Streams",
+        "successContent2": "{{ count }} Stream(s) zerstört.",
+        "errorContent": "Ein Fehler ist beim gesammelten Löschen der Streams aufgetreten. Bitte prüfen Sie die Server Logs für mehr Informationen."
+      }
+    },
+    "rollback": {
+      "title": "Bestätigen Sie das Zurückrollen des Streams",
+      "content": " Diese Aktion wird den Stream <strong>{{ name }}</strong> zur Version {{ version }} zurückrollen. Sind Sie sicher?",
+      "rollbacking": "Zurückrollen der/des Stream(s) ...",
+      "rollback": "Zurückrollen",
+      "message": {
+        "successTitle": "Zurückrollen erfolgreich",
+        "successContent": "Stream erfolgreich zur Version \"{{ version }}\" zurückrollen"
+      }
+    },
+    "status": {
+      "title": "Stream Status",
+      "deploying": "Ausrollen",
+      "deployingContent": "Ausrollen wurde initiiert",
+      "deployed": "Ausgerollt",
+      "deployedContent": "Vollständig ausgerollt basierend auf der Anzahl jeder Stream Anwendungs-Eigenschaften",
+      "partial": "Teilweise",
+      "partialContent": "1 oder mehr Anwendungen sind noch nicht ausgerollt.",
+      "incomplete": "Unvollständig",
+      "incompleteContent": "Mindestens 1 oder mehr von jeder Anwendung ist nicht bei der angeforderten Kapazität",
+      "failed": "Fehlgeschlagen",
+      "failedContent": "1 oder mehr Anwendungen haben nicht eine einzelne Instanz ausgerollt",
+      "undeployed": "Zurückgezogen",
+      "undeployedContent": "Absichlich zurückgezogen, oder erstellt aber nicht ausgerollt"
+    },
+    "undeploy": {
+      "title": "Bestätige zurückziehen des Streams",
+      "title2": "Bestätige zurückziehen der Streams",
+      "content": "Diese Aktion wird den Stream <strong>{{ name }}</strong> zurückziehen. Sind Sie sicher?",
+      "content2": "Diese Aktion wird die unten aufgeführten <strong>{{ count }} Stream-Definitionen</strong> zurückziehen. Sind Sie sicher?",
+      "undeploying": "Ziehe gerade Stream(s) zurück",
+      "undeploy": "Zurückziehen des Streams",
+      "undeploy2": "Zurückziehen der Streams",
+      "message": {
+        "successTitle": "Zurückziehen des Streams",
+        "successContent": "Stream \"{{ name }}\" wurden erfolgreich zurückgezogen.",
+        "successTitle2": "Zurückziehen der Streams",
+        "successContent2": "{{ count }} Stream(s) zurückgezogen.",
+        "errorContent": "Ein Fehler ist beim Zurückziehen der Streams aufgetreten. Bitte prüfen Sie die Server-Logs für mehr Informationen."
+      }
+    },
+    "scale": {
+      "title": "Skaliere Instanze(n) für Anwendungen",
+      "loading": "Hole Stream Laufzeit-Status ab",
+      "description": "Sie können eine Anwendung zwischen 1 und 9 Instanzen skalieren.",
+      "scale": "Skalieren",
+      "scaling": "Skalieren",
+      "name": "Name",
+      "instance": "Instanz",
+      "message": {
+        "loadingErrorContent": "Ein Fehler ist beim holen der Stream Laufzeit-Status aufgetreten. Bitte prüfen Sie die Server-Logs für mehr Informationen.",
+        "successTitle": "Skaliere Stream",
+        "successContent": "{{ name }} Anwendung skaliert zu {{ count }}."
+      }
+    },
+    "create": {
+      "title": "Erstelle Stream(s)",
+      "create": "Erstelle Stream(s)",
+      "modal": {
+        "creating": "Erstelle gerade Stream(s)",
+        "content": "Diese Aktion wird die folgenden <strong>Stream(s)</strong> erstellen:",
+        "create": "Erstelle den/die Stream(s)",
+        "placeholderName": "Stream-Name",
+        "placeholderDescription": "Stream-Beschreibung",
+        "duplicateName": "Doppelter Stream-Name, bitte prüfen Sie die Eingabe-Namen.",
+        "requiredName": "Stream-Name wird benötigt",
+        "uniqueName": "Stream-Name wird bereits verwendet",
+        "invalidName": "Ungültiger Stream-Name",
+        "maxLengthName": "Stream-Name muss weniger als 255 Zeichen lang sein",
+        "maxLengthDescription": "Stream-Beschreibung muss weniger als 255 Zeichen lang sein",
+        "operation": {
+          "creating": "Erstelle Stream {{ name }}",
+          "completed": "Erstellung komplett"
+        },
+        "message": {
+          "invalidStreamTitle": "Ungültige Stream(s)",
+          "invalidStreamContent": "Bitte giben Sie einen oder mehr gültige Streams an.",
+          "successTitle": "Stream(s) Erstellung",
+          "successContent": "Stream(s) wurden erfolgreich erstellt",
+          "errorContent": "Problem während des Erstellens des Stream \"{{ name }}\": {{ message }}",
+          "errorContent2": "Fehler beim Erstellen des Streams \"{{ name }} \""
+        }
+      }
+    },
+    "stream": {
+      "title": "Stream",
+      "deploy": "Stream ausrollen",
+      "update": "Stream updaten",
+      "undeploy": "Stream zurückziehen",
+      "destroy": "Stream zerstören",
+      "scale": "Skaliere Instanz(en)",
+      "showPipeline": "Zeige Daten Pipeline",
+      "relatedStreams": "Zusammengehörige Stream(s)",
+      "deploymentInfo": "Ausroll-Informationen",
+      "runtime": "Laufzeit",
+      "instances": "Instanz(en)",
+      "viewLog": "Zeige Log",
+      "history": "Historie",
+      "noHistory": "Es gibt keine Historie bislang.",
+      "streamStatus": "Stream Status",
+      "rollback": "Zurückrollen",
+      "logStream": "Log {{ name }}",
+      "noLog": "Kein log."
+    },
+    "multiDeploy": {
+      "title": "Streams ausrollen",
+      "invalidPlatform": "Wählen der Plattform.",
+      "invalidProperties": "Ein oder mehr Argumente sind nicht gültig.<br />Example: <code>myarg=myvalue</code>.",
+      "deployStreams": "Ausrollen des Streams",
+      "deployModal": "Ausrollen der/des Stream(s)...",
+      "deploying": "Ausrollen der gerade Streams aus",
+      "message": {
+        "successTitle": "Ausrollen erfolgreich",
+        "successContent": "Erfolgreich {{count}} Stream(s) ausgerollt."
+      }
+    },
+    "deploy": {
+      "main": {
+        "titleUpdate": "Aktualisieren des Stream",
+        "titleDeploy": "Ausrollen des Streams",
+        "description": "Bitte geben Sie ein optionale Ausroll-Eingeschaft an. Sie können den Builder verwenden.<br /> Alternativ können Sie eine externe Eigenschaft-Datei mit Ausroll-Eigenschaften angeben. Weitere Informationen finden sie in der technischen Dokumentation.",
+        "builder": "Builder",
+        "freetext": "Freitext",
+        "update": "Aktualisieren des Stream",
+        "deploy": "Ausrollen des Stream",
+        "updating": "Aktualisiere gerade den Stream",
+        "deploying": "Rolle gerade den/die Streams aus",
+        "export": "Exportieren",
+        "message": {
+          "errorExportPropertyContent": "Es gibt keine Eigenschaften zum Exportieren.",
+          "errorCopyPropertyContent": "Es gibt keine Eigenschaften zum Kopieren.",
+          "successCopyTitle": "Kopiere in die Zwischenablage",
+          "successCopyContent": "Die Eigenschaften wurden in die Zwischenablage kopiert.",
+          "successUpdateTitle": "Aktualisierung erfolgreich",
+          "successUpdateContent": "Erfolgreiches aktualisieren der Stream-Definition \"{{ name }}\"",
+          "successDeployTitle": "Ausrollen erfolgreich",
+          "successDeployContent": "Erfolgreiches ausrollen der Stream-Definition \"{{ name }}\"",
+          "errorDeployContent": "Ein Fehler ist aufgetreten während des Ausrollens der Streams-Aktualisierung"
+        }
+      },
+      "freetext": {
+        "description": "Geben Sie eine Liste von Eigenschaften in das Textfeld an. Alternativ können Sie eine Datei vom lokalen Dateisystem wählen, die in das Textfeld übernommen wird.",
+        "tooltip": "Bitte stellen Sie eine Textdatei mit Eigenschaften zur Verfügung. Diese Eigenschaft werden im überliegenden Textfeld verwendet.",
+        "deploy": "Rolle den Stream aus",
+        "update": "Aktualisiere den Stream",
+        "message": {
+          "errorDeployTitle": "Ungültige Eigenschaften",
+          "errorDeployContent": "Einige Zeilen sind nicht gültig."
+        }
+      },
+      "builder": {
+        "invalidPlatform": "Die definierte Plattform ist nicht gültig (unbekannt).",
+        "genericDeployerProperties": "Generelle Ausroll-Eigenschaften",
+        "example": "Beispiel",
+        "key": "Schlüssel",
+        "value": "Wert",
+        "defaultVersion": "Standard Version",
+        "generatedProperty": "Generierte Eigenschaften",
+        "deploymentPlatform": "Ausroll-Plattform",
+        "applicationsProperties": "Anwendungs-Eigenschaften",
+        "global": "Global",
+        "invalid": "ungültig",
+        "enterNumber": "Geben Sie eine Zahl ein",
+        "enterValue": "Geben Sie einen Wert ein",
+        "errorLoading": "Fehler beim Laden",
+        "invalidVersion": "Ungültige Version",
+        "noProperties": "Keine Eigenschaften",
+        "deploy": "Ausrollen des Streams",
+        "update": "Aktualisieren des Streams",
+        "tooltip": {
+          "invalidProperty": "Das Feld \"property\" ist nicht gültig.",
+          "invalidGlobal": "Das Feld \"global\" ist nicht gültig.",
+          "invalidField": "Das Feld \"{{ name }}\" ist nicht gültig."
+        },
+        "deploymentPropertiesTitle": "Ausroll-Eigenschaften für die Plattform"
+      }
+    }
+  },
+  "tasks": {
+    "main": {
+      "title": "Aufgabe",
+      "create": "Erstelle Aufgabe",
+      "scheduleTasks": "Aufgabe(n) einplanen",
+      "destroyTasks": "Zerstöre Aufgabe(n)",
+      "cloneTasks": "Klone Aufgabe(n)",
+      "tasksPerPage": "Aufgaben pro Seite",
+      "pagination": "{{ first }} - {{ last }} von <span class=\"pagination-total\">{{ total }}</span> Aufgaben"
+    },
+    "cleanup": {
+      "title": "Bestätige aufräumen von Ausführung(en)",
+      "confirmContent": "Diese Aktion wird <strong>{{ count }} Ausführung(en)</strong> entfernen. Sind Sie sicher?",
+      "selectContent": "Bitte wählen Sie den Status von der zu entfernenden Ausführung:",
+      "all": "Alle {{ all }} Ausführung(en)",
+      "completed": "{{ completed }} Ausführun(en) abgeschlossen",
+      "removing": "Entferne Daten",
+      "cleanup": "Ausführung(en) aufräumen",
+      "message": {
+        "warningNoExecutionTitle": "Keine Ausführung",
+        "warningNoExecutionContent": "Es gibt keine Ausführung für die Aufgabe.",
+        "successTitle": "Ausführung(en) aufräumen",
+        "successContent": "{{ count }} Ausführung(en) aufgeräumt."
+      }
+    },
+    "clone": {
+      "cloneTitle": "Klone Aufgabe",
+      "cloneTitle2": "Klone Aufgaben",
+      "content": "Diese Aktion wird die folgende <strong>Aufgabe(n)</strong> erstellen",
+      "duplicate": "Doppelter Aufgaben-Name, bitte überprüfen Sie die Eingabe-Namen.",
+      "requiredName": "Aufgaben-Name wird benötigt.",
+      "invalidName": "Ungültiger Aufgaben-Name (keine Leer- oder Sonderzeichen).",
+      "maxLengthName": "Aufgaben-Name muss weniger als 255 Zeichen lang sein.",
+      "uniqueName": "Aufgaben-Name wird bereits verwendet.",
+      "cloning": "Klone gerade Aufgabe(n)",
+      "clone": "Klone die Aufgabe",
+      "clone2": "Klone die Aufgaben",
+      "message": {
+        "partialSuccessTitle": "Aufgabe(n) klonen",
+        "partialSuccessContent": "Aufgabe(n) wurden teilweise geklont",
+        "successTitle": "Aufgabe(n) klonen",
+        "successContent": "Aufgabe(n) wurden erfolgreich geklont",
+        "errorContent": "Keine Aufgabe(n) geklont."
+      }
+    },
+    "destroy": {
+      "destroyTitle": "Bestätige das Zerstören der Aufgabe",
+      "destroyTitle2": "Bestätige das Zerstören der Aufgaben",
+      "content": "Diese Aktion zerstört und löscht die Aufgabe <strong>{{ name }}</strong>. Sind Sie sicher?",
+      "content2": "Diese Aktion wird die unterhalb aufgeführten<strong>{{ count }} Aufgaben</strong> zerstören. Sind Sie sicher?",
+      "destroying": "Zerstöre Aufgabe(n)",
+      "destroy": "Zerstöre die Aufgabe",
+      "destroy2": "Zerstöre die Aufgaben",
+      "message": {
+        "successTitle": "Zerstöre die Aufgabe",
+        "successContent": "Die Aufgabe \"{{ name }}\" wurde erfolgreich entfernt.",
+        "successTitle2": "Zerstöre die Aufgaben",
+        "successContent2": "{{ count }} Aufgaben-Definitionen zerstört.",
+        "errorContent": "Ein Fehler ist beim Löschen von mehreren Aufgaben aufgetreten. Bitte prüfen Sie die Server-Logs für mehr Informationen."
+      }
+    },
+    "task": {
+      "title": "Aufgabe",
+      "launch": "Starte Aufgabe",
+      "schedule": "Aufgaben einplanen",
+      "destroy": "Zerstöre Aufgabe",
+      "information": "Informationen",
+      "applications": "Anwendungen",
+      "showPipeline": "Zeige Daten-Pipeline",
+      "lastExecution": "Letzte Ausführung",
+      "viewTaskExecution": "Zeige Aufgaben-Ausführung",
+      "viewLog": "Zeige Log",
+      "latestExecutions": "Neuesten Ausführung(en)",
+      "schedules": "Zeitpläne",
+      "lastExecutionStatus": "Letzter Ausführungs-Status"
+    },
+    "create": {
+      "title": "Erstelle eine Aufgabe",
+      "createTask": "Erstelle Aufgabe",
+      "modal": {
+        "creating": "Erstelle gerade eine Aufgabe",
+        "create": "Erstelle eine Aufgabe",
+        "taskName": "Aufgaben-Name",
+        "taskDescription": "Aufgaben-Beschreibung",
+        "content": "Diese Aktion wird die folgende <strong>Aufgabe</strong> erstellen:",
+        "duplicateName": "Doppelter Aufgaben-Name, bitte prüfen Sie die Eingabe-Namen.",
+        "maxLengthName": "Der Aufgaben-Name muss weniger als 255 Zeichen lang sein.",
+        "invalidName": "Ungültiger Aufgaben-Name.",
+        "requiredTask": "Aufgaben-Name wird benötigt.",
+        "maxLength63Name": "Der Aufgaben-Definitions-Name muss weniger als 63 Zeichen für Kubernetes oder Cloud Foundry Plattformen betragen.",
+        "uniqueTask": "Aufgaben-Name wird bereits verwendet.",
+        "maxLengthDescription": "Aufgaben-Beschreibung muss weniger als 255 Zeichen lang sein."
+      },
+      "message": {
+        "errorContent": "Bitte geben Sie eine gültige Aufgabe ein.",
+        "successTitle": "Aufgaben-Erstellung",
+        "successContent": "Aufgaben-Definition erstellt für {{ name }}"
+      }
+    },
+    "launch": {
+      "main": {
+        "title": "Starte Aufgabe",
+        "description": "Bitte geben Sie ein optionale Deployment-Eingeschaft an. Sie können den Builder verwenden. <br />Alternativ können Sie eine externe Eigenschaft-Datei mit Deployment-Eigenschaften angeben. Weitere Informationen finden sie in der technischen Dokumentation.",
+        "builder": "Builder",
+        "freetext": "Freitext",
+        "export": "Exportieren",
+        "copy": "In die Zwischenablage kopieren",
+        "launching": "Starte gerade eine Aufgabe",
+        "launch": "Starte Aufgabe",
+        "message": {
+          "errorExportPropertyContent": "Es gibt keine Eigenschaften zum Exportieren.",
+          "errorExportArgumentContent": "Es gibt keine Argumente zum Exportieren.",
+          "errorCopyPropertyContent": "Es gibt keine Eigenschaften zum Kopieren.",
+          "errorCopyArgumentContent": "Es gibt keine Argumente zum Kopieren.",
+          "successCopyTitle": "In die Zwischenablage kopieren",
+          "successCopyContent": "Die Eigenschaften wurden in die Zwischenablage kopiert.",
+          "successCopyArgsContent": "Die Argumente wurden in die Zwischenablage kopiert.",
+          "successTitle": "Start erfolgreich",
+          "successContent": "Die Aufgaben-Definition \"{{ name }}\" wurde erfolgreich gestartet",
+          "errorLaunchContent": "Ein Fehler ist beim Starten der Aufgabe aufgetreten."
+        }
+      },
+      "freetext": {
+        "propertiesDescription": "Geben Sie eine Liste von Eigenschaften in das hier drunter liegende Textfeld ein.",
+        "argumentsDescription": "Geben Sie eine Liste an Argumenten in der unterhalb liegende Feld an.",
+        "propertiesTooltip": "Bitte stellen Sie eine Textdatei mit Eigenschaften zur Verfügung. Diese Eigenschaft werden im überliegenden Textfeld verwendet.",
+        "argumentsTooltip": "Bitte geben Sie eine Text-Datei mit Argumenten an. Diese wird verwendet um Sie in das oberhalb liegende Textfeld zu übernehmen.",
+        "launch": "Starte Aufgabe"
+      },
+      "builder": {
+        "platform": "Plattform",
+        "invalidPlatform": "Die definierte Plattform ist nicht gültig (unbekannt).",
+        "genericDeployerProperties": "Generische Ausroll-Eigenschaften",
+        "arguments": "Argumente",
+        "properties": "Eigenschaften",
+        "defaultVersion": "Standard Version",
+        "deploymentPlatform": "Ausroll-Plattform",
+        "applicationsProperties": "Anwendungs-Eigenschaften",
+        "version": "Version",
+        "ctrProperties": "Ctr-Eigenschaften",
+        "global": "Global",
+        "invalid": "ungültig",
+        "enterNumber": "Geben Sie eine Nummer ein",
+        "enterValue": "Geben Sie einen Wert ein",
+        "selectValue": "Wählen Sie einen Wert aus",
+        "errorLoading": "Fehler beim Laden",
+        "invalidVersion": "Ungültige Version",
+        "noProperties": "Keine Eigenschaften",
+        "launch": "Starte Aufgabe",
+        "deploymentPropertiesTitle": "Ausroll-Eigenschaften für Plattform",
+        "ctrPropertiesTitle": "Ctr-Eigenschaften",
+        "lastVersionLabel": "Letzer Start {{ version }}",
+        "defaultVersionLabel": "Standard-Version ({{ version }})",
+        "tooltip": {
+          "invalidProperty": "Das Feld \"property\" ist nicht gültig.",
+          "invalidGlobal": "Das Feld \"global\" ist nicht gültig.",
+          "invalidField": "Das Feld \"{{ name }}\" ist nicht gültig."
+        },
+        "alert": {
+          "migrateContent": "Es gibt Eingenschaften welche migriert werden können.",
+          "migrate": "Migrieren"
+        }
+      }
+    }
+  },
+  "executions": {
+    "main": {
+      "title": "Aufgaben-Ausführungen",
+      "executionId": "Ausführungs-Id",
+      "taskName": "Aufgaben-Name",
+      "arguments": "Argumente",
+      "externalExecutionId": "Externe Ausführungs-Id",
+      "batchJob": "Batch-Job",
+      "jobExecutionIds": "Job Ausführungs-Ids",
+      "startTime": "Start-Zeit",
+      "endTime": "End-Zeit",
+      "startDate": "Start-Datum",
+      "endDate": "End-Datum",
+      "duration": "Dauer",
+      "exitCode": "Ausgangs-Code",
+      "exitMessage": "Ausgangs-Nachricht",
+      "resourceUrl": "Ressourcen-URL",
+      "viewLog": "Zeige Log",
+      "applicationProperties": "Anwendungs-Eigenschaften",
+      "platformProperties": "Plattform-Eigenschaften",
+      "noExecution": "Keine Ausführungen bislang.",
+      "cleanupExecutions": "Räume Ausführung(en) auf",
+      "cleanup": "Räume Ausführung auf",
+      "taskDetails": "Aufgaben-Details",
+      "relaunch": "Starte Aufgabe erneut",
+      "stop": "Stoppe Aufgabe",
+      "executionPerPage": "Aufgaben-Ausführungen pro Seite",
+      "pagination": "{{ first }} - {{ last }} von <span class=\"pagination-total\">{{ total }}</span> Aufgaben-Ausführungen"
+    },
+    "stop": {
+      "title": "Bestätige das Stoppen der Aufgaben-Ausführung",
+      "description": "Diese Aktion wird die Aufgaben-Ausführung stoppen <strong>{{ id }}</strong> (Aufgabe <strong>{{ taskName }}</strong>). Sind Sie sicher?",
+      "stopping": "Stoppe gerade Aufgaben-Ausführung",
+      "stop": "Stoppe Aufgaben-Ausführung(en)",
+      "message": {
+        "successTitle": "Stoppe Aufgaben-Ausführung(en)",
+        "successContent": "Anfrage zum Stoppen der Aufgaben-Ausführung abgeschickt \"{{ id }}\".",
+        "errorContent": "Ein Fehler ist während des Stoppens der Aufgaben-Ausführung aufgetreten. Bitte prüfen Sie die Server-Logs für mehr Informationen."
+      }
+    },
+    "cleanup": {
+      "title": "Bestätige Aufräumen der Aufgaben-Ausführung(en)",
+      "description": "Diese Aktion wird die Daten der Aufgaben-Ausführung entfernen <strong>{{ executionId }}</strong> (Aufgabe <strong>{{ taskName }}</strong>). Sind Sie sicher?",
+      "description2": "Diese Aktion wird die Daten von den unterhalb aufgeführten <strong>{{ count }} Aufgaben-Ausführungen</strong> entfernen. Sind Sie sicher?",
+      "removing": "Entferne gerade Daten",
+      "cleanupExecution": "Aufräumen der Aufgaben-Ausführung",
+      "cleanupExecutions": "Aufräumen der Aufgaben-Ausführungen",
+      "message": {
+        "successTitle": "Aufräumen der Aufgaben-Ausführung(en)",
+        "successContent": "{{ count }} Aufgaben-Ausführungen wurden aufgeräumt."
+      }
+    },
+    "execution": {
+      "title": "Aufgaben-Ausführung - Ausführungs-Id",
+      "relaunch": "Aufgabe neustarten",
+      "stop": "Stoppe Ausführung",
+      "cleanup": "Räume Aufgaben-Ausführung auf",
+      "viewTask": "Zeige Aufgabe",
+      "noTask": "Keine Aufgabe gefunden.",
+      "task": "Aufgabe",
+      "logTitle": "Log Aufgaben-Ausführung {{ id }}"
+    }
+  },
+  "jobs": {
+    "main": {
+      "title": "Job-Ausführungen",
+      "executionId": "Ausführungs-Id",
+      "jobName": "Job-Name",
+      "jobInstance": "Job-Instanz",
+      "taskId": "Aufgaben-Id",
+      "taskExecutionId": "Aufgaben-Ausführungs-Id",
+      "jobParameters": "Job-Parameter",
+      "instanceId": "Instanz-Id",
+      "startTime": "Start-Zeit",
+      "endTime": "End-Zeit",
+      "duration": "Dauer",
+      "exitCode": "Ausgangs-Code",
+      "exitMessage": "Ausgangs-Nachricht",
+      "stepExecutionCount": "Schritt-Ausführungs-Anzahl",
+      "jobPerPage": "Job-Ausführungen pro Seite",
+      "pagination": "{{ first }} - {{ last }} von <span class=\"pagination-total\">{{ total }}</span> Job-Ausführungen",
+      "restartConfirmTitle": "Bestätige Neustart der Job-Ausführung",
+      "restartConfirmContent": "Diese Aktion wird fehlgeschlagene Schritte in der Job-Ausführung neustarten <strong>{{ name }} ({{ id }})</strong>.<br />Sind Sie sicher?",
+      "stopConfirmTitle": "Bestätige Stoppen der Job-Ausführung",
+      "stopConfirmContent": "Diese Aktion wird die Job-Ausführung stoppen <strong>{{ name }} ({{ id }})</strong>.<br />Sind Sie sicher?",
+      "message": {
+        "successRestartTitle": "Job neustarten",
+        "successRestartMessage": "Der Job \"{{ name }}\" wurde erfolgreich neugestartet.",
+        "successStopTitle": "Stoppe Job",
+        "successStopMessage": "Der Job \"{{ name }}\" wurde erfolgreich gestoppt."
+      }
+    },
+    "execution": {
+      "title": "Job-Ausführung",
+      "restart": "Neustarten des Jobs",
+      "stop": "Stoppen des Jobs",
+      "noTaskFound": "Keine Aufgabe gefunden.",
+      "task": "Aufgabe",
+      "taskExecution": "Aufgaben-Ausführung",
+      "steps": "Schritte",
+      "viewTask": "Zeige Aufgabe",
+      "relaunchTask": "Starte Aufgabe neu",
+      "viewExecution": "Zeige Aufgaben-Ausführung",
+      "viewLog": "Zeige Log"
+    },
+    "step": {
+      "title": "Schritt-Ausführung",
+      "stepId": "Schritt-Id",
+      "stepName": "Schritt-Name",
+      "stepExecutionId": "Schritt-Ausführungs-Id",
+      "jobExecutionId": "Job-Ausführungs-Id",
+      "stepType": "Schritt-Typ",
+      "reads": "Lesevorgänge",
+      "writes": "Schreibvorgänge",
+      "commits": "Übergaben",
+      "rollbacks": "Zurückroll-Vorgänge",
+      "duration": "Dauer",
+      "filterCount": "Filter-Anzahl",
+      "processSkips": "Prozess-Übersprünge",
+      "readSkips": "Lese-Übersprünge",
+      "skips": "Übersprünge",
+      "writeSkips": "Schreib-Übersprünge",
+      "noStep": "Keine Schritt-Ausführung verfügbar.",
+      "noExecutionContext": "Kein Schritt-Ausführung-Kontext.",
+      "information": "Informationen",
+      "exitDescription": "Ausgangs-Beschreibung",
+      "stepExecutionContext": "Schritt-Ausführungs-Kontext",
+      "stepExecutionHistory": "Schritt-Ausführungs-Historie",
+      "task": "Aufgabe",
+      "taskExecution": "Aufgaben-Ausführung",
+      "history": {
+        "name": "Name",
+        "count": "Anzahl",
+        "min": "Minimum",
+        "max": "Maximum",
+        "mean": "Durchschnitt",
+        "standardDeviation": "Standard Abweichung",
+        "commitCount": "Übergabe-Anzahl",
+        "duration": "Dauer",
+        "durationPerRead": "Dauer pro Lese-Vorgang",
+        "filterCount": "Filter-Anzahl",
+        "processSkipCount": "Prozess-Übersprungs-Anzahl",
+        "readCount": "Lese-Anzahl",
+        "readSkipCount": "Lese-Übersprungs-Anzahl",
+        "rollbackCount": "Zurückroll-Anzahl",
+        "writeCount": "Schreib-Anzahl",
+        "writeSkipCount": "Schreib-Übersprungs-Anzahl"
+      }
+    }
+  },
+  "schedules": {
+    "main": {
+      "title": "Zeitpläne",
+      "taskName": "Aufgaben-Name",
+      "scheduleName": "Zeitplan-Name",
+      "cronExpression": "Zeitangaben-Ausdruck",
+      "cronExp": "Zeitangaben-Ausdruck",
+      "arguments": "Argumente",
+      "noSchedule": "keine Einplanung bislang.",
+      "deleteSchedules": "Lösche Zeitpläne",
+      "taskDetails": "Aufgaben-Details",
+      "addNewSchedule": "Neuen Zeitplan hinzufügen",
+      "pagination": "{{ count }} Zeitpläne"
+    },
+    "destroy": {
+      "title": "Bestätige das Löschen eines Zeitplans",
+      "title2": "Bestätige das Löschen von Zeitplänen",
+      "description": "Diese Aktion wird den Zeitplan <u><strong>{{ name }}</strong></u> löschen. Sind Sie sicher?",
+      "description2": "Diese Aktion wird die unten aufgeführten <u><strong>{{ count }} Zeitpläne</strong></u>löschen.<br />Sind Sie sicher?",
+      "deleting": "Lösche Zeitpläne",
+      "delete": "Lösche den Zeitplan",
+      "delete2": "Lösche die Zeitpläne",
+      "message": {
+        "successTitle": "Lösche Zeitpläne",
+        "successContent": "{{ count }} Zeitpläne gelöscht",
+        "errorContent": "Ein Fehler ist beim Löschen der Zeitpläne aufgetreten. Bitte prüfen Sie die Server-Logs für mehr Informationen."
+      }
+    },
+    "create": {
+      "title": "Erstelle Zeitpläne",
+      "requiredName": "Der Name wird benötigt.",
+      "uniqueName": "Der Name existiert bereits.",
+      "duplicateScheduleName": "Doppelter Zeitplan-Name auf dem Formular.",
+      "requiredScheduleName": "Der Name wird benötigt.",
+      "uniqueScheduleName": "Der Name existiert bereits.",
+      "requiredPlatform": "Die Plattform wird benötigt.",
+      "requiredCronExpression": "Der Zeitangaben-Ausdruck wird benötigt.",
+      "arguments": "Argumente",
+      "argumentsDesc": "Argumente können vorangestellt werden mit <code>--</code> (optional). Beispiel:",
+      "invalidArguments": "Eine oder mehr Argumente sind ungültig.<br />Beispiel: <code>myarg=myvalue</code>.",
+      "properties": "Eigenschaften",
+      "propertiesDesc": "Parameter sollten wie folgt starten <code>app.</code> oder <code>scheduler.</code>. Beispiel:",
+      "invalidProperties": "Einer oder mehr Parameter sind nicht gültig.<br />Beispiel: <code>app.myarg=myvalue</code>.",
+      "create": "Erstelle Zeitpläne",
+      "creating": "Erstelle gerade Zeitpläne",
+      "message": {
+        "groupSelectionNotFoundTitle": "Gruppen-Auswahl nicht gefunden.",
+        "scheduleSuccessTitle": "Zeitplan-Erstellung",
+        "schedulesSuccessTitle": "Zeitplan-Erstellung",
+        "scheduleSuccessContent": "Erfolgreiche Zeitplan-Erstellung \"{{ name }}\"",
+        "schedulesSuccessContent": "Es wurden erfolgreich {{ count }} Zeitpläne erstellt"
+      }
+    },
+    "schedule": {
+      "title": "Zeitplan",
+      "taskDetails": "Aufgaben-Details",
+      "deleteSchedule": "Lösche Zeitplan",
+      "taskInformation": "Aufgaben-Informationen"
+    }
+  },
+  "security": {
+    "authenticationRequired": {
+      "title": "Authentifizierung benötigt",
+      "description": "Bitte melden Sie sich an."
+    },
+    "featureDisabled": {
+      "title": "Feature deaktiviert",
+      "description": "Das angefragte Feature ist auf dem Server deaktiviert."
+    },
+    "rolesMissing": {
+      "title": "Rollen fehlen",
+      "description": "Es scheint als ob nötige Rollen fehlen. Bitte kontaktieren Sie ihren Administrator, um die Situation zu klären."
+    }
+  },
+  "flo": {
+    "commons": {
+      "invalidValue": "Ungültiger Wert.",
+      "searchForApplications": "Suche nach Anwendungen",
+      "fitToContent": "Den Inhalt anpassen",
+      "instanceDown": "Anwendungs-Instanz ist nicht ausgerollt oder herunter gefahren"
+    },
+    "properties": {
+      "title": "Eigenschaften für",
+      "searchProperties": "Suche Eigenschaften"
+    },
+    "stream": {
+      "invalidAppLabel": "Ungültiges Anwendungs-Etikette.",
+      "invalidStreamName": "Ungültiger Stream-Name.",
+      "uniqueStreamName": "Stream-Name existiert bereits.",
+      "noneOfStreamName": "Stream-Name gibt es bereits auf der Leinwand.",
+      "enterStreamDefinition": "Eingabe einer Stream-Definition"
+    },
+    "task": {
+      "enterTaskDefinition": "Eingabe einer Aufgaben-Definition"
+    }
+  }
+}
