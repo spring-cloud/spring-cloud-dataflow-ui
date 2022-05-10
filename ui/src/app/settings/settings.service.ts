@@ -35,7 +35,9 @@ export class SettingsService {
     }
 
     if (this.localStorageService.get('languageActiveValue')) {
-      activeLanguageValue = this.localStorageService.get('languageActiveValue');
+      if (languages.indexOf(this.localStorageService.get('languageActiveValue')) > -1) {
+        activeLanguageValue = this.localStorageService.get('languageActiveValue');
+      }
     }
 
     const settings: SettingModel[] = [
