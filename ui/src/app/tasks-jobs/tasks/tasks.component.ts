@@ -11,9 +11,8 @@ import {ContextService} from '../../shared/service/context.service';
 import {SettingsService} from '../../settings/settings.service';
 import {CloneComponent} from './clone/clone.component';
 import {CleanupComponent} from './cleanup/cleanup.component';
-import {HttpError} from 'src/app/shared/model/error.model';
 import {TranslateService} from '@ngx-translate/core';
-import {NotificationService} from 'src/app/shared/service/notification.service';
+import {NotificationService} from '../../shared/service/notification.service';
 
 @Component({
   selector: 'app-tasks',

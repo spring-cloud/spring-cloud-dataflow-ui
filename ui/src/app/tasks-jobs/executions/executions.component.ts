@@ -8,9 +8,8 @@ import {CleanupComponent} from './cleanup/cleanup.component';
 import {DatagridComponent} from '../../shared/component/datagrid/datagrid.component';
 import {ContextService} from '../../shared/service/context.service';
 import {SettingsService} from '../../settings/settings.service';
-import {HttpError} from 'src/app/shared/model/error.model';
 import {TranslateService} from '@ngx-translate/core';
-import {NotificationService} from 'src/app/shared/service/notification.service';
+import {NotificationService} from '../../shared/service/notification.service';
 
 @Component({
   selector: 'app-executions',

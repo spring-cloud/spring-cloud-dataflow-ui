@@ -3,7 +3,7 @@ import {Observable, Subject} from 'rxjs';
 import {App} from '../../shared/model/app.model';
 import {RecordService} from '../../shared/api/record.service';
 import {RecordOperationType} from '../../shared/model/record.model';
-import {NotificationService} from 'src/app/shared/service/notification.service';
+import {NotificationService} from '../../shared/service/notification.service';
 import {TranslateService} from '@ngx-translate/core';
 
 @Component({

@@ -3,8 +3,6 @@ import {FormsModule} from '@angular/forms';
 import {ClarityModule} from '@clr/angular';
 import {RouterTestingModule} from '@angular/router/testing';
 import {UserComponent} from './user.component';
-import {throwError} from 'rxjs';
-import {HttpError} from 'src/app/shared/model/error.model';
 import {NotificationServiceMock} from '../../tests/service/notification.service.mock';
 import {SecurityServiceMock} from '../../../app/tests/api/security.service.mock';
 import {TranslateTestingModule} from 'ngx-translate-testing';

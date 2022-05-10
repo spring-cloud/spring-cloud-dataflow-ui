@@ -6,7 +6,7 @@ import {UnregisterComponent} from './unregister/unregister.component';
 import {Router} from '@angular/router';
 import {VersionComponent} from './version/version.component';
 import {DatagridComponent} from '../shared/component/datagrid/datagrid.component';
-import {NotificationService} from 'src/app/shared/service/notification.service';
+import {NotificationService} from '../shared/service/notification.service';
 import {ContextService} from '../shared/service/context.service';
 import {SettingsService} from '../settings/settings.service';
 import {TranslateService} from '@ngx-translate/core';

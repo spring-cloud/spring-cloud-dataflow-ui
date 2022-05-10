@@ -14,7 +14,7 @@ import {TranslateTestingModule} from 'ngx-translate-testing';
 import TRANSLATIONS from '../../../assets/i18n/en.json';
 import {StoreModule} from '@ngrx/store';
 import {throwError} from 'rxjs';
-import {AppError} from 'src/app/shared/model/error.model';
+import {AppError} from '../../shared/model/error.model';
 import {ROOT_REDUCERS, metaReducers} from '../../reducers/reducer';
 
 describe('about/signpost/signpost.component.ts', () => {

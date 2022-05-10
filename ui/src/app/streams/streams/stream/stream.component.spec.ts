@@ -13,7 +13,7 @@ import {UndeployComponent} from '../undeploy/undeploy.component';
 import {GrafanaStreamDirective} from '../../../shared/grafana/grafana.directive';
 import {GrafanaServiceMock} from '../../../tests/service/grafana.service.mock';
 import {throwError} from 'rxjs';
-import {AppError} from 'src/app/shared/model/error.model';
+import {AppError} from '../../../shared/model/error.model';
 import {HttpError} from '../../../shared/model/error.model';
 import {RollbackComponent} from '../rollback/rollback.component';
 import {By} from '@angular/platform-browser';

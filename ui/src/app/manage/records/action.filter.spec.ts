@@ -12,7 +12,7 @@ import {By} from '@angular/platform-browser';
 import {throwError} from 'rxjs';
 import {ContextServiceMock} from '../../tests/service/context.service.mock';
 import {TranslateTestingModule} from 'ngx-translate-testing';
-import {AppError} from 'src/app/shared/model/error.model';
+import {AppError} from '../../shared/model/error.model';
 import TRANSLATIONS from '../../../assets/i18n/en.json';
 
 describe('manage/records/action.filter.ts', () => {

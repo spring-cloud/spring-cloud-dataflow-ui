@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {Router} from '@angular/router';
 import {SecurityService} from '../../security/service/security.service';
 import {UrlUtilities} from '../../url-utilities.service';
-import {NotificationService} from 'src/app/shared/service/notification.service';
+import {NotificationService} from '../../shared/service/notification.service';
 import {TranslateService} from '@ngx-translate/core';
 
 @Component({

@@ -17,7 +17,7 @@ import {DatagridColumnPipe} from '../../shared/pipe/datagrid-column.pipe';
 import {TranslateTestingModule} from 'ngx-translate-testing';
 import TRANSLATIONS from '../../../assets/i18n/en.json';
 import {throwError} from 'rxjs';
-import {AppError} from 'src/app/shared/model/error.model';
+import {AppError} from '../../shared/model/error.model';
 
 describe('tasks-jobs/executions/executions.component.ts', () => {
   let component: ExecutionsComponent;

@@ -13,7 +13,7 @@ import {NotificationServiceMock} from '../tests/service/notification.service.moc
 import {By} from '@angular/platform-browser';
 import {DebugElement} from '@angular/core';
 import {throwError} from 'rxjs';
-import {AppError} from 'src/app/shared/model/error.model';
+import {AppError} from '../shared/model/error.model';
 import {VersionComponent} from './version/version.component';
 import {ConfirmComponent} from '../shared/component/confirm/confirm.component';
 import {ContextServiceMock} from '../tests/service/context.service.mock';

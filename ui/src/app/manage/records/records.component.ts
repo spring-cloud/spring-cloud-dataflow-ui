@@ -5,7 +5,7 @@ import {RecordPage} from '../../shared/model/record.model';
 import {DatagridComponent} from '../../shared/component/datagrid/datagrid.component';
 import {ContextService} from '../../shared/service/context.service';
 import {SettingsService} from '../../settings/settings.service';
-import {NotificationService} from 'src/app/shared/service/notification.service';
+import {NotificationService} from '../../shared/service/notification.service';
 import {TranslateService} from '@ngx-translate/core';
 
 @Component({

@@ -16,7 +16,7 @@ import {AppServiceMock} from '../../../tests/api/app.service.mock';
 import {GroupServiceMock} from '../../../tests/service/group.service.mock';
 import {StreamDeployServiceMock} from '../../../tests/service/stream-deploy.service.mock';
 import {of, throwError} from 'rxjs';
-import {AppError} from 'src/app/shared/model/error.model';
+import {AppError} from '../../../shared/model/error.model';
 import {HttpError} from '../../../shared/model/error.model';
 import {RoleDirective} from '../../../security/directive/role.directive';
 import {ContextServiceMock} from '../../../tests/service/context.service.mock';
