@@ -7,16 +7,18 @@ import {loaded, update} from './store/settings.action';
 import {SettingModel} from '../shared/model/setting.model';
 import {LocalStorageService} from 'angular-2-local-storage';
 
-export const LANGUAGES = ['en', 'de'];
 const DEFAULT_LANG = 'en';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SettingsService {
+  language = ['en'];
+
   constructor(private store: Store<State>, private localStorageService: LocalStorageService) {}
 
-  load(): Observable<SettingModel[]> {
+  load(languages: Array<string>): Observable<SettingModel[]> {
+    this.language = languages;
     const isDarkConfig = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
     let activeThemeValue: string = isDarkConfig ? 'dark' : 'default';
 
@@ -24,7 +26,7 @@ export class SettingsService {
     if (navigator?.language) {
       activeLanguageValue = navigator.language.split('-')[0];
     }
-    if (LANGUAGES.indexOf(activeLanguageValue) === -1) {
+    if (languages.indexOf(activeLanguageValue) === -1) {
       activeLanguageValue = DEFAULT_LANG;
     }
 

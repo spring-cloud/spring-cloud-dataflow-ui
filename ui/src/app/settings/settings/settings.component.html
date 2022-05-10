@@ -2,8 +2,8 @@
   <clr-modal [(clrModalOpen)]="isOpen" clrModalSize="xs">
     <h3 class="modal-title">{{ 'settings.title' | translate }}</h3>
     <div class="modal-body">
-      <clr-select-container *ngIf="languageActive && languages.length > 1">
-        <label>{{ 'settings.language' | translate }}</label>
+      <clr-select-container *ngIf="languageActive && languages?.length > 1">
+        <label>{{ 'settings.language' | translate }} {{ languageActive?.value }}</label>
         <select
           clrSelect
           name="language"
