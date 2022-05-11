@@ -7,7 +7,7 @@
         <select
           clrSelect
           name="language"
-          [(value)]="languageActive.value"
+          [value]="languageActive.value"
           (change)="languageActiveSettingOnChange($event.target.value)"
         >
           <option value="{{ lang }}" *ngFor="let lang of languages" [selected]="lang === languageActive.value">
