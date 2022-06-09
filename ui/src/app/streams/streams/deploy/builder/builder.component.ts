@@ -9,7 +9,7 @@ import {
   Output,
   ViewChild
 } from '@angular/core';
-import {AbstractControl, FormArray, FormControl, FormGroup} from '@angular/forms';
+import {AbstractControl, UntypedFormArray, UntypedFormControl, UntypedFormGroup} from '@angular/forms';
 import {StreamDeployService} from '../../stream-deploy.service';
 import {map} from 'rxjs/operators';
 import {Observable, of} from 'rxjs';
@@ -148,10 +148,10 @@ export class BuilderComponent implements OnInit, OnDestroy {
   private getProperties(): Array<string> {
     const result: Array<string> = [];
     const isEmpty = (control: AbstractControl) => !control || control.value === '' || control.value === null;
-    const deployers: FormArray = this.refBuilder.formGroup.get('deployers') as FormArray;
-    const appsVersion: FormGroup = this.refBuilder.formGroup.get('appsVersion') as FormGroup;
-    const global: FormArray = this.refBuilder.formGroup.get('global') as FormArray;
-    const specificPlatform: FormArray = this.refBuilder.formGroup.get('specificPlatform') as FormArray;
+    const deployers: UntypedFormArray = this.refBuilder.formGroup.get('deployers') as UntypedFormArray;
+    const appsVersion: UntypedFormGroup = this.refBuilder.formGroup.get('appsVersion') as UntypedFormGroup;
+    const global: UntypedFormArray = this.refBuilder.formGroup.get('global') as UntypedFormArray;
+    const specificPlatform: UntypedFormArray = this.refBuilder.formGroup.get('specificPlatform') as UntypedFormArray;
 
     // Platform
     if (!isEmpty(this.refBuilder.formGroup.get('platform'))) {
@@ -173,7 +173,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
     // Dynamic Form
     [specificPlatform, global].forEach((arr, index) => {
       const keyStart = !index ? 'deployer' : 'app';
-      arr.controls.forEach((line: FormGroup) => {
+      arr.controls.forEach((line: UntypedFormGroup) => {
         if (!isEmpty(line.get('property'))) {
           const key = line.get('property').value;
           if (!isEmpty(line.get('global'))) {
@@ -222,22 +222,22 @@ export class BuilderComponent implements OnInit, OnDestroy {
     return result;
   }
 
-  private updateFormArray(builder, array: FormArray, appKey: string, key: string, value): void {
-    let group: FormGroup;
-    const lines = array.controls.filter((formGroup: FormGroup) => key === formGroup.get('property').value);
+  private updateFormArray(builder, array: UntypedFormArray, appKey: string, key: string, value): void {
+    let group: UntypedFormGroup;
+    const lines = array.controls.filter((formGroup: UntypedFormGroup) => key === formGroup.get('property').value);
 
     if (lines.length > 0) {
-      group = lines[0] as FormGroup;
+      group = lines[0] as UntypedFormGroup;
     } else {
-      group = new FormGroup(
+      group = new UntypedFormGroup(
         {
-          property: new FormControl('', [StreamDeployValidator.key]),
-          global: new FormControl('')
+          property: new UntypedFormControl('', [StreamDeployValidator.key]),
+          global: new UntypedFormControl('')
         },
         {validators: StreamDeployValidator.keyRequired}
       );
       builder.streamDeployConfig.apps.forEach(app => {
-        group.addControl(app.name, new FormControl(''));
+        group.addControl(app.name, new UntypedFormControl(''));
       });
       array.push(group);
     }
@@ -263,17 +263,17 @@ export class BuilderComponent implements OnInit, OnDestroy {
           : [];
       return app.name;
     });
-    const add = (array: FormArray) => {
-      const group = new FormGroup(
+    const add = (array: UntypedFormArray) => {
+      const group = new UntypedFormGroup(
         {
-          property: new FormControl('', [StreamDeployValidator.key]),
-          global: new FormControl('')
+          property: new UntypedFormControl('', [StreamDeployValidator.key]),
+          global: new UntypedFormControl('')
         },
         {validators: StreamDeployValidator.keyRequired}
       );
 
       builder.streamDeployConfig.apps.forEach(app => {
-        group.addControl(app.name, new FormControl(''));
+        group.addControl(app.name, new UntypedFormControl(''));
       });
       array.push(group);
     };
@@ -302,7 +302,13 @@ export class BuilderComponent implements OnInit, OnDestroy {
             }
           }
           if (free) {
-            this.updateFormArray(builder, builder.formGroup.get('global') as FormArray, appKey, keyReduce, value);
+            this.updateFormArray(
+              builder,
+              builder.formGroup.get('global') as UntypedFormArray,
+              appKey,
+              keyReduce,
+              value
+            );
           }
         }
       }
@@ -393,7 +399,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
             if (!match) {
               this.updateFormArray(
                 builder,
-                builder.formGroup.get('specificPlatform') as FormArray,
+                builder.formGroup.get('specificPlatform') as UntypedFormArray,
                 appKey,
                 keyReduce,
                 value
@@ -425,16 +431,16 @@ export class BuilderComponent implements OnInit, OnDestroy {
    * Build the Group Form
    */
   private build(streamDeployConfig: StreamDeployConfig): any {
-    const formGroup: FormGroup = new FormGroup({});
+    const formGroup: UntypedFormGroup = new UntypedFormGroup({});
 
     const getValue = defaultValue => (!defaultValue ? '' : defaultValue);
     const builderAppsProperties = {};
     const builderDeploymentProperties = {global: [], apps: {}};
 
     // Platform
-    const platformControl = new FormControl(
+    const platformControl = new UntypedFormControl(
       getValue(streamDeployConfig.platform.defaultValue),
-      (formControl: FormControl) => {
+      (formControl: UntypedFormControl) => {
         if (this.isErrorPlatform(streamDeployConfig.platform.values, formControl.value)) {
           return {invalid: true};
         }
@@ -477,25 +483,25 @@ export class BuilderComponent implements OnInit, OnDestroy {
     formGroup.addControl('platform', platformControl);
 
     // Deployers
-    const deployers = new FormArray([]);
+    const deployers = new UntypedFormArray([]);
     streamDeployConfig.deployers.forEach((deployer: any) => {
-      const groupDeployer: FormGroup = new FormGroup({});
+      const groupDeployer: UntypedFormGroup = new UntypedFormGroup({});
       const validators = [];
       if (deployer.type === 'java.lang.Integer') {
         validators.push(StreamDeployValidator.number);
       }
-      groupDeployer.addControl('global', new FormControl(getValue(deployer.defaultValue), validators));
+      groupDeployer.addControl('global', new UntypedFormControl(getValue(deployer.defaultValue), validators));
       streamDeployConfig.apps.forEach((app: any) => {
-        groupDeployer.addControl(app.name, new FormControl('', validators));
+        groupDeployer.addControl(app.name, new UntypedFormControl('', validators));
       });
       deployers.push(groupDeployer);
     });
 
     // Applications
-    const appsVersion = new FormGroup({});
+    const appsVersion = new UntypedFormGroup({});
     streamDeployConfig.apps.forEach((app: any) => {
       builderAppsProperties[app.name] = [];
-      const control = new FormControl(null, (formControl: FormControl) => {
+      const control = new UntypedFormControl(null, (formControl: UntypedFormControl) => {
         if (this.isErrorVersion(app, formControl.value)) {
           return {invalid: true};
         }
@@ -532,22 +538,22 @@ export class BuilderComponent implements OnInit, OnDestroy {
     });
 
     // Useful methods for FormArray
-    const add = (array: FormArray) => {
-      const group = new FormGroup(
+    const add = (array: UntypedFormArray) => {
+      const group = new UntypedFormGroup(
         {
-          property: new FormControl('', [StreamDeployValidator.key]),
-          global: new FormControl('')
+          property: new UntypedFormControl('', [StreamDeployValidator.key]),
+          global: new UntypedFormControl('')
         },
         {validators: StreamDeployValidator.keyRequired}
       );
 
       streamDeployConfig.apps.forEach(app => {
-        group.addControl(app.name, new FormControl(''));
+        group.addControl(app.name, new UntypedFormControl(''));
       });
       array.push(group);
     };
     const isEmpty = (dictionary): boolean => Object.entries(dictionary).every(a => a[1] === '');
-    const clean = (val: Array<any>, array: FormArray) => {
+    const clean = (val: Array<any>, array: UntypedFormArray) => {
       const toRemove = val
         .map((a, index) => (index < val.length - 1 && isEmpty(a) ? index : null))
         .filter(a => a != null);
@@ -561,14 +567,14 @@ export class BuilderComponent implements OnInit, OnDestroy {
     };
 
     // Dynamic App properties
-    const globalControls: FormArray = new FormArray([]);
+    const globalControls: UntypedFormArray = new UntypedFormArray([]);
     add(globalControls);
     globalControls.valueChanges.subscribe((val: Array<any>) => {
       clean(val, globalControls);
     });
 
     // Dynamic Platform properties
-    const specificPlatformControls: FormArray = new FormArray([]);
+    const specificPlatformControls: UntypedFormArray = new UntypedFormArray([]);
     add(specificPlatformControls);
     specificPlatformControls.valueChanges.subscribe((val: Array<any>) => {
       clean(val, specificPlatformControls);
@@ -645,7 +651,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
    */
   tooltip(streamDeployConfig: any, control: AbstractControl): string {
     const arr = [];
-    if (control instanceof FormGroup) {
+    if (control instanceof UntypedFormGroup) {
       if (control.get('property')) {
         if (control.get('property') && control.get('property').invalid) {
           arr.push(this.translate.instant('streams.deploy.builder.tooltip.invalidProperty'));

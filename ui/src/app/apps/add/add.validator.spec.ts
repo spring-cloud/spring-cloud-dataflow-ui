@@ -1,11 +1,11 @@
-import {FormControl} from '@angular/forms';
+import {UntypedFormControl} from '@angular/forms';
 import {AppsAddValidator} from './add.validtor';
 
 describe('apps/add/add.validator.ts', () => {
   describe('uri', () => {
     it('invalid', () => {
       [' ', 'bb', 'b b'].forEach(mock => {
-        const uri: FormControl = new FormControl(mock);
+        const uri: UntypedFormControl = new UntypedFormControl(mock);
         expect(AppsAddValidator.uri(uri).invalid).toBeTruthy();
       });
     });
@@ -16,7 +16,7 @@ describe('apps/add/add.validator.ts', () => {
         'https://foo.bar/foo.bar&a=a',
         'https://foo.bar/foo.bar&b=b?a=a'
       ].forEach(mock => {
-        const uri: FormControl = new FormControl(mock);
+        const uri: UntypedFormControl = new UntypedFormControl(mock);
         expect(AppsAddValidator.uri(uri)).toBeNull();
       });
     });
@@ -25,7 +25,7 @@ describe('apps/add/add.validator.ts', () => {
   describe('properties', () => {
     it('invalid', () => {
       ['foo', 'foo='].forEach(mock => {
-        const uri: FormControl = new FormControl(mock);
+        const uri: UntypedFormControl = new UntypedFormControl(mock);
         expect(AppsAddValidator.properties(uri).invalid).toBeTruthy();
       });
     });
@@ -45,7 +45,7 @@ describe('apps/add/add.validator.ts', () => {
         'app.websocket-app=docker:springcloudstream/websocket-sink-kafka-10:1.3.1.RELEASE',
         'source.foo=maven://io.spring.cloud:scdf-sample-app:jar:1.0.0.BUILD-SNAPSHOT'
       ].forEach(mock => {
-        const uri: FormControl = new FormControl(mock);
+        const uri: UntypedFormControl = new UntypedFormControl(mock);
         expect(AppsAddValidator.properties(uri)).toBeNull();
       });
     });
@@ -54,7 +54,7 @@ describe('apps/add/add.validator.ts', () => {
   describe('appName', () => {
     it('invalid', () => {
       [' ', 'f'].forEach(mock => {
-        const appName: FormControl = new FormControl(mock);
+        const appName: UntypedFormControl = new UntypedFormControl(mock);
         const result = AppsAddValidator.appName(appName);
         expect(result.invalid).toBeTruthy();
       });
@@ -92,7 +92,7 @@ describe('apps/add/add.validator.ts', () => {
         'foo|',
         'foo bar'
       ].forEach(mock => {
-        const appName: FormControl = new FormControl(mock);
+        const appName: UntypedFormControl = new UntypedFormControl(mock);
         const result = AppsAddValidator.appName(appName);
         expect(result).toBeNull();
       });
@@ -102,7 +102,7 @@ describe('apps/add/add.validator.ts', () => {
   describe('appUri', () => {
     it('invalid', () => {
       [' ', 'f'].forEach(mock => {
-        const uri: FormControl = new FormControl(mock);
+        const uri: UntypedFormControl = new UntypedFormControl(mock);
         const result = AppsAddValidator.appUri(uri);
         expect(result.invalid).toBeTruthy();
       });
@@ -125,7 +125,7 @@ describe('apps/add/add.validator.ts', () => {
         'docker:springcloudstream/counter-sink-rabbit:1.3.1.RELEASE',
         'docker:spring_cloud_stream/counter-sink_rabbit:1.3.1.RELEASE'
       ].forEach(mock => {
-        const uri: FormControl = new FormControl(mock);
+        const uri: UntypedFormControl = new UntypedFormControl(mock);
         const result = AppsAddValidator.appUri(uri);
         expect(result).toBeNull();
       });

@@ -1,5 +1,5 @@
 import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
-import {FormGroup, AbstractControl, FormControl} from '@angular/forms';
+import {UntypedFormGroup, AbstractControl, FormControl} from '@angular/forms';
 import {DynamicFormPropertyComponent, Properties} from 'spring-flo';
 import PropertyFilter = Properties.PropertyFilter;
 
@@ -12,7 +12,7 @@ export class ClrDynamicFormPropertyComponent {
   @Input()
   model: Properties.ControlModel<any>;
 
-  @Input() form: FormGroup;
+  @Input() form: UntypedFormGroup;
 
   constructor() {}
 

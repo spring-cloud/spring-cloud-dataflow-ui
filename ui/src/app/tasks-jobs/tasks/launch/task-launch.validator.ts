@@ -1,4 +1,4 @@
-import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
 
 /**
  * Validators for Stream Deploy
@@ -30,7 +30,7 @@ export class TaskLaunchValidator {
    * @param {FormControl} formControl
    * @returns {any}
    */
-  static number(formControl: FormControl): any {
+  static number(formControl: UntypedFormControl): any {
     if (formControl.value === null || formControl.value === '') {
       return null;
     }
@@ -50,7 +50,7 @@ export class TaskLaunchValidator {
    * @param {FormControl} formControl
    * @returns {any}
    */
-  static key(formControl: FormControl): any {
+  static key(formControl: UntypedFormControl): any {
     if (!formControl.value) {
       return null;
     }
@@ -66,7 +66,7 @@ export class TaskLaunchValidator {
    * @param {FormControl} formControl
    * @returns {any}
    */
-  static properties(formControl: FormControl): any {
+  static properties(formControl: UntypedFormControl): any {
     if (!formControl.value) {
       return null;
     }
@@ -120,8 +120,8 @@ export class TaskLaunchValidator {
    * Validate a key if any property value is set on a group
    */
   static keyRequired(group: AbstractControl): any {
-    const keys = Object.keys((group as FormGroup).controls).filter(k => k !== 'property');
-    const control = new FormControl(null, Validators.required);
+    const keys = Object.keys((group as UntypedFormGroup).controls).filter(k => k !== 'property');
+    const control = new UntypedFormControl(null, Validators.required);
     const hasValueSet: boolean = keys.some(k => {
       control.setValue(group.get(k).value);
       return control.valid;

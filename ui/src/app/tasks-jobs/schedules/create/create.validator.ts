@@ -1,14 +1,14 @@
-import {FormArray, FormControl} from '@angular/forms';
+import {UntypedFormArray, UntypedFormControl} from '@angular/forms';
 
 export class SchedulesCreateValidator {
-  static cron(formControl: FormControl): any {
+  static cron(formControl: UntypedFormControl): any {
     if (!formControl.value) {
       return null;
     }
     return null;
   }
 
-  static uniqueName(formArray: FormArray): any {
+  static uniqueName(formArray: UntypedFormArray): any {
     const arr = formArray.value as Array<string>;
     return arr
       .map(item => arr.filter(a => !!item && a.toLowerCase() === item.toLowerCase()).length)
@@ -17,7 +17,7 @@ export class SchedulesCreateValidator {
       : null;
   }
 
-  static existName(control: FormControl, names: Array<string>): any {
+  static existName(control: UntypedFormControl, names: Array<string>): any {
     return !!control.value && names.indexOf(control.value.toLowerCase()) > -1 ? {exist: true} : null;
   }
 }

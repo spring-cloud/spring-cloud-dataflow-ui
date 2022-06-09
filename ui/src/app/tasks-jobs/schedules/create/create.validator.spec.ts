@@ -1,11 +1,11 @@
-import {FormArray, FormControl} from '@angular/forms';
+import {UntypedFormArray, UntypedFormControl} from '@angular/forms';
 import {SchedulesCreateValidator} from './create.validator';
 
 describe('tasks-jobs/schedules/create/create.validator.ts', () => {
   describe('cron', () => {
     it('invalid', () => {
       [].forEach(mock => {
-        const form: FormControl = new FormControl(mock);
+        const form: UntypedFormControl = new UntypedFormControl(mock);
         expect(SchedulesCreateValidator.cron(form)).toBeTruthy();
       });
     });
@@ -23,7 +23,7 @@ describe('tasks-jobs/schedules/create/create.validator.ts', () => {
         '0 15 10 * * ? *',
         '0 0/5 14,18 * * ?'
       ].forEach(mock => {
-        const form: FormControl = new FormControl(mock);
+        const form: UntypedFormControl = new UntypedFormControl(mock);
         expect(SchedulesCreateValidator.cron(form)).toBeNull();
       });
     });
@@ -35,7 +35,10 @@ describe('tasks-jobs/schedules/create/create.validator.ts', () => {
         ['aa', 'aa'],
         ['AA', 'aa']
       ].forEach(mock => {
-        const form: FormArray = new FormArray([new FormControl(mock[0]), new FormControl(mock[1])]);
+        const form: UntypedFormArray = new UntypedFormArray([
+          new UntypedFormControl(mock[0]),
+          new UntypedFormControl(mock[1])
+        ]);
         expect(SchedulesCreateValidator.uniqueName(form)).toBeTruthy();
       });
     });
@@ -45,7 +48,10 @@ describe('tasks-jobs/schedules/create/create.validator.ts', () => {
         ['', ''],
         ['aa', 'bb']
       ].forEach(mock => {
-        const form: FormArray = new FormArray([new FormControl(mock[0]), new FormControl(mock[1])]);
+        const form: UntypedFormArray = new UntypedFormArray([
+          new UntypedFormControl(mock[0]),
+          new UntypedFormControl(mock[1])
+        ]);
         expect(SchedulesCreateValidator.uniqueName(form)).toBeNull();
       });
     });
@@ -55,14 +61,14 @@ describe('tasks-jobs/schedules/create/create.validator.ts', () => {
     const names = ['foo', 'bar'];
     it('invalid', () => {
       ['foo', 'bar', 'FOO', 'BAR'].forEach(mock => {
-        const form: FormControl = new FormControl(mock);
+        const form: UntypedFormControl = new UntypedFormControl(mock);
         expect(SchedulesCreateValidator.existName(form, names)).toBeTruthy();
       });
     });
 
     it('valid', () => {
       ['foo1', 'bar1', ''].forEach(mock => {
-        const form: FormControl = new FormControl(mock);
+        const form: UntypedFormControl = new UntypedFormControl(mock);
         expect(SchedulesCreateValidator.existName(form, names)).toBeNull();
       });
     });

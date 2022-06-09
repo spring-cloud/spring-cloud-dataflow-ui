@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
 import {ApplicationType} from '../../../shared/model/app.model';
 import {AppService} from '../../../shared/api/app.service';
 import {NotificationService} from '../../../shared/service/notification.service';
@@ -12,7 +12,7 @@ import {TranslateService} from '@ngx-translate/core';
   templateUrl: './register.component.html'
 })
 export class RegisterComponent implements OnInit {
-  forms: FormGroup[] = [];
+  forms: UntypedFormGroup[] = [];
   applicationTypes = ApplicationType;
   submitted = false;
   isImporting = false;
@@ -20,7 +20,7 @@ export class RegisterComponent implements OnInit {
   constructor(
     private appService: AppService,
     private notificationService: NotificationService,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private router: Router,
     private translate: TranslateService
   ) {}
@@ -46,7 +46,7 @@ export class RegisterComponent implements OnInit {
     } else {
       this.isImporting = true;
       const applications = this.forms
-        .map((form: FormGroup) => {
+        .map((form: UntypedFormGroup) => {
           if (!form.invalid && !this.isFormEmpty(form)) {
             return {
               name: form.get('name').value,
@@ -97,7 +97,7 @@ export class RegisterComponent implements OnInit {
     return true;
   }
 
-  isFormEmpty(form: FormGroup): boolean {
+  isFormEmpty(form: UntypedFormGroup): boolean {
     return (
       form.get('uri').hasError('required') &&
       form.get('name').hasError('required') &&
@@ -109,11 +109,11 @@ export class RegisterComponent implements OnInit {
   newForm(index?: number): void {
     index = index || this.forms.length;
     const form = this.fb.group({
-      name: new FormControl('', [AppsAddValidator.appName, Validators.required]),
-      type: new FormControl('', Validators.required),
-      uri: new FormControl('', [AppsAddValidator.appUri, Validators.required]),
-      metaDataUri: new FormControl('', AppsAddValidator.appUri),
-      force: new FormControl(false)
+      name: new UntypedFormControl('', [AppsAddValidator.appName, Validators.required]),
+      type: new UntypedFormControl('', Validators.required),
+      uri: new UntypedFormControl('', [AppsAddValidator.appUri, Validators.required]),
+      metaDataUri: new UntypedFormControl('', AppsAddValidator.appUri),
+      force: new UntypedFormControl(false)
     });
 
     this.forms.splice(index + 1, 0, form);

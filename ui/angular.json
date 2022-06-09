@@ -207,7 +207,6 @@
       }
     }
   },
-  "defaultProject": "dataflow",
   "cli": {
     "analytics": false
   }

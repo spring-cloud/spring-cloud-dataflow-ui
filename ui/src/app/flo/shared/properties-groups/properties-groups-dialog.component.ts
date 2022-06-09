@@ -1,5 +1,5 @@
 import {Component, ViewEncapsulation, OnInit, EventEmitter} from '@angular/core';
-import {FormGroup} from '@angular/forms';
+import {UntypedFormGroup} from '@angular/forms';
 import {of} from 'rxjs';
 import {Properties} from 'spring-flo';
 import {PropertiesGroupModel, SearchTextFilter} from '../support/properties-group-model';
@@ -79,7 +79,7 @@ export class PropertiesGroupsDialogComponent implements OnInit {
   /**
    * Template will eventually add controls to this group.
    */
-  propertiesFormGroup: FormGroup;
+  propertiesFormGroup: UntypedFormGroup;
 
   private groupPropertiesSources: GroupPropertiesSources;
 
@@ -96,7 +96,7 @@ export class PropertiesGroupsDialogComponent implements OnInit {
   state: any = {};
 
   constructor() {
-    this.propertiesFormGroup = new FormGroup({});
+    this.propertiesFormGroup = new UntypedFormGroup({});
     this._searchFilterTextSubject = new Subject<string>();
   }
 

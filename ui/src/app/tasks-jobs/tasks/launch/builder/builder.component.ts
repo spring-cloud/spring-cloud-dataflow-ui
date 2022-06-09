@@ -9,7 +9,7 @@ import {
   Output,
   ViewChild
 } from '@angular/core';
-import {AbstractControl, FormArray, FormControl, FormGroup} from '@angular/forms';
+import {AbstractControl, UntypedFormArray, UntypedFormControl, UntypedFormGroup} from '@angular/forms';
 import {map, tap} from 'rxjs/operators';
 import {Observable, of, Subscription} from 'rxjs';
 import {Properties} from 'spring-flo';
@@ -71,17 +71,17 @@ export class CtrPropertiesSource implements PropertiesSource {
 
 export interface Builder {
   taskLaunchConfig: TaskLaunchConfig;
-  formGroup: FormGroup;
+  formGroup: UntypedFormGroup;
   builderAppsProperties: any;
 
   // additional arrays and groups exposed directly so that we
   // get proper typing in a template as getting these from a
   // formGroup would return AbstractControl
-  deployers: FormArray;
-  appsVersion: FormGroup;
-  globalControls: FormArray;
-  specificPlatformControls: FormArray;
-  argumentsControls: FormArray;
+  deployers: UntypedFormArray;
+  appsVersion: UntypedFormGroup;
+  globalControls: UntypedFormArray;
+  specificPlatformControls: UntypedFormArray;
+  argumentsControls: UntypedFormArray;
 
   builderDeploymentProperties: {
     global: Array<any>;
@@ -261,10 +261,10 @@ export class BuilderComponent implements OnInit, OnDestroy {
   private getProperties(): Array<string> {
     const result: Array<string> = [];
     const isEmpty = (control: AbstractControl) => !control || control.value === '' || control.value === null;
-    const deployers: FormArray = this.refBuilder.formGroup.get('deployers') as FormArray;
-    const appsVersion: FormGroup = this.refBuilder.formGroup.get('appsVersion') as FormGroup;
-    const global: FormArray = this.refBuilder.formGroup.get('global') as FormArray;
-    const specificPlatform: FormArray = this.refBuilder.formGroup.get('specificPlatform') as FormArray;
+    const deployers: UntypedFormArray = this.refBuilder.formGroup.get('deployers') as UntypedFormArray;
+    const appsVersion: UntypedFormGroup = this.refBuilder.formGroup.get('appsVersion') as UntypedFormGroup;
+    const global: UntypedFormArray = this.refBuilder.formGroup.get('global') as UntypedFormArray;
+    const specificPlatform: UntypedFormArray = this.refBuilder.formGroup.get('specificPlatform') as UntypedFormArray;
 
     // Platform
     if (!isEmpty(this.refBuilder.formGroup.get('platform'))) {
@@ -286,7 +286,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
     // Dynamic Form
     [specificPlatform, global].forEach((arr, index) => {
       const keyStart = !index ? 'deployer' : 'app';
-      arr.controls.forEach((line: FormGroup) => {
+      arr.controls.forEach((line: UntypedFormGroup) => {
         if (!isEmpty(line.get('property'))) {
           const key = line.get('property').value;
           if (!isEmpty(line.get('global'))) {
@@ -352,7 +352,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
     const result: Array<string> = [];
     // indexMap for having property postfix per app
     const indexMap = new Map<string, number>();
-    (this.refBuilder.argumentsControls.controls as FormGroup[]).forEach((g, i) => {
+    (this.refBuilder.argumentsControls.controls as UntypedFormGroup[]).forEach((g, i) => {
       for (const field in g.controls) {
         if (g.controls.hasOwnProperty(field)) {
           const control = g.get(field);
@@ -379,22 +379,22 @@ export class BuilderComponent implements OnInit, OnDestroy {
     return result;
   }
 
-  private updateFormArray(builder, array: FormArray, appKey: string, key: string, value) {
-    let group: FormGroup;
-    const lines = array.controls.filter((formGroup: FormGroup) => key === formGroup.get('property').value);
+  private updateFormArray(builder, array: UntypedFormArray, appKey: string, key: string, value) {
+    let group: UntypedFormGroup;
+    const lines = array.controls.filter((formGroup: UntypedFormGroup) => key === formGroup.get('property').value);
 
     if (lines.length > 0) {
-      group = lines[0] as FormGroup;
+      group = lines[0] as UntypedFormGroup;
     } else {
-      group = new FormGroup(
+      group = new UntypedFormGroup(
         {
-          property: new FormControl('', [TaskLaunchValidator.key]),
-          global: new FormControl('')
+          property: new UntypedFormControl('', [TaskLaunchValidator.key]),
+          global: new UntypedFormControl('')
         },
         {validators: TaskLaunchValidator.keyRequired}
       );
       builder.taskLaunchConfig.apps.forEach(app => {
-        group.addControl(app.name, new FormControl(''));
+        group.addControl(app.name, new UntypedFormControl(''));
       });
       array.push(group);
     }
@@ -416,17 +416,17 @@ export class BuilderComponent implements OnInit, OnDestroy {
           : [];
       return app.name;
     });
-    const add = (array: FormArray) => {
-      const group = new FormGroup(
+    const add = (array: UntypedFormArray) => {
+      const group = new UntypedFormGroup(
         {
-          property: new FormControl('', [TaskLaunchValidator.key]),
-          global: new FormControl('')
+          property: new UntypedFormControl('', [TaskLaunchValidator.key]),
+          global: new UntypedFormControl('')
         },
         {validators: TaskLaunchValidator.keyRequired}
       );
 
       builder.taskLaunchConfig.apps.forEach(app => {
-        group.addControl(app.name, new FormControl(''));
+        group.addControl(app.name, new UntypedFormControl(''));
       });
       array.push(group);
     };
@@ -455,7 +455,13 @@ export class BuilderComponent implements OnInit, OnDestroy {
             }
           }
           if (free) {
-            this.updateFormArray(builder, builder.formGroup.get('global') as FormArray, appKey, keyReduce, value);
+            this.updateFormArray(
+              builder,
+              builder.formGroup.get('global') as UntypedFormArray,
+              appKey,
+              keyReduce,
+              value
+            );
           }
         }
       }
@@ -465,7 +471,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
   }
 
   private populateAppArgs(builder: Builder): Builder {
-    const argumentsControls = builder.formGroup.get('argumentsControls') as FormArray;
+    const argumentsControls = builder.formGroup.get('argumentsControls') as UntypedFormArray;
 
     let maxRows = 0;
     const argsMap = this.arguments.reduce((m, line) => {
@@ -483,15 +489,15 @@ export class BuilderComponent implements OnInit, OnDestroy {
     }, new Map<string, string[]>());
 
     for (let index = 0; index < maxRows; index++) {
-      const gControl = new FormControl('');
+      const gControl = new UntypedFormControl('');
       if (argsMap.has('*') && argsMap.get('*').length > index) {
         gControl.setValue(TaskLaunchService.ctr.value(argsMap.get('*')[index]));
       }
-      const group = new FormGroup({
+      const group = new UntypedFormGroup({
         global: gControl
       });
       builder.taskLaunchConfig.apps.forEach(app => {
-        const aControl = new FormControl('');
+        const aControl = new UntypedFormControl('');
         if (argsMap.has(app.name) && argsMap.get(app.name).length > index) {
           aControl.setValue(TaskLaunchService.ctr.value(argsMap.get(app.name)[index]));
         }
@@ -556,7 +562,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
           builder.errors.global.push(line);
         } else {
           if (deployerKeys.indexOf(keyReduce) > -1) {
-            (builder.formGroup.get('deployers') as FormArray).controls[deployerKeys.indexOf(keyReduce)]
+            (builder.formGroup.get('deployers') as UntypedFormArray).controls[deployerKeys.indexOf(keyReduce)]
               .get(appKey === '*' ? 'global' : appKey)
               .setValue(value);
           } else {
@@ -584,7 +590,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
             if (!match) {
               this.updateFormArray(
                 builder,
-                builder.formGroup.get('specificPlatform') as FormArray,
+                builder.formGroup.get('specificPlatform') as UntypedFormArray,
                 appKey,
                 keyReduce,
                 value
@@ -616,7 +622,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
    * Build the Group Form
    */
   private build(taskLaunchConfig: TaskLaunchConfig): Builder {
-    const formGroup: FormGroup = new FormGroup({});
+    const formGroup: UntypedFormGroup = new UntypedFormGroup({});
 
     // we dehydrate only when coming into builder, not
     // when switching between build and free-text.
@@ -633,9 +639,9 @@ export class BuilderComponent implements OnInit, OnDestroy {
     const ctrProperties: ValuedConfigurationMetadataProperty[] = [];
 
     // Platform
-    const platformControl = new FormControl(
+    const platformControl = new UntypedFormControl(
       getValue(taskLaunchConfig.platform.defaultValue),
-      (formControl: FormControl) => {
+      (formControl: UntypedFormControl) => {
         if (this.isErrorPlatform(taskLaunchConfig.platform.values, formControl.value)) {
           return {invalid: true};
         }
@@ -683,25 +689,25 @@ export class BuilderComponent implements OnInit, OnDestroy {
     formGroup.addControl('platform', platformControl);
 
     // Deployers
-    const deployers = new FormArray([]);
+    const deployers = new UntypedFormArray([]);
     taskLaunchConfig.deployers.forEach((deployer: any) => {
-      const groupDeployer: FormGroup = new FormGroup({});
+      const groupDeployer: UntypedFormGroup = new UntypedFormGroup({});
       const validators = [];
       if (deployer.type === 'java.lang.Integer') {
         validators.push(TaskLaunchValidator.number);
       }
-      groupDeployer.addControl('global', new FormControl(getValue(deployer.defaultValue), validators));
+      groupDeployer.addControl('global', new UntypedFormControl(getValue(deployer.defaultValue), validators));
       taskLaunchConfig.apps.forEach((app: any) => {
-        groupDeployer.addControl(app.name, new FormControl('', validators));
+        groupDeployer.addControl(app.name, new UntypedFormControl('', validators));
       });
       deployers.push(groupDeployer);
     });
 
     // Applications
-    const appsVersion = new FormGroup({});
+    const appsVersion = new UntypedFormGroup({});
     taskLaunchConfig.apps.forEach((app: any) => {
       builderAppsProperties[app.name] = [];
-      const control = new FormControl(null, (formControl: FormControl) => {
+      const control = new UntypedFormControl(null, (formControl: UntypedFormControl) => {
         if (this.isErrorVersion(app, formControl.value)) {
           return {invalid: true};
         }
@@ -741,34 +747,34 @@ export class BuilderComponent implements OnInit, OnDestroy {
     });
 
     // Useful methods for FormArray
-    const addProperty = (array: FormArray) => {
-      const group = new FormGroup(
+    const addProperty = (array: UntypedFormArray) => {
+      const group = new UntypedFormGroup(
         {
-          property: new FormControl('', [TaskLaunchValidator.key]),
-          global: new FormControl('')
+          property: new UntypedFormControl('', [TaskLaunchValidator.key]),
+          global: new UntypedFormControl('')
         },
         {validators: TaskLaunchValidator.keyRequired}
       );
 
       taskLaunchConfig.apps.forEach(app => {
-        group.addControl(app.name, new FormControl(''));
+        group.addControl(app.name, new UntypedFormControl(''));
       });
       array.push(group);
     };
 
-    const addArgument = (array: FormArray) => {
-      const group = new FormGroup({
-        global: new FormControl('')
+    const addArgument = (array: UntypedFormArray) => {
+      const group = new UntypedFormGroup({
+        global: new UntypedFormControl('')
       });
 
       taskLaunchConfig.apps.forEach(app => {
-        group.addControl(app.name, new FormControl(''));
+        group.addControl(app.name, new UntypedFormControl(''));
       });
       array.push(group);
     };
 
     const isEmpty = (dictionary): boolean => Object.entries(dictionary).every(a => a[1] === '');
-    const clean = (val: Array<any>, array: FormArray, addField: (array: FormArray) => void) => {
+    const clean = (val: Array<any>, array: UntypedFormArray, addField: (array: UntypedFormArray) => void) => {
       const toRemove = val
         .map((a, index) => (index < val.length - 1 && isEmpty(a) ? index : null))
         .filter(a => a != null);
@@ -782,21 +788,21 @@ export class BuilderComponent implements OnInit, OnDestroy {
     };
 
     // Dynamic App properties
-    const globalControls: FormArray = new FormArray([]);
+    const globalControls: UntypedFormArray = new UntypedFormArray([]);
     addProperty(globalControls);
     globalControls.valueChanges.subscribe((val: Array<any>) => {
       clean(val, globalControls, addProperty);
     });
 
     // Dynamic Platform properties
-    const specificPlatformControls: FormArray = new FormArray([]);
+    const specificPlatformControls: UntypedFormArray = new UntypedFormArray([]);
     addProperty(specificPlatformControls);
     specificPlatformControls.valueChanges.subscribe((val: Array<any>) => {
       clean(val, specificPlatformControls, addProperty);
     });
 
     // Dynamic Arguments
-    const argumentsControls: FormArray = new FormArray([]);
+    const argumentsControls: UntypedFormArray = new UntypedFormArray([]);
     addArgument(argumentsControls);
     argumentsControls.valueChanges.subscribe((val: Array<any>) => {
       clean(val, argumentsControls, addArgument);
@@ -889,7 +895,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
    */
   tooltip(taskLaunchConfig, control: AbstractControl): string {
     const arr = [];
-    if (control instanceof FormGroup) {
+    if (control instanceof UntypedFormGroup) {
       if (control.get('property')) {
         if (control.get('property') && control.get('property').invalid) {
           arr.push(this.translate.instant('tasks.launch.builder.tooltip.invalidProperty'));

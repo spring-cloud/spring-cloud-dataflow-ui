@@ -1,5 +1,11 @@
 import {Component, Input, OnChanges, forwardRef, OnInit, ViewChild} from '@angular/core';
-import {ControlValueAccessor, FormControl, FormGroup, NG_VALIDATORS, NG_VALUE_ACCESSOR} from '@angular/forms';
+import {
+  ControlValueAccessor,
+  UntypedFormControl,
+  UntypedFormGroup,
+  NG_VALIDATORS,
+  NG_VALUE_ACCESSOR
+} from '@angular/forms';
 import {KeyValueValidator} from './key-value.validator';
 import {KeyValueValidators} from './key-value.interface';
 import {ClipboardCopyService} from '../../service/clipboard-copy.service';
@@ -60,7 +66,7 @@ export class KeyValueComponent implements ControlValueAccessor, OnChanges, OnIni
   isDisabled = false;
   isInvalid = false;
   isFocus = false;
-  form: FormGroup;
+  form: UntypedFormGroup;
   lines: Array<any> = [];
   @ViewChild('propertiesFile', {static: true}) propertiesFile;
 
@@ -69,9 +75,9 @@ export class KeyValueComponent implements ControlValueAccessor, OnChanges, OnIni
     private notificationService: NotificationService,
     private translate: TranslateService
   ) {
-    this.form = new FormGroup({
-      textarea: new FormControl(''),
-      file: new FormControl('')
+    this.form = new UntypedFormGroup({
+      textarea: new UntypedFormControl(''),
+      file: new UntypedFormControl('')
     });
   }
 
@@ -119,7 +125,7 @@ export class KeyValueComponent implements ControlValueAccessor, OnChanges, OnIni
     this.text = obj;
   }
 
-  validate(c: FormControl): any {
+  validate(c: UntypedFormControl): any {
     return this.validateFn(c);
   }
 

@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {AbstractControl, FormControl, FormGroup} from '@angular/forms';
+import {AbstractControl, UntypedFormControl, UntypedFormGroup} from '@angular/forms';
 import {TaskLaunchValidator} from '../task-launch.validator';
 import {Task} from '../../../../shared/model/task.model';
 
@@ -28,7 +28,7 @@ export class FreeTextComponent implements OnInit, OnDestroy {
   @Output() copyArguments = new EventEmitter();
   @Output() launch = new EventEmitter<{props: string[]; args: string[]}>();
 
-  formGroup: FormGroup;
+  formGroup: UntypedFormGroup;
 
   alines: Array<any> = [
     {
@@ -57,11 +57,11 @@ export class FreeTextComponent implements OnInit, OnDestroy {
    * Initialize FormGroup
    */
   constructor() {
-    this.formGroup = new FormGroup({
-      ainput: new FormControl(),
-      pinput: new FormControl(),
-      afile: new FormControl(''),
-      pfile: new FormControl('')
+    this.formGroup = new UntypedFormGroup({
+      ainput: new UntypedFormControl(),
+      pinput: new UntypedFormControl(),
+      afile: new UntypedFormControl(''),
+      pfile: new UntypedFormControl('')
     });
   }
 

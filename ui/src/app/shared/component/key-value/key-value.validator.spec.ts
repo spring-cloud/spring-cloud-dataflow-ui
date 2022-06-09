@@ -1,4 +1,4 @@
-import {FormControl, Validators} from '@angular/forms';
+import {UntypedFormControl, Validators} from '@angular/forms';
 import {KeyValueValidator} from './key-value.validator';
 
 describe('KeyValueValidator', () => {
@@ -40,19 +40,19 @@ describe('KeyValueValidator', () => {
   describe('validateKvRichText', () => {
     describe('invalid', () => {
       it('invalid (main syntax)', () => {
-        const control = new FormControl('foo=bar\nfoo');
+        const control = new UntypedFormControl('foo=bar\nfoo');
         const result = KeyValueValidator.validateKeyValue({key: [], value: []})(control);
         expect(result.syntaxError.errors.length === 1).toBeTruthy();
       });
 
       it('invalid (custom validator on key)', () => {
-        const control = new FormControl('foo=bar\n=foo');
+        const control = new UntypedFormControl('foo=bar\n=foo');
         const result = KeyValueValidator.validateKeyValue({key: [Validators.required], value: []})(control);
         expect(result.syntaxError.errors.length === 1).toBeTruthy();
       });
 
       it('invalid (custom validator on value)', () => {
-        const control = new FormControl('foo=bar\nfoo=');
+        const control = new UntypedFormControl('foo=bar\nfoo=');
         const result = KeyValueValidator.validateKeyValue({key: [], value: [Validators.required]})(control);
         expect(result.syntaxError.errors.length === 1).toBeTruthy();
       });
@@ -61,19 +61,19 @@ describe('KeyValueValidator', () => {
 
   describe('valid', () => {
     it('2 lines', () => {
-      const control = new FormControl('foo=bar\nfoo2=bar2');
+      const control = new UntypedFormControl('foo=bar\nfoo2=bar2');
       const result = KeyValueValidator.validateKeyValue({key: [], value: []})(control);
       expect(result).toBeNull();
     });
 
     it('2 lines and one empty', () => {
-      const control = new FormControl('foo=bar\n\nfoo2=bar2');
+      const control = new UntypedFormControl('foo=bar\n\nfoo2=bar2');
       const result = KeyValueValidator.validateKeyValue({key: [], value: []})(control);
       expect(result).toBeNull();
     });
 
     it('2 lines and 2 empties (start and end)', () => {
-      const control = new FormControl('\nfoo=bar\nfoo2=bar2\n');
+      const control = new UntypedFormControl('\nfoo=bar\nfoo2=bar2\n');
       const result = KeyValueValidator.validateKeyValue({key: [], value: []})(control);
       expect(result).toBeNull();
     });
