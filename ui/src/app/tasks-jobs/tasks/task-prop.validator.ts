@@ -1,7 +1,7 @@
-import {FormControl} from '@angular/forms';
+import {UntypedFormControl} from '@angular/forms';
 
 export class TaskPropValidator {
-  static key(control: FormControl): any {
+  static key(control: UntypedFormControl): any {
     const value = control.value;
     if (value && !value.startsWith('app.') && !value.startsWith('deployer.') && !value.startsWith('scheduler.')) {
       return {invalid: true};

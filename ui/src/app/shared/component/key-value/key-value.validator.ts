@@ -1,4 +1,4 @@
-import {FormControl, ValidationErrors} from '@angular/forms';
+import {UntypedFormControl, ValidationErrors} from '@angular/forms';
 import {KeyValueValidators} from './key-value.interface';
 
 export class KeyValueValidator {
@@ -30,7 +30,7 @@ export class KeyValueValidator {
   }
 
   static validateKeyValue(validators: KeyValueValidators): any {
-    return (c: FormControl) => {
+    return (c: UntypedFormControl) => {
       const errors: Array<any> = KeyValueValidator.getErrors(c.value, validators)
         .map((line, index) => {
           if (!line.valid) {
@@ -72,7 +72,7 @@ export class KeyValueValidator {
       const messages = [
         KeyValueValidator.validateSyntax(lineClean),
         ...validators.key.map((validator: any): string => {
-          const formControl = new FormControl(obj.key || null);
+          const formControl = new UntypedFormControl(obj.key || null);
           const errors: ValidationErrors = validator.apply(null, [formControl]);
           if (errors) {
             return Object.keys(errors)
@@ -82,7 +82,7 @@ export class KeyValueValidator {
           return null;
         }),
         ...validators.value.map((validator: any): string => {
-          const formControl = new FormControl(obj.value || null);
+          const formControl = new UntypedFormControl(obj.value || null);
           const errors: ValidationErrors = validator.apply(null, [formControl]);
           if (errors) {
             return Object.keys(errors)

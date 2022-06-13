@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
-import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
 import {Utils} from '../../../flo/stream/support/utils';
 import {StreamFloCreateComponent} from '../../../flo/stream/component/create.component';
 import {NotificationService} from '../../../shared/service/notification.service';
@@ -28,7 +28,7 @@ const PROGRESS_BAR_WAIT_TIME = 500; // to account for animation delay
 })
 export class CreateComponent implements OnInit {
   isOpen = false;
-  form: FormGroup;
+  form: UntypedFormGroup;
   streams: Array<any>;
   errors: Array<string>;
   dependencies: Map<number, Array<number>>;
@@ -43,7 +43,7 @@ export class CreateComponent implements OnInit {
     private parserService: ParserService,
     private streamService: StreamService,
     private notificationService: NotificationService,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private sanitizeDsl: SanitizeDsl,
     private translate: TranslateService
   ) {
@@ -83,7 +83,7 @@ export class CreateComponent implements OnInit {
   }
 
   uniqueStreamNames(): any {
-    return (control: FormGroup): {[key: string]: any} => {
+    return (control: UntypedFormGroup): {[key: string]: any} => {
       const values = (this.streams || [])
         .map((s, index) => (control.get(index.toString()) ? control.get(index.toString()).value : ''))
         .filter(s => !!s);
@@ -123,7 +123,7 @@ export class CreateComponent implements OnInit {
           streamDef.index = i;
           this.form.addControl(
             streamDef.index.toString(),
-            new FormControl(
+            new UntypedFormControl(
               '',
               [Validators.required, Validators.pattern(/^[a-zA-Z0-9\-\_]+$/), Validators.maxLength(255)],
               [Properties.Validators.uniqueResource(value => this.isUniqueStreamName(value), 500)]
@@ -132,7 +132,7 @@ export class CreateComponent implements OnInit {
 
           this.form.addControl(
             streamDef.index.toString() + '_desc',
-            new FormControl(streamDef.description || '', [Validators.maxLength(255)], [])
+            new UntypedFormControl(streamDef.description || '', [Validators.maxLength(255)], [])
           );
         });
         graphAndErrors.graph.links
@@ -180,7 +180,7 @@ export class CreateComponent implements OnInit {
   }
 
   cancel(): void {
-    this.form = new FormGroup({}, this.uniqueStreamNames());
+    this.form = new UntypedFormGroup({}, this.uniqueStreamNames());
     this.streams = [];
     this.isOpen = false;
   }
@@ -217,7 +217,7 @@ export class CreateComponent implements OnInit {
       );
       return;
     }
-    this.form = new FormGroup({}, this.uniqueStreamNames());
+    this.form = new UntypedFormGroup({}, this.uniqueStreamNames());
     this.streams = [];
     this.setDsl(this.flo.dsl);
     this.isOpen = true;

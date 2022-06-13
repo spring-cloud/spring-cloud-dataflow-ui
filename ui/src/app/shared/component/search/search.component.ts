@@ -1,5 +1,5 @@
 import {Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
-import {FormControl} from '@angular/forms';
+import {UntypedFormControl} from '@angular/forms';
 import {debounceTime, map} from 'rxjs/operators';
 import {AboutService} from '../../api/about.service';
 import {AppPage} from '../../model/app.model';
@@ -23,7 +23,7 @@ export class SearchComponent implements OnInit {
   isFocusPersist = false;
   selected = 0;
   timer;
-  search = new FormControl('');
+  search = new UntypedFormControl('');
 
   @ViewChild('inputQuickSearch', {static: true}) inputQuickSearch: ElementRef;
 

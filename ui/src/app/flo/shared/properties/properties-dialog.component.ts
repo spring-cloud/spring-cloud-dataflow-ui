@@ -1,5 +1,5 @@
 import {Component, ViewEncapsulation, OnInit} from '@angular/core';
-import {FormGroup} from '@angular/forms';
+import {UntypedFormGroup} from '@angular/forms';
 import {Subject} from 'rxjs';
 import {PropertiesGroupModel, SearchTextFilter} from '../support/properties-group-model';
 import {App, ApplicationType} from '../../../shared/model/app.model';
@@ -44,7 +44,7 @@ export class PropertiesDialogComponent extends ModalDialog implements OnInit {
 
   controlGroups: ControlModelCollapsableSection[] = [];
 
-  propertiesFormGroup: FormGroup;
+  propertiesFormGroup: UntypedFormGroup;
 
   showProperties = false;
 
@@ -58,7 +58,7 @@ export class PropertiesDialogComponent extends ModalDialog implements OnInit {
 
   constructor() {
     super();
-    this.propertiesFormGroup = new FormGroup({});
+    this.propertiesFormGroup = new UntypedFormGroup({});
     this._searchFilterTextSubject = new Subject<string>();
   }
 

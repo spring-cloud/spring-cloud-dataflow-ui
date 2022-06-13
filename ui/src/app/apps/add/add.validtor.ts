@@ -1,4 +1,4 @@
-import {FormControl} from '@angular/forms';
+import {UntypedFormControl} from '@angular/forms';
 
 /**
  * Validators for Bulk Import Form
@@ -11,7 +11,7 @@ export class AppsAddValidator {
   static appNameRegex = /^.{2,250}$/;
   static appUriRegex = /^.{2,250}$/;
 
-  static uri(formControl: FormControl): any {
+  static uri(formControl: UntypedFormControl): any {
     if (!formControl.value) {
       return null;
     }
@@ -21,7 +21,7 @@ export class AppsAddValidator {
     return null;
   }
 
-  static properties(formControl: FormControl): any {
+  static properties(formControl: UntypedFormControl): any {
     if (!formControl.value) {
       return null;
     }
@@ -49,7 +49,7 @@ export class AppsAddValidator {
     return null;
   }
 
-  static appName(formControl: FormControl): any {
+  static appName(formControl: UntypedFormControl): any {
     if (!formControl.value) {
       return null;
     }
@@ -59,7 +59,7 @@ export class AppsAddValidator {
     return null;
   }
 
-  static appUri(formControl: FormControl): any {
+  static appUri(formControl: UntypedFormControl): any {
     if (!formControl.value) {
       return null;
     }

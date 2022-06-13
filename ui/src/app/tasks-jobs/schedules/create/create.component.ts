@@ -7,7 +7,7 @@ import {forkJoin, throwError} from 'rxjs';
 import {ScheduleService} from '../../../shared/api/schedule.service';
 import {Schedule, SchedulePage} from '../../../shared/model/schedule.model';
 import {TaskService} from '../../../shared/api/task.service';
-import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormArray, UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
 import {SchedulesCreateValidator} from './create.validator';
 import {KeyValueValidator} from '../../../shared/component/key-value/key-value.validator';
 import {TaskPropValidator} from '../../tasks/task-prop.validator';
@@ -22,7 +22,7 @@ import {TranslateService} from '@ngx-translate/core';
 export class CreateComponent implements OnInit {
   loading = true;
   creating = false;
-  form: FormGroup;
+  form: UntypedFormGroup;
   config: any;
 
   constructor(
@@ -105,22 +105,22 @@ export class CreateComponent implements OnInit {
         value: []
       }
     };
-    const names = new FormArray(
+    const names = new UntypedFormArray(
       tasks.map(
         () =>
-          new FormControl('', [
+          new UntypedFormControl('', [
             Validators.required,
-            (control: FormControl) => SchedulesCreateValidator.existName(control, schedules)
+            (control: UntypedFormControl) => SchedulesCreateValidator.existName(control, schedules)
           ])
       ),
       [SchedulesCreateValidator.uniqueName]
     );
-    this.form = new FormGroup({
-      cron: new FormControl('', [Validators.required, SchedulesCreateValidator.cron]),
+    this.form = new UntypedFormGroup({
+      cron: new UntypedFormControl('', [Validators.required, SchedulesCreateValidator.cron]),
       names: names,
-      args: new FormControl('', KeyValueValidator.validateKeyValue(validators.args)),
-      props: new FormControl('', KeyValueValidator.validateKeyValue(validators.props)),
-      platform: new FormControl(platforms.length > 1 ? '' : platforms[0].name, Validators.required)
+      args: new UntypedFormControl('', KeyValueValidator.validateKeyValue(validators.args)),
+      props: new UntypedFormControl('', KeyValueValidator.validateKeyValue(validators.props)),
+      platform: new UntypedFormControl(platforms.length > 1 ? '' : platforms[0].name, Validators.required)
     });
   }
 
@@ -144,9 +144,9 @@ export class CreateComponent implements OnInit {
         cronExpression: cronExpression,
         task: task.name,
         platform: platform,
-        schedulerName: (this.form.get('names') as FormArray).controls.map((control: FormControl) => control.value)[
-          index
-        ]
+        schedulerName: (this.form.get('names') as UntypedFormArray).controls.map(
+          (control: UntypedFormControl) => control.value
+        )[index]
       }));
       this.scheduleService.createSchedules(scheduleParams).subscribe(
         () => {

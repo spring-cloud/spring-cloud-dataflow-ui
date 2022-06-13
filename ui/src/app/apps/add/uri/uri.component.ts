@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {AppService} from '../../../shared/api/app.service';
 import {NotificationService} from '../../../shared/service/notification.service';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {AppsAddValidator} from '../add.validtor';
 import {TranslateService} from '@ngx-translate/core';
@@ -11,7 +11,7 @@ import {TranslateService} from '@ngx-translate/core';
   templateUrl: './uri.component.html'
 })
 export class UriComponent {
-  form: FormGroup;
+  form: UntypedFormGroup;
   isImporting = false;
 
   constructor(
@@ -20,9 +20,9 @@ export class UriComponent {
     private router: Router,
     private translate: TranslateService
   ) {
-    this.form = new FormGroup({
-      uri: new FormControl('', [Validators.required, AppsAddValidator.uri]),
-      force: new FormControl(false)
+    this.form = new UntypedFormGroup({
+      uri: new UntypedFormControl('', [Validators.required, AppsAddValidator.uri]),
+      force: new UntypedFormControl(false)
     });
   }
 

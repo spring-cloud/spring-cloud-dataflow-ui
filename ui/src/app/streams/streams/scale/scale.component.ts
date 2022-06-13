@@ -3,7 +3,7 @@ import {StreamService} from '../../../shared/api/stream.service';
 import {NotificationService} from '../../../shared/service/notification.service';
 import {StreamStatus} from '../../../shared/model/metrics.model';
 import {Instance} from '../../../shared/model/instance.model';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
 import {TranslateService} from '@ngx-translate/core';
 
 @Component({
@@ -20,7 +20,7 @@ export class ScaleComponent {
 
   instances: Array<Instance> = [];
 
-  form: FormGroup = new FormGroup({});
+  form: UntypedFormGroup = new UntypedFormGroup({});
 
   constructor(
     private streamService: StreamService,
@@ -36,7 +36,11 @@ export class ScaleComponent {
         this.instances.push(instance);
         this.form.addControl(
           `instance${instance.name}`,
-          new FormControl(instance.instanceCount, [Validators.required, Validators.min(1), Validators.max(10000)])
+          new UntypedFormControl(instance.instanceCount, [
+            Validators.required,
+            Validators.min(1),
+            Validators.max(10000)
+          ])
         );
       });
     }

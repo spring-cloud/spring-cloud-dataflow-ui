@@ -1,5 +1,5 @@
 import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
-import {FormGroup, FormControl} from '@angular/forms';
+import {UntypedFormGroup, UntypedFormControl} from '@angular/forms';
 import {Properties} from 'spring-flo';
 import PropertyFilter = Properties.PropertyFilter;
 
@@ -13,7 +13,7 @@ export class ClrPropertiesGroupComponent implements OnInit {
   propertiesGroupModel: Properties.PropertiesGroupModel;
 
   @Input()
-  form: FormGroup;
+  form: UntypedFormGroup;
 
   @Input()
   filter: PropertyFilter;
@@ -34,9 +34,12 @@ export class ClrPropertiesGroupComponent implements OnInit {
   createGroupControls(): void {
     this.propertiesGroupModel.getControlsModels().forEach(c => {
       if (c.validation) {
-        this.form.addControl(c.id, new FormControl(c.value || '', c.validation.validator, c.validation.asyncValidator));
+        this.form.addControl(
+          c.id,
+          new UntypedFormControl(c.value || '', c.validation.validator, c.validation.asyncValidator)
+        );
       } else {
-        this.form.addControl(c.id, new FormControl(c.value || ''));
+        this.form.addControl(c.id, new UntypedFormControl(c.value || ''));
       }
     });
   }

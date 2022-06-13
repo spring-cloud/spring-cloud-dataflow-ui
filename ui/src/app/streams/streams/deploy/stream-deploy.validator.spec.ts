@@ -1,17 +1,17 @@
-import {FormControl} from '@angular/forms';
+import {UntypedFormControl} from '@angular/forms';
 import {StreamDeployValidator} from './stream-deploy.validator';
 
 describe('streams/streams/deploy/strean-deploy.validator.ts', () => {
   describe('number', () => {
     it('invalid', () => {
       ['foo', '0'].forEach(mock => {
-        const control: FormControl = new FormControl(mock);
+        const control: UntypedFormControl = new UntypedFormControl(mock);
         expect(StreamDeployValidator.number(control).invalid).toBeTruthy();
       });
     });
     it('valid', () => {
       ['1', '10', '', null].forEach(mock => {
-        const control: FormControl = new FormControl(mock);
+        const control: UntypedFormControl = new UntypedFormControl(mock);
         expect(StreamDeployValidator.number(control)).toBeNull();
       });
     });
@@ -20,13 +20,13 @@ describe('streams/streams/deploy/strean-deploy.validator.ts', () => {
   describe('key', () => {
     it('invalid', () => {
       ['foo.', 'asdas().asd', 'asdas*.asd', 'asdas=.asd'].forEach(mock => {
-        const control: FormControl = new FormControl(mock);
+        const control: UntypedFormControl = new UntypedFormControl(mock);
         expect(StreamDeployValidator.key(control).invalid).toBeTruthy();
       });
     });
     it('valid', () => {
       ['foo.bar', 'foo-.bar', 'foo_.bar', 'foo', null].forEach(mock => {
-        const control: FormControl = new FormControl(mock);
+        const control: UntypedFormControl = new UntypedFormControl(mock);
         expect(StreamDeployValidator.key(control)).toBeNull();
       });
     });
@@ -35,7 +35,7 @@ describe('streams/streams/deploy/strean-deploy.validator.ts', () => {
   describe('properties', () => {
     it('invalid', () => {
       ['foo.=bar', 'foo.bar=bar', 'foo-.bar=bar', 'foo_.bar=bar', 'foo_.bar=', 'foo_.bar', 'foo=bar'].forEach(mock => {
-        const control: FormControl = new FormControl(mock);
+        const control: UntypedFormControl = new UntypedFormControl(mock);
         expect(StreamDeployValidator.properties(control).invalid).toBeTruthy();
       });
     });
@@ -48,7 +48,7 @@ describe('streams/streams/deploy/strean-deploy.validator.ts', () => {
         'spring.cloud.dataflow.skipper.platformName=bar',
         null
       ].forEach(mock => {
-        const control: FormControl = new FormControl(mock);
+        const control: UntypedFormControl = new UntypedFormControl(mock);
         expect(StreamDeployValidator.properties(control)).toBeNull();
       });
     });

@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
 import {NotificationService} from '../../../shared/service/notification.service';
 import {TaskService} from '../../../shared/api/task.service';
 import {Router} from '@angular/router';
@@ -18,20 +18,20 @@ export class CreateComponent implements OnInit {
   warnings: Array<string>;
   isOpen = false;
   isCreating = false;
-  form: FormGroup;
+  form: UntypedFormGroup;
   dsl: string;
 
   @ViewChild('flo', {static: true}) flo: TaskFloCreateComponent;
 
-  taskName = new FormControl(
+  taskName = new UntypedFormControl(
     '',
     [Validators.required, Validators.pattern(/^[a-zA-Z0-9\-\_]+$/), Validators.maxLength(255)],
     [Properties.Validators.uniqueResource(value => this.isUniqueTaskName(value), 500)]
   );
-  taskDescription = new FormControl('', Validators.maxLength(255));
+  taskDescription = new UntypedFormControl('', Validators.maxLength(255));
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private taskService: TaskService,
     private router: Router,
     private notificationService: NotificationService,

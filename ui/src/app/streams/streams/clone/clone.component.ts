@@ -1,5 +1,5 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
 import {NotificationService} from '../../../shared/service/notification.service';
 import {StreamService} from '../../../shared/api/stream.service';
 import {StreamPage, Stream} from '../../../shared/model/stream.model';
@@ -15,7 +15,7 @@ import {TranslateService} from '@ngx-translate/core';
 })
 export class CloneComponent {
   isOpen = false;
-  form: FormGroup;
+  form: UntypedFormGroup;
   streams: Array<any>;
   names: string[];
   loading = false;
@@ -25,7 +25,7 @@ export class CloneComponent {
   constructor(
     private streamService: StreamService,
     private notificationService: NotificationService,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private translate: TranslateService
   ) {}
 
@@ -46,7 +46,7 @@ export class CloneComponent {
           const newName = this.generateName(stream.name);
           this.form.addControl(
             stream.name,
-            new FormControl(newName, [
+            new UntypedFormControl(newName, [
               Validators.required,
               this.uniqueStreamName(),
               Validators.pattern(/^[a-zA-Z0-9\-]+$/),
@@ -139,7 +139,7 @@ export class CloneComponent {
   }
 
   uniqueStreamNames(): any {
-    return (control: FormGroup): {[key: string]: any} => {
+    return (control: UntypedFormGroup): {[key: string]: any} => {
       let values = [];
       if (control && this.names) {
         values = (this.names || []).map(name => (control.get(name) ? control.get(name).value : '')).filter(s => !!s);
@@ -150,7 +150,7 @@ export class CloneComponent {
   }
 
   uniqueStreamName(): any {
-    return (control: FormControl): {[key: string]: any} => {
+    return (control: UntypedFormControl): {[key: string]: any} => {
       if (control.value && this.names) {
         if (this.names.indexOf(control.value) > -1) {
           return {uniqueStreamName: true};

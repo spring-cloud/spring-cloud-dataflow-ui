@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {AppService} from '../../../shared/api/app.service';
 import {NotificationService} from '../../../shared/service/notification.service';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {UntypedFormControl, UntypedFormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {KeyValueValidator} from '../../../shared/component/key-value/key-value.validator';
 import {TranslateService} from '@ngx-translate/core';
@@ -11,7 +11,7 @@ import {TranslateService} from '@ngx-translate/core';
   templateUrl: './props.component.html'
 })
 export class PropsComponent {
-  form: FormGroup;
+  form: UntypedFormGroup;
   isImporting = false;
   validators = {
     key: [Validators.required],
@@ -24,9 +24,12 @@ export class PropsComponent {
     private router: Router,
     private translate: TranslateService
   ) {
-    this.form = new FormGroup({
-      properties: new FormControl('', [KeyValueValidator.validateKeyValue(this.validators), Validators.required]),
-      force: new FormControl(false)
+    this.form = new UntypedFormGroup({
+      properties: new UntypedFormControl('', [
+        KeyValueValidator.validateKeyValue(this.validators),
+        Validators.required
+      ]),
+      force: new UntypedFormControl(false)
     });
   }
 

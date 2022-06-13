@@ -5,7 +5,7 @@ import {GroupService} from '../../../shared/service/group.service';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {map, mergeMap} from 'rxjs/operators';
 import {forkJoin, Observable, throwError} from 'rxjs';
-import {FormControl, FormGroup} from '@angular/forms';
+import {UntypedFormControl, UntypedFormGroup} from '@angular/forms';
 import {StreamDeployService} from '../stream-deploy.service';
 import {NotificationService} from '../../../shared/service/notification.service';
 import {TranslateService} from '@ngx-translate/core';
@@ -22,7 +22,7 @@ export class MultiDeployComponent implements OnInit {
   streamConfigs: Array<any>;
 
   platforms: Platform[];
-  form: FormGroup[];
+  form: UntypedFormGroup[];
 
   constructor(
     private streamService: StreamService,
@@ -55,9 +55,9 @@ export class MultiDeployComponent implements OnInit {
             const props = streamConfig.properties
               .filter((prop: string) => !prop.startsWith('spring.cloud.dataflow.skipper.platformName='))
               .join('\n');
-            return new FormGroup({
-              platform: new FormControl(platform || 'default'),
-              properties: new FormControl(`${props}`)
+            return new UntypedFormGroup({
+              platform: new UntypedFormControl(platform || 'default'),
+              properties: new UntypedFormControl(`${props}`)
             });
           });
           return streamConfigs;
@@ -108,7 +108,7 @@ export class MultiDeployComponent implements OnInit {
       const cleanValue = v =>
         v && v.length > 1 && v.startsWith('"') && v.endsWith('"') ? v.substring(1, v.length - 1) : v;
 
-      const requests: Array<Observable<any>> = this.form.map((group: FormGroup, index: number) => {
+      const requests: Array<Observable<any>> = this.form.map((group: UntypedFormGroup, index: number) => {
         const propertiesMap = {};
         const config = this.streamConfigs[index];
         const platform = group.get('platform').value;

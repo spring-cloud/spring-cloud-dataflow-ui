@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
+import {UntypedFormControl, UntypedFormGroup} from '@angular/forms';
 import {StreamDeployValidator} from '../stream-deploy.validator';
 import {NotificationService} from '../../../../shared/service/notification.service';
 import {TranslateService} from '@ngx-translate/core';
@@ -55,7 +55,7 @@ export class FreeTextComponent implements OnInit, OnDestroy {
   /**
    * Form
    */
-  formGroup: FormGroup;
+  formGroup: UntypedFormGroup;
 
   /**
    * Line of the textarea
@@ -83,9 +83,9 @@ export class FreeTextComponent implements OnInit, OnDestroy {
    * Initialize FormGroup
    */
   constructor(private notificationService: NotificationService, private translate: TranslateService) {
-    this.formGroup = new FormGroup({
-      input: new FormControl(),
-      file: new FormControl('')
+    this.formGroup = new UntypedFormGroup({
+      input: new UntypedFormControl(),
+      file: new UntypedFormControl('')
     });
   }
 
