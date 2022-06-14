@@ -894,7 +894,9 @@
       "viewTask": "Zeige Aufgabe",
       "noTask": "Keine Aufgabe gefunden.",
       "task": "Aufgabe",
-      "logTitle": "Log Aufgaben-Ausführung {{ id }}"
+      "logTitle": "Log Aufgaben-Ausführung {{ id }}",
+      "viewExecution": "Zeige Ausführung",
+      "viewLog": "Zeige Log"
     }
   },
   "jobs": {

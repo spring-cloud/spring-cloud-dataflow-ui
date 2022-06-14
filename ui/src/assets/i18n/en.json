@@ -894,7 +894,9 @@
       "viewTask": "View task",
       "noTask": "No task found.",
       "task": "Task",
-      "logTitle": "Log task execution {{ id }}"
+      "logTitle": "Log task execution {{ id }}",
+      "viewExecution": "View execution",
+      "viewLog": "View log"
     }
   },
   "jobs": {
