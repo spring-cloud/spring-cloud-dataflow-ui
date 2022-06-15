@@ -115,7 +115,12 @@
       >
         {{ 'executions.main.stop' | translate }}
       </button>
-      <button class="action-item" (click)="cleanup([execution])" [appRole]="['ROLE_DESTROY']">
+      <button
+        class="action-item"
+        (click)="cleanup([execution])"
+        *ngIf="!execution.parentExecutionId"
+        [appRole]="['ROLE_DESTROY']"
+      >
         {{ 'executions.main.cleanup' | translate }}
       </button>
       <button class="action-item" grafanaDashboardTaskExecution [taskExecution]="execution">
