@@ -63,40 +63,38 @@ describe('streams/streams/deploy/deploy.component.ts', () => {
   let component: LaunchComponent;
   let fixture: ComponentFixture<LaunchComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [LaunchComponent, BuilderMockComponent, FreeTextMockComponent],
-        imports: [
-          FormsModule,
-          ClarityModule,
-          RouterTestingModule.withRoutes([]),
-          TranslateTestingModule.withTranslations('en', TRANSLATIONS),
-          BrowserAnimationsModule
-        ],
-        providers: [
-          SecurityServiceMock.provider,
-          AboutServiceMock.provider,
-          NotificationServiceMock.provider,
-          AppServiceMock.provider,
-          TaskServiceMock.provider,
-          GrafanaServiceMock.provider,
-          GroupServiceMock.provider,
-          ContextServiceMock.provider,
-          SettingsServiceMock.provider,
-          {
-            provide: ActivatedRoute,
-            useValue: {
-              params: of({name: 'foo'})
-            }
-          },
-          TaskLaunchService,
-          LoggerService,
-          ParserService
-        ]
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [LaunchComponent, BuilderMockComponent, FreeTextMockComponent],
+      imports: [
+        FormsModule,
+        ClarityModule,
+        RouterTestingModule.withRoutes([]),
+        TranslateTestingModule.withTranslations('en', TRANSLATIONS),
+        BrowserAnimationsModule
+      ],
+      providers: [
+        SecurityServiceMock.provider,
+        AboutServiceMock.provider,
+        NotificationServiceMock.provider,
+        AppServiceMock.provider,
+        TaskServiceMock.provider,
+        GrafanaServiceMock.provider,
+        GroupServiceMock.provider,
+        ContextServiceMock.provider,
+        SettingsServiceMock.provider,
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            params: of({name: 'foo'})
+          }
+        },
+        TaskLaunchService,
+        LoggerService,
+        ParserService
+      ]
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LaunchComponent);

@@ -16,28 +16,26 @@ describe('apps/streams/clone/clone.component.ts', () => {
   let component: CloneComponent;
   let fixture: ComponentFixture<CloneComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [CloneComponent],
-        imports: [
-          FormsModule,
-          ClarityModule,
-          RouterTestingModule.withRoutes([]),
-          BrowserAnimationsModule,
-          ReactiveFormsModule,
-          TranslateTestingModule.withTranslations('en', TRANSLATIONS)
-        ],
-        providers: [
-          SecurityServiceMock.provider,
-          AboutServiceMock.provider,
-          NotificationServiceMock.provider,
-          StreamServiceMock.provider,
-          ContextServiceMock.provider
-        ]
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [CloneComponent],
+      imports: [
+        FormsModule,
+        ClarityModule,
+        RouterTestingModule.withRoutes([]),
+        BrowserAnimationsModule,
+        ReactiveFormsModule,
+        TranslateTestingModule.withTranslations('en', TRANSLATIONS)
+      ],
+      providers: [
+        SecurityServiceMock.provider,
+        AboutServiceMock.provider,
+        NotificationServiceMock.provider,
+        StreamServiceMock.provider,
+        ContextServiceMock.provider
+      ]
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CloneComponent);

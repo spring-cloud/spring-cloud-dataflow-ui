@@ -12,14 +12,12 @@ describe('Security Effect', () => {
   let actions$: Observable<Action>;
   const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        providers: [SecurityEffect, provideMockActions(() => actions$), {provide: Router, useValue: routerSpy}]
-      }).compileComponents();
-      effects = TestBed.inject(SecurityEffect);
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      providers: [SecurityEffect, provideMockActions(() => actions$), {provide: Router, useValue: routerSpy}]
+    }).compileComponents();
+    effects = TestBed.inject(SecurityEffect);
+  }));
 
   it('Unauthorised should logout', () => {
     actions$ = of(SecurityAction.unauthorised());

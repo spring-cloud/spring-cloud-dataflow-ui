@@ -19,21 +19,19 @@ describe('settings/store/settings.effect.ts', () => {
   const themeServiceSpy = jasmine.createSpyObj('ThemeService', ['switchTheme']);
   const settingsServiceSpy = jasmine.createSpyObj('SettingsService', ['update']);
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [TranslateTestingModule.withTranslations('en', TRANSLATIONS)],
-        providers: [
-          SettingsEffect,
-          provideMockActions(() => actions$),
-          {provide: Router, useValue: routerSpy},
-          {provide: ThemeService, useValue: themeServiceSpy},
-          {provide: SettingsService, useValue: settingsServiceSpy}
-        ]
-      }).compileComponents();
-      effects = TestBed.inject(SettingsEffect);
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [TranslateTestingModule.withTranslations('en', TRANSLATIONS)],
+      providers: [
+        SettingsEffect,
+        provideMockActions(() => actions$),
+        {provide: Router, useValue: routerSpy},
+        {provide: ThemeService, useValue: themeServiceSpy},
+        {provide: SettingsService, useValue: settingsServiceSpy}
+      ]
+    }).compileComponents();
+    effects = TestBed.inject(SettingsEffect);
+  }));
 
   it('should update settings', () => {
     // You can't directly test RxJS code that consumes Promises or uses any of the other schedulers

@@ -19,29 +19,27 @@ describe('apps/website-starters/website-starters.component.ts', () => {
   let component: WebsiteStartersComponent;
   let fixture: ComponentFixture<WebsiteStartersComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [WebsiteStartersComponent, FocusDirective],
-        imports: [
-          BrowserModule,
-          ReactiveFormsModule,
-          FormsModule,
-          ClarityModule,
-          TranslateTestingModule.withTranslations('en', TRANSLATIONS),
-          RouterTestingModule.withRoutes([]),
-          BrowserAnimationsModule
-        ],
-        providers: [
-          SecurityServiceMock.provider,
-          AboutServiceMock.provider,
-          AppServiceMock.provider,
-          NotificationServiceMock.provider,
-          ContextServiceMock.provider
-        ]
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [WebsiteStartersComponent, FocusDirective],
+      imports: [
+        BrowserModule,
+        ReactiveFormsModule,
+        FormsModule,
+        ClarityModule,
+        TranslateTestingModule.withTranslations('en', TRANSLATIONS),
+        RouterTestingModule.withRoutes([]),
+        BrowserAnimationsModule
+      ],
+      providers: [
+        SecurityServiceMock.provider,
+        AboutServiceMock.provider,
+        AppServiceMock.provider,
+        NotificationServiceMock.provider,
+        ContextServiceMock.provider
+      ]
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(WebsiteStartersComponent);

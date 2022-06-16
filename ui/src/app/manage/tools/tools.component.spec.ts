@@ -27,39 +27,37 @@ describe('manage/tools/import-export.component.ts', () => {
   let component: ToolsComponent;
   let fixture: ComponentFixture<ToolsComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [
-          ToolsComponent,
-          TypeFilterComponent,
-          StreamExportComponent,
-          StreamImportComponent,
-          TaskExportComponent,
-          TaskImportComponent,
-          CleanupComponent,
-          CardComponent,
-          RoleDirective
-        ],
-        imports: [
-          FormsModule,
-          ClarityModule,
-          RouterTestingModule.withRoutes([]),
-          BrowserAnimationsModule,
-          TranslateTestingModule.withTranslations('en', TRANSLATIONS)
-        ],
-        providers: [
-          SecurityServiceMock.provider,
-          AboutServiceMock.provider,
-          StreamServiceMock.provider,
-          TaskServiceMock.provider,
-          NotificationServiceMock.provider,
-          ImportExportServiceMock.provider,
-          ContextServiceMock.provider
-        ]
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [
+        ToolsComponent,
+        TypeFilterComponent,
+        StreamExportComponent,
+        StreamImportComponent,
+        TaskExportComponent,
+        TaskImportComponent,
+        CleanupComponent,
+        CardComponent,
+        RoleDirective
+      ],
+      imports: [
+        FormsModule,
+        ClarityModule,
+        RouterTestingModule.withRoutes([]),
+        BrowserAnimationsModule,
+        TranslateTestingModule.withTranslations('en', TRANSLATIONS)
+      ],
+      providers: [
+        SecurityServiceMock.provider,
+        AboutServiceMock.provider,
+        StreamServiceMock.provider,
+        TaskServiceMock.provider,
+        NotificationServiceMock.provider,
+        ImportExportServiceMock.provider,
+        ContextServiceMock.provider
+      ]
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     NotificationServiceMock.mock.clearAll();

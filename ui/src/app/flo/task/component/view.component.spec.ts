@@ -23,24 +23,22 @@ describe('ViewComponent', () => {
   );
   const renderService = new RenderService(metamodelService);
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [ViewComponent],
-        imports: [
-          StoreModule.forRoot({}),
-          TaskFloModule,
-          TranslateTestingModule.withTranslations('en', TRANSLATIONS),
-          BrowserAnimationsModule,
-          RouterTestingModule.withRoutes([])
-        ],
-        providers: [
-          {provide: MetamodelService, useValue: metamodelService},
-          {provide: RenderService, useValue: renderService}
-        ]
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [ViewComponent],
+      imports: [
+        StoreModule.forRoot({}),
+        TaskFloModule,
+        TranslateTestingModule.withTranslations('en', TRANSLATIONS),
+        BrowserAnimationsModule,
+        RouterTestingModule.withRoutes([])
+      ],
+      providers: [
+        {provide: MetamodelService, useValue: metamodelService},
+        {provide: RenderService, useValue: renderService}
+      ]
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ViewComponent);

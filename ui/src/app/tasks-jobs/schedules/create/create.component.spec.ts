@@ -19,29 +19,27 @@ describe('tasks-jobs/schedules/create/create.component.ts', () => {
   let component: CreateComponent;
   let fixture: ComponentFixture<CreateComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [CreateComponent, RoleDirective],
-        imports: [
-          FormsModule,
-          ClarityModule,
-          RouterTestingModule.withRoutes([]),
-          TranslateTestingModule.withTranslations('en', TRANSLATIONS),
-          BrowserAnimationsModule
-        ],
-        providers: [
-          SecurityServiceMock.provider,
-          AboutServiceMock.provider,
-          NotificationServiceMock.provider,
-          ScheduleServiceMock.provider,
-          TaskServiceMock.provider,
-          GroupServiceMock.provider,
-          ContextServiceMock.provider
-        ]
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [CreateComponent, RoleDirective],
+      imports: [
+        FormsModule,
+        ClarityModule,
+        RouterTestingModule.withRoutes([]),
+        TranslateTestingModule.withTranslations('en', TRANSLATIONS),
+        BrowserAnimationsModule
+      ],
+      providers: [
+        SecurityServiceMock.provider,
+        AboutServiceMock.provider,
+        NotificationServiceMock.provider,
+        ScheduleServiceMock.provider,
+        TaskServiceMock.provider,
+        GroupServiceMock.provider,
+        ContextServiceMock.provider
+      ]
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CreateComponent);

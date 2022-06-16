@@ -18,29 +18,27 @@ describe('manage/tools/task/export.component.ts', () => {
   let component: TaskExportComponent;
   let fixture: ComponentFixture<TaskExportComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [TaskExportComponent],
-        imports: [
-          FormsModule,
-          ClarityModule,
-          RouterTestingModule.withRoutes([]),
-          BrowserAnimationsModule,
-          TranslateTestingModule.withTranslations('en', TRANSLATIONS)
-        ],
-        providers: [
-          SecurityServiceMock.provider,
-          AboutServiceMock.provider,
-          StreamServiceMock.provider,
-          TaskServiceMock.provider,
-          NotificationServiceMock.provider,
-          ImportExportServiceMock.provider,
-          ContextServiceMock.provider
-        ]
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [TaskExportComponent],
+      imports: [
+        FormsModule,
+        ClarityModule,
+        RouterTestingModule.withRoutes([]),
+        BrowserAnimationsModule,
+        TranslateTestingModule.withTranslations('en', TRANSLATIONS)
+      ],
+      providers: [
+        SecurityServiceMock.provider,
+        AboutServiceMock.provider,
+        StreamServiceMock.provider,
+        TaskServiceMock.provider,
+        NotificationServiceMock.provider,
+        ImportExportServiceMock.provider,
+        ContextServiceMock.provider
+      ]
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TaskExportComponent);

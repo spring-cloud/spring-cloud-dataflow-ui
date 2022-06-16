@@ -30,15 +30,13 @@ describe('Task RenderService', () => {
   let fixture: ComponentFixture<EditorComponent>;
   let flo: Flo.EditorContext;
 
-  beforeEach(
-    waitForAsync(() => {
-      METAMODEL_SERVICE.load().then(metamodel => (METAMODEL = metamodel));
-      TestBed.configureTestingModule({
-        imports: [StoreModule.forRoot({}), TaskFloModule],
-        providers: [{provide: MetamodelService, useValue: METAMODEL_SERVICE}]
-      });
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    METAMODEL_SERVICE.load().then(metamodel => (METAMODEL = metamodel));
+    TestBed.configureTestingModule({
+      imports: [StoreModule.forRoot({}), TaskFloModule],
+      providers: [{provide: MetamodelService, useValue: METAMODEL_SERVICE}]
+    });
+  }));
 
   beforeEach(inject(
     [ApplicationRef, ComponentFactoryResolver],

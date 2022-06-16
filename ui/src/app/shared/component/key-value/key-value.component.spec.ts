@@ -10,15 +10,13 @@ describe('KeyValueComponent', () => {
   let component: KeyValueComponent;
   let fixture: ComponentFixture<KeyValueComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [KeyValueComponent],
-        imports: [FormsModule, TranslateTestingModule.withTranslations('en', TRANSLATIONS), ReactiveFormsModule],
-        providers: [NotificationServiceMock.provider, ClipboardCopyService]
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [KeyValueComponent],
+      imports: [FormsModule, TranslateTestingModule.withTranslations('en', TRANSLATIONS), ReactiveFormsModule],
+      providers: [NotificationServiceMock.provider, ClipboardCopyService]
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(KeyValueComponent);

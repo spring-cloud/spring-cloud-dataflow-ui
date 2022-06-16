@@ -15,26 +15,24 @@ describe('security/component/authentication-required.component.ts', () => {
   let component: AuthenticationRequiredComponent;
   let fixture: ComponentFixture<AuthenticationRequiredComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [AuthenticationRequiredComponent],
-        imports: [
-          FormsModule,
-          ClarityModule,
-          TranslateTestingModule.withTranslations('en', TRANSLATIONS),
-          RouterTestingModule.withRoutes([]),
-          BrowserAnimationsModule
-        ],
-        providers: [
-          SecurityServiceMock.provider,
-          AboutServiceMock.provider,
-          AppServiceMock.provider,
-          NotificationServiceMock.provider
-        ]
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [AuthenticationRequiredComponent],
+      imports: [
+        FormsModule,
+        ClarityModule,
+        TranslateTestingModule.withTranslations('en', TRANSLATIONS),
+        RouterTestingModule.withRoutes([]),
+        BrowserAnimationsModule
+      ],
+      providers: [
+        SecurityServiceMock.provider,
+        AboutServiceMock.provider,
+        AppServiceMock.provider,
+        NotificationServiceMock.provider
+      ]
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     NotificationServiceMock.mock.clearAll();

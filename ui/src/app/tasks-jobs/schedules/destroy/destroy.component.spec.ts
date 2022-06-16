@@ -20,27 +20,25 @@ describe('tasks/schedules/destroy/destroy.component.ts', () => {
   let fixture: ComponentFixture<DestroyComponent>;
   let schedules: Schedule[];
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [DestroyComponent],
-        imports: [
-          FormsModule,
-          ClarityModule,
-          RouterTestingModule.withRoutes([]),
-          TranslateTestingModule.withTranslations('en', TRANSLATIONS),
-          BrowserAnimationsModule
-        ],
-        providers: [
-          SecurityServiceMock.provider,
-          AboutServiceMock.provider,
-          NotificationServiceMock.provider,
-          ScheduleServiceMock.provider,
-          ContextServiceMock.provider
-        ]
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [DestroyComponent],
+      imports: [
+        FormsModule,
+        ClarityModule,
+        RouterTestingModule.withRoutes([]),
+        TranslateTestingModule.withTranslations('en', TRANSLATIONS),
+        BrowserAnimationsModule
+      ],
+      providers: [
+        SecurityServiceMock.provider,
+        AboutServiceMock.provider,
+        NotificationServiceMock.provider,
+        ScheduleServiceMock.provider,
+        ContextServiceMock.provider
+      ]
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(DestroyComponent);

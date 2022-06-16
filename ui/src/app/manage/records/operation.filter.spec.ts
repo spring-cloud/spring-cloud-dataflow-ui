@@ -17,27 +17,25 @@ describe('manage/records/operation.filter.ts', () => {
   let component: OperationFilterComponent;
   let fixture: ComponentFixture<OperationFilterComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [OperationFilterComponent],
-        imports: [
-          FormsModule,
-          ClarityModule,
-          BrowserAnimationsModule,
-          TranslateTestingModule.withTranslations('en', TRANSLATIONS)
-        ],
-        providers: [
-          SecurityServiceMock.provider,
-          AboutServiceMock.provider,
-          AppServiceMock.provider,
-          NotificationServiceMock.provider,
-          RecordServiceMock.provider,
-          ContextServiceMock.provider
-        ]
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [OperationFilterComponent],
+      imports: [
+        FormsModule,
+        ClarityModule,
+        BrowserAnimationsModule,
+        TranslateTestingModule.withTranslations('en', TRANSLATIONS)
+      ],
+      providers: [
+        SecurityServiceMock.provider,
+        AboutServiceMock.provider,
+        AppServiceMock.provider,
+        NotificationServiceMock.provider,
+        RecordServiceMock.provider,
+        ContextServiceMock.provider
+      ]
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     NotificationServiceMock.mock.clearAll();

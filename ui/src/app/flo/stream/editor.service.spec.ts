@@ -455,14 +455,12 @@ describe('editor.service : Auto-Link', () => {
 
   let flo: Flo.EditorContext;
 
-  beforeEach(
-    waitForAsync(() => {
-      metamodelService.load().then(data => (metamodel = data));
-      TestBed.configureTestingModule({
-        imports: [StreamsModule, RouterTestingModule, StoreModule.forRoot({}), EffectsModule.forRoot([])]
-      });
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    metamodelService.load().then(data => (metamodel = data));
+    TestBed.configureTestingModule({
+      imports: [StreamsModule, RouterTestingModule, StoreModule.forRoot({}), EffectsModule.forRoot([])]
+    });
+  }));
 
   beforeEach(inject(
     [ApplicationRef, ComponentFactoryResolver, NodeHelper, PropertiesEditor],

@@ -24,31 +24,29 @@ describe('tasks-jobs/tasks/launch/builder/builder.component.ts', () => {
   const TASK_1 = Task.parse(SIMPLE_TASK_DEFAULT);
   const TASK_2 = Task.parse(COMPOSED_TASK_DEFAULT);
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [BuilderComponent, RoleDirective],
-        imports: [
-          FormsModule,
-          ReactiveFormsModule,
-          ClarityModule,
-          TranslateTestingModule.withTranslations('en', TRANSLATIONS),
-          RouterTestingModule.withRoutes([]),
-          BrowserAnimationsModule
-        ],
-        providers: [
-          SecurityServiceMock.provider,
-          AboutServiceMock.provider,
-          NotificationServiceMock.provider,
-          RuntimeServiceMock.provider,
-          GrafanaServiceMock.provider,
-          TaskServiceMock.provider,
-          TaskLaunchServiceMock.provider,
-          ContextServiceMock.provider
-        ]
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [BuilderComponent, RoleDirective],
+      imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        ClarityModule,
+        TranslateTestingModule.withTranslations('en', TRANSLATIONS),
+        RouterTestingModule.withRoutes([]),
+        BrowserAnimationsModule
+      ],
+      providers: [
+        SecurityServiceMock.provider,
+        AboutServiceMock.provider,
+        NotificationServiceMock.provider,
+        RuntimeServiceMock.provider,
+        GrafanaServiceMock.provider,
+        TaskServiceMock.provider,
+        TaskLaunchServiceMock.provider,
+        ContextServiceMock.provider
+      ]
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(BuilderComponent);

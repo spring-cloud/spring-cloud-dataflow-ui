@@ -20,28 +20,26 @@ describe('apps/add.component.ts', () => {
   let component: AppComponent;
   let fixture: ComponentFixture<AppComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [AppComponent, UnregisterComponent, VersionComponent, ConfirmComponent],
-        imports: [
-          BrowserModule,
-          FormsModule,
-          ClarityModule,
-          TranslateTestingModule.withTranslations('en', TRANSLATIONS),
-          RouterTestingModule.withRoutes([]),
-          BrowserAnimationsModule
-        ],
-        providers: [
-          SecurityServiceMock.provider,
-          AboutServiceMock.provider,
-          AppServiceMock.provider,
-          NotificationServiceMock.provider,
-          ContextServiceMock.provider
-        ]
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [AppComponent, UnregisterComponent, VersionComponent, ConfirmComponent],
+      imports: [
+        BrowserModule,
+        FormsModule,
+        ClarityModule,
+        TranslateTestingModule.withTranslations('en', TRANSLATIONS),
+        RouterTestingModule.withRoutes([]),
+        BrowserAnimationsModule
+      ],
+      providers: [
+        SecurityServiceMock.provider,
+        AboutServiceMock.provider,
+        AppServiceMock.provider,
+        NotificationServiceMock.provider,
+        ContextServiceMock.provider
+      ]
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     NotificationServiceMock.mock.clearAll();

@@ -23,28 +23,26 @@ describe('tasks-jobs/executions/executions.component.ts', () => {
   let component: ExecutionsComponent;
   let fixture: ComponentFixture<ExecutionsComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [ExecutionsComponent, StopComponent, CleanupComponent, RoleDirective, DatagridColumnPipe],
-        imports: [
-          FormsModule,
-          ClarityModule,
-          RouterTestingModule.withRoutes([]),
-          TranslateTestingModule.withTranslations('en', TRANSLATIONS),
-          BrowserAnimationsModule
-        ],
-        providers: [
-          SecurityServiceMock.provider,
-          AboutServiceMock.provider,
-          NotificationServiceMock.provider,
-          TaskServiceMock.provider,
-          ContextServiceMock.provider,
-          SettingsServiceMock.provider
-        ]
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [ExecutionsComponent, StopComponent, CleanupComponent, RoleDirective, DatagridColumnPipe],
+      imports: [
+        FormsModule,
+        ClarityModule,
+        RouterTestingModule.withRoutes([]),
+        TranslateTestingModule.withTranslations('en', TRANSLATIONS),
+        BrowserAnimationsModule
+      ],
+      providers: [
+        SecurityServiceMock.provider,
+        AboutServiceMock.provider,
+        NotificationServiceMock.provider,
+        TaskServiceMock.provider,
+        ContextServiceMock.provider,
+        SettingsServiceMock.provider
+      ]
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ExecutionsComponent);

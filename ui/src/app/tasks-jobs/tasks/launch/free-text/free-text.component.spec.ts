@@ -12,22 +12,20 @@ describe('tasks-jobs/tasks/launch/free-text/free-text.component.ts', () => {
   let component: FreeTextComponent;
   let fixture: ComponentFixture<FreeTextComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [FreeTextComponent, RoleDirective],
-        imports: [
-          FormsModule,
-          ReactiveFormsModule,
-          ClarityModule,
-          RouterTestingModule.withRoutes([]),
-          TranslateTestingModule.withTranslations('en', TRANSLATIONS),
-          BrowserAnimationsModule
-        ],
-        providers: []
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [FreeTextComponent, RoleDirective],
+      imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        ClarityModule,
+        RouterTestingModule.withRoutes([]),
+        TranslateTestingModule.withTranslations('en', TRANSLATIONS),
+        BrowserAnimationsModule
+      ],
+      providers: []
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(FreeTextComponent);

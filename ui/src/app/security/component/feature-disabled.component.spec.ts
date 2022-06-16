@@ -15,26 +15,24 @@ describe('security/component/feature-disabled.component.ts', () => {
   let component: FeatureDisabledComponent;
   let fixture: ComponentFixture<FeatureDisabledComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [FeatureDisabledComponent],
-        imports: [
-          FormsModule,
-          ClarityModule,
-          TranslateTestingModule.withTranslations('en', TRANSLATIONS),
-          RouterTestingModule.withRoutes([]),
-          BrowserAnimationsModule
-        ],
-        providers: [
-          SecurityServiceMock.provider,
-          AboutServiceMock.provider,
-          AppServiceMock.provider,
-          NotificationServiceMock.provider
-        ]
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [FeatureDisabledComponent],
+      imports: [
+        FormsModule,
+        ClarityModule,
+        TranslateTestingModule.withTranslations('en', TRANSLATIONS),
+        RouterTestingModule.withRoutes([]),
+        BrowserAnimationsModule
+      ],
+      providers: [
+        SecurityServiceMock.provider,
+        AboutServiceMock.provider,
+        AppServiceMock.provider,
+        NotificationServiceMock.provider
+      ]
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     NotificationServiceMock.mock.clearAll();

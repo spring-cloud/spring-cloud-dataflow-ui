@@ -28,24 +28,22 @@ describe('StreamGraphComponent', () => {
   const metamodelService = new MetamodelService(new MockSharedAppService());
   const renderService = new RenderService(metamodelService, new NodeHelper());
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [StreamFloViewComponent, GraphViewComponent],
-        imports: [
-          RouterTestingModule.withRoutes([]),
-          FloModule,
-          TranslateTestingModule.withTranslations('en', TRANSLATIONS)
-        ],
-        providers: [
-          {provide: StreamService, useValue: streamsService},
-          {provide: NotificationService, useValue: notificationService},
-          {provide: MetamodelService, useValue: metamodelService},
-          {provide: RenderService, useValue: renderService}
-        ]
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [StreamFloViewComponent, GraphViewComponent],
+      imports: [
+        RouterTestingModule.withRoutes([]),
+        FloModule,
+        TranslateTestingModule.withTranslations('en', TRANSLATIONS)
+      ],
+      providers: [
+        {provide: StreamService, useValue: streamsService},
+        {provide: NotificationService, useValue: notificationService},
+        {provide: MetamodelService, useValue: metamodelService},
+        {provide: RenderService, useValue: renderService}
+      ]
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(StreamFloViewComponent);

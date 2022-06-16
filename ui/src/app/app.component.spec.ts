@@ -103,33 +103,31 @@ describe('app.component.ts', () => {
   };
   let mockStore: MockStore;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          BrowserModule,
-          ClarityModule,
-          BrowserAnimationsModule,
-          SharedModule,
-          AboutModule,
-          HttpClientModule,
-          FormsModule,
-          LayoutModule,
-          StreamsModule,
-          TasksJobsModule,
-          ManageModule,
-          SecurityModule,
-          RouterTestingModule,
-          TranslateTestingModule.withTranslations('en', TRANSLATIONS),
-          StoreModule.forRoot(ROOT_REDUCERS, {metaReducers}),
-          EffectsModule.forRoot([])
-        ],
-        providers: [provideMockStore({initialState})],
-        declarations: [AppComponent]
-      }).compileComponents();
-      mockStore = TestBed.inject(MockStore);
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        BrowserModule,
+        ClarityModule,
+        BrowserAnimationsModule,
+        SharedModule,
+        AboutModule,
+        HttpClientModule,
+        FormsModule,
+        LayoutModule,
+        StreamsModule,
+        TasksJobsModule,
+        ManageModule,
+        SecurityModule,
+        RouterTestingModule,
+        TranslateTestingModule.withTranslations('en', TRANSLATIONS),
+        StoreModule.forRoot(ROOT_REDUCERS, {metaReducers}),
+        EffectsModule.forRoot([])
+      ],
+      providers: [provideMockStore({initialState})],
+      declarations: [AppComponent]
+    }).compileComponents();
+    mockStore = TestBed.inject(MockStore);
+  }));
 
   it('should create the app', () => {
     const fixture = TestBed.createComponent(AppComponent);

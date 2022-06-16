@@ -27,33 +27,31 @@ describe('streams/streams/multi-deploy/multi-deploy.component.ts', () => {
   let component: MultiDeployComponent;
   let fixture: ComponentFixture<MultiDeployComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [MultiDeployComponent, StreamDslComponent, KeyValueComponent, RoleDirective],
-        imports: [
-          FormsModule,
-          ReactiveFormsModule,
-          ClarityModule,
-          RouterTestingModule.withRoutes([]),
-          TranslateTestingModule.withTranslations('en', TRANSLATIONS),
-          BrowserAnimationsModule
-        ],
-        providers: [
-          SecurityServiceMock.provider,
-          AboutServiceMock.provider,
-          NotificationServiceMock.provider,
-          StreamServiceMock.provider,
-          GrafanaServiceMock.provider,
-          AppServiceMock.provider,
-          GroupServiceMock.provider,
-          StreamDeployServiceMock.provider,
-          ParserService,
-          ContextServiceMock.provider
-        ]
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [MultiDeployComponent, StreamDslComponent, KeyValueComponent, RoleDirective],
+      imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        ClarityModule,
+        RouterTestingModule.withRoutes([]),
+        TranslateTestingModule.withTranslations('en', TRANSLATIONS),
+        BrowserAnimationsModule
+      ],
+      providers: [
+        SecurityServiceMock.provider,
+        AboutServiceMock.provider,
+        NotificationServiceMock.provider,
+        StreamServiceMock.provider,
+        GrafanaServiceMock.provider,
+        AppServiceMock.provider,
+        GroupServiceMock.provider,
+        StreamDeployServiceMock.provider,
+        ParserService,
+        ContextServiceMock.provider
+      ]
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(MultiDeployComponent);
