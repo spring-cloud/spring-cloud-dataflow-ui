@@ -27,36 +27,34 @@ describe('streams/streams/create/create.component.ts', () => {
   let fixture: ComponentFixture<CreateComponent>;
   let streamService;
   const metamodelService = new MetamodelService(AppServiceMock.provider.useValue);
-  beforeEach(
-    waitForAsync(() => {
-      streamService = new StreamServiceMock();
-      streamService.getStream = () => of(null);
-      TestBed.configureTestingModule({
-        declarations: [CreateComponent, UpperCasePipe],
-        imports: [
-          FormsModule,
-          ReactiveFormsModule,
-          ClarityModule,
-          RouterTestingModule.withRoutes([]),
-          BrowserAnimationsModule,
-          TranslateTestingModule.withTranslations('en', TRANSLATIONS),
-          FloModule
-        ],
-        providers: [
-          SecurityServiceMock.provider,
-          AboutServiceMock.provider,
-          NotificationServiceMock.provider,
-          {provide: StreamService, useValue: streamService},
-          GrafanaServiceMock.provider,
-          {provide: MetamodelService, useValue: metamodelService},
-          ContentAssistServiceMock.provider,
-          ContextServiceMock.provider,
-          ParserService,
-          SanitizeDsl
-        ]
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    streamService = new StreamServiceMock();
+    streamService.getStream = () => of(null);
+    TestBed.configureTestingModule({
+      declarations: [CreateComponent, UpperCasePipe],
+      imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        ClarityModule,
+        RouterTestingModule.withRoutes([]),
+        BrowserAnimationsModule,
+        TranslateTestingModule.withTranslations('en', TRANSLATIONS),
+        FloModule
+      ],
+      providers: [
+        SecurityServiceMock.provider,
+        AboutServiceMock.provider,
+        NotificationServiceMock.provider,
+        {provide: StreamService, useValue: streamService},
+        GrafanaServiceMock.provider,
+        {provide: MetamodelService, useValue: metamodelService},
+        ContentAssistServiceMock.provider,
+        ContextServiceMock.provider,
+        ParserService,
+        SanitizeDsl
+      ]
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CreateComponent);

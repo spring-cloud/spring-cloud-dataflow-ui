@@ -43,15 +43,13 @@ describe('Stream RenderService', () => {
   let fixture: ComponentFixture<EditorComponent>;
   let flo: Flo.EditorContext;
 
-  beforeEach(
-    waitForAsync(() => {
-      METAMODEL_SERVICE.load().then(metamodel => (METAMODEL = metamodel));
-      TestBed.configureTestingModule({
-        imports: [StoreModule.forRoot({}), StreamFloModule],
-        providers: [{provide: MetamodelService, useValue: METAMODEL_SERVICE}]
-      });
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    METAMODEL_SERVICE.load().then(metamodel => (METAMODEL = metamodel));
+    TestBed.configureTestingModule({
+      imports: [StoreModule.forRoot({}), StreamFloModule],
+      providers: [{provide: MetamodelService, useValue: METAMODEL_SERVICE}]
+    });
+  }));
 
   beforeEach(inject(
     [ApplicationRef, ComponentFactoryResolver],

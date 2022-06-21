@@ -29,38 +29,36 @@ describe('streams/streams/stream/stream.component.ts', () => {
   let component: StreamComponent;
   let fixture: ComponentFixture<StreamComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [
-          StreamComponent,
-          DestroyComponent,
-          UndeployComponent,
-          RollbackComponent,
-          GrafanaStreamDirective,
-          CardComponent,
-          DatetimePipe,
-          StreamDslComponent
-        ],
-        imports: [
-          FormsModule,
-          ClarityModule,
-          RouterTestingModule.withRoutes([]),
-          BrowserAnimationsModule,
-          TranslateTestingModule.withTranslations('en', TRANSLATIONS)
-        ],
-        providers: [
-          SecurityServiceMock.provider,
-          AboutServiceMock.provider,
-          NotificationServiceMock.provider,
-          StreamServiceMock.provider,
-          GrafanaServiceMock.provider,
-          ContextServiceMock.provider,
-          ParserService
-        ]
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [
+        StreamComponent,
+        DestroyComponent,
+        UndeployComponent,
+        RollbackComponent,
+        GrafanaStreamDirective,
+        CardComponent,
+        DatetimePipe,
+        StreamDslComponent
+      ],
+      imports: [
+        FormsModule,
+        ClarityModule,
+        RouterTestingModule.withRoutes([]),
+        BrowserAnimationsModule,
+        TranslateTestingModule.withTranslations('en', TRANSLATIONS)
+      ],
+      providers: [
+        SecurityServiceMock.provider,
+        AboutServiceMock.provider,
+        NotificationServiceMock.provider,
+        StreamServiceMock.provider,
+        GrafanaServiceMock.provider,
+        ContextServiceMock.provider,
+        ParserService
+      ]
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(StreamComponent);

@@ -22,35 +22,33 @@ describe('tasks-jobs/jobs/jobs.component.ts', () => {
   let component: JobsComponent;
   let fixture: ComponentFixture<JobsComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [
-          JobsComponent,
-          StopComponent,
-          ConfirmComponent,
-          RoleDirective,
-          DateFilterComponent,
-          DatagridColumnPipe
-        ],
-        imports: [
-          FormsModule,
-          ClarityModule,
-          RouterTestingModule.withRoutes([]),
-          TranslateTestingModule.withTranslations('en', TRANSLATIONS),
-          BrowserAnimationsModule
-        ],
-        providers: [
-          SecurityServiceMock.provider,
-          AboutServiceMock.provider,
-          NotificationServiceMock.provider,
-          JobServiceMock.provider,
-          ContextServiceMock.provider,
-          SettingsServiceMock.provider
-        ]
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [
+        JobsComponent,
+        StopComponent,
+        ConfirmComponent,
+        RoleDirective,
+        DateFilterComponent,
+        DatagridColumnPipe
+      ],
+      imports: [
+        FormsModule,
+        ClarityModule,
+        RouterTestingModule.withRoutes([]),
+        TranslateTestingModule.withTranslations('en', TRANSLATIONS),
+        BrowserAnimationsModule
+      ],
+      providers: [
+        SecurityServiceMock.provider,
+        AboutServiceMock.provider,
+        NotificationServiceMock.provider,
+        JobServiceMock.provider,
+        ContextServiceMock.provider,
+        SettingsServiceMock.provider
+      ]
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(JobsComponent);

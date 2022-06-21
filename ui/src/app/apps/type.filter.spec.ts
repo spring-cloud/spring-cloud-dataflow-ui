@@ -13,20 +13,18 @@ describe('apps/type.filter.ts', () => {
   let component: TypeFilterComponent;
   let fixture: ComponentFixture<TypeFilterComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [TypeFilterComponent],
-        imports: [FormsModule, ClarityModule, BrowserAnimationsModule],
-        providers: [
-          SecurityServiceMock.provider,
-          AboutServiceMock.provider,
-          AppServiceMock.provider,
-          NotificationServiceMock.provider
-        ]
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [TypeFilterComponent],
+      imports: [FormsModule, ClarityModule, BrowserAnimationsModule],
+      providers: [
+        SecurityServiceMock.provider,
+        AboutServiceMock.provider,
+        AppServiceMock.provider,
+        NotificationServiceMock.provider
+      ]
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     NotificationServiceMock.mock.clearAll();

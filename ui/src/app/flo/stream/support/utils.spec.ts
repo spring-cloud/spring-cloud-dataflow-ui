@@ -18,12 +18,10 @@ describe('utils', () => {
   let graph: dia.Graph;
   let metamodel: Map<string, Map<string, Flo.ElementMetadata>>;
 
-  beforeEach(
-    waitForAsync(() => {
-      graph = new joint.dia.Graph();
-      METAMODEL_SERVICE.load().then(data => (metamodel = data));
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    graph = new joint.dia.Graph();
+    METAMODEL_SERVICE.load().then(data => (metamodel = data));
+  }));
 
   it('app can be head of stream', () => {
     const node = Shapes.Factory.createNode({

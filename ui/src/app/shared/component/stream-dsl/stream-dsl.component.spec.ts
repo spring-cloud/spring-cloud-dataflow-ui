@@ -10,15 +10,13 @@ describe('StreamDslComponent', () => {
   let component: StreamDslComponent;
   let fixture: ComponentFixture<StreamDslComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [StreamDslComponent],
-        imports: [FormsModule, ReactiveFormsModule],
-        providers: [NotificationServiceMock.provider, ParserService, ClipboardCopyService]
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [StreamDslComponent],
+      imports: [FormsModule, ReactiveFormsModule],
+      providers: [NotificationServiceMock.provider, ParserService, ClipboardCopyService]
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(StreamDslComponent);

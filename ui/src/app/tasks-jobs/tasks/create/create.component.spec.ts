@@ -22,34 +22,32 @@ describe('tasks-jobs/tasks/create/create.component.ts', () => {
   let fixture: ComponentFixture<CreateComponent>;
   let taskService;
 
-  beforeEach(
-    waitForAsync(() => {
-      taskService = new TaskServiceMock();
-      taskService.getTask = () => of(null);
+  beforeEach(waitForAsync(() => {
+    taskService = new TaskServiceMock();
+    taskService.getTask = () => of(null);
 
-      TestBed.configureTestingModule({
-        declarations: [CreateComponent, RoleDirective],
-        imports: [
-          FormsModule,
-          ReactiveFormsModule,
-          ClarityModule,
-          RouterTestingModule.withRoutes([]),
-          TranslateTestingModule.withTranslations('en', TRANSLATIONS),
-          BrowserAnimationsModule
-        ],
-        providers: [
-          SecurityServiceMock.provider,
-          AboutServiceMock.provider,
-          NotificationServiceMock.provider,
-          TaskServiceMock.provider,
-          GroupServiceMock.provider,
-          ToolsServiceMock.provider,
-          ContextServiceMock.provider,
-          {provide: TaskService, useValue: taskService}
-        ]
-      }).compileComponents();
-    })
-  );
+    TestBed.configureTestingModule({
+      declarations: [CreateComponent, RoleDirective],
+      imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        ClarityModule,
+        RouterTestingModule.withRoutes([]),
+        TranslateTestingModule.withTranslations('en', TRANSLATIONS),
+        BrowserAnimationsModule
+      ],
+      providers: [
+        SecurityServiceMock.provider,
+        AboutServiceMock.provider,
+        NotificationServiceMock.provider,
+        TaskServiceMock.provider,
+        GroupServiceMock.provider,
+        ToolsServiceMock.provider,
+        ContextServiceMock.provider,
+        {provide: TaskService, useValue: taskService}
+      ]
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CreateComponent);

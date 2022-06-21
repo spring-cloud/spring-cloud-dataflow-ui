@@ -17,44 +17,35 @@ describe('Task MetamodelService', () => {
     expect(METAMODEL_SERVICE.groups()).toEqual(['control nodes', 'task']);
   });
 
-  it(
-    'Verify task metamodel',
-    waitForAsync(() => {
-      METAMODEL_SERVICE.load().then(metamodel => {
-        expect(Array.from(metamodel.keys())).toEqual(['links', 'control nodes', 'task']);
-        const links = metamodel.get('links');
-        const controlNodes = metamodel.get('control nodes');
-        const tasks = metamodel.get('task');
-        expect(Array.from(tasks.keys())).toEqual(['a', 'b', 'c', 'd', 'super-very-very-very-looooooooong-task-name']);
-        expect(Array.from(controlNodes.keys())).toEqual(['START', 'END', 'SYNC']);
-        expect(Array.from(links.keys())).toEqual(['transition']);
-      });
-    })
-  );
+  it('Verify task metamodel', waitForAsync(() => {
+    METAMODEL_SERVICE.load().then(metamodel => {
+      expect(Array.from(metamodel.keys())).toEqual(['links', 'control nodes', 'task']);
+      const links = metamodel.get('links');
+      const controlNodes = metamodel.get('control nodes');
+      const tasks = metamodel.get('task');
+      expect(Array.from(tasks.keys())).toEqual(['a', 'b', 'c', 'd', 'super-very-very-very-looooooooong-task-name']);
+      expect(Array.from(controlNodes.keys())).toEqual(['START', 'END', 'SYNC']);
+      expect(Array.from(links.keys())).toEqual(['transition']);
+    });
+  }));
 
-  it(
-    'load() vs. refresh()',
-    waitForAsync(() => {
-      METAMODEL_SERVICE.load().then(metamodel => {
-        METAMODEL_SERVICE.load().then(metamodel2 => {
-          expect(metamodel2).toBe(metamodel);
-          METAMODEL_SERVICE.refresh().then(metamodel3 => {
-            expect(metamodel3 === metamodel).toBeFalsy();
-          });
+  it('load() vs. refresh()', waitForAsync(() => {
+    METAMODEL_SERVICE.load().then(metamodel => {
+      METAMODEL_SERVICE.load().then(metamodel2 => {
+        expect(metamodel2).toBe(metamodel);
+        METAMODEL_SERVICE.refresh().then(metamodel3 => {
+          expect(metamodel3 === metamodel).toBeFalsy();
         });
       });
-    })
-  );
+    });
+  }));
 
-  it(
-    'clear cache',
-    waitForAsync(() => {
-      METAMODEL_SERVICE.load().then(metamodel => {
-        METAMODEL_SERVICE.clearCachedData();
-        METAMODEL_SERVICE.load().then(metamodel2 => {
-          expect(metamodel2 !== metamodel).toBeTruthy();
-        });
+  it('clear cache', waitForAsync(() => {
+    METAMODEL_SERVICE.load().then(metamodel => {
+      METAMODEL_SERVICE.clearCachedData();
+      METAMODEL_SERVICE.load().then(metamodel2 => {
+        expect(metamodel2 !== metamodel).toBeTruthy();
       });
-    })
-  );
+    });
+  }));
 });

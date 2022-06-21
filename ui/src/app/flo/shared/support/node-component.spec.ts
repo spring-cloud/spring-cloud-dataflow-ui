@@ -37,13 +37,11 @@ describe('NodeComponent Tests.', () => {
   let component: NodeComponent;
   let metamodel: Map<string, Map<string, Flo.ElementMetadata>>;
 
-  beforeEach(
-    waitForAsync(() => {
-      METAMODEL_SERVICE.load().then(data => (metamodel = data));
-      graph = new joint.dia.Graph();
-      component = new NodeComponent(<any>DOC_SERVICE);
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    METAMODEL_SERVICE.load().then(data => (metamodel = data));
+    graph = new joint.dia.Graph();
+    component = new NodeComponent(<any>DOC_SERVICE);
+  }));
 
   it('Component for regular app node', () => {
     const node = Shapes.Factory.createNode({

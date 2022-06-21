@@ -20,25 +20,23 @@ describe('SettingsComponent', () => {
     }
   };
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          HttpClientModule,
-          ClarityModule,
-          StoreModule.forRoot({}),
-          TranslateTestingModule.withTranslations('en', TRANSLATIONS),
-          LocalStorageModule.forRoot({
-            prefix: 'dataflow-',
-            storageType: 'localStorage'
-          })
-        ],
-        providers: [provideMockStore({initialState}), LocalStorageService],
-        declarations: [SettingsComponent]
-      }).compileComponents();
-      mockStore = TestBed.inject(MockStore);
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        HttpClientModule,
+        ClarityModule,
+        StoreModule.forRoot({}),
+        TranslateTestingModule.withTranslations('en', TRANSLATIONS),
+        LocalStorageModule.forRoot({
+          prefix: 'dataflow-',
+          storageType: 'localStorage'
+        })
+      ],
+      providers: [provideMockStore({initialState}), LocalStorageService],
+      declarations: [SettingsComponent]
+    }).compileComponents();
+    mockStore = TestBed.inject(MockStore);
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SettingsComponent);

@@ -26,37 +26,35 @@ describe('streams/streams/streams.component.ts', () => {
   let component: StreamsComponent;
   let fixture: ComponentFixture<StreamsComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [
-          StreamsComponent,
-          DestroyComponent,
-          UndeployComponent,
-          GrafanaStreamsDirective,
-          GrafanaStreamDirective,
-          DatagridColumnPipe
-        ],
-        imports: [
-          FormsModule,
-          ClarityModule,
-          RouterTestingModule.withRoutes([]),
-          BrowserAnimationsModule,
-          TranslateTestingModule.withTranslations('en', TRANSLATIONS)
-        ],
-        providers: [
-          SecurityServiceMock.provider,
-          AboutServiceMock.provider,
-          NotificationServiceMock.provider,
-          StreamServiceMock.provider,
-          GrafanaServiceMock.provider,
-          GroupServiceMock.provider,
-          ContextServiceMock.provider,
-          SettingsServiceMock.provider
-        ]
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [
+        StreamsComponent,
+        DestroyComponent,
+        UndeployComponent,
+        GrafanaStreamsDirective,
+        GrafanaStreamDirective,
+        DatagridColumnPipe
+      ],
+      imports: [
+        FormsModule,
+        ClarityModule,
+        RouterTestingModule.withRoutes([]),
+        BrowserAnimationsModule,
+        TranslateTestingModule.withTranslations('en', TRANSLATIONS)
+      ],
+      providers: [
+        SecurityServiceMock.provider,
+        AboutServiceMock.provider,
+        NotificationServiceMock.provider,
+        StreamServiceMock.provider,
+        GrafanaServiceMock.provider,
+        GroupServiceMock.provider,
+        ContextServiceMock.provider,
+        SettingsServiceMock.provider
+      ]
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(StreamsComponent);

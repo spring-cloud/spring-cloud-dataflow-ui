@@ -26,35 +26,33 @@ describe('apps/apps.component.ts', () => {
   let component: AppsComponent;
   let fixture: ComponentFixture<AppsComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [
-          AppsComponent,
-          TypeFilterComponent,
-          UnregisterComponent,
-          VersionComponent,
-          ConfirmComponent,
-          DatagridColumnPipe
-        ],
-        imports: [
-          FormsModule,
-          ClarityModule,
-          TranslateTestingModule.withTranslations('en', TRANSLATIONS),
-          RouterTestingModule.withRoutes([]),
-          BrowserAnimationsModule
-        ],
-        providers: [
-          SecurityServiceMock.provider,
-          AboutServiceMock.provider,
-          AppServiceMock.provider,
-          NotificationServiceMock.provider,
-          ContextServiceMock.provider,
-          SettingsServiceMock.provider
-        ]
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [
+        AppsComponent,
+        TypeFilterComponent,
+        UnregisterComponent,
+        VersionComponent,
+        ConfirmComponent,
+        DatagridColumnPipe
+      ],
+      imports: [
+        FormsModule,
+        ClarityModule,
+        TranslateTestingModule.withTranslations('en', TRANSLATIONS),
+        RouterTestingModule.withRoutes([]),
+        BrowserAnimationsModule
+      ],
+      providers: [
+        SecurityServiceMock.provider,
+        AboutServiceMock.provider,
+        AppServiceMock.provider,
+        NotificationServiceMock.provider,
+        ContextServiceMock.provider,
+        SettingsServiceMock.provider
+      ]
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AppsComponent);

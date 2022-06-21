@@ -29,14 +29,12 @@ describe('Task EditorService', () => {
   let applicationRef: ApplicationRef;
   let resolver: ComponentFactoryResolver;
 
-  beforeEach(
-    waitForAsync(() => {
-      METAMODEL_SERVICE.load().then(metamodel => (METAMODEL = metamodel));
-      TestBed.configureTestingModule({
-        imports: [TaskFloModule, StoreModule.forRoot({})]
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    METAMODEL_SERVICE.load().then(metamodel => (METAMODEL = metamodel));
+    TestBed.configureTestingModule({
+      imports: [TaskFloModule, StoreModule.forRoot({})]
+    }).compileComponents();
+  }));
 
   beforeEach(inject(
     [ApplicationRef, ComponentFactoryResolver],

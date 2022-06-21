@@ -29,21 +29,18 @@ describe('StreamGraphViewComponent', () => {
   let propertiesEditor: PropertiesEditor;
   let nodeHelper: NodeHelper;
 
-  beforeEach(
-    waitForAsync(() =>
-      TestBed.configureTestingModule({
-        imports: [
-          FloModule,
-          SharedModule,
-          StreamsModule,
-          TranslateTestingModule.withTranslations('en', TRANSLATIONS),
-          RouterTestingModule,
-          StoreModule.forRoot({}),
-          EffectsModule.forRoot([])
-        ]
-      }).compileComponents()
-    )
-  );
+  beforeEach(waitForAsync(() =>
+    TestBed.configureTestingModule({
+      imports: [
+        FloModule,
+        SharedModule,
+        StreamsModule,
+        TranslateTestingModule.withTranslations('en', TRANSLATIONS),
+        RouterTestingModule,
+        StoreModule.forRoot({}),
+        EffectsModule.forRoot([])
+      ]
+    }).compileComponents()));
 
   beforeEach(inject(
     [ApplicationRef, ComponentFactoryResolver, NodeHelper, PropertiesEditor],

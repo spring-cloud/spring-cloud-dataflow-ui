@@ -22,35 +22,27 @@ describe('tasks-jobs/schedules/schedules.component.ts', () => {
   let component: SchedulesComponent;
   let fixture: ComponentFixture<SchedulesComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [
-          SchedulesComponent,
-          DestroyComponent,
-          PlatformFilterComponent,
-          RoleDirective,
-          DatagridColumnPipe
-        ],
-        imports: [
-          FormsModule,
-          ClarityModule,
-          RouterTestingModule.withRoutes([]),
-          TranslateTestingModule.withTranslations('en', TRANSLATIONS),
-          BrowserAnimationsModule
-        ],
-        providers: [
-          SecurityServiceMock.provider,
-          AboutServiceMock.provider,
-          NotificationServiceMock.provider,
-          ScheduleServiceMock.provider,
-          ContextServiceMock.provider,
-          SettingsServiceMock.provider,
-          TaskServiceMock.provider
-        ]
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [SchedulesComponent, DestroyComponent, PlatformFilterComponent, RoleDirective, DatagridColumnPipe],
+      imports: [
+        FormsModule,
+        ClarityModule,
+        RouterTestingModule.withRoutes([]),
+        TranslateTestingModule.withTranslations('en', TRANSLATIONS),
+        BrowserAnimationsModule
+      ],
+      providers: [
+        SecurityServiceMock.provider,
+        AboutServiceMock.provider,
+        NotificationServiceMock.provider,
+        ScheduleServiceMock.provider,
+        ContextServiceMock.provider,
+        SettingsServiceMock.provider,
+        TaskServiceMock.provider
+      ]
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SchedulesComponent);

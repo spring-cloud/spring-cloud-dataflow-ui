@@ -24,40 +24,31 @@ import TRANSLATIONS from '../../../assets/i18n/en.json';
 describe('apps/apps.component.ts', () => {
   let component: AppComponent;
   let fixture: ComponentFixture<AppComponent>;
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [
-          AppComponent,
-          UnregisterComponent,
-          VersionComponent,
-          ConfirmComponent,
-          CardComponent,
-          OrderByPipe
-        ],
-        imports: [
-          FormsModule,
-          ClarityModule,
-          TranslateTestingModule.withTranslations('en', TRANSLATIONS),
-          RouterTestingModule.withRoutes([]),
-          BrowserAnimationsModule
-        ],
-        providers: [
-          SecurityServiceMock.provider,
-          AboutServiceMock.provider,
-          AppServiceMock.provider,
-          NotificationServiceMock.provider,
-          ContextServiceMock.provider,
-          {
-            provide: ActivatedRoute,
-            useValue: {
-              params: of({appName: 'aggregator', appType: 'processor'})
-            }
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [AppComponent, UnregisterComponent, VersionComponent, ConfirmComponent, CardComponent, OrderByPipe],
+      imports: [
+        FormsModule,
+        ClarityModule,
+        TranslateTestingModule.withTranslations('en', TRANSLATIONS),
+        RouterTestingModule.withRoutes([]),
+        BrowserAnimationsModule
+      ],
+      providers: [
+        SecurityServiceMock.provider,
+        AboutServiceMock.provider,
+        AppServiceMock.provider,
+        NotificationServiceMock.provider,
+        ContextServiceMock.provider,
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            params: of({appName: 'aggregator', appType: 'processor'})
           }
-        ]
-      }).compileComponents();
-    })
-  );
+        }
+      ]
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     NotificationServiceMock.mock.clearAll();

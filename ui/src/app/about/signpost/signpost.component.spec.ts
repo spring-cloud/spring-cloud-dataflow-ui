@@ -21,28 +21,26 @@ describe('about/signpost/signpost.component.ts', () => {
   let component: SignpostComponent;
   let fixture: ComponentFixture<SignpostComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [SignpostComponent, InfoComponent],
-        imports: [
-          FormsModule,
-          ClarityModule,
-          SharedModule,
-          TranslateTestingModule.withTranslations('en', TRANSLATIONS),
-          RouterTestingModule.withRoutes([]),
-          StoreModule.forRoot(ROOT_REDUCERS, {metaReducers}),
-          BrowserAnimationsModule
-        ],
-        providers: [
-          SecurityServiceMock.provider,
-          AboutServiceMock.provider,
-          AppServiceMock.provider,
-          NotificationServiceMock.provider
-        ]
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [SignpostComponent, InfoComponent],
+      imports: [
+        FormsModule,
+        ClarityModule,
+        SharedModule,
+        TranslateTestingModule.withTranslations('en', TRANSLATIONS),
+        RouterTestingModule.withRoutes([]),
+        StoreModule.forRoot(ROOT_REDUCERS, {metaReducers}),
+        BrowserAnimationsModule
+      ],
+      providers: [
+        SecurityServiceMock.provider,
+        AboutServiceMock.provider,
+        AppServiceMock.provider,
+        NotificationServiceMock.provider
+      ]
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SignpostComponent);

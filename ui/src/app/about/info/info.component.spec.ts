@@ -20,28 +20,26 @@ describe('about/info/info.component.ts', () => {
   let component: InfoComponent;
   let fixture: ComponentFixture<InfoComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [InfoComponent],
-        imports: [
-          FormsModule,
-          ClarityModule,
-          SharedModule,
-          TranslateTestingModule.withTranslations('en', TRANSLATIONS),
-          RouterTestingModule.withRoutes([]),
-          StoreModule.forRoot(ROOT_REDUCERS, {metaReducers}),
-          BrowserAnimationsModule
-        ],
-        providers: [
-          SecurityServiceMock.provider,
-          AboutServiceMock.provider,
-          AppServiceMock.provider,
-          NotificationServiceMock.provider
-        ]
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [InfoComponent],
+      imports: [
+        FormsModule,
+        ClarityModule,
+        SharedModule,
+        TranslateTestingModule.withTranslations('en', TRANSLATIONS),
+        RouterTestingModule.withRoutes([]),
+        StoreModule.forRoot(ROOT_REDUCERS, {metaReducers}),
+        BrowserAnimationsModule
+      ],
+      providers: [
+        SecurityServiceMock.provider,
+        AboutServiceMock.provider,
+        AppServiceMock.provider,
+        NotificationServiceMock.provider
+      ]
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(InfoComponent);

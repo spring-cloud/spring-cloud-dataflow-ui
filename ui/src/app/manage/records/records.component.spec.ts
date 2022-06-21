@@ -24,36 +24,34 @@ describe('manage/records/records.component.ts', () => {
   let component: RecordsComponent;
   let fixture: ComponentFixture<RecordsComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [
-          RecordsComponent,
-          DateFilterComponent,
-          OperationFilterComponent,
-          ActionFilterComponent,
-          DatetimePipe,
-          RoleDirective,
-          DatagridColumnPipe
-        ],
-        imports: [
-          FormsModule,
-          ClarityModule,
-          BrowserAnimationsModule,
-          TranslateTestingModule.withTranslations('en', TRANSLATIONS)
-        ],
-        providers: [
-          SecurityServiceMock.provider,
-          AboutServiceMock.provider,
-          AppServiceMock.provider,
-          NotificationServiceMock.provider,
-          RecordServiceMock.provider,
-          ContextServiceMock.provider,
-          SettingsServiceMock.provider
-        ]
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [
+        RecordsComponent,
+        DateFilterComponent,
+        OperationFilterComponent,
+        ActionFilterComponent,
+        DatetimePipe,
+        RoleDirective,
+        DatagridColumnPipe
+      ],
+      imports: [
+        FormsModule,
+        ClarityModule,
+        BrowserAnimationsModule,
+        TranslateTestingModule.withTranslations('en', TRANSLATIONS)
+      ],
+      providers: [
+        SecurityServiceMock.provider,
+        AboutServiceMock.provider,
+        AppServiceMock.provider,
+        NotificationServiceMock.provider,
+        RecordServiceMock.provider,
+        ContextServiceMock.provider,
+        SettingsServiceMock.provider
+      ]
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     NotificationServiceMock.mock.clearAll();

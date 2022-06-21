@@ -30,13 +30,11 @@ describe('RuntimeStreamFloViewComponent', () => {
   let propertiesEditor: PropertiesEditor;
   let nodeHelper: NodeHelper;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [StreamsModule, RouterTestingModule, StoreModule.forRoot({}), EffectsModule.forRoot([])]
-      });
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [StreamsModule, RouterTestingModule, StoreModule.forRoot({}), EffectsModule.forRoot([])]
+    });
+  }));
 
   beforeEach(inject(
     [ApplicationRef, ComponentFactoryResolver, NodeHelper, PropertiesEditor],
