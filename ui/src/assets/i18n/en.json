@@ -950,6 +950,7 @@
       "stepType": "Step Type",
       "reads": "Reads",
       "writes": "Writes",
+      "status": "Status",
       "commits": "Commits",
       "rollbacks": "Rollbacks",
       "duration": "Durations",
