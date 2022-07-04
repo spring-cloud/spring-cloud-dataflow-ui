@@ -950,6 +950,7 @@
       "stepType": "Schritt-Typ",
       "reads": "Lesevorgänge",
       "writes": "Schreibvorgänge",
+      "status": "Status",
       "commits": "Übergaben",
       "rollbacks": "Zurückroll-Vorgänge",
       "duration": "Dauer",
