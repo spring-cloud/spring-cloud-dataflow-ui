@@ -5,7 +5,7 @@
 
 <form role="form" (ngSubmit)="submit()" clrForm [formGroup]="form" clrLayout="horizontal" clrLabelSize="4">
   <clr-control-container class="key-value-wrapper">
-    <label class="clr-col-md-1">{{ 'applications.add.props.appsAsProperties' | translate }}</label>
+    <label class="clr-col-md-2">{{ 'applications.add.props.appsAsProperties' | translate }}</label>
     <app-key-value [validators]="validators" clrControl formControlName="properties" [kvFocus]="true"></app-key-value>
     <clr-control-helper>
       {{ 'applications.add.props.example' | translate }}:<br />
