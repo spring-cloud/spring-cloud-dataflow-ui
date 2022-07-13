@@ -140,17 +140,19 @@ export class TaskComponent implements OnInit {
   }
 
   getExecution(executionId: string): void {
-    this.loadingExecution = true;
-    this.taskService.getExecution(executionId).subscribe(
-      (task: TaskExecution) => {
-        this.taskExecution = task;
-        this.loadingExecution = false;
-      },
-      error => {
-        this.loadingExecution = false;
-        this.notificationService.error(this.translate.instant('commons.message.error'), error);
-      }
-    );
+    if (executionId) {
+      this.loadingExecution = true;
+      this.taskService.getExecution(executionId).subscribe(
+        (task: TaskExecution) => {
+          this.taskExecution = task;
+          this.loadingExecution = false;
+        },
+        error => {
+          this.loadingExecution = false;
+          this.notificationService.error(this.translate.instant('commons.message.error'), error);
+        }
+      );
+    }
   }
 
   getExecutions(): void {
