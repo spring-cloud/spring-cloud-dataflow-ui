@@ -156,7 +156,7 @@ export class TaskService {
 
   getExecution(executionId: string): Observable<TaskExecution | unknown> {
     const headers = HttpUtils.getDefaultHttpHeaders();
-    return this.httpClient
+    return !!executionId && this.httpClient
       .get<any>(UrlUtilities.calculateBaseApiUrl() + `tasks/executions/${executionId}`, {headers})
       .pipe(map(TaskExecution.parse), catchError(ErrorUtils.catchError));
   }
