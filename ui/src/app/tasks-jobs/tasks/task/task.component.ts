@@ -140,6 +140,9 @@ export class TaskComponent implements OnInit {
   }
 
   getExecution(executionId: string): void {
+    if (!executionId) {
+      return;
+    }
     this.loadingExecution = true;
     this.taskService.getExecution(executionId).subscribe(
       (task: TaskExecution) => {
