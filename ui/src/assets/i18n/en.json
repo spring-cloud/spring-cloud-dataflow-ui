@@ -343,8 +343,8 @@
       "cleanUp": {
         "title": "Confirm Clean Up Task Execution(s)",
         "content": "This action will remove <strong>{{ count }} execution(s)</strong>. Are you sure?",
-        "processing": "Removing data",
         "cleanUp": "Clean up Execution(s)",
+        "removingAll": "Removing all entries.",
         "message": {
           "warningNoExecutionTitle": "No execution",
           "warningNoExecutionContent": "There is no execution.",

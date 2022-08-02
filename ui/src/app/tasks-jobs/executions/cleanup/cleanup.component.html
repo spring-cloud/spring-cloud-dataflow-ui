@@ -27,7 +27,7 @@
   </div>
   <div class="modal-body" *ngIf="isRunning">
     <clr-spinner clrInline clrSmall></clr-spinner>
-    {{ 'executions.cleanup.removing' | translate }}
+    {{ 'executions.cleanup.removingAll' | translate }}
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-outline" (click)="isOpen = false" [disabled]="isRunning">
