@@ -345,6 +345,7 @@
         "content": "Diese Aktion entfernt <strong>{{ count }} Ausführung(en)</strong>. Sind Sie sicher?",
         "processing": "Entferne Daten...",
         "cleanUp": "Aufräumen der Ausführung(en)",
+        "removingAll": "Entferne alle Einträge.",
         "message": {
           "warningNoExecutionTitle": "Keine Ausführung",
           "warningNoExecutionContent": "Es gibt keine Ausführung.",
