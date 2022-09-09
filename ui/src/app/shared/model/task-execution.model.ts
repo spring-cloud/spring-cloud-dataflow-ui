@@ -5,6 +5,7 @@ export class TaskExecution {
   executionId: number;
   exitCode: number;
   taskName: string;
+  status: string;
   startTime: DateTime;
   endTime: DateTime;
   exitMessage: string;
@@ -23,6 +24,7 @@ export class TaskExecution {
     execution.executionId = input?.executionId;
     execution.exitCode = input?.exitCode;
     execution.taskName = input?.taskName;
+    execution.status = input?.exitCode === 0 ? 'SUCCESS' : 'ERROR';
     execution.startTime = input?.startTime ? DateTime.fromISO(input.startTime) : null;
     execution.endTime = input?.endTime ? DateTime.fromISO(input.endTime) : null;
     execution.exitMessage = input?.exitMessage;
@@ -63,6 +65,20 @@ export class TaskExecution {
       return Object.keys(this.deploymentProperties).map(key => [key, this.deploymentProperties[key]]);
     }
     return [];
+  }
+
+  labelStatusClass(): string {
+    switch (this.status) {
+      case 'COMPLETE':
+      case 'SUCCESS':
+        return 'label label-task complete ';
+      case 'ERROR':
+        return 'label label-task error';
+      case 'RUNNING':
+        return 'label label-task running';
+      default:
+        return 'label label-task unknown';
+    }
   }
 }
 
