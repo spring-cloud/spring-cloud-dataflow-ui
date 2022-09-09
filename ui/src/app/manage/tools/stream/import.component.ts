@@ -54,7 +54,7 @@ import {TranslateService} from '@ngx-translate/core';
             <clr-dg-column>{{ 'tools.modal.importStreams.description' | translate }}</clr-dg-column>
             <clr-dg-row *clrDgItems="let stream of result.error; index as i">
               <clr-dg-cell>
-                <clr-icon shape="error-standard" class="is-solid"></clr-icon>
+                <clr-icon shape="error-standard" class="is-solid is-error"></clr-icon>
               </clr-dg-cell>
               <clr-dg-cell>
                 <div style="padding-bottom: 6px;">
@@ -78,7 +78,7 @@ import {TranslateService} from '@ngx-translate/core';
             <clr-dg-column>{{ 'tools.modal.importStreams.description' | translate }}</clr-dg-column>
             <clr-dg-row *clrDgItems="let stream of result.success">
               <clr-dg-cell>
-                <clr-icon shape="success-standard" class="is-solid"></clr-icon>
+                <clr-icon shape="success-standard" class="is-solid is-success"></clr-icon>
               </clr-dg-cell>
               <clr-dg-cell>
                 <div style="padding-bottom: 6px;">
