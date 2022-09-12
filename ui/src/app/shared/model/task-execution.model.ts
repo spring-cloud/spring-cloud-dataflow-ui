@@ -71,7 +71,7 @@ export class TaskExecution {
     switch (this.status) {
       case 'COMPLETE':
       case 'SUCCESS':
-        return 'label label-task complete ';
+        return 'label label-task complete';
       case 'ERROR':
         return 'label label-task error';
       case 'RUNNING':
