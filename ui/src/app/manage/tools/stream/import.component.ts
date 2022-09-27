@@ -98,7 +98,7 @@ import {TranslateService} from '@ngx-translate/core';
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-outline" [disabled]="view === 'importing'" (click)="isOpen = false">
-          {{ 'commons.cancel' | translate }}
+          {{ 'commons.close' | translate }}
         </button>
         <button
           type="button"
