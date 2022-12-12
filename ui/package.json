@@ -112,7 +112,7 @@
     "start-server-and-test": "1.14.0",
     "ts-node": "8.8.1",
     "typescript": "4.7.3",
-    "webpack-bundle-analyzer": "3.6.1"
+    "webpack-bundle-analyzer": "4.7.0"
   },
   "resolutions": {
     "colors": "1.4.0"
