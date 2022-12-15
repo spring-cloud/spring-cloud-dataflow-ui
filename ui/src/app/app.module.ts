@@ -91,7 +91,7 @@ import {UrlUtilities} from './url-utilities.service';
                 return of(security);
               })
             )
-            .pipe(switchMap(() => settingsService.load(['en', 'de'])))
+            .pipe(switchMap(() => settingsService.load(['en', 'de', 'ru'])))
             .toPromise(),
       deps: [SecurityService, AboutService, SettingsService],
       multi: true
