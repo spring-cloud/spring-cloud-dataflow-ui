@@ -1,0 +1,1087 @@
+{
+  "commons": {
+    "id": "Id",
+    "ok": "Ok",
+    "of": "из",
+    "yes": "Да",
+    "ofType": "тип",
+    "refresh": "Обновить",
+    "cancel": "Отмена",
+    "remove": "Удалить",
+    "edit": "Редактировать",
+    "close": "Закрыть",
+    "loading": "загрузка",
+    "listedBelow": "перечислено ниже",
+    "areYouSure": "Вы уверены?",
+    "setDefault": "Установить по умолчанию",
+    "makeDefault": "Использовать по умолчанию",
+    "importFile": "Импорт файла",
+    "selectFile": "Выберите файл",
+    "minDate": "Минимальная дата",
+    "maxDate": "Максимальная дата",
+    "actions": "Действия",
+    "restart": "Перезапуск",
+    "update": "Обновить",
+    "deploy": "Развертывать",
+    "undeploy": "Отменить развертывание",
+    "destroy": "Уничтожить",
+    "launch": "Запуск",
+    "schedule": "Расписание",
+    "scaleInstance": "Экземпляр(ы) масштаба",
+    "description": "Описание",
+    "status": "Статус",
+    "clone": "Клонировать",
+    "date": "Дата",
+    "name": "Имя",
+    "type": "Тип",
+    "stop": "Стоп",
+    "cleanup": "Очистка",
+    "details": "Подробнее",
+    "version": "Версия",
+    "platform": "Платформа",
+    "properties": "Свойства",
+    "definition": "Определение",
+    "information": "Информация",
+    "applications": "Информация",
+    "groupActions": "Групповые действия",
+    "confirmAction": "Подтвердить действие",
+    "noResultFound": "Результатов не найдено.",
+    "copyToClipboard": "Скопировать в буфер обмена",
+    "grafanaDashboard": "Панель управления Графана",
+    "wavefrontDashboard": "Панель инструментов Wavefront",
+    "message": {
+      "error": "Произошла ошибка",
+      "copiedTitle": "Контент скопирован",
+      "copiedContent": "Содержимое было скопировано в буфер обмена.",
+      "invalidFieldsTitle": "Неверное поле(я)",
+      "invalidFieldsContent": "Некоторые поля отсутствуют или недействительны."
+    }
+  },
+  "appRoot": {
+    "welcomeTo": "Добро пожаловать в",
+    "appTitle": "Data Flow UI",
+    "youHaveToLogin": "Вы должны войти в систему, чтобы получить доступ к приложению.",
+    "title": "Data Flow",
+    "fullName": "Spring Cloud Data Flow"
+  },
+  "layout": {
+    "logo": {
+      "title": "Spring Cloud Dataflow UI"
+    },
+    "nav": {
+      "applications": "Приложения",
+      "streams": "Потоки",
+      "runtime": "Время выполнения",
+      "tasks": "Задачи",
+      "tasksJobs": "Задачи / Работа",
+      "taskExecution": "Выполнение задач",
+      "jobExecution": "Выполнение работы",
+      "schedules": "Расписания",
+      "manage": "Управлять",
+      "auditRecords": "Записи аудита",
+      "tools": "Инструменты"
+    },
+    "quicksearch": {
+      "input": "Поиск ключевых слов...",
+      "searching": "Поиск результатов...",
+      "application": "Приложение(я)",
+      "stream": "Поток(и)",
+      "task": "Задача(и)",
+      "noResult": "Нет результатов поиска для"
+    }
+  },
+  "applications": {
+    "main": {
+      "title": "Приложения",
+      "addApplications": "Добавить приложение(я)",
+      "unregisterApplications": "Отменить регистрацию приложений",
+      "name": "Имя",
+      "type": "Тип",
+      "version": "Версия",
+      "uri": "URI",
+      "metadataURI": "Metadata URI",
+      "manageVersion": "Управление версией",
+      "unregister": "Отменить регистрацию",
+      "noResult": "Результатов не найдено",
+      "applicationsPerPage": "Приложений на странице",
+      "application": "приложение",
+      "details": "Подробности",
+      "pagination": "{{ first }} - {{ last }} из <span class=\"pagination-total\">{{ total }}</span> приложений"
+    },
+    "add": {
+      "registerOneOrMore": "Зарегистрируйте одно или несколько приложений",
+      "importFromHttp": "Импорт координат приложения из местоположения HTTP URI",
+      "importFromFile": "Импорт координат приложения из файла свойств",
+      "importFromSpringDataFlow": "Импорт стартеров приложений из dataflow.spring.io",
+      "websiteStarters": {
+        "usePredefined": "Используйте предопределенные URI-адреса приложений (для maven или docker) для всех готовых потоковых и задачных/пакетных приложений.",
+        "startersForKafkaMaven": "Потоковые стартеры приложений для Kafka/Maven",
+        "startersForKafkaDocker": "Потоковые стартеры приложений для Kafka/Docker",
+        "startersForRabbitMQMaven": "Потоковые стартеры приложений для RabbitMQ/Maven",
+        "startersForRabbitMQDocker": "Потоковые стартеры приложений для RabbitMQ/Docker",
+        "startersForMaven": "Стартеры приложений задач для Maven",
+        "startersForDocker": "Стартеры приложений задач для Docker",
+        "forceImport": "Принудительно, приложения будут импортированы и установлены, даже если они уже существуют, но только если они еще не используются.",
+        "importApplications": "Импорт приложений",
+        "importingApplications": "Импортирование приложений",
+        "message": {
+          "successTitle": "Импортные стартеры",
+          "successContent": "Приложение (я) импортировано.",
+          "noStarterTitle": "Стартер не выбран",
+          "noStarterContent": "Пожалуйста, выберите стартовый пакет."
+        }
+      },
+      "props": {
+        "desc": "Введите список свойств в поле текстовой области ниже.",
+        "desc2": "Кроме того, вы также можете выбрать файл в вашей локальной файловой системе, который используется для заполнения поля текстовой области.",
+        "appsAsProperties": "Приложения как свойства",
+        "example": "Пример",
+        "example1": "task.timestamp=maven://o.s.cloud.task.app:timestamp-task:1.2.3.RELEASE",
+        "example2": "task.spark-client=maven://o.s.cloud.task.app:spark-client-task:1.2.3.RELEASE",
+        "force": "Принудительно, приложения будут импортированы и установлены, даже если они уже существуют, но только в том случае, если они еще не используются.",
+        "import": "Импорт приложения(й)",
+        "importing": "Импортирование приложения(й)",
+        "requiredApp": "Требуется одно или несколько приложений.",
+        "message": {
+          "successTitle": "Импорт приложения(й)",
+          "successContent": "Приложение(я) импортированы.",
+          "errorContent": "Произошла ошибка при импорте приложений. Пожалуйста, проверьте журналы сервера для более подробной информации."
+        }
+      },
+      "register": {
+        "desc": "Зарегистрируйте одно или несколько приложений, введя <strong>Имя</strong>, <strong>Type</strong> и <strong>App URI</strong> JAR приложения. Вы также можете указать необязательный <strong>URI артефакта метаданных</strong>. <br />The App <strong>URI</strong> &amp; the <strong>Metadata Artifact URI</strong> обычно предоставляются с использованием координат Maven Jar, но могут быть локальным файлом или URI образа докера.",
+        "invalidName": "Укажите допустимое имя для приложения.",
+        "invalidType": "Укажите допустимый тип.",
+        "invalidUri": "Укажите действительный URI, указывающий на соответствующий файл свойств.",
+        "invalidMetadataURI": "Укажите действительный URI, указывающий на соответствующий файл свойств.",
+        "force": "Принудительно, приложения будут импортированы и установлены, даже если они уже существуют, но только если они еще не используются.",
+        "newApp": "Новое приложение",
+        "import": "Импорт приложений",
+        "register": "Регистрация приложения (й)",
+        "registering": "Регистрация приложения (я)",
+        "message": {
+          "invalidAppTitle": "Недопустимое приложение",
+          "invalidAppContent": "Пожалуйста, зарегистрируйте хотя бы одно приложение.",
+          "successTitle": "Зарегистрируйте приложение(я).",
+          "successContent": "{{count}} Приложений зарегистрированы"
+        }
+      },
+      "uri": {
+        "desc": "Укажите URI, указывающий на расположение файла свойств.<br />Этот файл свойств отформатирован таким образом, что ключи представляют тип и имя приложения, например. тип.имя. Значения свойств — это URI приложения.",
+        "placeholderUri": "https://url.to.properties",
+        "eg": "e.g.",
+        "egValue": "https://dataflow.spring.io/kafka-maven-latest",
+        "invalidUri": "Укажите действительный URI, указывающий на соответствующий файл свойств.",
+        "force": "Принудительно, приложения будут импортированы и установлены, даже если они уже существуют, но только в том случае, если они еще не используются.",
+        "importing": "Импортирование приложения(й)",
+        "import": "Импорт приложения(й)",
+        "message": {
+          "successTitle": "Импорт приложения(й)",
+          "successContent": "Приложения импортированы."
+        }
+      }
+    },
+    "unregister": {
+      "title": "Подтвердить отмену регистрации приложения",
+      "title2": "Подтвердить отмену регистрации приложений",
+      "content": "Это действие отменит регистрацию и удалит приложение.",
+      "content2": "Это действие отменит регистрацию и удалит",
+      "unregistering": "Отмена регистрации приложения(й)...",
+      "unregister": "Отменить регистрацию приложения",
+      "unregister2": "Отменить регистрацию приложений",
+      "message": {
+        "successTitle": "Отменить регистрацию приложения",
+        "successContent": "Приложение удалено \"{{name}}\" тип \"{{type}}\".",
+        "successTitle2": "Отмена регистрации приложений",
+        "successContent2": "{{count}} приложение(я) незарегистрированные."
+      }
+    },
+    "details": {
+      "title": "Приложение",
+      "unregister": "Отменить регистрацию приложения",
+      "manageVersions": "Управление версиями",
+      "notFound": "Приложение не найдено.",
+      "information": "Информация",
+      "appProperties": "Свойства приложения",
+      "tooManyProperties": "Можно отобразить более 50 свойств, пользовательский интерфейс может работать медленно.",
+      "tooManyProperties2": "Вы хотите отобразить все свойства?",
+      "showAll": "Показать все свойства",
+      "default": "По умолчанию",
+      "deprecatedLevel": "Уровень устаревания",
+      "noDescription": "Описание отсутствует",
+      "defaultValue": "Значение по умолчанию",
+      "noProperty": "Нет свойств"
+    },
+    "version": {
+      "manageVersions": "Управление версиями",
+      "loadingVersions": "Загрузка версии(й) ...",
+      "thisActionWillUnregisterThe": "Это действие приведет к отмене регистрации",
+      "ofTheApplication": "приложение",
+      "thisActionWillMakeTheVersion": "Это действие приведет к созданию версии",
+      "asTheDefaultVersion": "в качестве версии приложения по умолчанию",
+      "version": "версия",
+      "message": {
+        "unregisterSuccessTitle": "Отменить регистрацию версии",
+        "unregisterSuccessContent": "Успешно удаленная версия \"{{version}}\".",
+        "defaultSuccessTitle": "Версия по умолчанию",
+        "defaultSuccessContent": "Версия \"{{version}}\" теперь является версией приложения по умолчанию \"{{app}}\" ({{type}})."
+      }
+    }
+  },
+  "settings": {
+    "title": "Настройки",
+    "close": "Закрыть",
+    "language": "Язык",
+    "languageDescription": "Вы можете выбрать предпочитаемый язык.",
+    "en": "English",
+    "de": "German",
+    "fr": "French",
+    "ru": "Русский",
+    "theme": "Тема",
+    "themeDescription": "Вы можете выбрать между темной темой и темой по умолчанию.",
+    "darkTheme": "темная",
+    "defaultTheme": "По умолчанию",
+    "results": "Резултат",
+    "resultsDescription": "Вы можете выбрать количество результатов на странице."
+  },
+  "about": {
+    "user": {
+      "logOut": "Войти",
+      "logIn": "Выйти"
+    },
+    "signpost": {
+      "title": "Data Flow Server Implementation",
+      "name": "Имя",
+      "version": "Версия",
+      "moreInfo": "Больше информации",
+      "projectPage": "Страница проекта",
+      "sourceCode": "Исходный код",
+      "documentation": "Документация",
+      "apiDocs": "API Документы",
+      "supportForum": "Форум поддержки",
+      "issueTracker": "Трекер проблем"
+    },
+    "info": {
+      "title": "О Spring Cloud Data Flow",
+      "serverImpTitle": "Data Flow Server Implementation",
+      "name": "Имя",
+      "version": "Версия",
+      "features": "Функции",
+      "streams": "Потоки",
+      "tasks": "Задачи",
+      "schedules": "Расписания",
+      "monitoring": "мониторинг",
+      "grafana": "Grafana",
+      "wavefront": "Wavefront",
+      "security": "Безопасность",
+      "authentificationEnabled": "Аутентификация включена",
+      "authenticated": "Аутентифицировано",
+      "username": "Имя пользователя",
+      "roles": "Роли",
+      "impVersion": "Версия реализации",
+      "core": "Ядро",
+      "dashboard": "Панель инструментов",
+      "shell": "Оболочка",
+      "shellChecksumSha1": "Контрольная сумма оболочки Sha1",
+      "shellChecksumSha256": "Контрольная сумма оболочки Sha256",
+      "runtimeSkipperDeployer": "Среда выполнения — Skipper Deployer",
+      "spiVersion": "Spi версия",
+      "javaVersion": "Java версия",
+      "platformApiVersion": "Версия API платформы",
+      "platformClientVersion": "Версия клиента платформы",
+      "platformHostVersion": "Версия хоста платформы",
+      "platformType": "Тип платформы",
+      "springBootVersion": "Spring Boot версия",
+      "springVersion": "Spring версия",
+      "platformSkipperDeployer": "Информация о платформе Skipper Deployer",
+      "noPlatform": "Информация о развертывании приложений для конкретной платформы отсутствует.",
+      "runtimeTaskLauncher": "Среда выполнения — средство запуска задач",
+      "noLauncher": "Информация о средстве запуска задач недоступна.",
+      "platformTaskLauncher": "Информация о платформе запуска задач",
+      "noPlatformTaskLauncher": "Отсутствует информация о средстве запуска задач для конкретной платформы.",
+      "help": "Нужна помощь или нашли проблему?",
+      "projectPageDesc": "Краткий обзор Spring Cloud Data Flow Project.",
+      "sourceCodeDesc": "Spring Cloud Data Flow Project проект с открытым исходным кодом.",
+      "documentationDesc": "Узнайте больше о характеристиках продукта.",
+      "apiDocsDesc": "Узнайте больше о REST-APIs.",
+      "supportFormDesc": "Тебе нужна помощь?",
+      "issueTrackerDesc": "Сообщить о проблеме или запросить новую функцию.",
+      "copy": "Скопировать данные в буфер обмена",
+      "message": {
+        "copyContent": "Информация о деталях скопирована в буфер обмена (как JSON)."
+      }
+    }
+  },
+  "auditRecords": {
+    "title": "Записи аудита",
+    "id": "ID",
+    "createdOn": "Создано на",
+    "actions": "Действия",
+    "operations": "Операции",
+    "operationID": "Идентификатор операции",
+    "createdBy": "Создано",
+    "platformName": "Название платформы",
+    "noResult": "Результатов не найдено.",
+    "data": "Данные",
+    "property": "Свойство",
+    "recordsPerPage": "Записей на страницу",
+    "pagination": "{{ first }} - {{ last }} из {{ total }} записей",
+    "allActions": "Все действия",
+    "allOperations": "Все операции"
+  },
+  "tools": {
+    "title": "Инструменты",
+    "exportStreams": "Экспорт потоков: создайте файл JSON с выбранными потоками.",
+    "importStreams": "Импорт потоков: импорт потоков из файла JSON.",
+    "cleanUpAll": "Очистить все задачи/работы",
+    "cleanUpCompleted": "Очистить все выполненные задачи/работы",
+    "exportTasks": "Экспорт задачи: создайте файл JSON с выбранными задачами.",
+    "importTasks": "Импорт задач: импорт задач из файла JSON.",
+    "streams": "Потоки",
+    "tasks": "Задачи",
+    "cleanUp": "Очистить выполнение задач",
+    "modal": {
+      "cleanUp": {
+        "title": "Подтвердить выполнение задачи по очистке",
+        "content": "Это действие удалит <strong>{{ count }} выполнение(я)</strong>. Вы уверены?",
+        "cleanUp": "Очистить выполнение",
+        "removingAll": "Удаление всех записей",
+        "message": {
+          "warningNoExecutionTitle": "Без исполнения",
+          "warningNoExecutionContent": "Нет исполнения.",
+          "successTitle": "Очистить исполнение(я)",
+          "successContent": "{{count}} исполнение(я) очищено."
+        }
+      },
+      "exportStreams": {
+        "title": "Экспортировать поток(и)",
+        "content": "Вы можете создать экспорт <strong>выбранных потоков </strong>.<br /> Эта операция создаст и загрузит <strong>JSON файл</strong>.",
+        "name": "Имя",
+        "definition": "Описание",
+        "exporting": "Экспорт потоков",
+        "export": "Экспортировать поток(и)",
+        "message": {
+          "errorNoStreamTitle": "Поток не выбран",
+          "errorNoStreamContent": "Пожалуйста, выберите поток(и) для экспорта.",
+          "successTitle": "Экспорт потоков",
+          "successContent": "Поток(ы) был экспортирован."
+        }
+      },
+      "importStreams": {
+        "title": "Импорт потоков",
+        "content": "Вы можете импортировать свои потоки из <strong>JSON файла</strong>.<br />Файл необходимо изменить для конфиденциальных свойств перед импортом.",
+        "options": "Опции",
+        "jsonFile": "JSON файл",
+        "file": "Файл",
+        "optimize": "Оптимизировать",
+        "duration": "Продолжительность",
+        "errors": "{{count}} ошибка (и)",
+        "description": "Описание",
+        "errorMessage": "Сообщение",
+        "index": "Индекс",
+        "success": "{{count}} поток(и) создано",
+        "imnporting": "Импорт потока(ов)",
+        "import": "Импорт потока(ов)",
+        "message": {
+          "errorInvalidFileTitle": "Неверный файл",
+          "errorInvalidFileContent": "Файл недействителен.",
+          "errorSelectFileTitle": "Неверный файл",
+          "errorSelectFileContent": "Пожалуйста, выберите файл."
+        }
+      },
+      "exportTasks": {
+        "title": "Экспорт задач",
+        "content": "Вы можете создать экспорт <strong>выбранные задачи</strong>.<br />Эта операция создаст и загрузит <strong>JSON файл</strong>.",
+        "name": "Имя",
+        "definition": "Описание",
+        "exporting": "Экспортирование задач(и)",
+        "export": "Экспорт задач(и)",
+        "message": {
+          "errorNoTaskTitle": "Задача не выбрана",
+          "errorNoTaskContent": "Пожалуйста, выберите задачи для экспорта.",
+          "successTitle": "Экспорт задач(и)",
+          "successContent": "Задачи экспортированы."
+        }
+      },
+      "importTasks": {
+        "title": "Импорт задач",
+        "content": "Вы можете импортировать свои задачи из <strong>JSON file</strong>.<br />Перед импортом файл необходимо изменить для обеспечения конфиденциальных свойств.",
+        "options": "Опции",
+        "jsonFile": "JSON файл",
+        "file": "Файл",
+        "excludeChildren": "Исключить детей",
+        "duration": "Продолжительность",
+        "errors": "{{count}} ошибок ",
+        "description": "Описание",
+        "errorMessage": "Сообщение",
+        "index": "Индекс",
+        "success": "{{count}} задач создано",
+        "imnporting": "Импортирование задач(и)",
+        "import": "Импорт задач",
+        "message": {
+          "errorInvalidFileTitle": "Неверный файл",
+          "errorInvalidFileContent": "Файл недействителен.",
+          "errorSelectFileTitle": "Неверный файл",
+          "errorSelectFileContent": "Пожалуйста, выберите файл."
+        }
+      }
+    }
+  },
+  "runtime": {
+    "main": {
+      "title": "Время выполнения",
+      "stream": "Поток <strong>{{ name }}</strong>",
+      "instance": "экземпляр",
+      "instances": "экземпляры",
+      "viewDetails": "Посмотреть детали",
+      "grafana": "Grafana панель инструментов",
+      "wavefront": "Wavefront панель инструментов",
+      "noApp": "В настоящее время <strong>нет запушенных приложений</strong>.",
+      "loading": "Загрузка среды выполнения"
+    },
+    "details": {
+      "title": "Экземпляры для приложения",
+      "instance": "Пример"
+    }
+  },
+  "streams": {
+    "main": {
+      "title": "Потоки",
+      "createStreams": "Создать поток(и)",
+      "deployStreams": "Развернуть поток(и)",
+      "undeployStreams": "Отменить развертывание потоков",
+      "destroyStreams": "Уничтожить поток(и)",
+      "cloneStreams": "Клонировать поток(и)",
+      "noResult": "Результатов не найдено.",
+      "streamsPerPage": "Потоков на странице",
+      "pagination": "{{ first }} - {{ last }}из <span class=\"pagination-total\">{{ total }}</span> потоков"
+    },
+    "clone": {
+      "title": "Клонировать поток",
+      "title2": "Клонировать потоки",
+      "content": "Это действие создаст следующее <strong>поток(и)</strong>",
+      "duplicate": "Повторяющееся имя потока, пожалуйста, проверьте входные имена.",
+      "requiredName": "Укажите имя потока.",
+      "invalidName": "Недопустимое имя потока (без пробелов и специальных символов).",
+      "maxLengthName": "Длина имени потока не должна превышать 255 символов.",
+      "uniqueName": "Название потока уже занято.",
+      "cloning": "Клонирование потоков",
+      "clone": "Клонировать поток",
+      "clone2": "Клонировать потоки",
+      "message": {
+        "partialSuccessTitle": "Клон потока(ов)",
+        "partialSuccessContent": "Потоки были частично клонированы",
+        "successTitle": "Клон потока(ов)",
+        "successContent": "Потоки были успешно клонированы",
+        "errorContent": "Нет клонированных потоков."
+      }
+    },
+    "destroy": {
+      "title": "Подтвердить удаление потока",
+      "title2": "Подтвердить уничтожение потоков",
+      "content": "Это действие уничтожит и удалит поток <strong>{{ name }}</strong>. Вы уверены?",
+      "content2": "Это действие уничтожит <strong>{{ count }} определения потоков</strong> перечислено ниже. Вы уверены?",
+      "destroying": "Уничтожение потока(ов)",
+      "destroy": "Уничтожить поток",
+      "destroy2": "Уничтожить потоки",
+      "message": {
+        "successTitle": "Уничтожить поток",
+        "successContent": "Поток успешно удален \"{{ name }}\".",
+        "successTitle2": "Destroy streams",
+        "successContent2": "{{ count }} поток(и) уничтожен.",
+        "errorContent": "Произошла ошибка при массовом удалении потоков. Пожалуйста, проверьте журналы сервера для более подробной информации."
+      }
+    },
+    "rollback": {
+      "title": "Подтвердить откат потока",
+      "content": " Это действие откатит поток <strong>{{ name }}</strong> к версии {{ version }}. Вы уверены?",
+      "rollbacking": "Откат потока (ов)",
+      "rollback": "Откат",
+      "message": {
+        "successTitle": "Откат успешен",
+        "successContent": "Успешный откат потока на версию \"{{ version }}\""
+      }
+    },
+    "status": {
+      "title": "Статус потока",
+      "deploying": "Развертывание",
+      "deployingContent": "Развертывание было начато",
+      "deployed": "Развернуто",
+      "deployedContent": "Полное развертывание на основе свойств счетчика каждого из приложений потока",
+      "partial": "Частичный",
+      "partialContent": "1 или несколько приложений еще не развернуты.",
+      "incomplete": "Неполный",
+      "incompleteContent": "По крайней мере 1 из каждого приложения, но 1 или более из них не на запрошенной мощности",
+      "failed": "Не удалось",
+      "failedContent": "11 или несколько приложений не имеют ни одного развернутого экземпляра",
+      "undeployed": "Не развернут",
+      "undeployedContent": "Преднамеренно не развернуты или созданы, но еще не развернуты"
+    },
+    "undeploy": {
+      "title": "Подтвердить удаление потока",
+      "title2": "Подтвердить отмену развертывания потоков",
+      "content": "Это действие отменит развертывание потока <strong>{{ name }}</strong>. Are you sure?",
+      "content2": "Это действие отменит развертывание <strong>{{ count }} определения потоков</strong> перечислено ниже. Вы уверены?",
+      "undeploying": "Отмена развертывания потоков",
+      "undeploy": "Отменить развертывание потока",
+      "undeploy2": "Отменить развертывание потоков",
+      "message": {
+        "successTitle": "Отменить развертывание потока",
+        "successContent": "Успешно отменить развертывание потока \"{{ name }}\".",
+        "successTitle2": "Отменить развертывание потоков",
+        "successContent2": "{{ count }} поток (ов) не развернут.",
+        "errorContent": "Произошла ошибка при отмене развертывания потоков. Пожалуйста, проверьте журналы сервера для более подробной информации."
+      }
+    },
+    "scale": {
+      "title": "Экземпляр(ы) масштабирования для приложения",
+      "loading": "Получение статусов выполнения потока",
+      "description": "Вы можете масштабировать приложение от 1 до 9 экземпляров.",
+      "scale": "Масштаб",
+      "scaling": "Масштабирование",
+      "name": "Имя",
+      "instance": "Экземпляр",
+      "message": {
+        "loadingErrorContent": "Произошла ошибка при получении статусов среды выполнения потокв. Пожалуйста, проверьте журналы сервера для более подробной информации.",
+        "successTitle": "Масштабировать поток",
+        "successContent": "{{ name }} приложение масштабируется до {{ count }}."
+      }
+    },
+    "create": {
+      "title": "Создать поток(и)",
+      "create": "Создать поток(и)",
+      "modal": {
+        "creating": "Создание потоков",
+        "content": "Это действие создаст следующие <strong>поток(и)</strong>:",
+        "create": "Создайте поток(и)",
+        "placeholderName": "Название потока",
+        "placeholderDescription": "Описание потока",
+        "duplicateName": "Повторяющееся имя потока, пожалуйста, проверьте входные имена.",
+        "requiredName": "Укажите название потока",
+        "uniqueName": "Название потока уже занято",
+        "invalidName": "Недопустимое имя потока",
+        "maxLengthName": "Имя потока должно содержать менее 255 символов.",
+        "maxLengthDescription": "Описание трансляции должно быть не более 255 символов.",
+        "operation": {
+          "creating": "Создать поток {{ name }}",
+          "completed": "Создание завершено"
+        },
+        "message": {
+          "invalidStreamTitle": "Недействительный поток(и)",
+          "invalidStreamContent": "Пожалуйста, введите один или несколько допустимых потоков.",
+          "successTitle": "Создание потоков",
+          "successContent": "Поток(и) успешно созданы",
+          "errorContent": "Проблема с созданием потока \"{{ name }}\": {{ message }}",
+          "errorContent2": "Не удалось создать поток \"{{ name }} \""
+        }
+      }
+    },
+    "stream": {
+      "title": "Поток",
+      "deploy": "Развернуть поток",
+      "update": "Обновить поток",
+      "undeploy": "Отменить развертывание потока",
+      "destroy": "Уничтожить поток",
+      "scale": "Маштабировать экземпляр(ы)",
+      "showPipeline": "Показать конвейер данных",
+      "relatedStreams": "Связанные поток(и)",
+      "deploymentInfo": "Информация о развертывании",
+      "runtime": "Время выполнения",
+      "instances": "экземпляр(ы)",
+      "viewLog": "Посмотреть журнал",
+      "history": "История",
+      "noHistory": "Истории еще нет.",
+      "streamStatus": "Статус потока",
+      "rollback": "Откат",
+      "logStream": "Журнал {{ name }}",
+      "noLog": "Нет журнала."
+    },
+    "multiDeploy": {
+      "title": "Развертывание потоков",
+      "invalidPlatform": "Выберите платформу.",
+      "invalidProperties": "Один или несколько аргументов недопустимы.<br />Пример: <code>myarg=myvalue</code>.",
+      "deployStreams": "Разверните потоки",
+      "deployModal": "Развернуть потоки",
+      "deploying": "Развертывание потоков",
+      "message": {
+        "successTitle": "Развернуть успех",
+        "successContent": "Успешно развернуто {{count}} потоков."
+      }
+    },
+    "deploy": {
+      "main": {
+        "titleUpdate": "Обновить поток",
+        "titleDeploy": "Развернуть поток",
+        "description": "Укажите любые необязательные свойства развертывания. Вы также можете использовать конструктор.<br /> Кроме того, вы можете указать внешний файл свойств, содержащий свойства развертывания. Для получения дополнительной информации см. техническую документацию.",
+        "builder": "Строитель",
+        "freetext": "Свободный текст",
+        "update": "Обновить поток",
+        "deploy": "Развернуть поток",
+        "updating": "Обновление потока",
+        "deploying": "Развертывание потоков",
+        "export": "Экспорт",
+        "message": {
+          "errorExportPropertyContent": "Нет свойств для экспорта.",
+          "errorCopyPropertyContent": "Нет свойств для копирования.",
+          "successCopyTitle": "Копировать в буфер обмена",
+          "successCopyContent": "Свойства были скопированы в буфер обмена.",
+          "successUpdateTitle": "Успешное обновление",
+          "successUpdateContent": "Определение потока успешно обновлено \"{{ name }}\"",
+          "successDeployTitle": "Развернуть успех",
+          "successDeployContent": "Определение потока успешно развернуто \"{{ name }}\"",
+          "errorDeployContent": "Произошла ошибка во время обновления потокового развертывания."
+        }
+      },
+      "freetext": {
+        "description": "Введите список свойств в поле текстовой области ниже. Кроме того, вы также можете выбрать файл в вашей локальной файловой системе, который используется для заполнения поля текстовой области.",
+        "tooltip": "Предоставьте текстовый файл со свойствами. Это будет использоваться для заполнения текстовой области выше.",
+        "deploy": "Развернуть поток",
+        "update": "Обновить поток",
+        "message": {
+          "errorDeployTitle": "Недопустимые свойства",
+          "errorDeployContent": "Некоторые строки недействительны."
+        }
+      },
+      "builder": {
+        "invalidPlatform": "Платформа определения недействительна (неизвестна).",
+        "genericDeployerProperties": "Общие свойства развертывателя",
+        "example": "Пример",
+        "key": "Ключ",
+        "value": "Занчение",
+        "defaultVersion": "Версия по умолчанию",
+        "generatedProperty": "Сгенерированное свойство",
+        "deploymentPlatform": "Платформа для развертывания",
+        "applicationsProperties": "Свойства приложений",
+        "global": "Глобальные",
+        "invalid": "недействительные",
+        "enterNumber": "Введите число",
+        "enterValue": "Введите значение",
+        "errorLoading": "Ошибка загрузки",
+        "invalidVersion": "Неверная версия",
+        "noProperties": "Нет свойств",
+        "deploy": "Развернуть поток",
+        "update": "Обновить поток",
+        "tooltip": {
+          "invalidProperty": "Поле \"property\" не является действительным.",
+          "invalidGlobal": "Поле \"global\"не является действительным.",
+          "invalidField": "Поле \"{{ name }}\"не является действительным."
+        },
+        "deploymentPropertiesTitle": "Свойства развертывания для платформы"
+      }
+    }
+  },
+  "tasks": {
+    "main": {
+      "title": "Задачи",
+      "create": "Создать задачу",
+      "scheduleTasks": "Запланировать задание(я)",
+      "destroyTasks": "Уничтожить задание(я)",
+      "cloneTasks": "Клонирование задач(и)",
+      "tasksPerPage": "Задач на странице",
+      "pagination": "{{ first }} - {{ last }} из <span class=\"pagination-total\">{{ total }}</span> задач"
+    },
+    "cleanup": {
+      "title": "Подтвердить выполнение очистки",
+      "confirmContent": "Это действие удалит <strong>{{ count }} исполнение(я)</strong>. Вы уверены?",
+      "selectContent": "Пожалуйста, выберите статус исполнения для удаления:",
+      "all": "Все {{ all }} исполнение(я)",
+      "completed": "{{ completed }} исполнение (я) завершено",
+      "removing": "Удаление данных",
+      "cleanup": "Очистить исполнение (я)",
+      "message": {
+        "warningNoExecutionTitle": "Без исполнения",
+        "warningNoExecutionContent": "Для этой задачи нет исполнения.",
+        "successTitle": "Очистить исполнение(я)",
+        "successContent": "{{ count }} исполнение(я) очищено.."
+      }
+    },
+    "clone": {
+      "cloneTitle": "Клонировать задачу",
+      "cloneTitle2": "Клонировать задачи",
+      "content": "Это действие создаст следующее <strong>задач(и)</strong>",
+      "duplicate": "Повторяющееся имя задачи, пожалуйста, проверьте входные имена.",
+      "requiredName": "Укажите название задачи.",
+      "invalidName": "Недопустимое имя задачи (без пробелов и специальных символов).",
+      "maxLengthName": "Имя задачи должно содержать не более 255 символов.",
+      "uniqueName": "Название задачи уже занято.",
+      "cloning": "Клонирование задач(и)",
+      "clone": "Клонировать задачу",
+      "clone2": "Клонировать задачу",
+      "message": {
+        "partialSuccessTitle": "Клонировать задачу",
+        "partialSuccessContent": "Задачи были частично клонированы",
+        "successTitle": "Клонировать задачу",
+        "successContent": "Задачи были успешно клонированы",
+        "errorContent": "Нет клонированных задач."
+      }
+    },
+    "destroy": {
+      "destroyTitle": "Подтвердите уничтожение задачи",
+      "destroyTitle2": "Подтвердить уничтожение задач",
+      "content": "Это действие уничтожит и удалит задачу <strong>{{ name }}</strong>. Вы уверены?",
+      "content2": "Это действие уничтожит <strong>{{ count }} задачи</strong> перечислено ниже. Вы уверены?",
+      "destroying": "Уничтожение задач(и)",
+      "destroy": "Уничтожить задачу",
+      "destroy2": "Уничтожить задачи",
+      "message": {
+        "successTitle": "Уничтожить задачу",
+        "successContent": "Успешна удалена задача\"{{ name }}\".",
+        "successTitle2": "Уничтожить задачи",
+        "successContent2": "{{ count }} определение(я) задачи уничтожено.",
+        "errorContent": "Произошла ошибка при массовом удалении задач. Пожалуйста, проверьте журналы сервера для более подробной информации."
+      }
+    },
+    "task": {
+      "title": "Задача",
+      "launch": "Запустить задачу",
+      "schedule": "Запланировать задачу",
+      "destroy": "Уничтожить задачу",
+      "information": "Информация",
+      "applications": "Приложения",
+      "showPipeline": "Показать конвейер данных",
+      "lastExecution": "Последнее исполнение",
+      "viewTaskExecution": "Посмотреть выполнение задачи",
+      "viewLog": "Посмотреть журнал",
+      "latestExecutions": "Последнее исполнение(я)",
+      "schedules": "Расписание",
+      "lastExecutionStatus": "Статус последнего выполнения"
+    },
+    "create": {
+      "title": "Создать задачу",
+      "createTask": "Создать задачу",
+      "modal": {
+        "creating": "Создание задачи",
+        "create": "Создать задачу",
+        "taskName": "Название задачи",
+        "taskDescription": "Описание задания",
+        "content": "Это действие создаст следующую <strong>задачу</strong>:",
+        "duplicateName": "Повторяющееся название задачи, проверьте ввод.",
+        "maxLengthName": "Имя задачи должно содержать не более 255 символов.",
+        "invalidName": "Недопустимое имя задачи.",
+        "requiredTask": "Укажите название задачи.",
+        "maxLength63Name": "Имя определения задачи должно содержать менее 63 символов для платформ Kubernetes или Cloud Foundry.",
+        "uniqueTask": "Название задачи уже занято.",
+        "maxLengthDescription": "Описание задачи должно быть не более 255 символов."
+      },
+      "message": {
+        "errorContent": "Пожалуйста, введите правильное задание.",
+        "successTitle": "Создание задачи",
+        "successContent": "Определение задачи, созданное для {{ name }}"
+      }
+    },
+    "launch": {
+      "main": {
+        "title": "Запустить задачу",
+        "description": "Укажите любые необязательные свойства развертывания. Вы также можете использовать конструктор. <br />Кроме того, вы можете указать внешний файл свойств, содержащий свойства развертывания. Для получения дополнительной информации см. техническую документацию.",
+        "builder": "Строитель",
+        "freetext": "Бесплатный текст",
+        "export": "Экспорт",
+        "copy": "Скопировать в буфер обмена",
+        "launching": "Запуск задачи",
+        "launch": "Запустить задачу",
+        "message": {
+          "errorExportPropertyContent": "Нет свойств для экспорта.",
+          "errorExportArgumentContent": "Нет аргументов для экспорта.",
+          "errorCopyPropertyContent": "Нет свойств для копирования.",
+          "errorCopyArgumentContent": "Нет аргументов для копирования.",
+          "successCopyTitle": "Скопировать в буфер обмена",
+          "successCopyContent": "Свойства были скопированы в буфер обмена.",
+          "successCopyArgsContent": "Аргументы были скопированы в буфер обмена.",
+          "successTitle": "Успешный запуск",
+          "successContent": "Успешно запущено определение задачи \"{{ name }}\"",
+          "errorLaunchContent": "При запуске задачи произошла ошибка."
+        }
+      },
+      "freetext": {
+        "propertiesDescription": "Введите список свойств в поле текстовой области ниже.",
+        "argumentsDescription": "Введите список аргументов в поле текстовой области ниже.",
+        "propertiesTooltip": "Предоставьте текстовый файл со свойствами. Это будет использоваться для заполнения текстовой области выше.",
+        "argumentsTooltip": "Предоставьте текстовый файл с аргументами. Это будет использоваться для заполнения текстовой области выше.",
+        "launch": "Запустить задачу"
+      },
+      "builder": {
+        "platform": "Платформа",
+        "invalidPlatform": "Платформа определения недействительна (неизвестна).",
+        "genericDeployerProperties": "Общие свойства развертывателя",
+        "arguments": "Аргументы",
+        "properties": "Свойства",
+        "defaultVersion": "Версия по умолчанию",
+        "deploymentPlatform": "Платформа развертывания",
+        "applicationsProperties": "Свойства приложений",
+        "version": "Версия",
+        "ctrProperties": "Свойства контрольной точки",
+        "global": "Глобальный",
+        "invalid": "недействителен",
+        "enterNumber": "Введите число",
+        "enterValue": "Введите значение",
+        "selectValue": "Выберите значение",
+        "errorLoading": "Ошибка при загрузке.",
+        "invalidVersion": "Неверная версия",
+        "noProperties": "Нет свойств",
+        "launch": "Запустить задачу",
+        "deploymentPropertiesTitle": "Свойства развертывания для платформы",
+        "ctrPropertiesTitle": "Свойства контрольной точки",
+        "lastVersionLabel": "Последний запуск {{ version }}",
+        "defaultVersionLabel": "Версия по умолчанию({{ version }})",
+        "tooltip": {
+          "invalidProperty": "Поле \"property\" не является действительным.",
+          "invalidGlobal": "Поле \"global\" не является действительным.",
+          "invalidField": "Поле \"{{ name }}\" не является действительным."
+        },
+        "alert": {
+          "migrateContent": "Есть свойства, которые можно перенести.",
+          "migrate": "Мигрировать"
+        }
+      }
+    }
+  },
+  "executions": {
+    "main": {
+      "title": "Выполнение задач",
+      "executionId": "Идентификатор выполнения",
+      "taskName": "Название задачи",
+      "arguments": "Аргументы",
+      "externalExecutionId": "Внешний идентификатор выполнения",
+      "batchJob": "Пакетная работа",
+      "jobExecutionIds": "Идентификаторы выполнения задания",
+      "startTime": "Время начала",
+      "endTime": "Время окончания",
+      "startDate": "Дата начала",
+      "endDate": "Дата окончания",
+      "duration": "Продолжительность",
+      "exitCode": "Код выхода",
+      "exitMessage": "Выйти из сообщения",
+      "resourceUrl": "URL ресурса",
+      "viewLog": "Посмотреть журнал",
+      "applicationProperties": "Свойства приложения",
+      "platformProperties": "Свойства платформы",
+      "noExecution": "Исполнения пока нет.",
+      "cleanupExecutions": "Очистка выполнения задач",
+      "cleanup": "Очистить выполнение задачи",
+      "taskDetails": "Сведения о задаче",
+      "relaunch": "Перезапустить задачу",
+      "stop": "Остановить задачу",
+      "executionPerPage": "Выполнений задач на странице",
+      "pagination": "{{ first }} - {{ last }} из <span class=\"pagination-total\">{{ total }}</span> выполнения задач"
+    },
+    "stop": {
+      "title": "Подтвердить остановку выполнения задачи",
+      "description": "Это действие остановит выполнение задачи <strong>{{ id }}</strong> (задача <strong>{{ taskName }}</strong>). Вы уверены?",
+      "stopping": "Остановка выполнения задачи",
+      "stop": "Остановить выполнение задачи",
+      "message": {
+        "successTitle": "Остановить выполнение задачи",
+        "successContent": "Отправлен запрос на остановку выполнения задачи \"{{ id }}\".",
+        "errorContent": "Произошла ошибка при остановке выполнения задачи. Пожалуйста, проверьте журналы сервера для более подробной информации."
+      }
+    },
+    "cleanup": {
+      "title": "Подтвердить выполнение задачи очистки",
+      "description": "Это действие удалит данные выполнения задачи <strong>{{ executionId }}</strong> (задача <strong>{{ taskName }}</strong>). Вы уверены?",
+      "description2": "Это действие удалит данные <strong>{{ count }} выполнение задачи</strong> перечислено ниже. Вы уверены?",
+      "removing": "Удаление данных",
+      "cleanupExecution": "Очистить выполнение задачи",
+      "cleanupExecutions": "Очистить выполнение задач",
+      "message": {
+        "successTitle": "Очистить выполнение(я) задач",
+        "successContent": "{{ count }} выполнение задачи очищено."
+      }
+    },
+    "execution": {
+      "title": "Выполнение задачи — идентификатор выполнения",
+      "relaunch": "Перезапустить задачу",
+      "stop": "Остановить выполнение",
+      "cleanup": "Очистить выполнение задачи",
+      "viewTask": "Посмотреть задачу",
+      "noTask": "Задание не найдено.",
+      "task": "Задача",
+      "logTitle": "Записывать выполнение задачи{{ id }}",
+      "viewExecution": "Посмотреть выполнение",
+      "viewLog": "Посмотреть журнал"
+    }
+  },
+  "jobs": {
+    "main": {
+      "title": "Выполнение работы",
+      "executionId": "Идентификатор выполнения",
+      "jobName": "Название работы",
+      "jobInstance": "Экземпляр работы",
+      "taskId": "Идентификатор задачи",
+      "taskExecutionId": "Идентификатор выполнения задачи",
+      "jobParameters": "Параметры работы",
+      "instanceId": "Идентификатор экземпляра",
+      "startTime": "Время начала",
+      "endTime": "Время оконачния",
+      "duration": "Продолжительность",
+      "exitCode": "Код выхода",
+      "exitMessage": "Выйти из сообщения",
+      "stepExecutionCount": "Счетчик выполнения шага",
+      "jobPerPage": "Выполнений заданий на страницу",
+      "pagination": "{{ first }} - {{ last }} из <span class=\"pagination-total\">{{ total }}</span> выполнение заданий",
+      "restartConfirmTitle": "Подтвердите перезапуск выполнения задания",
+      "restartConfirmContent": "Это действие перезапустит неудачные шаги выполнения задания. <strong>{{ name }} ({{ id }})</strong>.<br />Вы уверены?",
+      "stopConfirmTitle": "Подтвердите остановку выполнения задания",
+      "stopConfirmContent": "Это действие остановит выполнение задания <strong>{{ name }} ({{ id }})</strong>.<br />Вы уверены?",
+      "message": {
+        "successRestartTitle": "Перезапустить задание",
+        "successRestartMessage": "Успешно перезапущенное задание \"{{ name }}\".",
+        "successStopTitle": "Остановить задание",
+        "successStopMessage": "Успешно остановленное задание \"{{ name }}\"."
+      }
+    },
+    "execution": {
+      "title": "Выполнение задания",
+      "restart": "Перезапустите задание",
+      "stop": "Остановите задание",
+      "noTaskFound": "Задача не найдена.",
+      "task": "Задача",
+      "taskExecution": "Выполнение задачи",
+      "steps": "Шаги",
+      "viewTask": "Перезапустить задачу",
+      "relaunchTask": "Перезапустить задачу",
+      "viewExecution": "Просмотр выполнения задачи",
+      "viewLog": "Посмотреть журнал"
+    },
+    "step": {
+      "title": "Выполнение шага",
+      "stepId": "Идентификатор шага",
+      "stepName": "Название шага",
+      "stepExecutionId": "Идентификатор выполнения шага",
+      "jobExecutionId": "Идентификатор выполнения задания",
+      "stepType": "Тип шага",
+      "reads": "Читает",
+      "writes": "Записывает",
+      "status": "Статус",
+      "commits": "Фиксирует",
+      "rollbacks": "Откат",
+      "duration": "Продолжительность",
+      "filterCount": "Количество фильтров",
+      "processSkips": "Пропуски процессов",
+      "readSkips": "Читать пропускает",
+      "skips": "Пропускает",
+      "writeSkips": "Пропуски записи",
+      "noStep": "Выполнение шага недоступно.",
+      "noExecutionContext": "Контекст выполнения шага отсутствует.",
+      "information": "Информация",
+      "exitDescription": "Описание выхода",
+      "stepExecutionContext": "Контекст выполнения шага",
+      "stepExecutionHistory": "Контекст выполнения истории",
+      "task": "задача",
+      "taskExecution": "Выполнение задачи",
+      "history": {
+        "name": "имя",
+        "count": "считать",
+        "min": "минимум",
+        "max": "максимум",
+        "mean": "среднее значение",
+        "standardDeviation": "Стандартное отклонение",
+        "commitCount": "Подсчет фиксирований",
+        "duration": "Продолжительность",
+        "durationPerRead": "Продолжительность чтения",
+        "filterCount": "Количество фильтров",
+        "processSkipCount": "Количество пропусков процесса",
+        "readCount": "Чтение счетчика",
+        "readSkipCount": "Чтение счетчика пропусков",
+        "rollbackCount": "Количество откатов",
+        "writeCount": "Количество записей",
+        "writeSkipCount": "Количество пропущеных записей"
+      }
+    }
+  },
+  "schedules": {
+    "main": {
+      "title": "Расписания",
+      "taskName": "Название задачи",
+      "scheduleName": "Название расписания",
+      "cronExpression": "Выражение Cron",
+      "cronExp": "Выражение Cron.",
+      "arguments": "Аргументы",
+      "noSchedule": "Расписания пока нет.",
+      "deleteSchedules": "Удалить расписание",
+      "taskDetails": "Детали задачи",
+      "addNewSchedule": "Добавить новое расписание",
+      "pagination": "{{ count }} расписания"
+    },
+    "destroy": {
+      "title": "Подтвердите удаление расписания",
+      "title2": "Подтвердите удаление расписаний",
+      "description": "Это действие приведет к удалению расписания <u><strong>{{ name }}</strong></u>. Вы уверены?",
+      "description2": "Это действие приведет к удалению  <u><strong>{{ count }} расписаний</strong></u>перечисленных ниже.<br />Вы уверены?",
+      "deleting": "Удаление расписания(й)",
+      "delete": "Удалить расписание",
+      "delete2": "Удалить расписания",
+      "message": {
+        "successTitle": "Удалить расписание(я)",
+        "successContent": "{{ count }} расписаний удалено.",
+        "errorContent": "Произошла ошибка при удалении расписания(й). Пожалуйста, проверьте журналы сервера для получения более подробной информации."
+      }
+    },
+    "create": {
+      "title": "Создать расписание(я)",
+      "requiredName": "Имя обязательно.",
+      "uniqueName": "Имя уже существует.",
+      "duplicateScheduleName": "Duplicate schedule name on the form.",
+      "requiredScheduleName": "Имя обязательно",
+      "uniqueScheduleName": "Имя уже существует.",
+      "requiredPlatform": "Требуется платформа.",
+      "requiredCronExpression": "Выражение cron является обязательным.",
+      "arguments": "аргументы",
+      "argumentsDesc": "Аргументы могут иметь префикс <code>--</code> (необязательно). Пример:",
+      "invalidArguments": "Один или несколько аргументов недопустимы..<br />Пример: <code>myarg=myvalue</code>.",
+      "properties": "Свойства",
+      "propertiesDesc": "Параметры должны начинаться с <code>app.</code> или <code>scheduler.</code>. Прмер:",
+      "invalidProperties": "Один или несколько параметров недействительны.<br /> Пример: <code>app.myarg=myvalue</code>.",
+      "create": "Создать расписание(я)",
+      "creating": "Создание расписания(й)",
+      "message": {
+        "groupSelectionNotFoundTitle": "Выбор группы не найден.",
+        "scheduleSuccessTitle": "Создание расписания",
+        "schedulesSuccessTitle": "Создание расписания",
+        "scheduleSuccessContent": "Успешное создание расписания \"{{ name }}\"",
+        "schedulesSuccessContent": "Успешно создано {{ count }} расписаний"
+      }
+    },
+    "schedule": {
+      "title": "Расписание",
+      "taskDetails": "Детали задачи",
+      "deleteSchedule": "Удалить расписание",
+      "taskInformation": "Информация о задаче"
+    }
+  },
+  "security": {
+    "authenticationRequired": {
+      "title": "Требуется авторизация",
+      "description": "Пожалуйста войдите."
+    },
+    "featureDisabled": {
+      "title": "Функция отключена",
+      "description": "Запрашиваемая функция отключена на сервере."
+    },
+    "rolesMissing": {
+      "title": "Роли отсутствуют",
+      "description": "Похоже, вам не хватает нужных ролей. Обратитесь к администратору для исправления ситуации."
+    }
+  },
+  "flo": {
+    "commons": {
+      "invalidValue": "Неверное значение.",
+      "searchForApplications": "Поиск приложений",
+      "fitToContent": "Соответствовать содержанию",
+      "instanceDown": "Экземпляр приложения не работает или не развернут"
+    },
+    "properties": {
+      "title": "Свойства для",
+      "searchProperties": "Поиск недвижимости"
+    },
+    "stream": {
+      "invalidAppLabel": "Недопустимый ярлык приложения.",
+      "invalidStreamName": "Недопустимое имя потока.",
+      "uniqueStreamName": "Имя потока уже существует.",
+      "noneOfStreamName": "Имя потока уже существует на холсте.",
+      "enterStreamDefinition": "Введите определение потока"
+    },
+    "task": {
+      "enterTaskDefinition": "Введите определение задачи"
+    }
+  }
+}
