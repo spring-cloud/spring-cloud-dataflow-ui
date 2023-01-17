@@ -107,7 +107,7 @@
     <clr-dg-cell>{{ execution.endTime | datetime }}</clr-dg-cell>
     <clr-dg-cell>{{ execution.exitCode }}</clr-dg-cell>
     <clr-dg-cell
-      ><span class="{{ execution.labelStatusClass() }}">{{ execution.status }}</span></clr-dg-cell
+      ><span class="{{ execution.labelStatusClass() }}">{{ execution.taskExecutionStatus }}</span></clr-dg-cell
     >
     <clr-dg-action-overflow *ngIf="!grouped">
       <button class="action-item" (click)="details(execution)">{{ 'commons.details' | translate }}</button>
