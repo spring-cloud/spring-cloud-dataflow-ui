@@ -188,12 +188,6 @@
 						<enabled>false</enabled>
 					</snapshots>
 				</repository>
-				<!-- TODO remove once https://github.com/spring-cloud/spring-cloud-dataflow/issues/5194 resolved -->
-				<repository>
-					<id>repo.spring.io.milestone</id>
-					<name>Spring Maven Milestone Repository</name>
-					<url>https://repo.spring.io/libs-milestone</url>
-				</repository>
 				<repository>
 					<id>clojars.org</id>
 					<url>https://clojars.org/repo</url>
