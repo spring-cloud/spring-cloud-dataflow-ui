@@ -52,7 +52,7 @@
     "lodash.set": "4.3.2",
     "luxon": "1.25.0",
     "ngx-toastr": "13.1.0",
-    "rxjs": "6.6.3",
+    "rxjs": "7.8.0",
     "spring-flo": "0.11.0",
     "tippy.js": "6.3.7",
     "tslib": "2.4.0",
