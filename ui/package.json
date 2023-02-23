@@ -39,7 +39,7 @@
     "@cds/core": "6.3.1",
     "@clr/angular": "^15.0.0",
     "@clr/icons": "13.0.2",
-    "@clr/ui": "13.14.0",
+    "@clr/ui": "15.0.0",
     "@ngrx/effects": "15.1.0",
     "@ngrx/router-store": "15.1.0",
     "@ngrx/store": "15.1.0",
