@@ -156,7 +156,7 @@ export class StreamFloCreateComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.metamodelService.clearCachedData();
-    this.ngUnsubscribe$.next();
+    this.ngUnsubscribe$.next(true);
     this.ngUnsubscribe$.complete();
   }
 
