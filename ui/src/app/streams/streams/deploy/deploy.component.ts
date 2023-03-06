@@ -24,7 +24,7 @@ export class DeployComponent implements OnInit, OnDestroy {
   loading = true;
   isDeploying = false;
   state: any = {view: 'builder'};
-  ngUnsubscribe$: Subject<any> = new Subject();
+  ngUnsubscribe$: Subject<void> = new Subject();
   properties: Array<string> = [];
   ignoreProperties: Array<string> = [];
 

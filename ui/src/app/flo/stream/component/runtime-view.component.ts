@@ -30,7 +30,7 @@ const joint: any = _joint;
   encapsulation: ViewEncapsulation.None
 })
 export class RuntimeStreamFloViewComponent implements OnDestroy {
-  private ngUnsubscribe$: Subject<any> = new Subject();
+  private ngUnsubscribe$: Subject<void> = new Subject();
 
   flo: Flo.EditorContext;
   private _metrics: StreamStatus;
