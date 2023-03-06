@@ -42,7 +42,7 @@ export class MockStreamsService extends StreamService {
   }
 
   undeployStreams(streams: Stream[]): Observable<HttpResponse<any>[]> {
-    return of(Array.from({length: streams.length}));
+    return of(Array.from({length: streams.length}) as HttpResponse<any>[]);
   }
 
   destroyStreams(streams: Stream[]): Observable<any[]> {
