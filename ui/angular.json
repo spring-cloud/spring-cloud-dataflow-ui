@@ -27,8 +27,16 @@
                 "inlineCritical": false
               }
             },
-            "assets": ["src/favicon.ico", "src/assets", "src/logout-success-oauth.html"],
-            "styles": ["node_modules/@clr/icons/clr-icons.css", "node_modules/@clr/ui/clr-ui.css", "src/styles.scss"],
+            "assets": [
+              "src/favicon.ico",
+              "src/assets",
+              "src/logout-success-oauth.html"
+            ],
+            "styles": [
+              "node_modules/@clr/icons/clr-icons.css",
+              "node_modules/@clr/ui/clr-ui.css",
+              "src/styles.scss"
+            ],
             "scripts": [
               "node_modules/@webcomponents/webcomponentsjs/custom-elements-es5-adapter.js",
               "node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js",
@@ -118,15 +126,24 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.spec.json",
             "karmaConfig": "src/karma.conf.js",
-            "styles": ["src/styles.scss"],
+            "styles": [
+              "src/styles.scss"
+            ],
             "scripts": [],
-            "assets": ["src/favicon.ico", "src/assets", "src/logout-success-oauth.html"]
+            "assets": [
+              "src/favicon.ico",
+              "src/assets",
+              "src/logout-success-oauth.html"
+            ]
           }
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "lintFilePatterns": ["src/app/**/*.ts", "src/app/**/*.html"]
+            "lintFilePatterns": [
+              "src/app/**/*.ts",
+              "src/app/**/*.html"
+            ]
           }
         },
         "cypress-run": {
@@ -181,7 +198,9 @@
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "lintFilePatterns": ["cypress/**/*.ts"]
+            "lintFilePatterns": [
+              "cypress/**/*.ts"
+            ]
           }
         },
         "cypress-run": {
@@ -209,5 +228,13 @@
   },
   "cli": {
     "analytics": false
+  },
+  "schematics": {
+    "@angular-eslint/schematics:application": {
+      "setParserOptionsProject": true
+    },
+    "@angular-eslint/schematics:library": {
+      "setParserOptionsProject": true
+    }
   }
 }
