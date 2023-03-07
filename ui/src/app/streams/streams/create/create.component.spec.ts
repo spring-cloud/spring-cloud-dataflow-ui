@@ -13,6 +13,7 @@ import {AppServiceMock} from '../../../tests/api/app.service.mock';
 import {MetamodelService} from '../../../flo/stream/metamodel.service';
 import {ContentAssistServiceMock} from '../../../tests/api/content-assist.service.spec';
 import {FloModule} from 'spring-flo';
+import {UpperCasePipe} from '@angular/common';
 import {ContextServiceMock} from '../../../tests/service/context.service.mock';
 import {ParserService} from '../../../flo/shared/service/parser.service';
 import {SanitizeDsl} from '../../../flo/stream/dsl-sanitize.service';
@@ -30,7 +31,7 @@ describe('streams/streams/create/create.component.ts', () => {
     streamService = new StreamServiceMock();
     streamService.getStream = () => of(null);
     TestBed.configureTestingModule({
-      declarations: [CreateComponent],
+      declarations: [CreateComponent, UpperCasePipe],
       imports: [
         FormsModule,
         ReactiveFormsModule,

@@ -94,7 +94,7 @@ export class LaunchComponent implements OnInit, OnDestroy {
    * On Destroy operations
    */
   ngOnDestroy(): void {
-    this.ngUnsubscribe$.next(true);
+    this.ngUnsubscribe$.next();
     this.ngUnsubscribe$.complete();
   }
 

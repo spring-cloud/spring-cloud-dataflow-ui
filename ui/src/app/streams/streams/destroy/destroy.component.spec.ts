@@ -11,6 +11,7 @@ import {StreamServiceMock} from '../../../tests/api/stream.service.mock';
 import {By} from '@angular/platform-browser';
 import {throwError} from 'rxjs';
 import {Stream} from '../../../shared/model/stream.model';
+import {UpperCasePipe} from '@angular/common';
 import {RoleDirective} from '../../../security/directive/role.directive';
 import {ContextServiceMock} from '../../../tests/service/context.service.mock';
 import {TranslateTestingModule} from 'ngx-translate-testing';
@@ -23,7 +24,7 @@ describe('streams/streams/destroy/destroy.component.ts', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [DestroyComponent, RoleDirective],
+      declarations: [DestroyComponent, UpperCasePipe, RoleDirective],
       imports: [
         FormsModule,
         ClarityModule,
