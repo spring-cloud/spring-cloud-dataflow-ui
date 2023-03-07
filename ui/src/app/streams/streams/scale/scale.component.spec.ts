@@ -1,6 +1,7 @@
 import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {ScaleComponent} from './scale.component';
 import {Stream} from '../../../shared/model/stream.model';
+import {UpperCasePipe} from '@angular/common';
 import {RoleDirective} from '../../../security/directive/role.directive';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ClarityModule} from '@clr/angular';
@@ -24,7 +25,7 @@ describe('ScaleComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ScaleComponent, RoleDirective],
+      declarations: [ScaleComponent, UpperCasePipe, RoleDirective],
       imports: [
         FormsModule,
         ClarityModule,

@@ -4,7 +4,7 @@ import {of} from 'rxjs';
 import {Properties} from 'spring-flo';
 import {PropertiesGroupModel, SearchTextFilter} from '../support/properties-group-model';
 import PropertiesSource = Properties.PropertiesSource;
-import {Subject} from 'rxjs';
+import {Subject} from 'rxjs/index';
 import {debounceTime} from 'rxjs/operators';
 
 /**
