@@ -54,7 +54,7 @@ export class TaskExportComponent {
   open(): void {
     this.isRunning = false;
     this.isOpen = true;
-    this.taskService.getTasks(0, 100000, '', 'taskName', 'ASC').subscribe(
+    this.taskService.getTasks(0, 100000, '', null, null, 'taskName', 'ASC').subscribe(
       (page: TaskPage) => {
         this.tasks = page;
         this.selected = [...page.items];

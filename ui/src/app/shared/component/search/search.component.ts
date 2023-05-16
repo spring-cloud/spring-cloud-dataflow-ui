@@ -120,16 +120,18 @@ export class SearchComponent implements OnInit {
             this.results.streams = new StreamPage();
           }
           if (this.enabled.tasks) {
-            this.subscriptions.tasks = this.taskService.getTasks(0, 5, `${value}`, 'taskName', 'ASC').subscribe(
-              (page: TaskPage) => {
-                this.results.tasks = page;
-                this.searching.tasks = false;
-              },
-              error => {
-                this.notificationService.error(this.translate.instant('commons.message.error'), error);
-                this.searching.tasks = false;
-              }
-            );
+            this.subscriptions.tasks = this.taskService
+              .getTasks(0, 5, `${value}`, null, null, 'taskName', 'ASC')
+              .subscribe(
+                (page: TaskPage) => {
+                  this.results.tasks = page;
+                  this.searching.tasks = false;
+                },
+                error => {
+                  this.notificationService.error(this.translate.instant('commons.message.error'), error);
+                  this.searching.tasks = false;
+                }
+              );
           } else {
             this.results.tasks = new TaskPage();
           }
