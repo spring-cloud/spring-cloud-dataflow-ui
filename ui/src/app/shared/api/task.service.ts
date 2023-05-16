@@ -20,11 +20,17 @@ import {UrlUtilities} from '../../url-utilities.service';
 export class TaskService {
   constructor(protected httpClient: HttpClient) {}
 
-  getTasks(page: number, size: number, search?: string, sort?: string, order?: string): Observable<TaskPage | unknown> {
+  getTasks(page: number, size: number, taskName?: string, descriptions?: string, dslText?: string, sort?: string, order?: string): Observable<TaskPage | unknown> {
     const headers = HttpUtils.getDefaultHttpHeaders();
     let params = HttpUtils.getPaginationParams(page, size);
-    if (search) {
-      params = params.append('search', search);
+    if (taskName) {
+      params = params.append('taskName', taskName);
+    }
+    if (descriptions) {
+      params = params.append('description', descriptions);
+    }
+    if (dslText) {
+      params = params.append('dslText', dslText);
     }
     if (sort && order) {
       params = params.append('sort', `${sort},${order}`);

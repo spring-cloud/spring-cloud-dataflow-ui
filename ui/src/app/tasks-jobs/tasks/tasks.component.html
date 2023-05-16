@@ -84,20 +84,22 @@
     <ng-container>{{ 'commons.name' | translate }}</ng-container>
   </clr-dg-column>
   <clr-dg-column
+    [clrDgField]="'descriptions'"
+    [clrDgSortOrder]="context.by === 'descriptions' ? (context.reverse ? -1 : 1) : 0"
     (clrDgColumnResize)="updateContext('sizeDescription', $event)"
     [style.width.px]="context.sizeDescription | datagridcolumn: datagrid:contextName:15 | async"
+    [clrFilterValue]="context.descriptions"
   >
     <ng-container>{{ 'commons.description' | translate }}</ng-container>
-    <clr-dg-filter style="display: none"></clr-dg-filter>
   </clr-dg-column>
   <clr-dg-column
     [clrDgField]="'dslText'"
     [clrDgSortOrder]="context.by === 'dslText' ? (context.reverse ? -1 : 1) : 0"
     (clrDgColumnResize)="updateContext('sizeDsl', $event)"
     [style.width.px]="context.sizeDsl | datagridcolumn: datagrid:contextName:15 | async"
+    [clrFilterValue]="context.dslText"
   >
     <ng-container>{{ 'commons.definition' | translate }}</ng-container>
-    <clr-dg-filter style="display: none"></clr-dg-filter>
   </clr-dg-column>
   <clr-dg-column
     (clrDgColumnResize)="updateContext('sizeStatus', $event)"
