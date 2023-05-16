@@ -20,11 +20,13 @@ describe('shared/api/task.service.ts', () => {
 
   it('getTasks', () => {
     mockHttp.get.and.returnValue(of(jsonData));
-    taskService.getTasks(0, 20, 'bar', null, null, 'name', 'DESC');
+    taskService.getTasks(0, 20, 'bar', 'test', 'dslText', 'name', 'DESC');
     const httpUri = mockHttp.get.calls.mostRecent().args[0];
     const httpParams = mockHttp.get.calls.mostRecent().args[1].params;
     expect(httpParams.get('sort')).toEqual('name,DESC');
-    expect(httpParams.get('search')).toEqual('bar');
+    expect(httpParams.get('taskName')).toEqual('bar');
+    expect(httpParams.get('description')).toEqual('test');
+    expect(httpParams.get('dslText')).toEqual('dslText');
     expect(httpParams.get('page')).toEqual('0');
     expect(httpParams.get('size')).toEqual('20');
     expect(httpUri).toEqual('/tasks/definitions');
