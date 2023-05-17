@@ -158,7 +158,7 @@ export const darkTheme: Theme = {
     '--clr-card-box-shadow': '0 0.15rem 0 0 var(--clr-card-border-color)',
     '--clr-card-divider-color': 'var(--clr-card-border-color)',
     '--clr-datagrid-icon-color': 'hsl(203, 16%, 72%)',
-    '--clr-datagrid-row-hover': 'hsl(201, 31%, 23%)',
+    '--clr-datagrid-row-hover': 'rgba(35, 46, 52)',
     '--clr-datagrid-row-selected': 'hsl(0, 0%, 100%)',
     '--clr-datagrid-popover-bg-color': 'hsl(198, 28%, 18%)',
     '--clr-datagrid-action-toggle': 'hsl(203, 16%, 72%)',

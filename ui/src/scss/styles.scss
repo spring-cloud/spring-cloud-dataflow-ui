@@ -63,10 +63,6 @@ h1:not([cds-text]) {
   }
 }
 
-.datagrid-row:hover, .datagrid-row:hover .datagrid-row-sticky {
-  background-color: rgb(35, 46, 52);
-}
-
 .clr-log {
   padding: 1rem 0;
   max-height: inherit;
@@ -99,6 +95,10 @@ h1:not([cds-text]) {
 
 .branding {
   width: 240px;
+}
+
+.datagrid-row:hover, .datagrid-row:hover .datagrid-row-sticky {
+  background: var(--clr-datagrid-row-hover);
 }
 
 .datagrid-row .datagrid-row-sticky {
