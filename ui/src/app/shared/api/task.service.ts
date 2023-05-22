@@ -24,7 +24,7 @@ export class TaskService {
     page: number,
     size: number,
     taskName?: string,
-    descriptions?: string,
+    description?: string,
     dslText?: string,
     sort?: string,
     order?: string
@@ -34,8 +34,8 @@ export class TaskService {
     if (taskName) {
       params = params.append('taskName', taskName);
     }
-    if (descriptions) {
-      params = params.append('description', descriptions);
+    if (description) {
+      params = params.append('description', description);
     }
     if (dslText) {
       params = params.append('dslText', dslText);

@@ -47,7 +47,7 @@ export class TasksComponent extends DatagridComponent {
           params.current - 1,
           params.size,
           params?.taskName || '',
-          params?.descriptions || '',
+          params?.description || '',
           params?.dslText || '',
           `${params.by || ''}`,
           `${params.reverse ? 'DESC' : 'ASC'}`

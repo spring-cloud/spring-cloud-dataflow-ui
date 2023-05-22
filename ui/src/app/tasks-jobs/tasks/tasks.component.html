@@ -84,11 +84,11 @@
     <ng-container>{{ 'commons.name' | translate }}</ng-container>
   </clr-dg-column>
   <clr-dg-column
-    [clrDgField]="'descriptions'"
-    [clrDgSortOrder]="context.by === 'descriptions' ? (context.reverse ? -1 : 1) : 0"
+    [clrDgField]="'description'"
+    [clrDgSortOrder]="context.by === 'description' ? (context.reverse ? -1 : 1) : 0"
     (clrDgColumnResize)="updateContext('sizeDescription', $event)"
     [style.width.px]="context.sizeDescription | datagridcolumn: datagrid:contextName:15 | async"
-    [clrFilterValue]="context.descriptions"
+    [clrFilterValue]="context.description"
   >
     <ng-container>{{ 'commons.description' | translate }}</ng-container>
   </clr-dg-column>
