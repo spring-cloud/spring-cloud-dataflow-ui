@@ -17,17 +17,17 @@ export class SecurityGuard implements CanActivate {
       }
     }
 
-    // Check if the role requirements are met
+    // Check if the role requirements are met.
     if (await this.securityService.canAccess(rolesNeeded)) {
       return true;
     }
 
-    // Check if security is disabled
+    // Check if security is disabled.
     if (!(await this.securityService.securityEnabled().pipe(take(1)))) {
       return true;
     }
 
-    // Check if the user is authenticated, otherwise navigate to authentication / role missing page
+    // Check if the user is authenticated, otherwise navigate to authentication / role missing page.
     if (await this.securityService.loggedinUser().pipe(take(1))) {
       await this.router.navigate(['roles-missing']);
     } else {
