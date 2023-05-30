@@ -1,6 +1,15 @@
 import {DateTime} from 'luxon';
 import {Page} from './page.model';
 
+interface hrefObj {
+  href: string;
+}
+
+interface TaskExecutionLinks {
+  self: hrefObj;
+  'tasks/logs': hrefObj;
+}
+
 export class TaskExecution {
   executionId: number;
   exitCode: number;
@@ -18,6 +27,7 @@ export class TaskExecution {
   resourceUrl: string;
   appProperties: any;
   deploymentProperties: {[key: string]: string};
+  _links: TaskExecutionLinks;
 
   static parse(input: any): TaskExecution {
     const execution = new TaskExecution();
@@ -37,6 +47,7 @@ export class TaskExecution {
     execution.resourceUrl = input?.resourceUrl;
     execution.appProperties = input?.appProperties;
     execution.deploymentProperties = input?.deploymentProperties;
+    execution._links = input?._links;
     return execution;
   }
 

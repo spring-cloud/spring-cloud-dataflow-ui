@@ -37,8 +37,7 @@ export class LogComponent {
     this.title = title;
     this.logs = null;
     this.taskService.getExecutionLogs(execution).subscribe(logs => {
-      const taskExecutionLogs = logs?._links[0]?.tasks?.logs;
-      this.logs = taskExecutionLogs;
+      this.logs = logs;
       this.loading = false;
     });
   }

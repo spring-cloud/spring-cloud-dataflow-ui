@@ -173,7 +173,7 @@ export class TaskService {
       });
     }
     return this.httpClient
-      .get<any>(UrlUtilities.calculateBaseApiUrl() + `tasks/logs/${taskExecution.externalExecutionId}${platform}`, {
+      .get<any>(taskExecution?._links['tasks/logs'].href, {
         headers
       })
       .pipe(catchError(ErrorUtils.catchError));
