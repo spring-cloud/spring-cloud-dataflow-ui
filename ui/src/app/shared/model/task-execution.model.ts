@@ -6,7 +6,6 @@ interface hrefObj {
 }
 
 interface TaskExecutionLinks {
-  self: hrefObj;
   'tasks/logs': hrefObj;
 }
 
