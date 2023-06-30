@@ -42,11 +42,12 @@ export class AppService {
       .pipe(map(AppPage.parse), catchError(ErrorUtils.catchError));
   }
 
-  getApp(name: string, type: ApplicationType, appVersion?: string): Observable<DetailedApp | unknown> {
+  getApp(name: string, type: ApplicationType, appVersion?: string, bootVersion?: string): Observable<DetailedApp | unknown> {
     const headers = HttpUtils.getDefaultHttpHeaders();
-    let url = UrlUtilities.calculateBaseApiUrl() + `apps/${type}/${name}`;
+    const bootVersionConfig = bootVersion ? `?bootVersion=${bootVersion}` : ``;
+    let url = UrlUtilities.calculateBaseApiUrl() + `apps/${type}/${name}${bootVersion && bootVersionConfig}`;
     if (appVersion) {
-      url = UrlUtilities.calculateBaseApiUrl() + `apps/${type}/${name}/${appVersion}`;
+      url = UrlUtilities.calculateBaseApiUrl() + `apps/${type}/${name}/${appVersion}${bootVersion && bootVersionConfig}`;
     }
     return this.httpClient.get(url, {headers}).pipe(map(DetailedApp.parse), catchError(ErrorUtils.catchError));
   }
