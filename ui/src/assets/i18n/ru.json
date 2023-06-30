@@ -97,6 +97,7 @@
       "unregisterApplications": "Отменить регистрацию приложений",
       "name": "Имя",
       "type": "Тип",
+      "bootVersion": "Spring Boot Версия",
       "version": "Версия",
       "uri": "URI",
       "metadataURI": "Metadata URI",

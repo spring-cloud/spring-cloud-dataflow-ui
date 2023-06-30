@@ -50,6 +50,32 @@
         </div>
         <div
           class="clr-form-control clr-row"
+          [class.clr-error]="submitted && form.get('bootVersion').invalid && !isFormEmpty(form)"
+        >
+          <label class="clr-col-2 clr-control-label" for="type{{ i }}">{{
+            'applications.main.bootVersion' | translate
+          }}</label>
+          <div class="clr-control-container clr-col-10">
+            <div class="clr-select-wrapper">
+              <select
+                name="bootVersion{{ i }}"
+                id="bootVersion{{ i }}"
+                formControlName="bootVersion"
+                class="clr-select"
+              >
+                <option value="">Please select a Spring Boot version</option>
+                <option *ngFor="let bootVersionKey of bootVersions.getKeys()" value="{{ bootVersionKey }}">
+                  {{ bootVersions[bootVersionKey] }}
+                </option>
+              </select>
+            </div>
+            <div class="clr-subtext" *ngIf="submitted && form.get('type').invalid && !isFormEmpty(form)">
+              {{ 'applications.add.register.invalidType' | translate }}
+            </div>
+          </div>
+        </div>
+        <div
+          class="clr-form-control clr-row"
           [class.clr-error]="submitted && form.get('uri').invalid && !isFormEmpty(form)"
         >
           <label class="clr-col-2 clr-control-label" for="uri{{ i }}">{{ 'applications.main.uri' | translate }}</label>

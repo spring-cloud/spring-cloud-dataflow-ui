@@ -97,6 +97,7 @@
       "unregisterApplications": "Anwendung(en) deregistrieren",
       "name": "Name",
       "type": "Typ",
+      "bootVersion": "Spring Boot version",
       "version": "Version",
       "uri": "URI",
       "metadataURI": "Metainformationen URI",

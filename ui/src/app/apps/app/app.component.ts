@@ -75,6 +75,7 @@ export class AppComponent implements OnInit {
       this.detailedApp.version = app.version;
       this.detailedApp.defaultVersion = app.defaultVersion;
     }
+    console.log('Before app service get app :', app);
     this.appsService.getApp(app.name, app.type, app.version, '2').subscribe(
       (detailedApp: DetailedApp) => {
         this.tooManyProperties = detailedApp.options.length > 50;
