@@ -98,6 +98,7 @@
       "name": "Name",
       "type": "Typ",
       "bootVersion": "Spring Boot version",
+      "bootVersionPlaceholder": "Bitte wählen Spring Boot version",
       "version": "Version",
       "uri": "URI",
       "metadataURI": "Metainformationen URI",

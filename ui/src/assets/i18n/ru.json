@@ -98,6 +98,7 @@
       "name": "Имя",
       "type": "Тип",
       "bootVersion": "Spring Boot Версия",
+      "bootVersionPlaceholder": "Пожалуйста выберите Spring Boot Версия",
       "version": "Версия",
       "uri": "URI",
       "metadataURI": "Metadata URI",
