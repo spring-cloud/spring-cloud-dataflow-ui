@@ -42,12 +42,17 @@ export class AppService {
       .pipe(map(AppPage.parse), catchError(ErrorUtils.catchError));
   }
 
-  getApp(name: string, type: ApplicationType, appVersion?: string, bootVersion?: string): Observable<DetailedApp | unknown> {
+  getApp(
+    name: string,
+    type: ApplicationType,
+    appVersion?: string,
+    bootVersion?: string
+  ): Observable<DetailedApp | unknown> {
     const headers = HttpUtils.getDefaultHttpHeaders();
     const bootVersionConfig = bootVersion ? `?bootVersion=${bootVersion}` : ``;
-    let url = UrlUtilities.calculateBaseApiUrl() + `apps/${type}/${name}${bootVersion && bootVersionConfig}`;
+    let url = UrlUtilities.calculateBaseApiUrl() + `apps/${type}/${name}${bootVersionConfig}`;
     if (appVersion) {
-      url = UrlUtilities.calculateBaseApiUrl() + `apps/${type}/${name}/${appVersion}${bootVersion && bootVersionConfig}`;
+      url = UrlUtilities.calculateBaseApiUrl() + `apps/${type}/${name}/${appVersion}${bootVersionConfig}`;
     }
     return this.httpClient.get(url, {headers}).pipe(map(DetailedApp.parse), catchError(ErrorUtils.catchError));
   }
@@ -58,6 +63,12 @@ export class AppService {
         app.items.filter(a => a.name === name && a.type === type).sort((a, b) => (a.version < b.version ? -1 : 1))
       )
     );
+  }
+
+  getBootVersions(): Observable<any> {
+    const headers = HttpUtils.getDefaultHttpHeaders();
+    const url = UrlUtilities.calculateBaseApiUrl() + `schema/versions`;
+    return this.httpClient.get(url, {headers}).pipe(catchError(ErrorUtils.catchError));
   }
 
   unregisterApp(app: App): Observable<any> {
@@ -97,7 +108,10 @@ export class AppService {
   }
 
   registerProp(prop: any): Observable<any> {
-    let params = new HttpParams().append('uri', prop.uri).append('force', prop.force.toString());
+    let params = new HttpParams()
+      .append('uri', prop.uri)
+      .append('force', prop.force.toString())
+      .append('bootVersion', prop.bootVersion);
     if (prop.metaDataUri) {
       params = params.append('metadata-uri', prop.metaDataUri);
     }

@@ -1,87 +1,92 @@
 {
-    "/about" : {
-        "target": "http://localhost:9393/",
-        "secure": false,
-        "logLevel": "debug"
-    },
-    "/audit-records" : {
-        "target": "http://localhost:9393/",
-        "secure": false,
-        "logLevel": "debug"
-    },
-    "/authenticate" : {
-        "target": "http://localhost:9393/",
-        "secure": false,
-        "logLevel": "debug"
-    },
-    "/apps" : {
-        "target": "http://localhost:9393/",
-        "secure": false,
-        "logLevel": "debug"
-    },
-    "/dashboard/logout" : {
-        "target": "http://localhost:9393/",
-        "secure": false,
-        "logLevel": "debug"
-    },
-    "/jobs" : {
-        "target": "http://localhost:9393/",
-        "secure": false,
-        "logLevel": "debug"
-    },
-    "/oauth2" : {
-        "target": "http://localhost:9393/",
-        "secure": false,
-        "logLevel": "debug"
-    },
-    "/login" : {
-        "target": "http://localhost:9393/",
-        "secure": false,
-        "logLevel": "debug"
-    },
-    "/logout" : {
-        "target": "http://localhost:9393/",
-        "secure": false,
-        "logLevel": "debug"
-    },
-    "/metrics" : {
-        "target": "http://localhost:9393/",
-        "secure": false,
-        "logLevel": "debug"
-    },
-    "/security/info" : {
-        "target": "http://localhost:9393/",
-        "secure": false,
-        "logLevel": "debug"
-    },
-    "/streams" : {
-        "target": "http://localhost:9393/",
-        "secure": false,
-        "logLevel": "debug"
-    },
-    "/tasks" : {
-        "target": "http://localhost:9393/",
-        "secure": false,
-        "logLevel": "debug"
-    },
-    "/tools" : {
-        "target": "http://localhost:9393/",
-        "secure": false,
-        "logLevel": "debug"
-    },
-    "/runtime" : {
-        "target": "http://localhost:9393/",
-        "secure": false,
-        "logLevel": "debug"
-    },
-    "/completions" : {
-      "target": "http://localhost:9393/",
-      "secure": false,
-      "logLevel": "debug"
-    },
-    "/websocket": {
-        "target": "http://localhost:9393",
-        "ws": true,
-        "logLevel": "debug"
-    }
+  "/about": {
+    "target": "http://localhost:9393/",
+    "secure": false,
+    "logLevel": "debug"
+  },
+  "/audit-records": {
+    "target": "http://localhost:9393/",
+    "secure": false,
+    "logLevel": "debug"
+  },
+  "/authenticate": {
+    "target": "http://localhost:9393/",
+    "secure": false,
+    "logLevel": "debug"
+  },
+  "/apps": {
+    "target": "http://localhost:9393/",
+    "secure": false,
+    "logLevel": "debug"
+  },
+  "/dashboard/logout": {
+    "target": "http://localhost:9393/",
+    "secure": false,
+    "logLevel": "debug"
+  },
+  "/jobs": {
+    "target": "http://localhost:9393/",
+    "secure": false,
+    "logLevel": "debug"
+  },
+  "/oauth2": {
+    "target": "http://localhost:9393/",
+    "secure": false,
+    "logLevel": "debug"
+  },
+  "/login": {
+    "target": "http://localhost:9393/",
+    "secure": false,
+    "logLevel": "debug"
+  },
+  "/logout": {
+    "target": "http://localhost:9393/",
+    "secure": false,
+    "logLevel": "debug"
+  },
+  "/metrics": {
+    "target": "http://localhost:9393/",
+    "secure": false,
+    "logLevel": "debug"
+  },
+  "/security/info": {
+    "target": "http://localhost:9393/",
+    "secure": false,
+    "logLevel": "debug"
+  },
+  "/streams": {
+    "target": "http://localhost:9393/",
+    "secure": false,
+    "logLevel": "debug"
+  },
+  "/tasks": {
+    "target": "http://localhost:9393/",
+    "secure": false,
+    "logLevel": "debug"
+  },
+  "/tools": {
+    "target": "http://localhost:9393/",
+    "secure": false,
+    "logLevel": "debug"
+  },
+  "/runtime": {
+    "target": "http://localhost:9393/",
+    "secure": false,
+    "logLevel": "debug"
+  },
+  "/completions": {
+    "target": "http://localhost:9393/",
+    "secure": false,
+    "logLevel": "debug"
+  },
+  "/websocket": {
+    "target": "http://localhost:9393",
+    "ws": true,
+    "logLevel": "debug"
+  },
+  "/schema": {
+    "target": "http://localhost:9393/",
+    "secure": false,
+    "logLevel": "debug"
+  }
 }
