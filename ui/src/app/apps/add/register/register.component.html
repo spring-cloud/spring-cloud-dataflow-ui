@@ -63,9 +63,9 @@
                 formControlName="bootVersion"
                 class="clr-select"
               >
-                <option value="">{{ 'applications.add.register.bootVersionPlaceholder' | translate }}</option>
-                <option *ngFor="let bootVersionKey of bootVersions.getKeys()" value="{{ bootVersionKey }}">
-                  {{ bootVersions[bootVersionKey] }}
+                <option value="">{{ 'applications.main.bootVersionPlaceholder' | translate }}</option>
+                <option *ngFor="let bootVersionKey of bootVersions" value="{{ bootVersionKey }}">
+                  Spring Boot {{ bootVersionKey }}
                 </option>
               </select>
             </div>
