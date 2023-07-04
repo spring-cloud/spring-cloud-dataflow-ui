@@ -98,6 +98,10 @@
       "name": "Name",
       "type": "Type",
       "bootVersion": "Spring Boot version",
+      "bootVersions": {
+        "2": "2.x",
+        "3": "3.x"
+      },
       "bootVersionPlaceholder": "Please select a Spring Boot version",
       "version": "Version",
       "uri": "URI",

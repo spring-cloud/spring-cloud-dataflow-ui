@@ -64,7 +64,8 @@
                 class="clr-select"
               >
                 <option *ngFor="let bootVersionKey of bootVersions" value="{{ bootVersionKey }}">
-                  Spring Boot {{ bootVersionKey }}
+                  Spring Boot&nbsp;
+                  {{ 'applications.main.bootVersions.' + bootVersionKey | translate }}
                 </option>
               </select>
             </div>
