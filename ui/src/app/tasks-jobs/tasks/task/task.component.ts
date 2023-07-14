@@ -79,7 +79,7 @@ export class TaskComponent implements OnInit {
           this.task = task;
           this.getExecutions();
           this.getApplications();
-          this.getExecution(task.lastTaskExecution?.executionId.toString());
+          this.getExecution(task.lastTaskExecution);
           if (scheduleEnabled) {
             this.getSchedules();
           }
@@ -139,12 +139,12 @@ export class TaskComponent implements OnInit {
     );
   }
 
-  getExecution(executionId: string): void {
-    if (!executionId) {
+  getExecution(execution: TaskExecution): void {
+    if (!execution) {
       return;
     }
     this.loadingExecution = true;
-    this.taskService.getExecution(executionId).subscribe(
+    this.taskService.getExecution(execution).subscribe(
       (task: TaskExecution) => {
         this.taskExecution = task;
         this.loadingExecution = false;
@@ -178,8 +178,8 @@ export class TaskComponent implements OnInit {
     this.logModal.open(`Log task execution ${execution.executionId}`, execution);
   }
 
-  navigateExecution(executionId: number): void {
-    this.router.navigateByUrl(`tasks-jobs/task-executions/${executionId}`);
+  navigateExecution(execution: TaskExecution): void {
+    this.router.navigateByUrl(`tasks-jobs/task-executions/${execution.executionId}/schemaTarget/${execution.schemaTarget}`);
   }
 
   destroy(): void {

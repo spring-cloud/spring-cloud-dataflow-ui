@@ -53,7 +53,7 @@ export class JobsComponent extends DatagridComponent {
   }
 
   details(execution: JobExecution): void {
-    this.router.navigateByUrl(`tasks-jobs/job-executions/${execution.jobExecutionId}`);
+    this.router.navigateByUrl(`tasks-jobs/job-executions/${execution.jobExecutionId}/schemaTarget/${execution.schemaTarget}`);
   }
 
   restart(execution: JobExecution): void {

@@ -1,6 +1,17 @@
 import {DateTime} from 'luxon';
 import {Page} from './page.model';
 
+export class LaunchResponse {
+  executionId: number;
+  schemaTarget: string;
+  static parse(input: any): LaunchResponse {
+    const response = new LaunchResponse();
+    response.executionId = input?.executionId;
+    response.schemaTarget = input?.schemaTarget;
+    return response;
+  }
+}
+
 export class TaskExecution {
   executionId: number;
   exitCode: number;
@@ -17,6 +28,7 @@ export class TaskExecution {
   parentExecutionId: number;
   resourceUrl: string;
   appProperties: any;
+  schemaTarget: string;
   deploymentProperties: {[key: string]: string};
 
   static parse(input: any): TaskExecution {
@@ -37,6 +49,7 @@ export class TaskExecution {
     execution.resourceUrl = input?.resourceUrl;
     execution.appProperties = input?.appProperties;
     execution.deploymentProperties = input?.deploymentProperties;
+    execution.schemaTarget = input?.schemaTarget;
     return execution;
   }
 
@@ -91,3 +104,4 @@ export class TaskExecutionPage extends Page<TaskExecution> {
     return page;
   }
 }
+

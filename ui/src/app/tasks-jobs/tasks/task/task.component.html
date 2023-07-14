@@ -120,6 +120,12 @@
                 </div>
               </div>
               <div class="row">
+                <div class="key">{{ 'executions.main.schemaTarget' | translate }}</div>
+                <div class="value">
+                  {{ task.lastTaskExecution.schemaTarget }}
+                </div>
+              </div>
+              <div class="row">
                 <div class="key">{{ 'executions.main.batchJob' | translate }}</div>
                 <div class="value">
                   <clr-icon *ngIf="taskExecution?.jobExecutionIds?.length > 0" shape="success-standard"></clr-icon>
@@ -130,7 +136,7 @@
                 <div class="key">{{ 'executions.main.jobExecutionIds' | translate }}</div>
                 <div class="value">
                   <a
-                    [routerLink]="'/tasks-jobs/job-executions/' + jobExecutionId"
+                    routerLink="/tasks-jobs/job-executions/{{ jobExecutionId }}/schemaTarget/{{ taskExecution.schemaTarget }}"
                     *ngFor="let jobExecutionId of taskExecution?.jobExecutionIds"
                   >
                     {{ jobExecutionId }}
@@ -203,7 +209,7 @@
           </div>
         </ng-template>
         <div class="card-footer" *ngIf="task.lastTaskExecution">
-          <button class="btn btn-sm btn-secondary" (click)="navigateExecution(task.lastTaskExecution?.executionId)">
+          <button class="btn btn-sm btn-secondary" (click)="navigateExecution(task.lastTaskExecution)">
             {{ 'tasks.task.viewTaskExecution' | translate }}
           </button>
           <button
@@ -239,7 +245,7 @@
               <tbody>
                 <tr *ngFor="let execution of executions?.items">
                   <td class="left">
-                    <a routerLink="/tasks-jobs/task-executions/{{ execution.executionId }}">{{
+                    <a routerLink="/tasks-jobs/task-executions/{{ execution.executionId }}/schemaTarget/{{ execution.schemaTarget }}">{{
                       execution.executionId
                     }}</a>
                   </td>

@@ -52,9 +52,9 @@ export class StepComponent implements OnInit {
       .pipe(
         mergeMap(params =>
           forkJoin([
-            this.jobService.getExecution(params.executionId),
-            this.jobService.getExecutionStep(params.executionId, params.stepId),
-            this.jobService.getExecutionStepProgress(params.executionId, params.stepId)
+            this.jobService.getExecution(params.executionId, params.schemaTarget),
+            this.jobService.getExecutionStep(params.executionId, params.stepId, params.schemaTarget),
+            this.jobService.getExecutionStepProgress(params.executionId, params.stepId, params.schemaTarget)
           ]).pipe(
             map(results => ({
               execution: results[0],
@@ -83,7 +83,7 @@ export class StepComponent implements OnInit {
 
   getTaskExecution(): void {
     this.loadingExecution = true;
-    this.taskService.getExecution(this.execution.taskExecutionId.toString()).subscribe(
+    this.taskService.getExecutionById(this.execution.taskExecutionId, this.execution.schemaTarget).subscribe(
       (taskExecution: TaskExecution) => {
         this.taskExecution = taskExecution;
         this.getTask();
@@ -151,7 +151,7 @@ export class StepComponent implements OnInit {
   }
 
   navigateTaskExecution(): void {
-    this.router.navigateByUrl(`/tasks-jobs/task-executions/${this.taskExecution.executionId}`);
+    this.router.navigateByUrl(`/tasks-jobs/task-executions/${this.taskExecution.executionId}/schemaTarget/${this.taskExecution.schemaTarget}`);
   }
 
   relaunch(): void {

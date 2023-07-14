@@ -61,7 +61,7 @@ export class ExecutionsComponent extends DatagridComponent {
   }
 
   details(execution: TaskExecution): void {
-    this.router.navigateByUrl(`tasks-jobs/task-executions/${execution.executionId}`);
+    this.router.navigateByUrl(`tasks-jobs/task-executions/${execution.executionId}/schemaTarget/${execution.schemaTarget}`);
   }
 
   taskDetails(execution: TaskExecution): void {

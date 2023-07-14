@@ -33,6 +33,13 @@
     <clr-dg-filter style="display: none"></clr-dg-filter>
   </clr-dg-column>
   <clr-dg-column
+    (clrDgColumnResize)="updateContext('sizeSchemaTarget', $event)"
+    [style.width.px]="context.sizeSchemaTarget | datagridcolumn: datagrid:contextName | async"
+  >
+    <ng-container>{{ 'jobs.main.schemaTarget' | translate }}</ng-container>
+    <clr-dg-filter style="display: none"></clr-dg-filter>
+  </clr-dg-column>
+  <clr-dg-column
     (clrDgColumnResize)="updateContext('sizeStart', $event)"
     [style.width.px]="context.sizeStart | datagridcolumn: datagrid:contextName | async"
   >
@@ -58,13 +65,14 @@
   </clr-dg-column>
   <clr-dg-row *ngFor="let execution of page?.items" [clrDgItem]="execution">
     <clr-dg-cell>
-      <a routerLink="/tasks-jobs/job-executions/{{ execution.jobExecutionId }}">{{ execution.jobExecutionId }}</a>
+      <a routerLink="/tasks-jobs/job-executions/{{ execution.jobExecutionId }}/schemaTarget/{{ execution.schemaTarget }}">{{ execution.jobExecutionId }}</a>
     </clr-dg-cell>
     <clr-dg-cell>
-      <a routerLink="/tasks-jobs/job-executions/{{ execution.jobExecutionId }}">{{ execution.name }}</a>
+      <a routerLink="/tasks-jobs/job-executions/{{ execution.jobExecutionId }}/schemaTarget/{{ execution.schemaTarget }}">{{ execution.name }}</a>
     </clr-dg-cell>
     <clr-dg-cell>{{ execution.taskExecutionId }}</clr-dg-cell>
     <clr-dg-cell>{{ execution.jobInstanceId }}</clr-dg-cell>
+    <clr-dg-cell>{{ execution.schemaTarget }}</clr-dg-cell>
     <clr-dg-cell>{{ execution.startTime | datetime }}</clr-dg-cell>
     <clr-dg-cell>{{ execution.stepExecutionCount }}</clr-dg-cell>
     <clr-dg-cell

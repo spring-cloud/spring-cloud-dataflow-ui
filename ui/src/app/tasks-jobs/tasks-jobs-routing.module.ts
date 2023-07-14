@@ -45,7 +45,7 @@ const routes: Routes = [
         component: ExecutionsComponent
       },
       {
-        path: 'task-executions/:executionId',
+        path: 'task-executions/:executionId/schemaTarget/:schemaTarget',
         component: ExecutionComponent
       },
       {
@@ -53,11 +53,11 @@ const routes: Routes = [
         component: JobsComponent
       },
       {
-        path: 'job-executions/:executionId',
+        path: 'job-executions/:executionId/schemaTarget/:schemaTarget',
         component: JobExecutionComponent
       },
       {
-        path: 'job-executions/:executionId/:stepId',
+        path: 'job-executions/:executionId/:stepId/schemaTarget/:schemaTarget',
         component: StepComponent
       },
       {

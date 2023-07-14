@@ -50,10 +50,18 @@
             <div class="row">
               <div class="key">{{ 'jobs.main.taskExecutionId' | translate }}</div>
               <div class="value">
-                <a routerLink="/tasks-jobs/task-executions/{{ execution.taskExecutionId }}">{{
+                <a routerLink="/tasks-jobs/task-executions/{{ execution.taskExecutionId }}/schemaTarget/{{ execution.schemaTarget }}">{{
                   execution.taskExecutionId
                 }}</a>
               </div>
+            </div>
+            <div class="row">
+              <div class="key">{{ 'jobs.main.schemaTarget' | translate }}</div>
+              <div class="value">{{ execution.schemaTarget }}</div>
+            </div>
+            <div class="row">
+              <div class="key">{{ 'jobs.main.jobParameters' | translate }}</div>
+              <div class="value">{{ execution.jobParametersString }}</div>
             </div>
             <div class="row">
               <div class="key">{{ 'jobs.main.jobParameters' | translate }}</div>
@@ -193,7 +201,7 @@
                 <div class="key">{{ 'executions.main.jobExecutionIds' | translate }}</div>
                 <div class="value">
                   <a
-                    [routerLink]="'/tasks-jobs/job-executions/' + jobExecutionId"
+                    routerLink="/tasks-jobs/job-executions/{{ jobExecutionId }}/schemaTarget/{{ taskExecution.schemaTarget }}"
                     *ngFor="let jobExecutionId of taskExecution.jobExecutionIds"
                   >
                     {{ jobExecutionId }}
@@ -312,12 +320,12 @@
             <tbody>
               <tr *ngFor="let step of execution.stepExecutions">
                 <td class="left">
-                  <a routerLink="/tasks-jobs/job-executions/{{ execution.jobExecutionId }}/{{ step.id }}">{{
+                  <a routerLink="/tasks-jobs/job-executions/{{ execution.jobExecutionId }}/{{ step.id }}/schemaTarget/{{ execution.schemaTarget }}">{{
                     step.id
                   }}</a>
                 </td>
                 <td class="left">
-                  <a routerLink="/tasks-jobs/job-executions/{{ execution.jobExecutionId }}/{{ step.id }}">{{
+                  <a routerLink="/tasks-jobs/job-executions/{{ execution.jobExecutionId }}/{{ step.id }}/schemaTarget/{{ execution.schemaTarget }}">{{
                     step.name
                   }}</a>
                 </td>
