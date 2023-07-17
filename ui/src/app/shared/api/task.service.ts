@@ -200,7 +200,7 @@ export class TaskService {
     if (taskExecution.arguments) {
       taskExecution.arguments.forEach(arg => {
         const split = arg.split('=');
-        if (split[0] === '--spring.cloud.data.flow.platformname') {
+        if (split[0] === '--spring.cloud.data.flow.platformname' || split[0] === '--platform-name') {
           platformName = split[1];
         }
       });
