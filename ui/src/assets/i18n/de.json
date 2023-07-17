@@ -923,6 +923,7 @@
       "pagination": "{{ first }} - {{ last }} von <span class=\"pagination-total\">{{ total }}</span> Job-Ausführungen",
       "restartConfirmTitle": "Bestätige Neustart der Job-Ausführung",
       "restartConfirmContent": "Diese Aktion wird fehlgeschlagene Schritte in der Job-Ausführung neustarten <strong>{{ name }} ({{ id }})</strong>.<br />Sind Sie sicher?",
+      "stop": "Stopp",
       "stopConfirmTitle": "Bestätige Stoppen der Job-Ausführung",
       "stopConfirmContent": "Diese Aktion wird die Job-Ausführung stoppen <strong>{{ name }} ({{ id }})</strong>.<br />Sind Sie sicher?",
       "message": {
