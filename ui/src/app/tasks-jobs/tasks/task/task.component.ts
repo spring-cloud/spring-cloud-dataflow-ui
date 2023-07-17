@@ -179,7 +179,9 @@ export class TaskComponent implements OnInit {
   }
 
   navigateExecution(execution: TaskExecution): void {
-    this.router.navigateByUrl(`tasks-jobs/task-executions/${execution.executionId}/schemaTarget/${execution.schemaTarget}`);
+    this.router.navigateByUrl(
+      `tasks-jobs/task-executions/${execution.executionId}/schemaTarget/${execution.schemaTarget}`
+    );
   }
 
   destroy(): void {

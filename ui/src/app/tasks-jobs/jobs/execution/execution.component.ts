@@ -161,7 +161,9 @@ export class ExecutionComponent implements OnInit {
   }
 
   navigateTaskExecution(): void {
-    this.router.navigateByUrl(`/tasks-jobs/task-executions/${this.taskExecution.executionId}/schemaTarget/${this.taskExecution.schemaTarget}`);
+    this.router.navigateByUrl(
+      `/tasks-jobs/task-executions/${this.taskExecution.executionId}/schemaTarget/${this.taskExecution.schemaTarget}`
+    );
   }
 
   relaunch(): void {

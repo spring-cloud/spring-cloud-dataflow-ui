@@ -106,7 +106,10 @@
   </clr-dg-column>
   <clr-dg-row *ngFor="let execution of page?.items" [clrDgItem]="execution">
     <clr-dg-cell>
-      <a routerLink="/tasks-jobs/task-executions/{{ execution.executionId }}/schemaTarget/{{ execution.schemaTarget }}">{{ execution.executionId }}</a>
+      <a
+        routerLink="/tasks-jobs/task-executions/{{ execution.executionId }}/schemaTarget/{{ execution.schemaTarget }}"
+        >{{ execution.executionId }}</a
+      >
     </clr-dg-cell>
     <clr-dg-cell>
       <a routerLink="/tasks-jobs/tasks/{{ execution.taskName }}">{{ execution.taskName }}</a>

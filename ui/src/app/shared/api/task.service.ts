@@ -88,17 +88,18 @@ export class TaskService {
     }
     return this.httpClient
       .post<LaunchResponse>(UrlUtilities.calculateBaseApiUrl() + 'tasks/executions/launch', {}, {headers, params})
-      .pipe(
-        map(LaunchResponse.parse),
-        catchError(ErrorUtils.catchError)
-      );
+      .pipe(map(LaunchResponse.parse), catchError(ErrorUtils.catchError));
   }
 
   executionStop(taskExecution: TaskExecution): Observable<any> {
     const headers = HttpUtils.getDefaultHttpHeaders();
     const params = new HttpParams({encoder: new DataflowEncoder()}).append('schemaTarget', taskExecution?.schemaTarget);
     return this.httpClient
-      .post<any>(UrlUtilities.calculateBaseApiUrl() + `tasks/executions/${taskExecution.executionId}`, {},{headers, params})
+      .post<any>(
+        UrlUtilities.calculateBaseApiUrl() + `tasks/executions/${taskExecution.executionId}`,
+        {},
+        {headers, params}
+      )
       .pipe(catchError(ErrorUtils.catchError));
   }
 
@@ -108,11 +109,13 @@ export class TaskService {
       .append('action', 'REMOVE_DATA')
       .append('schemaTarget', taskExecution.schemaTarget);
     const url = UrlUtilities.calculateBaseApiUrl() + `tasks/executions/${taskExecution.executionId}`;
-    return this.httpClient.delete<any>(url, {
-      headers,
-      params,
-      observe: 'response'
-    }).pipe(catchError(ErrorUtils.catchError));
+    return this.httpClient
+      .delete<any>(url, {
+        headers,
+        params,
+        observe: 'response'
+      })
+      .pipe(catchError(ErrorUtils.catchError));
   }
 
   executionsClean(taskExecutions: TaskExecution[]): Observable<any> {
@@ -174,10 +177,12 @@ export class TaskService {
     const headers = HttpUtils.getDefaultHttpHeaders();
     const params = new HttpParams({encoder: new DataflowEncoder()}).append('platform', platform);
     return this.httpClient
-      .get<any>(UrlUtilities.calculateBaseApiUrl() + `tasks/executions/external/${externalExecutionId}`, {headers, params})
+      .get<any>(UrlUtilities.calculateBaseApiUrl() + `tasks/executions/external/${externalExecutionId}`, {
+        headers,
+        params
+      })
       .pipe(map(TaskExecution.parse), catchError(ErrorUtils.catchError));
   }
-
 
   getExecutionById(executionId: number, schemaTarget: string): Observable<TaskExecution | unknown> {
     const headers = HttpUtils.getDefaultHttpHeaders();
@@ -207,7 +212,10 @@ export class TaskService {
     }
     const params = new HttpParams({encoder: new DataflowEncoder()}).append('platformName', platformName);
     return this.httpClient
-      .get<any>(UrlUtilities.calculateBaseApiUrl() + `tasks/logs/${taskExecution.externalExecutionId}`, {headers, params})
+      .get<any>(UrlUtilities.calculateBaseApiUrl() + `tasks/logs/${taskExecution.externalExecutionId}`, {
+        headers,
+        params
+      })
       .pipe(catchError(ErrorUtils.catchError));
   }
 

@@ -87,7 +87,9 @@
                 <div class="key">{{ 'executions.main.jobExecutionIds' | translate }}</div>
                 <div class="value">
                   <a
-                    routerLink="/tasks-jobs/job-executions/{{ jobExecutionId }}/schemaTarget/{{execution.schemaTarget}}"
+                    routerLink="/tasks-jobs/job-executions/{{ jobExecutionId }}/schemaTarget/{{
+                      execution.schemaTarget
+                    }}"
                     *ngFor="let jobExecutionId of execution.jobExecutionIds"
                   >
                     {{ jobExecutionId }}

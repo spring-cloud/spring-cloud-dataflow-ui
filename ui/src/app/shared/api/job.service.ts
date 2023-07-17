@@ -9,13 +9,11 @@ import {DateTime} from 'luxon';
 import {UrlUtilities} from '../../url-utilities.service';
 import {DataflowEncoder} from '../support/encoder.utils';
 
-
 @Injectable({
   providedIn: 'root'
 })
 export class JobService {
-  constructor(private httpClient: HttpClient) {
-  }
+  constructor(private httpClient: HttpClient) {}
 
   getExecutions(
     page: number,
@@ -55,13 +53,19 @@ export class JobService {
 
   stop(item: JobExecution): Observable<any> {
     const headers = HttpUtils.getDefaultHttpHeaders();
-    const params = new HttpParams({encoder: new DataflowEncoder()}).append('stop', true).append('schemaTarget', item.schemaTarget);
+    const params = new HttpParams({encoder: new DataflowEncoder()})
+      .append('stop', true)
+      .append('schemaTarget', item.schemaTarget);
     return this.httpClient
       .put(UrlUtilities.calculateBaseApiUrl() + `jobs/executions/${item.jobExecutionId}`, {}, {headers, params})
       .pipe(catchError(ErrorUtils.catchError));
   }
 
-  getExecutionStep(jobExecutionId: string, stepId: string, schemaTarget: string): Observable<ExecutionStepResource | unknown> {
+  getExecutionStep(
+    jobExecutionId: string,
+    stepId: string,
+    schemaTarget: string
+  ): Observable<ExecutionStepResource | unknown> {
     const headers = HttpUtils.getDefaultHttpHeaders();
     const params = new HttpParams({encoder: new DataflowEncoder()}).append('schemaTarget', schemaTarget);
     return this.httpClient
@@ -72,7 +76,11 @@ export class JobService {
       .pipe(map(ExecutionStepResource.parse), catchError(ErrorUtils.catchError));
   }
 
-  getExecutionStepProgress(jobExecutionId: string, stepId: string, schemaTarget: string): Observable<ExecutionStepProgress | unknown> {
+  getExecutionStepProgress(
+    jobExecutionId: string,
+    stepId: string,
+    schemaTarget: string
+  ): Observable<ExecutionStepProgress | unknown> {
     const headers = HttpUtils.getDefaultHttpHeaders();
     const params = new HttpParams({encoder: new DataflowEncoder()}).append('schemaTarget', schemaTarget);
     return this.httpClient

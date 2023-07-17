@@ -9,7 +9,7 @@ import {
 import {GET_EXECUTION, GET_JOBS_EXECUTIONS, GET_PROGRESS, GET_STEP} from '../data/job';
 import {catchError, delay, map} from 'rxjs/operators';
 import {ErrorUtils} from '../../shared/support/error.utils';
-import { TaskExecution } from 'src/app/shared/model/task-execution.model';
+import {TaskExecution} from 'src/app/shared/model/task-execution.model';
 
 export class JobServiceMock {
   static mock: JobServiceMock = null;
