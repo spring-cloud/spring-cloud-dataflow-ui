@@ -9,6 +9,7 @@ import {
 import {GET_EXECUTION, GET_JOBS_EXECUTIONS, GET_PROGRESS, GET_STEP} from '../data/job';
 import {catchError, delay, map} from 'rxjs/operators';
 import {ErrorUtils} from '../../shared/support/error.utils';
+import { TaskExecution } from 'src/app/shared/model/task-execution.model';
 
 export class JobServiceMock {
   static mock: JobServiceMock = null;
@@ -17,7 +18,7 @@ export class JobServiceMock {
     return of(GET_JOBS_EXECUTIONS).pipe(delay(1), map(JobExecutionPage.parse), catchError(ErrorUtils.catchError));
   }
 
-  getExecution(executionId: string): Observable<JobExecution | unknown> {
+  getExecution(executionId: TaskExecution): Observable<JobExecution | unknown> {
     return of(GET_EXECUTION).pipe(delay(1), map(JobExecution.parse), catchError(ErrorUtils.catchError));
   }
 

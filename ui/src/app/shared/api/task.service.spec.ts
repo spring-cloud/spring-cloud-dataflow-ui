@@ -120,7 +120,7 @@ describe('shared/api/task.service.ts', () => {
 
   it('getExecution', () => {
     mockHttp.get.and.returnValue(of(jsonData));
-    taskService.getExecution('foo');
+    taskService.getExecution('foo', 'boot3');
     const httpUri = mockHttp.get.calls.mostRecent().args[0];
     const headerArgs = mockHttp.get.calls.mostRecent().args[1].headers;
     expect(httpUri).toEqual('/tasks/executions/foo');

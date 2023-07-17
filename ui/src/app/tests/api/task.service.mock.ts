@@ -66,7 +66,7 @@ export class TaskServiceMock {
     return of(GET_EXECUTIONS).pipe(delay(1), map(TaskExecutionPage.parse));
   }
 
-  getExecution(executionId: string): Observable<TaskExecution> {
+  getExecution(executionId: TaskExecution): Observable<TaskExecution | unknown> {
     return of(GET_EXECUTION).pipe(delay(1), map(TaskExecution.parse));
   }
 

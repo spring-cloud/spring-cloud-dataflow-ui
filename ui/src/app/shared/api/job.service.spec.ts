@@ -34,7 +34,7 @@ describe('shared/api/job.service.ts', () => {
 
   it('getExecution', () => {
     mockHttp.get.and.returnValue(of(jsonData));
-    jobService.getExecution('foo');
+    jobService.getExecution('foo', 'boot3');
     const httpUri = mockHttp.get.calls.mostRecent().args[0];
     expect(httpUri).toEqual('/jobs/executions/foo');
   });
