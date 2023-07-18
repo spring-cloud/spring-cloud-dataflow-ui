@@ -43,21 +43,19 @@ export class JobService {
 
   restart(execution: JobExecution): Observable<any> {
     const headers = HttpUtils.getDefaultHttpHeaders();
-    const params = new HttpParams({encoder: new DataflowEncoder()})
-      .append('restart', true)
-      .append('schemaTarget', execution.schemaTarget);
+    const initHttpParams = new HttpParams({encoder: new DataflowEncoder()});
+    const params = initHttpParams.append('schemaTarget', execution.schemaTarget);
     return this.httpClient
-      .put(UrlUtilities.calculateBaseApiUrl() + `jobs/executions/${execution.jobExecutionId}`, {}, {headers, params})
+      .put(UrlUtilities.calculateBaseApiUrl() + `jobs/executions/${execution.jobExecutionId}?restart=true`, {}, {headers, params})
       .pipe(catchError(ErrorUtils.catchError));
   }
 
   stop(item: JobExecution): Observable<any> {
     const headers = HttpUtils.getDefaultHttpHeaders();
-    const params = new HttpParams({encoder: new DataflowEncoder()})
-      .append('stop', true)
-      .append('schemaTarget', item.schemaTarget);
+    const initHttpParams = new HttpParams({encoder: new DataflowEncoder()})
+    const params = initHttpParams.append('schemaTarget', item.schemaTarget);
     return this.httpClient
-      .put(UrlUtilities.calculateBaseApiUrl() + `jobs/executions/${item.jobExecutionId}`, {}, {headers, params})
+      .put(UrlUtilities.calculateBaseApiUrl() + `jobs/executions/${item.jobExecutionId}?stop=true`, {}, {headers, params})
       .pipe(catchError(ErrorUtils.catchError));
   }
 
