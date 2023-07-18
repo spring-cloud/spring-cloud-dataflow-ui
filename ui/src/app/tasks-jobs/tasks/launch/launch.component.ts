@@ -203,7 +203,7 @@ export class LaunchComponent implements OnInit, OnDestroy {
           this.translate.instant('tasks.launch.main.message.successContent', {name: this.task.name})
         );
         this.router.navigate([
-          `tasks-jobs/task-executions/${launchResponse.executionId}/schemaTarget/${launchResponse.schemaTarget}`
+          `tasks-jobs/task-executions/${launchResponse.executionId ?? 0}/schemaTarget/${launchResponse.schemaTarget ?? 'boot2'}`
         ]);
       },
       error => {
