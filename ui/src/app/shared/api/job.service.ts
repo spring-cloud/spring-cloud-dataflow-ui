@@ -46,16 +46,24 @@ export class JobService {
     const initHttpParams = new HttpParams({encoder: new DataflowEncoder()});
     const params = initHttpParams.append('schemaTarget', execution.schemaTarget);
     return this.httpClient
-      .put(UrlUtilities.calculateBaseApiUrl() + `jobs/executions/${execution.jobExecutionId}?restart=true`, {}, {headers, params})
+      .put(
+        UrlUtilities.calculateBaseApiUrl() + `jobs/executions/${execution.jobExecutionId}?restart=true`,
+        {},
+        {headers, params}
+      )
       .pipe(catchError(ErrorUtils.catchError));
   }
 
   stop(item: JobExecution): Observable<any> {
     const headers = HttpUtils.getDefaultHttpHeaders();
-    const initHttpParams = new HttpParams({encoder: new DataflowEncoder()})
+    const initHttpParams = new HttpParams({encoder: new DataflowEncoder()});
     const params = initHttpParams.append('schemaTarget', item.schemaTarget);
     return this.httpClient
-      .put(UrlUtilities.calculateBaseApiUrl() + `jobs/executions/${item.jobExecutionId}?stop=true`, {}, {headers, params})
+      .put(
+        UrlUtilities.calculateBaseApiUrl() + `jobs/executions/${item.jobExecutionId}?stop=true`,
+        {},
+        {headers, params}
+      )
       .pipe(catchError(ErrorUtils.catchError));
   }
 

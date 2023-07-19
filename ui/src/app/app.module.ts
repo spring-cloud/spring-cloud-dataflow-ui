@@ -28,8 +28,8 @@ import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {AppsModule} from './apps/apps.module';
 import {UrlUtilities} from './url-utilities.service';
-import { TaskService } from './shared/api/task.service';
-import { JobService } from './shared/api/job.service';
+import {TaskService} from './shared/api/task.service';
+import {JobService} from './shared/api/job.service';
 
 @NgModule({
   declarations: [AppComponent],
