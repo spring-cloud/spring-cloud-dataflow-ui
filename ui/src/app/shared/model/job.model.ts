@@ -185,6 +185,7 @@ export class JobExecution {
   public jobParametersString: string;
   public exitCode: string;
   public exitMessage: string;
+  public schemaTarget: string;
   public stepExecutions: ExecutionStep[];
   public restartable: boolean;
   public abandonable: boolean;
@@ -211,6 +212,7 @@ export class JobExecution {
     jobExecution.abandonable = input.abandonable;
     jobExecution.stoppable = input.stoppable;
     jobExecution.defined = input.defined;
+    jobExecution.schemaTarget = input.schemaTarget;
     jobExecution.jobParametersString = input.jobParametersString;
     if (get(input, 'jobExecution.stepExecutions')) {
       jobExecution.stepExecutions = input.jobExecution.stepExecutions.map(ExecutionStep.parse);
@@ -241,6 +243,7 @@ export class JobExecution {
     jobExecution.abandonable = input.abandonable;
     jobExecution.stoppable = input.stoppable;
     jobExecution.defined = input.defined;
+    jobExecution.schemaTarget = input.schemaTarget;
     jobExecution.jobParametersString = input.jobParametersString;
     return jobExecution;
   }

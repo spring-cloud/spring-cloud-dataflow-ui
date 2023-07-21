@@ -37,6 +37,16 @@ describe('shared/api/app.service.ts', () => {
     expect(headerArgs.get('Accept')).toEqual('application/json');
   });
 
+  it('getApp with spring boot version in parameter', () => {
+    mockHttp.get.and.returnValue(of(jsonData));
+    appService.getApp('foo', 'processor' as any as ApplicationType, '', '3');
+    const httpUri = mockHttp.get.calls.mostRecent().args[0];
+    const headerArgs = mockHttp.get.calls.mostRecent().args[1].headers;
+    expect(httpUri).toEqual('/apps/processor/foo?bootVersion=3');
+    expect(headerArgs.get('Content-Type')).toEqual('application/json');
+    expect(headerArgs.get('Accept')).toEqual('application/json');
+  });
+
   it('getApp with version', () => {
     mockHttp.get.and.returnValue(of(jsonData));
     appService.getApp('foo', 'processor' as any as ApplicationType, '1.0.0');
@@ -100,6 +110,7 @@ describe('shared/api/app.service.ts', () => {
       uri: 'https://uri.foo.bar',
       metaDataUri: 'https://metaDataUri.foo.bar',
       type: ApplicationType.processor,
+      bootVersion: '3',
       force: true
     });
     const httpUri = mockHttp.post.calls.mostRecent().args[0];
@@ -110,6 +121,7 @@ describe('shared/api/app.service.ts', () => {
     expect(headerArgs.get('Accept')).toEqual('application/json');
     expect(httpParams.get('uri')).toEqual('https://uri.foo.bar');
     expect(httpParams.get('metadata-uri')).toEqual('https://metaDataUri.foo.bar');
+    expect(httpParams.get('bootVersion')).toEqual('3');
     expect(httpParams.get('force')).toEqual('true');
   });
 

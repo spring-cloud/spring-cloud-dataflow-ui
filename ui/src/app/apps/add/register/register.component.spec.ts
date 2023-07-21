@@ -70,9 +70,9 @@ describe('apps/register/register.component.ts', () => {
     const navigate = spyOn((<any>component).router, 'navigateByUrl');
     fixture.detectChanges();
     const tests = [
-      {name: 'foobar1', type: 'source', uri: 'https://foo.bar', metaDataUri: '', force: false},
-      {name: '', type: '', uri: '', metaDataUri: '', force: false},
-      {name: '', type: '', uri: '', metaDataUri: '', force: false}
+      {name: 'foobar1', type: 'source', uri: 'https://foo.bar', metaDataUri: '', bootVersion: '3', force: false},
+      {name: '', type: '', uri: '', metaDataUri: '', bootVersion: '2', force: false},
+      {name: '', type: '', uri: '', metaDataUri: '', bootVersion: '2', force: false}
     ];
     component.newForm();
     component.newForm();
@@ -80,12 +80,14 @@ describe('apps/register/register.component.ts', () => {
       component.forms[index].get('name').setValue(test.name);
       component.forms[index].get('type').setValue(test.type);
       component.forms[index].get('uri').setValue(test.uri);
+      component.forms[index].get('bootVersion').setValue(test.bootVersion);
       component.forms[index].get('metaDataUri').setValue(test.metaDataUri);
       component.forms[index].get('force').setValue(test.force);
     });
     fixture.detectChanges();
     fixture.debugElement.query(By.css('button[name=register]')).nativeElement.click();
     fixture.detectChanges();
+
     expect(component.isValid()).toBeTruthy();
     expect(component.noValue()).toBeFalsy();
     expect(NotificationServiceMock.mock.successNotifications[0].title).toContain('Register application(s).');
@@ -106,9 +108,9 @@ describe('apps/register/register.component.ts', () => {
   it('should display errors form', () => {
     fixture.detectChanges();
     const tests = [
-      {name: 'foobar1', type: 'source', uri: 'https://foo.bar', metaDataUri: '', force: false},
-      {name: 'foobar2', type: 'sink', uri: 'https://foo.bar', metaDataUri: '', force: false},
-      {name: 'foobar3', type: 'processor', uri: '', metaDataUri: '', force: false}
+      {name: 'foobar1', type: 'source', uri: 'https://foo.bar', metaDataUri: '', bootVersion: '3', force: false},
+      {name: 'foobar2', type: 'sink', uri: 'https://foo.bar', metaDataUri: '', bootVersion: '2', force: false},
+      {name: 'foobar3', type: 'processor', uri: '', metaDataUri: '', bootVersion: '3', force: false}
     ];
     component.newForm();
     component.newForm();
@@ -116,6 +118,7 @@ describe('apps/register/register.component.ts', () => {
       component.forms[index].get('name').setValue(test.name);
       component.forms[index].get('type').setValue(test.type);
       component.forms[index].get('uri').setValue(test.uri);
+      component.forms[index].get('bootVersion').setValue(test.bootVersion);
       component.forms[index].get('metaDataUri').setValue(test.metaDataUri);
       component.forms[index].get('force').setValue(test.force);
     });
@@ -129,10 +132,18 @@ describe('apps/register/register.component.ts', () => {
   it('should handle error on run', () => {
     spyOn(AppServiceMock.mock, 'registerProps').and.callFake(() => throwError(new Error('Fake error')));
     fixture.detectChanges();
-    const test = {name: 'foobar1', type: 'source', uri: 'https://foo.bar', metaDataUri: '', force: false};
+    const test = {
+      name: 'foobar1',
+      type: 'source',
+      uri: 'https://foo.bar',
+      metaDataUri: '',
+      bootVersion: '3',
+      force: false
+    };
     component.forms[0].get('name').setValue(test.name);
     component.forms[0].get('type').setValue(test.type);
     component.forms[0].get('uri').setValue(test.uri);
+    component.forms[0].get('bootVersion').setValue(test.bootVersion);
     component.forms[0].get('metaDataUri').setValue(test.metaDataUri);
     component.forms[0].get('force').setValue(test.force);
     fixture.detectChanges();

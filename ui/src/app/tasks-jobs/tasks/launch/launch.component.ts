@@ -11,6 +11,7 @@ import {ClipboardCopyService} from '../../../shared/service/clipboard-copy.servi
 import {TaskService} from '../../../shared/api/task.service';
 import {TaskLaunchService} from './task-launch.service';
 import {TranslateService} from '@ngx-translate/core';
+import {LaunchResponse} from '../../../shared/model/task-execution.model';
 
 @Component({
   selector: 'app-launch',
@@ -196,12 +197,16 @@ export class LaunchComponent implements OnInit, OnDestroy {
     this.updateArguments(args);
     const prepared = this.prepareParams(this.task.name, this.arguments, this.properties);
     this.taskService.launch(prepared.name, prepared.args, prepared.props).subscribe(
-      executionId => {
+      (launchResponse: LaunchResponse) => {
         this.notificationService.success(
           this.translate.instant('tasks.launch.main.message.successTitle'),
           this.translate.instant('tasks.launch.main.message.successContent', {name: this.task.name})
         );
-        this.router.navigate([`tasks-jobs/task-executions/${executionId}`]);
+        this.router.navigate([
+          `tasks-jobs/task-executions/${launchResponse.executionId ?? 0}/schemaTarget/${
+            launchResponse.schemaTarget ?? 'boot2'
+          }`
+        ]);
       },
       error => {
         this.isLaunching = false;

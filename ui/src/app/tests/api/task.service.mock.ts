@@ -9,7 +9,15 @@ import {delay, map} from 'rxjs/operators';
 export class TaskServiceMock {
   static mock: TaskServiceMock = null;
 
-  getTasks(page: number, size: number, taskName?: string, description?: string, dslText?: string, sort?: string, order?: string): Observable<TaskPage> {
+  getTasks(
+    page: number,
+    size: number,
+    taskName?: string,
+    description?: string,
+    dslText?: string,
+    sort?: string,
+    order?: string
+  ): Observable<TaskPage> {
     return of(GET_TASKS).pipe(delay(1), map(TaskPage.parse));
   }
 
@@ -66,7 +74,11 @@ export class TaskServiceMock {
     return of(GET_EXECUTIONS).pipe(delay(1), map(TaskExecutionPage.parse));
   }
 
-  getExecution(executionId: string): Observable<TaskExecution> {
+  getExecution(executionId: TaskExecution): Observable<TaskExecution | unknown> {
+    return of(GET_EXECUTION).pipe(delay(1), map(TaskExecution.parse));
+  }
+
+  getExecutionById(executionId: number, schemaTarget: string): Observable<TaskExecution | unknown> {
     return of(GET_EXECUTION).pipe(delay(1), map(TaskExecution.parse));
   }
 

@@ -108,9 +108,9 @@ export class TaskCreateComponent {
           }
           return of(name);
         }),
-        map(result => {
+        map(response => {
           this.step += 1;
-          return result;
+          return response;
         })
       );
     });

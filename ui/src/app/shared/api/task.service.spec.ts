@@ -75,7 +75,7 @@ describe('shared/api/task.service.ts', () => {
     const httpUri = mockHttp.post.calls.mostRecent().args[0];
     const headerArgs = mockHttp.post.calls.mostRecent().args[2].headers;
     const httpParams = mockHttp.post.calls.mostRecent().args[2].params;
-    expect(httpUri).toEqual('/tasks/executions');
+    expect(httpUri).toEqual('/tasks/executions/launch');
     expect(headerArgs.get('Content-Type')).toEqual('application/json');
     expect(headerArgs.get('Accept')).toEqual('application/json');
     expect(httpParams.get('name')).toEqual('foo');
@@ -120,10 +120,10 @@ describe('shared/api/task.service.ts', () => {
 
   it('getExecution', () => {
     mockHttp.get.and.returnValue(of(jsonData));
-    taskService.getExecution('foo');
+    taskService.getExecution(0, 'boot3');
     const httpUri = mockHttp.get.calls.mostRecent().args[0];
     const headerArgs = mockHttp.get.calls.mostRecent().args[1].headers;
-    expect(httpUri).toEqual('/tasks/executions/foo');
+    expect(httpUri).toEqual('/tasks/executions/0');
     expect(headerArgs.get('Content-Type')).toEqual('application/json');
     expect(headerArgs.get('Accept')).toEqual('application/json');
   });

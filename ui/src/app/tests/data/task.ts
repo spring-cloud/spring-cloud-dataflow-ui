@@ -130,7 +130,8 @@ export const GET_EXECUTIONS = {
         },
         deploymentProperties: {},
         taskExecutionStatus: 'ERROR',
-        _links: {self: {href: 'http://localhost:4200/tasks/executions/6'}}
+        schemaTarget: 'boot2',
+        _links: {self: {href: 'http://localhost:4200/tasks/executions/6?schemaTarget=boot2'}}
       },
       {
         executionId: 5,
@@ -159,7 +160,8 @@ export const GET_EXECUTIONS = {
         },
         deploymentProperties: {},
         taskExecutionStatus: 'ERROR',
-        _links: {self: {href: 'http://localhost:4200/tasks/executions/5'}}
+        schemaTarget: 'boot2',
+        _links: {self: {href: 'http://localhost:4200/tasks/executions/5?schemaTarget=boot2'}}
       },
       {
         executionId: 4,
@@ -187,7 +189,8 @@ export const GET_EXECUTIONS = {
         },
         deploymentProperties: {},
         taskExecutionStatus: 'COMPLETE',
-        _links: {self: {href: 'http://localhost:4200/tasks/executions/4'}}
+        schemaTarget: 'boot2',
+        _links: {self: {href: 'http://localhost:4200/tasks/executions/4?schemaTarget=boot2'}}
       },
       {
         executionId: 3,
@@ -216,7 +219,8 @@ export const GET_EXECUTIONS = {
         },
         deploymentProperties: {},
         taskExecutionStatus: 'COMPLETE',
-        _links: {self: {href: 'http://localhost:4200/tasks/executions/3'}}
+        schemaTarget: 'boot2',
+        _links: {self: {href: 'http://localhost:4200/tasks/executions/3?schemaTarget=boot2'}}
       },
       {
         executionId: 2,
@@ -240,7 +244,8 @@ export const GET_EXECUTIONS = {
         },
         deploymentProperties: {},
         taskExecutionStatus: 'COMPLETE',
-        _links: {self: {href: 'http://localhost:4200/tasks/executions/2'}}
+        schemaTarget: 'boot2',
+        _links: {self: {href: 'http://localhost:4200/tasks/executions/2?schemaTarget=boot2'}}
       },
       {
         executionId: 1,
@@ -264,7 +269,8 @@ export const GET_EXECUTIONS = {
         },
         deploymentProperties: {},
         taskExecutionStatus: 'COMPLETE',
-        _links: {self: {href: 'http://localhost:4200/tasks/executions/1'}}
+        schemaTarget: 'boot2',
+        _links: {self: {href: 'http://localhost:4200/tasks/executions/1?schemaTarget=boot2'}}
       }
     ]
   },
@@ -294,7 +300,8 @@ export const GET_EXECUTION = {
   },
   deploymentProperties: {},
   taskExecutionStatus: 'COMPLETE',
-  _links: {self: {href: 'http://localhost:4200/tasks/executions/1'}}
+  schemaTarget: 'boot2',
+  _links: {self: {href: 'http://localhost:4200/tasks/executions/1?schemaTarget=boot2'}}
 };
 
 export const SIMPLE_TASK_DEFAULT = {

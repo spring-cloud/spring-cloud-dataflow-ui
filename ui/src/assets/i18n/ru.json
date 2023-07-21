@@ -97,6 +97,8 @@
       "unregisterApplications": "Отменить регистрацию приложений",
       "name": "Имя",
       "type": "Тип",
+      "bootVersion": "Spring Boot Версия",
+      "bootVersionPlaceholder": "Пожалуйста выберите Spring Boot Версия",
       "version": "Версия",
       "uri": "URI",
       "metadataURI": "Metadata URI",
@@ -920,6 +922,7 @@
       "pagination": "{{ first }} - {{ last }} из <span class=\"pagination-total\">{{ total }}</span> выполнение заданий",
       "restartConfirmTitle": "Подтвердите перезапуск выполнения задания",
       "restartConfirmContent": "Это действие перезапустит неудачные шаги выполнения задания. <strong>{{ name }} ({{ id }})</strong>.<br />Вы уверены?",
+      "stop": "Стоп",
       "stopConfirmTitle": "Подтвердите остановку выполнения задания",
       "stopConfirmContent": "Это действие остановит выполнение задания <strong>{{ name }} ({{ id }})</strong>.<br />Вы уверены?",
       "message": {
