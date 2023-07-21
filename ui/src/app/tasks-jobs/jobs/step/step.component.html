@@ -55,10 +55,6 @@
               <div class="value">{{ stepResource.stepType }}</div>
             </div>
             <div class="row">
-              <div class="key">{{ 'jobs.main.schemaTarget' | translate }}</div>
-              <div class="value">{{ taskExecution?.schemaTarget }}</div>
-            </div>
-            <div class="row">
               <div class="key">
                 <strong>{{ 'commons.status' | translate }}</strong>
               </div>
@@ -378,6 +374,10 @@
                 <div class="value">{{ taskExecution.executionId }}</div>
               </div>
               <div class="row">
+                <div class="key">{{ 'jobs.main.schemaTarget' | translate }}</div>
+                <div class="value">{{ taskExecution?.schemaTarget }}</div>
+              </div>
+              <div class="row">
                 <div class="key">{{ 'executions.main.arguments' | translate }}</div>
                 <div class="value">
                   <div *ngIf="taskExecution.getArgumentsToArray().length > 0">
@@ -402,10 +402,6 @@
                   </a>
                   <div *ngIf="taskExecution.jobExecutionIds?.length === 0">N/A</div>
                 </div>
-              </div>
-              <div class="row">
-                <div class="key">{{ 'jobs.main.schemaTarget' | translate }}</div>
-                <div class="value">{{ taskExecution?.schemaTarget }}</div>
               </div>
               <div class="row">
                 <div class="key">{{ 'executions.main.batchJob' | translate }}</div>

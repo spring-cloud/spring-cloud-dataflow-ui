@@ -102,6 +102,12 @@
                 <div class="value">{{ task.lastTaskExecution?.executionId }}</div>
               </div>
               <div class="row">
+                <div class="key">{{ 'executions.main.schemaTarget' | translate }}</div>
+                <div class="value">
+                  {{ task.lastTaskExecution.schemaTarget }}
+                </div>
+              </div>
+              <div class="row">
                 <div class="key">{{ 'executions.main.arguments' | translate }}</div>
                 <div class="value">
                   <div *ngIf="task.lastTaskExecution.getArgumentsToArray().length > 0">
@@ -117,12 +123,6 @@
                 <div class="key">{{ 'executions.main.externalExecutionId' | translate }}</div>
                 <div class="value">
                   {{ task.lastTaskExecution.externalExecutionId || 'N/A' }}
-                </div>
-              </div>
-              <div class="row">
-                <div class="key">{{ 'executions.main.schemaTarget' | translate }}</div>
-                <div class="value">
-                  {{ task.lastTaskExecution.schemaTarget }}
                 </div>
               </div>
               <div class="row">
