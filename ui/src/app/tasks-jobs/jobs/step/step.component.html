@@ -404,6 +404,10 @@
                 </div>
               </div>
               <div class="row">
+                <div class="key">{{ 'jobs.main.schemaTarget' | translate }}</div>
+                <div class="value">{{ taskExecution?.schemaTarget }}</div>
+              </div>
+              <div class="row">
                 <div class="key">{{ 'executions.main.batchJob' | translate }}</div>
                 <div class="value">
                   <clr-icon *ngIf="taskExecution.jobExecutionIds?.length > 0" shape="check"></clr-icon>
