@@ -80,9 +80,51 @@
             </div>
             <div class="row">
               <div class="key">
+                <strong>{{ 'jobs.step.filterCount' | translate }}</strong>
+              </div>
+              <div class="value">{{ stepResource.stepExecution.filterCount }}</div>
+            </div>
+            <div class="row">
+              <div class="key">
+                <strong>{{ 'jobs.step.processSkips' | translate }}</strong>
+              </div>
+              <div class="value">{{ stepResource.stepExecution.processSkipCount }}</div>
+            </div>
+            <div class="row">
+              <div class="key">
+                <strong>{{ 'jobs.step.reads' | translate }}</strong>
+              </div>
+              <div class="value">{{ stepResource.stepExecution.readCount }}</div>
+            </div>
+            <div class="row">
+              <div class="key">
+                <strong>{{ 'jobs.step.readSkips' | translate }}</strong>
+              </div>
+              <div class="value">{{ stepResource.stepExecution.readSkipCount }}</div>
+            </div>
+            <div class="row">
+              <div class="key">
+                <strong>{{ 'jobs.step.rollbacks' | translate }}</strong>
+              </div>
+              <div class="value">{{ stepResource.stepExecution.rollbackCount }}</div>
+            </div>
+            <div class="row">
+              <div class="key">
                 <strong>{{ 'jobs.step.skips' | translate }}</strong>
               </div>
               <div class="value">{{ stepResource.stepExecution.skipCount }}</div>
+            </div>
+            <div class="row">
+              <div class="key">
+                <strong>{{ 'jobs.step.writes' | translate }}</strong>
+              </div>
+              <div class="value">{{ stepResource.stepExecution.writeCount }}</div>
+            </div>
+            <div class="row">
+              <div class="key">
+                <strong>{{ 'jobs.step.writeSkips' | translate }}</strong>
+              </div>
+              <div class="value">{{ stepResource.stepExecution.writeSkipCount }}</div>
             </div>
           </div>
         </ng-template>
