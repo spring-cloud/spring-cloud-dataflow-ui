@@ -73,7 +73,7 @@ export class TaskService {
       .pipe(catchError(ErrorUtils.catchError));
   }
 
-  destroyTasks(tasks: Task[]): Observable<any> {
+  destroyTasks(tasks: Task[]): Observable<any[]> {
     return forkJoin(tasks.map(task => this.destroyTask(task)));
   }
 
