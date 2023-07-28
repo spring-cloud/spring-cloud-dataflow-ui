@@ -73,8 +73,8 @@ export class TaskService {
       .pipe(catchError(ErrorUtils.catchError));
   }
 
-  destroyTasks(tasks: Task[]): void {
-    tasks.map(task => this.destroyTask(task));
+  destroyTasks(tasks: Task[]): Observable<any> {
+    return forkJoin(tasks.map(task => this.destroyTask(task)));
   }
 
   launch(taskName: string, args: string, props: string): Observable<LaunchResponse | unknown> {
@@ -117,8 +117,22 @@ export class TaskService {
   }
 
   executionsClean(taskExecutions: TaskExecution[]): Observable<any> {
-    // TODO group by schemaTarget and perform multiple invocations
-    return forkJoin(taskExecutions.map(execution => this.executionClean(execution)));
+    const taskExecutionsChildren = taskExecutions.filter(taskExecution => taskExecution.parentExecutionId);
+    const taskExecutionsParents = taskExecutions.filter(taskExecution => !taskExecution.parentExecutionId);
+    return forkJoin(
+      this.executionsCleanBySchema(taskExecutionsChildren, 'boot2'),
+      this.executionsCleanBySchema(taskExecutionsChildren, 'boot3'),
+      this.executionsCleanBySchema(taskExecutionsParents, 'boot2'),
+      this.executionsCleanBySchema(taskExecutionsParents, 'boot3')
+    );
+  }
+
+  executionsCleanBySchema(taskExecutions: TaskExecution[], schemaTarget: string): Observable<any> {
+    return forkJoin(
+      taskExecutions
+        .filter(execution => (execution.schemaTarget = schemaTarget))
+        .map(execution => this.executionClean(execution))
+    );
   }
 
   taskExecutionsClean(task: Task, completed: boolean): Observable<any> {
