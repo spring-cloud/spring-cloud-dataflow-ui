@@ -133,9 +133,11 @@ export class TaskService {
     }, {});
     const observables: Observable<any>[] = [];
     for (const schemaTarget in groupBySchemaTarget) {
-      const group: TaskExecution[] = groupBySchemaTarget[schemaTarget];
-      const ids = group.map(task => task.executionId);
-      observables.push(this.taskExecutionsCleanByIds(ids, schemaTarget));
+      if (schemaTarget) {
+        const group: TaskExecution[] = groupBySchemaTarget[schemaTarget];
+        const ids = group.map(task => task.executionId);
+        observables.push(this.taskExecutionsCleanByIds(ids, schemaTarget));
+      }
     }
     return forkJoin(observables);
   }
@@ -144,7 +146,8 @@ export class TaskService {
     const headers = HttpUtils.getDefaultHttpHeaders();
     const idStr = ids.join(',');
     const url =
-      UrlUtilities.calculateBaseApiUrl() + `tasks/executions/${idStr}?action=CLEANUP,REMOVE_DATA&schemaTarget=${schemaTarget}`;
+      UrlUtilities.calculateBaseApiUrl() +
+      `tasks/executions/${idStr}?action=CLEANUP,REMOVE_DATA&schemaTarget=${schemaTarget}`;
     return this.httpClient.delete<any>(url, {headers, observe: 'response'}).pipe(catchError(ErrorUtils.catchError));
   }
 
