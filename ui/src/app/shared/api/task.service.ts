@@ -119,20 +119,33 @@ export class TaskService {
   executionsClean(taskExecutions: TaskExecution[]): Observable<any> {
     const taskExecutionsChildren = taskExecutions.filter(taskExecution => taskExecution.parentExecutionId);
     const taskExecutionsParents = taskExecutions.filter(taskExecution => !taskExecution.parentExecutionId);
-    return forkJoin(
-      this.executionsCleanBySchema(taskExecutionsChildren, 'boot2'),
-      this.executionsCleanBySchema(taskExecutionsChildren, 'boot3'),
-      this.executionsCleanBySchema(taskExecutionsParents, 'boot2'),
-      this.executionsCleanBySchema(taskExecutionsParents, 'boot3')
+    return this.executionsCleanBySchema(taskExecutionsChildren).pipe(
+      mergeMap(result => this.executionsCleanBySchema(taskExecutionsParents))
     );
   }
 
-  executionsCleanBySchema(taskExecutions: TaskExecution[], schemaTarget: string): Observable<any> {
-    return forkJoin(
-      taskExecutions
-        .filter(execution => (execution.schemaTarget = schemaTarget))
-        .map(execution => this.executionClean(execution))
-    );
+  executionsCleanBySchema(taskExecutions: TaskExecution[]): Observable<any> {
+    const groupBySchemaTarget = taskExecutions.reduce((group, task) => {
+      const schemaTarget = task.schemaTarget;
+      group[schemaTarget] = group[schemaTarget] ?? [];
+      group[schemaTarget].push(task);
+      return group;
+    }, {});
+    const observables: Observable<any>[] = [];
+    for (const schemaTarget in groupBySchemaTarget) {
+      const group: TaskExecution[] = groupBySchemaTarget[schemaTarget];
+      const ids = group.map(task => task.executionId);
+      observables.push(this.taskExecutionsCleanByIds(ids, schemaTarget));
+    }
+    return forkJoin(observables);
+  }
+
+  taskExecutionsCleanByIds(ids: number[], schemaTarget: string): Observable<any> {
+    const headers = HttpUtils.getDefaultHttpHeaders();
+    const idStr = ids.join(',');
+    const url =
+      UrlUtilities.calculateBaseApiUrl() + `tasks/executions/${idStr}?action=CLEANUP,REMOVE_DATA&schemaTarget=${schemaTarget}`;
+    return this.httpClient.delete<any>(url, {headers, observe: 'response'}).pipe(catchError(ErrorUtils.catchError));
   }
 
   taskExecutionsClean(task: Task, completed: boolean): Observable<any> {
