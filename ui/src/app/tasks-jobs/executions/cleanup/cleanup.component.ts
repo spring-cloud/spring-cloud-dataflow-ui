@@ -32,7 +32,7 @@ export class CleanupComponent {
       data => {
         this.notificationService.success(
           this.translate.instant('executions.cleanup.message.successTitle'),
-          this.translate.instant('executions.cleanup.message.successContent', {count: data.length})
+          this.translate.instant('executions.cleanup.message.successContent', {count: data})
         );
         this.onCleaned.emit(data);
         this.isOpen = false;

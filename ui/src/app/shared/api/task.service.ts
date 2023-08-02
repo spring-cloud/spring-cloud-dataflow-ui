@@ -117,29 +117,42 @@ export class TaskService {
   }
 
   executionsClean(taskExecutions: TaskExecution[]): Observable<any> {
-    const taskExecutionsChildren = taskExecutions.filter(taskExecution => taskExecution.parentExecutionId);
-    const taskExecutionsParents = taskExecutions.filter(taskExecution => !taskExecution.parentExecutionId);
-    return this.executionsCleanBySchema(taskExecutionsChildren).pipe(
-      mergeMap(result => this.executionsCleanBySchema(taskExecutionsParents))
-    );
+    return new Observable<any>(subscriber => {
+      this.executionsCleanAll(taskExecutions)
+        .then(value => {
+          subscriber.next(taskExecutions.length);
+        })
+        .catch(reason => {
+          subscriber.error(reason);
+        });
+    });
   }
 
-  executionsCleanBySchema(taskExecutions: TaskExecution[]): Observable<any> {
+  private async executionsCleanAll(taskExecutions: TaskExecution[]): Promise<any> {
+    const taskExecutionsChildren = taskExecutions.filter(taskExecution => taskExecution.parentExecutionId);
+    const taskExecutionsParents = taskExecutions.filter(taskExecution => !taskExecution.parentExecutionId);
+    const result = (await this.executionsCleanBySchema(taskExecutionsChildren)) as number;
+    return result + (await this.executionsCleanBySchema(taskExecutionsParents));
+  }
+
+  private async executionsCleanBySchema(taskExecutions: TaskExecution[]): Promise<any> {
     const groupBySchemaTarget = taskExecutions.reduce((group, task) => {
       const schemaTarget = task.schemaTarget;
       group[schemaTarget] = group[schemaTarget] ?? [];
       group[schemaTarget].push(task);
       return group;
     }, {});
-    const observables: Observable<any>[] = [];
+    let result = 0;
     for (const schemaTarget in groupBySchemaTarget) {
       if (schemaTarget) {
         const group: TaskExecution[] = groupBySchemaTarget[schemaTarget];
         const ids = group.map(task => task.executionId);
-        observables.push(this.taskExecutionsCleanByIds(ids, schemaTarget));
+        if (ids.length > 0) {
+          result = (await this.taskExecutionsCleanByIds(ids, schemaTarget).toPromise()) as number;
+        }
       }
     }
-    return forkJoin(observables);
+    return result;
   }
 
   taskExecutionsCleanByIds(ids: number[], schemaTarget: string): Observable<any> {
