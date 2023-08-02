@@ -49,7 +49,7 @@ describe('manage/tools/cleanup/cleanup.component.ts', () => {
   });
 
   it('should clean up the task executions', async done => {
-    component.open('all');
+    component.open('all', null);
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
