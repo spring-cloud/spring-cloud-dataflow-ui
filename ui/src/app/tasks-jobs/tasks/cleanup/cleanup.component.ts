@@ -52,7 +52,7 @@ export class CleanupComponent {
 
   clean(): void {
     this.isRunning = true;
-    this.taskService.taskExecutionsClean(this.task, this.status === 'completed').subscribe(
+    this.taskService.taskExecutionsClean(this.task, this.status === 'completed', null).subscribe(
       () => {
         this.notificationService.success(
           this.translate.instant('tasks.cleanup.message.successTitle'),

@@ -335,6 +335,8 @@
     "title": "Tools",
     "exportStreams": "Exportiere Stream(s): Erstellt eine JSON-Datei basierend auf den ausgewählten Streams",
     "importStreams": "Importiere Stream(s): Importiere Streams von einer JSON-Datei",
+    "cleanUpDescription": "Räume Aufgaben auf älter als",
+    "cleanUpDays": "Tage",
     "cleanUpAll": "Räume alle Aufgabe/Job-Ausführungen auf",
     "cleanUpCompleted": "Räume alle beendeten Aufgabe/Job-Ausführungen auf",
     "exportTasks": "Exportiere Aufgabe(n): Erstellt eine JSON-Datei basierend auf den ausgewählten Aufgaben",

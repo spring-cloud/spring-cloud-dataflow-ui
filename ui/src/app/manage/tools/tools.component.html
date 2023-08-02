@@ -27,13 +27,32 @@
       id="cleanup"
     >
       <ng-template>
-        <div>
-          <clr-icon shape="angle" style="transform: rotate(90deg)"></clr-icon>
-          <a href="{{ baseApiUrl }}#" (click)="run('cleanup-all')">{{ 'tools.cleanUpAll' | translate }}</a>
-        </div>
-        <div>
-          <clr-icon shape="angle" style="transform: rotate(90deg)"></clr-icon>
-          <a href="{{ baseApiUrl }}#" (click)="run('cleanup-completed')">{{ 'tools.cleanUpCompleted' | translate }}</a>
+        <div class="cleanUpGrid">
+          <div class="cleanUpDays">
+            <span>{{ 'tools.cleanUpDescription' | translate }}</span>
+            <clr-input-container>
+              <input
+                clrInput
+                placeholder="{{ 'tools.cleanUpDays' | translate }}"
+                name="days"
+                [(ngModel)]="days"
+                pattern="[0-9]*"
+                onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+              />
+            </clr-input-container>
+          </div>
+          <div>
+            <div>
+              <clr-icon shape="angle" style="transform: rotate(90deg)"></clr-icon>
+              <a href="{{ baseApiUrl }}#" (click)="run('cleanup-all')">{{ 'tools.cleanUpAll' | translate }}</a>
+            </div>
+            <div>
+              <clr-icon shape="angle" style="transform: rotate(90deg)"></clr-icon>
+              <a href="{{ baseApiUrl }}#" (click)="run('cleanup-completed')">{{
+                'tools.cleanUpCompleted' | translate
+              }}</a>
+            </div>
+          </div>
         </div>
       </ng-template>
     </app-view-card>

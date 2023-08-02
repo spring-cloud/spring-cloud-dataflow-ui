@@ -13,6 +13,7 @@ export class CleanupComponent {
   loading = true;
   count: {completed: number; all: number};
   status = 'all';
+  days: number;
   @Output() onCleaned = new EventEmitter();
 
   constructor(
@@ -21,10 +22,11 @@ export class CleanupComponent {
     private translate: TranslateService
   ) {}
 
-  open(status: string): void {
+  open(status: string, days: number): void {
     this.status = status;
+    this.days = days;
     this.loading = true;
-    this.taskService.getTaskExecutionsCount().subscribe(
+    this.taskService.getTaskExecutionsCount(null, this.days).subscribe(
       (count: {completed: number; all: number}) => {
         this.count = count;
         this.loading = false;
@@ -48,7 +50,7 @@ export class CleanupComponent {
 
   clean(): void {
     this.isRunning = true;
-    this.taskService.taskExecutionsClean(null, this.status === 'completed').subscribe(
+    this.taskService.taskExecutionsClean(null, this.status === 'completed', this.days).subscribe(
       () => {
         this.notificationService.success(
           this.translate.instant('tools.modal.cleanUp.message.successTitle'),
