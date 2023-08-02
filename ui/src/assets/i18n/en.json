@@ -339,7 +339,7 @@
     "title": "Tools",
     "exportStreams": "Export stream(s): Create a JSON file with the selected streams",
     "importStreams": "Import stream(s): Import streams from a JSON file",
-    "cleanUpDescription": "Cleanup task older than",
+    "cleanUpDescription": "Cleanup tasks older than",
     "cleanUpDays": "days",
     "cleanUpAll": "Clean up all task/job executions",
     "cleanUpCompleted": "Clean up all completed task/job executions",
