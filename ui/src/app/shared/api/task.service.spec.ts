@@ -101,9 +101,9 @@ describe('shared/api/task.service.ts', () => {
     mockHttp.delete.and.returnValue(of(jsonData));
     taskService.executionsClean([TaskExecution.parse({executionId: 'foo'}), TaskExecution.parse({executionId: 'bar'})]);
     let httpUri = mockHttp.delete.calls.argsFor(0)[0];
-    expect(httpUri).toEqual('/tasks/executions/foo?action=REMOVE_DATA');
+    expect(httpUri).toEqual('/tasks/executions/foo?action=CLEANUP,REMOVE_DATA&schemaTarget=boot2');
     httpUri = mockHttp.delete.calls.argsFor(1)[0];
-    expect(httpUri).toEqual('/tasks/executions/bar?action=REMOVE_DATA');
+    expect(httpUri).toEqual('/tasks/executions/bar?action=CLEANUP,REMOVE_DATA&schemaTarget=boot2');
   });
 
   it('getExecutions', () => {
