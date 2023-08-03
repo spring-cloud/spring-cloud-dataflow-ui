@@ -159,7 +159,7 @@ export class TaskService {
     const url =
       UrlUtilities.calculateBaseApiUrl() +
       `tasks/executions/${idStr}?action=CLEANUP,REMOVE_DATA&schemaTarget=${schemaTarget}`;
-    return this.httpClient.delete<any>(url, {headers, observe: 'response'}).pipe(catchError(ErrorUtils.catchError));
+    return this.httpClient.delete<void>(url, {headers, observe: 'response'}).pipe(catchError(ErrorUtils.catchError));
   }
 
   taskExecutionsClean(task: Task, completed: boolean): Observable<any> {
@@ -168,7 +168,7 @@ export class TaskService {
     const paramTask = task ? `&name=${task.name}` : '';
     const url =
       UrlUtilities.calculateBaseApiUrl() + `tasks/executions?action=CLEANUP,REMOVE_DATA${paramCompleted}${paramTask}`;
-    return this.httpClient.delete<any>(url, {headers, observe: 'response'}).pipe(catchError(ErrorUtils.catchError));
+    return this.httpClient.delete<void>(url, {headers, observe: 'response'}).pipe(catchError(ErrorUtils.catchError));
   }
 
   getTaskExecutionsCount(task?: Task): Observable<{completed: number; all: number} | unknown> {
