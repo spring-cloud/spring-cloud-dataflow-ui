@@ -121,6 +121,7 @@ export class TaskService {
       this.executionsCleanAll(taskExecutions)
         .then(value => {
           subscriber.next(taskExecutions.length);
+          subscriber.complete();
         })
         .catch(reason => {
           subscriber.error(reason);
@@ -128,14 +129,19 @@ export class TaskService {
     });
   }
 
-  private async executionsCleanAll(taskExecutions: TaskExecution[]): Promise<any> {
+  private async executionsCleanAll(taskExecutions: TaskExecution[]): Promise<void> {
     const taskExecutionsChildren = taskExecutions.filter(taskExecution => taskExecution.parentExecutionId);
     const taskExecutionsParents = taskExecutions.filter(taskExecution => !taskExecution.parentExecutionId);
-    await this.executionsCleanBySchema(taskExecutionsChildren);
-    return await this.executionsCleanBySchema(taskExecutionsParents);
+    if(taskExecutionsChildren.length > 0) {
+      await this.executionsCleanBySchema(taskExecutionsChildren);
+    }
+    if(taskExecutionsParents.length > 0) {
+      await this.executionsCleanBySchema(taskExecutionsParents);
+    }
+    return Promise.resolve();
   }
 
-  private async executionsCleanBySchema(taskExecutions: TaskExecution[]): Promise<any> {
+  private async executionsCleanBySchema(taskExecutions: TaskExecution[]): Promise<void> {
     const groupBySchemaTarget = taskExecutions.reduce((group, task) => {
       const schemaTarget = task.schemaTarget;
       group[schemaTarget] = group[schemaTarget] ?? [];
@@ -151,6 +157,7 @@ export class TaskService {
         }
       }
     }
+    return Promise.resolve();
   }
 
   taskExecutionsCleanByIds(ids: number[], schemaTarget: string): Observable<any> {
@@ -159,7 +166,7 @@ export class TaskService {
     const url =
       UrlUtilities.calculateBaseApiUrl() +
       `tasks/executions/${idStr}?action=CLEANUP,REMOVE_DATA&schemaTarget=${schemaTarget}`;
-    return this.httpClient.delete<void>(url, {headers, observe: 'response'}).pipe(catchError(ErrorUtils.catchError));
+    return this.httpClient.delete<any>(url, {headers, observe: 'response'}).pipe(catchError(ErrorUtils.catchError));
   }
 
   taskExecutionsClean(task: Task, completed: boolean): Observable<any> {
