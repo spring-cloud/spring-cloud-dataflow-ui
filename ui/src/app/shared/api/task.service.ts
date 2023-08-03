@@ -131,8 +131,8 @@ export class TaskService {
   private async executionsCleanAll(taskExecutions: TaskExecution[]): Promise<any> {
     const taskExecutionsChildren = taskExecutions.filter(taskExecution => taskExecution.parentExecutionId);
     const taskExecutionsParents = taskExecutions.filter(taskExecution => !taskExecution.parentExecutionId);
-    const result = (await this.executionsCleanBySchema(taskExecutionsChildren)) as number;
-    return result + (await this.executionsCleanBySchema(taskExecutionsParents));
+    await this.executionsCleanBySchema(taskExecutionsChildren);
+    return await this.executionsCleanBySchema(taskExecutionsParents);
   }
 
   private async executionsCleanBySchema(taskExecutions: TaskExecution[]): Promise<any> {
@@ -142,17 +142,15 @@ export class TaskService {
       group[schemaTarget].push(task);
       return group;
     }, {});
-    let result = 0;
     for (const schemaTarget in groupBySchemaTarget) {
       if (schemaTarget) {
         const group: TaskExecution[] = groupBySchemaTarget[schemaTarget];
         const ids = group.map(task => task.executionId);
         if (ids.length > 0) {
-          result = (await this.taskExecutionsCleanByIds(ids, schemaTarget).toPromise()) as number;
+          await this.taskExecutionsCleanByIds(ids, schemaTarget).toPromise();
         }
       }
     }
-    return result;
   }
 
   taskExecutionsCleanByIds(ids: number[], schemaTarget: string): Observable<any> {
