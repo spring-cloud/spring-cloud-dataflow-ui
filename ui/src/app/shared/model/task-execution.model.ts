@@ -37,7 +37,6 @@ export class TaskExecution {
   parentExecutionId: number;
   resourceUrl: string;
   appProperties: any;
-  schemaTarget: string;
   deploymentProperties: {[key: string]: string};
   _links: TaskExecutionLinks;
 
