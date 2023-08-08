@@ -3,4 +3,7 @@
     padding: .6rem 0;
     margin: 0;
   }
+  .clr-error .clr-select-wrapper:after, .clr-success .clr-select-wrapper:after {
+    right: 0;
+  }
 }

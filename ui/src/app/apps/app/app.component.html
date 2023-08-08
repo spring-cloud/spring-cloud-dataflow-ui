@@ -55,7 +55,7 @@
       >
         <ng-template>
           <div *ngIf="!loadingProperties">
-            <div class="block card-block-keyvalue">
+            <div class="block card-block-keyvalue lg-key">
               <div class="row">
                 <div class="key">{{ 'applications.main.type' | translate }}</div>
                 <div class="value">
@@ -66,6 +66,14 @@
                 <div class="key">{{ 'applications.main.version' | translate }}</div>
                 <div class="value">
                   <span *ngIf="defaultApp" class="label">{{ defaultApp.version }}</span>
+                </div>
+              </div>
+              <div class="row">
+                <div class="key">{{ 'applications.main.bootVersion' | translate }}</div>
+                <div class="value">
+                  <span *ngIf="defaultApp" class="label">{{
+                    'applications.main.bootVersions.' + defaultApp.bootVersion | translate
+                  }}</span>
                 </div>
               </div>
               <div *ngIf="detailedApp.uri" class="row">

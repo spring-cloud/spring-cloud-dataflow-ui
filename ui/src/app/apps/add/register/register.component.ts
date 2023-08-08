@@ -14,6 +14,8 @@ import {TranslateService} from '@ngx-translate/core';
 export class RegisterComponent implements OnInit {
   forms: UntypedFormGroup[] = [];
   applicationTypes = ApplicationType;
+  bootVersions: Array<string>;
+  defaultBoot: string;
   submitted = false;
   isImporting = false;
 
@@ -26,7 +28,11 @@ export class RegisterComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.newForm();
+    this.appService.getBootVersions().subscribe((data: any) => {
+      this.bootVersions = data.versions;
+      this.defaultBoot = data.defaultSchemaVersion;
+      this.newForm();
+    });
   }
 
   register(): void {
@@ -53,6 +59,7 @@ export class RegisterComponent implements OnInit {
               type: form.get('type').value as ApplicationType,
               uri: form.get('uri').value,
               metaDataUri: form.get('metaDataUri').value,
+              bootVersion: form.get('bootVersion').value,
               force: form.get('force').value
             };
           }
@@ -102,7 +109,8 @@ export class RegisterComponent implements OnInit {
       form.get('uri').hasError('required') &&
       form.get('name').hasError('required') &&
       form.get('metaDataUri').value === '' &&
-      form.get('type').hasError('required')
+      form.get('type').hasError('required') &&
+      form.get('bootVersion').value === this.defaultBoot
     );
   }
 
@@ -113,6 +121,7 @@ export class RegisterComponent implements OnInit {
       type: new UntypedFormControl('', Validators.required),
       uri: new UntypedFormControl('', [AppsAddValidator.appUri, Validators.required]),
       metaDataUri: new UntypedFormControl('', AppsAddValidator.appUri),
+      bootVersion: new UntypedFormControl(this.defaultBoot, Validators.required),
       force: new UntypedFormControl(false)
     });
 

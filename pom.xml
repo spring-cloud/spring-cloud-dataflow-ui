@@ -4,7 +4,7 @@
 
 	<groupId>org.springframework.cloud</groupId>
 	<artifactId>spring-cloud-dataflow-ui</artifactId>
-	<version>3.3.3-SNAPSHOT</version>
+	<version>3.4.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>Spring Cloud Data Flow User Interface</name>
 	<description>This application provides the Dashboard application of Spring Cloud Data Flow.</description>
@@ -31,6 +31,16 @@
 			<name>Gunnar Hillert</name>
 			<email>ghillert at pivotal.io</email>
 			<organization>Pivotal Software, Inc.</organization>
+			<organizationUrl>https://www.spring.io</organizationUrl>
+			<roles>
+				<role>Project lead</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>corneil</id>
+			<name>Corneil du Plessis</name>
+			<email>pcorneil at vmware.com</email>
+			<organization>VMware, Inc.</organization>
 			<organizationUrl>https://www.spring.io</organizationUrl>
 			<roles>
 				<role>Project lead</role>
@@ -70,6 +80,9 @@
 	<prerequisites>
 		<maven>3.8.3</maven>
 	</prerequisites>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 	<build>
 		<resources>
 			<resource>
@@ -79,8 +92,13 @@
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>3.3.1</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.8.1</version>
+				<version>3.11.0</version>
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
@@ -89,7 +107,7 @@
 			<plugin>
 				<groupId>com.github.eirslett</groupId>
 				<artifactId>frontend-maven-plugin</artifactId>
-				<version>1.12.0</version>
+				<version>1.13.4</version>
 				<configuration>
 					<workingDirectory>ui</workingDirectory>
 				</configuration>
@@ -148,7 +166,7 @@
 			</plugin>
 			 <plugin>
 				<artifactId>maven-clean-plugin</artifactId>
-				<version>3.0.0</version>
+				<version>3.3.1</version>
 				<configuration>
 				<filesets>
 						<fileset>

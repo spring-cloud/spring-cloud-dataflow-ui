@@ -4,7 +4,7 @@ import {forkJoin, Observable} from 'rxjs';
 import {catchError, map, mergeMap} from 'rxjs/operators';
 import {Task, TaskPage} from '../model/task.model';
 import {HttpUtils} from '../support/http.utils';
-import {TaskExecution, TaskExecutionPage} from '../model/task-execution.model';
+import {LaunchResponse, TaskExecution, TaskExecutionPage} from '../model/task-execution.model';
 import {Platform, PlatformTaskList} from '../model/platform.model';
 import {ErrorUtils} from '../support/error.utils';
 import {DataflowEncoder} from '../support/encoder.utils';
@@ -20,11 +20,25 @@ import {UrlUtilities} from '../../url-utilities.service';
 export class TaskService {
   constructor(protected httpClient: HttpClient) {}
 
-  getTasks(page: number, size: number, search?: string, sort?: string, order?: string): Observable<TaskPage | unknown> {
+  getTasks(
+    page: number,
+    size: number,
+    taskName?: string,
+    description?: string,
+    dslText?: string,
+    sort?: string,
+    order?: string
+  ): Observable<TaskPage | unknown> {
     const headers = HttpUtils.getDefaultHttpHeaders();
     let params = HttpUtils.getPaginationParams(page, size);
-    if (search) {
-      params = params.append('search', search);
+    if (taskName) {
+      params = params.append('taskName', taskName);
+    }
+    if (description) {
+      params = params.append('description', description);
+    }
+    if (dslText) {
+      params = params.append('dslText', dslText);
     }
     if (sort && order) {
       params = params.append('sort', `${sort},${order}`);
@@ -63,7 +77,7 @@ export class TaskService {
     return forkJoin(tasks.map(task => this.destroyTask(task)));
   }
 
-  launch(taskName: string, args: string, props: string): Observable<number | unknown> {
+  launch(taskName: string, args: string, props: string): Observable<LaunchResponse | unknown> {
     const headers = HttpUtils.getDefaultHttpHeaders();
     let params = new HttpParams({encoder: new DataflowEncoder()}).append('name', taskName);
     if (args) {
@@ -73,35 +87,86 @@ export class TaskService {
       params = params.append('properties', props);
     }
     return this.httpClient
-      .post<string>(UrlUtilities.calculateBaseApiUrl() + 'tasks/executions', {}, {headers, params})
-      .pipe(
-        map(body => {
-          const parsed = parseInt(body, 10);
-          if (isNaN(parsed)) {
-            // sanity check if we get something unexpected
-            throw new Error(`Can't parse ${body} as executionId`);
-          }
-          return parsed;
-        }),
-        catchError(ErrorUtils.catchError)
-      );
+      .post<LaunchResponse>(UrlUtilities.calculateBaseApiUrl() + 'tasks/executions/launch', {}, {headers, params})
+      .pipe(map(LaunchResponse.parse), catchError(ErrorUtils.catchError));
   }
 
   executionStop(taskExecution: TaskExecution): Observable<any> {
     const headers = HttpUtils.getDefaultHttpHeaders();
+    const params = new HttpParams({encoder: new DataflowEncoder()}).append('schemaTarget', taskExecution?.schemaTarget);
     return this.httpClient
-      .post<any>(UrlUtilities.calculateBaseApiUrl() + `tasks/executions/${taskExecution.executionId}`, {headers})
+      .post<any>(
+        UrlUtilities.calculateBaseApiUrl() + `tasks/executions/${taskExecution.executionId}`,
+        {},
+        {headers, params}
+      )
       .pipe(catchError(ErrorUtils.catchError));
   }
 
   executionClean(taskExecution: TaskExecution): Observable<any> {
     const headers = HttpUtils.getDefaultHttpHeaders();
+    const params = new HttpParams({encoder: new DataflowEncoder()}).append('schemaTarget', taskExecution.schemaTarget);
     const url = UrlUtilities.calculateBaseApiUrl() + `tasks/executions/${taskExecution.executionId}?action=REMOVE_DATA`;
-    return this.httpClient.delete<any>(url, {headers, observe: 'response'}).pipe(catchError(ErrorUtils.catchError));
+    return this.httpClient
+      .delete<any>(url, {
+        headers,
+        params,
+        observe: 'response'
+      })
+      .pipe(catchError(ErrorUtils.catchError));
   }
 
   executionsClean(taskExecutions: TaskExecution[]): Observable<any> {
-    return forkJoin(taskExecutions.map(execution => this.executionClean(execution)));
+    return new Observable<any>(subscriber => {
+      this.executionsCleanAll(taskExecutions)
+        .then(value => {
+          subscriber.next(taskExecutions.length);
+          subscriber.complete();
+        })
+        .catch(reason => {
+          subscriber.error(reason);
+        });
+    });
+  }
+
+  private async executionsCleanAll(taskExecutions: TaskExecution[]): Promise<void> {
+    const taskExecutionsChildren = taskExecutions.filter(taskExecution => taskExecution.parentExecutionId);
+    const taskExecutionsParents = taskExecutions.filter(taskExecution => !taskExecution.parentExecutionId);
+    if(taskExecutionsChildren.length > 0) {
+      await this.executionsCleanBySchema(taskExecutionsChildren);
+    }
+    if(taskExecutionsParents.length > 0) {
+      await this.executionsCleanBySchema(taskExecutionsParents);
+    }
+    return Promise.resolve();
+  }
+
+  private async executionsCleanBySchema(taskExecutions: TaskExecution[]): Promise<void> {
+    const groupBySchemaTarget = taskExecutions.reduce((group, task) => {
+      const schemaTarget = task.schemaTarget;
+      group[schemaTarget] = group[schemaTarget] ?? [];
+      group[schemaTarget].push(task);
+      return group;
+    }, {});
+    for (const schemaTarget in groupBySchemaTarget) {
+      if (schemaTarget) {
+        const group: TaskExecution[] = groupBySchemaTarget[schemaTarget];
+        const ids = group.map(task => task.executionId);
+        if (ids.length > 0) {
+          await this.taskExecutionsCleanByIds(ids, schemaTarget).toPromise();
+        }
+      }
+    }
+    return Promise.resolve();
+  }
+
+  taskExecutionsCleanByIds(ids: number[], schemaTarget: string): Observable<any> {
+    const headers = HttpUtils.getDefaultHttpHeaders();
+    const idStr = ids.join(',');
+    const url =
+      UrlUtilities.calculateBaseApiUrl() +
+      `tasks/executions/${idStr}?action=CLEANUP,REMOVE_DATA&schemaTarget=${schemaTarget}`;
+    return this.httpClient.delete<any>(url, {headers, observe: 'response'}).pipe(catchError(ErrorUtils.catchError));
   }
 
   taskExecutionsClean(task: Task, completed: boolean): Observable<any> {
@@ -110,7 +175,7 @@ export class TaskService {
     const paramTask = task ? `&name=${task.name}` : '';
     const url =
       UrlUtilities.calculateBaseApiUrl() + `tasks/executions?action=CLEANUP,REMOVE_DATA${paramCompleted}${paramTask}`;
-    return this.httpClient.delete<any>(url, {headers, observe: 'response'}).pipe(catchError(ErrorUtils.catchError));
+    return this.httpClient.delete<void>(url, {headers, observe: 'response'}).pipe(catchError(ErrorUtils.catchError));
   }
 
   getTaskExecutionsCount(task?: Task): Observable<{completed: number; all: number} | unknown> {
@@ -154,30 +219,51 @@ export class TaskService {
       .pipe(map(TaskExecutionPage.parse), catchError(ErrorUtils.catchError));
   }
 
-  getExecution(executionId: string): Observable<TaskExecution | unknown> {
+  getExecutionByExternalId(externalExecutionId: string, platform: string = null): Observable<TaskExecution | unknown> {
     const headers = HttpUtils.getDefaultHttpHeaders();
+    const params = new HttpParams({encoder: new DataflowEncoder()}).append('platform', platform);
     return this.httpClient
-      .get<any>(UrlUtilities.calculateBaseApiUrl() + `tasks/executions/${executionId}`, {headers})
+      .get<any>(UrlUtilities.calculateBaseApiUrl() + `tasks/executions/external/${externalExecutionId}`, {
+        headers,
+        params
+      })
       .pipe(map(TaskExecution.parse), catchError(ErrorUtils.catchError));
+  }
+
+  getExecutionById(executionId: number, schemaTarget: string): Observable<TaskExecution | unknown> {
+    const headers = HttpUtils.getDefaultHttpHeaders();
+    const params = new HttpParams({encoder: new DataflowEncoder()}).set('schemaTarget', schemaTarget);
+    return this.httpClient
+      .get<any>(UrlUtilities.calculateBaseApiUrl() + `tasks/executions/${executionId ?? 0}`, {
+        headers: headers,
+        params: params
+      })
+      .pipe(map(TaskExecution.parse), catchError(ErrorUtils.catchError));
+  }
+
+  getExecution(taskExecution: TaskExecution): Observable<TaskExecution | unknown> {
+    return this.getExecutionById(taskExecution.executionId, taskExecution.schemaTarget);
   }
 
   getExecutionLogs(taskExecution: TaskExecution): Observable<any> {
     const headers = HttpUtils.getDefaultHttpHeaders();
-    let platform = '';
+    let platformName = 'default';
     if (taskExecution.arguments) {
       taskExecution.arguments.forEach(arg => {
         const split = arg.split('=');
-        if (split[0] === '--spring.cloud.data.flow.platformname') {
-          platform = `?platformName=${split[1]}`;
+        if (split[0] === '--spring.cloud.data.flow.platformname' || split[0] === '--platform-name') {
+          platformName = split[1];
         }
       });
     }
     const url = taskExecution?._links && taskExecution?._links['tasks/logs'] !== undefined
       ? taskExecution?._links['tasks/logs'].href :
       UrlUtilities.calculateBaseApiUrl() + `tasks/logs/${taskExecution.externalExecutionId}${platform}&schemaTarget=${taskExecution.schemaTarget}`;
+    const params = new HttpParams({encoder: new DataflowEncoder()});
     return this.httpClient
       .get<any>(url, {
-        headers
+        headers,
+        params
       })
       .pipe(catchError(ErrorUtils.catchError));
   }

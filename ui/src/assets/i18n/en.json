@@ -97,6 +97,12 @@
       "unregisterApplications": "Unregister application(s)",
       "name": "Name",
       "type": "Type",
+      "bootVersion": "Spring Boot version",
+      "bootVersions": {
+        "2": "2.x",
+        "3": "3.x"
+      },
+      "bootVersionPlaceholder": "Please select a Spring Boot version",
       "version": "Version",
       "uri": "URI",
       "metadataURI": "Metadata URI",
@@ -850,6 +856,7 @@
       "endDate": "End Date",
       "duration": "Duration",
       "exitCode": "Exit Code",
+      "schemaTarget": "Schema Target",
       "exitMessage": "Exit Message",
       "resourceUrl": "Resource URL",
       "viewLog": "View log",
@@ -908,6 +915,7 @@
       "jobInstance": "Job Instance",
       "taskId": "Task Id",
       "taskExecutionId": "Task Execution Id",
+      "schemaTarget": "Schema Target",
       "jobParameters": "Job Parameters",
       "instanceId": "Instance Id",
       "startTime": "Start Time",
@@ -920,6 +928,7 @@
       "pagination": "{{ first }} - {{ last }} of <span class=\"pagination-total\">{{ total }}</span> job executions",
       "restartConfirmTitle": "Confirm restart the job execution",
       "restartConfirmContent": "This action will restart the steps failed of the job execution <strong>{{ name }} ({{ id }})</strong>.<br />Are you sure?",
+      "stop": "Stop",
       "stopConfirmTitle": "Confirm stop the job execution",
       "stopConfirmContent": "This action will stop the job execution <strong>{{ name }} ({{ id }})</strong>.<br />Are you sure?",
       "message": {

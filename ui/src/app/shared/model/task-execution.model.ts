@@ -9,6 +9,17 @@ interface TaskExecutionLinks {
   'tasks/logs': hrefObj;
 }
 
+export class LaunchResponse {
+  executionId: number;
+  schemaTarget: string;
+  static parse(input: any): LaunchResponse {
+    const response = new LaunchResponse();
+    response.executionId = input?.executionId;
+    response.schemaTarget = input?.schemaTarget;
+    return response;
+  }
+}
+
 export class TaskExecution {
   executionId: number;
   exitCode: number;
@@ -26,6 +37,7 @@ export class TaskExecution {
   parentExecutionId: number;
   resourceUrl: string;
   appProperties: any;
+  schemaTarget: string;
   deploymentProperties: {[key: string]: string};
   _links: TaskExecutionLinks;
 
@@ -49,6 +61,7 @@ export class TaskExecution {
     execution.appProperties = input?.appProperties;
     execution.deploymentProperties = input?.deploymentProperties;
     execution._links = input?._links;
+    execution.schemaTarget = input?.schemaTarget;
     return execution;
   }
 

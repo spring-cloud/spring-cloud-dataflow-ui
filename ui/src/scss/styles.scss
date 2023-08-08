@@ -97,6 +97,10 @@ h1:not([cds-text]) {
   width: 240px;
 }
 
+.datagrid-row:hover, .datagrid-row:hover .datagrid-row-sticky {
+  background: var(--clr-datagrid-row-hover);
+}
+
 .datagrid-row .datagrid-row-sticky {
   div.datagrid-cell + div.datagrid-cell {
     position: relative;

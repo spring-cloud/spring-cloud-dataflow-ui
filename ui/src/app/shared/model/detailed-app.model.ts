@@ -81,6 +81,7 @@ export class DetailedApp extends App {
     app.name = input.name;
     app.type = input.type as ApplicationType;
     app.uri = input.uri;
+    app.bootVersion = input.bootVersion;
     app.version = input.version;
     app.versions = input.versions;
     app.defaultVersion = input.defaultVersion;
