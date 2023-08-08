@@ -39,6 +39,7 @@ export class TaskExecution {
     execution.endTime = input?.endTime ? DateTime.fromISO(input.endTime) : null;
     execution.exitMessage = input?.exitMessage;
     execution.arguments = input?.arguments || [];
+    execution.schemaTarget = input?.schemaTarget || 'boot2';
     execution.jobExecutionIds = input?.jobExecutionIds || [];
     execution.errorMessage = input?.errorMessage;
     execution.taskExecutionStatus = input?.taskExecutionStatus;

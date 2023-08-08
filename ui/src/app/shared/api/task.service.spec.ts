@@ -132,8 +132,7 @@ describe('shared/api/task.service.ts', () => {
       TaskExecution.parse({
         externalExecutionId: 'foo',
         arguments: [
-          '--spring.cloud.data.flow.platformname=bar',
-          '--spring.cloud.data.flow.schematarget=boot2'
+          '--spring.cloud.data.flow.platformname=bar'
         ]
       })
     );
