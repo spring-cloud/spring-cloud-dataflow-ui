@@ -134,11 +134,8 @@ describe('shared/api/task.service.ts', () => {
         arguments: ['--spring.cloud.data.flow.platformname=bar']
       })
     );
-    const httpUri = mockHttp.get.calls.all();
-    expect(httpUri).not.toEqual(undefined);
-    expect(httpUri).not.toEqual(null);
-    expect(httpUri.args.length).not.toEqual(0);
-    const headerArgs = httpUri.args[1].headers;
+    const httpUri = mockHttp.get.calls.mostRecent().args[0];
+    const headerArgs = mockHttp.get.calls.mostRecent().args[1].headers;
     expect(httpUri).toEqual('/tasks/logs/foo?platformName=bar');
     expect(headerArgs.get('Content-Type')).toEqual('application/json');
     expect(headerArgs.get('Accept')).toEqual('application/json');

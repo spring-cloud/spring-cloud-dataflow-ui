@@ -172,7 +172,7 @@ export class TaskService {
         }
       });
     }
-    const url = taskExecution?._links && taskExecution?._links['tasks/logs']
+    const url = taskExecution?._links && taskExecution?._links['tasks/logs'] !== undefined
       ? taskExecution?._links['tasks/logs'].href :
       UrlUtilities.calculateBaseApiUrl() + `tasks/logs/${taskExecution.externalExecutionId}?platformName=${platform}&schemaTarget=${taskExecution.schemaTarget}`;
     return this.httpClient
