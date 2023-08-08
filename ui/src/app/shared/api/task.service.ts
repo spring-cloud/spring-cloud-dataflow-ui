@@ -258,7 +258,7 @@ export class TaskService {
     }
     const url = taskExecution?._links && taskExecution?._links['tasks/logs'] !== undefined
       ? taskExecution?._links['tasks/logs'].href :
-      UrlUtilities.calculateBaseApiUrl() + `tasks/logs/${taskExecution.externalExecutionId}${platformName}&schemaTarget=${taskExecution.schemaTarget}`;
+      UrlUtilities.calculateBaseApiUrl() + `tasks/logs/${taskExecution.externalExecutionId}?platformName=${platformName}&schemaTarget=${taskExecution.schemaTarget}`;
     const params = new HttpParams({encoder: new DataflowEncoder()});
     return this.httpClient
       .get<any>(url, {

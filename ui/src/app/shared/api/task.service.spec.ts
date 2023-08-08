@@ -147,6 +147,7 @@ describe('shared/api/task.service.ts', () => {
     taskService.getExecutionLogs(
       TaskExecution.parse({
         externalExecutionId: 'foo',
+        schemaTarget: 'boot3',
         arguments: [
           '--spring.cloud.data.flow.platformname=bar'
         ]
@@ -154,7 +155,7 @@ describe('shared/api/task.service.ts', () => {
     );
     const httpUri = mockHttp.get.calls.mostRecent().args[0];
     const headerArgs = mockHttp.get.calls.mostRecent().args[1].headers;
-    expect(httpUri).toEqual('/tasks/logs/foo?platformName=bar&schemaTarget=boot2');
+    expect(httpUri).toEqual('/tasks/logs/foo?platformName=bar&schemaTarget=boot3');
     expect(headerArgs.get('Content-Type')).toEqual('application/json');
     expect(headerArgs.get('Accept')).toEqual('application/json');
   });
