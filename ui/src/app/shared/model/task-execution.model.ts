@@ -20,6 +20,7 @@ export class TaskExecution {
   arguments: string[];
   jobExecutionIds: number[];
   errorMessage: string;
+  schemaTarget: string;
   externalExecutionId: string;
   taskExecutionStatus: string;
   parentExecutionId: number;
