@@ -1,6 +1,14 @@
 import {DateTime} from 'luxon';
 import {Page} from './page.model';
 
+interface hrefObj {
+  href: string;
+}
+
+interface TaskExecutionLinks {
+  'tasks/logs': hrefObj;
+}
+
 export class LaunchResponse {
   executionId: number;
   schemaTarget: string;
@@ -23,13 +31,14 @@ export class TaskExecution {
   arguments: string[];
   jobExecutionIds: number[];
   errorMessage: string;
+  schemaTarget: string;
   externalExecutionId: string;
   taskExecutionStatus: string;
   parentExecutionId: number;
   resourceUrl: string;
   appProperties: any;
-  schemaTarget: string;
   deploymentProperties: {[key: string]: string};
+  _links: TaskExecutionLinks;
 
   static parse(input: any): TaskExecution {
     const execution = new TaskExecution();
@@ -41,6 +50,7 @@ export class TaskExecution {
     execution.endTime = input?.endTime ? DateTime.fromISO(input.endTime) : null;
     execution.exitMessage = input?.exitMessage;
     execution.arguments = input?.arguments || [];
+    execution.schemaTarget = input?.schemaTarget || 'boot2';
     execution.jobExecutionIds = input?.jobExecutionIds || [];
     execution.errorMessage = input?.errorMessage;
     execution.taskExecutionStatus = input?.taskExecutionStatus;
@@ -49,6 +59,7 @@ export class TaskExecution {
     execution.resourceUrl = input?.resourceUrl;
     execution.appProperties = input?.appProperties;
     execution.deploymentProperties = input?.deploymentProperties;
+    execution._links = input?._links;
     execution.schemaTarget = input?.schemaTarget;
     return execution;
   }

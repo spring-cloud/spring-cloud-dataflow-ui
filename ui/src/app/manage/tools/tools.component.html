@@ -1,7 +1,7 @@
 <h1>{{ 'tools.title' | translate }}</h1>
 
 <div class="clr-row">
-  <div class="clr-col-lg-6 clr-col-md-12 clr-col-12" appRole appFeature="streams">
+  <div class="clr-col-lg-12 clr-col-md-12 clr-col-12" appRole appFeature="streams">
     <app-view-card
       [titleModal]="'tools.streams' | translate"
       keyContext="import-export"
@@ -19,7 +19,8 @@
         </div>
       </ng-template>
     </app-view-card>
-
+  </div>
+  <div class="clr-col-lg-12 clr-col-md-12 clr-col-12" appRole appFeature="tasks">
     <app-view-card
       [titleModal]="'tools.cleanUp' | translate"
       keyContext="import-export"
@@ -56,8 +57,7 @@
         </div>
       </ng-template>
     </app-view-card>
-  </div>
-  <div class="clr-col-lg-6 clr-col-md-12 clr-col-12" appRole appFeature="tasks">
+
     <app-view-card [titleModal]="'tools.tasks' | translate" keyContext="import-export" name="import-export" id="tasks">
       <ng-template>
         <div>

@@ -117,8 +117,56 @@ export class TaskService {
   }
 
   executionsClean(taskExecutions: TaskExecution[]): Observable<any> {
-    // TODO group by schemaTarget and perform multiple invocations
-    return forkJoin(taskExecutions.map(execution => this.executionClean(execution)));
+    return new Observable<any>(subscriber => {
+      this.executionsCleanAll(taskExecutions)
+        .then(value => {
+          subscriber.next(taskExecutions.length);
+          subscriber.complete();
+        })
+        .catch(reason => {
+          subscriber.error(reason);
+        });
+    });
+  }
+
+  private async executionsCleanAll(taskExecutions: TaskExecution[]): Promise<void> {
+    const taskExecutionsChildren = taskExecutions.filter(taskExecution => taskExecution.parentExecutionId);
+    const taskExecutionsParents = taskExecutions.filter(taskExecution => !taskExecution.parentExecutionId);
+    if(taskExecutionsChildren.length > 0) {
+      await this.executionsCleanBySchema(taskExecutionsChildren);
+    }
+    if(taskExecutionsParents.length > 0) {
+      await this.executionsCleanBySchema(taskExecutionsParents);
+    }
+    return Promise.resolve();
+  }
+
+  private async executionsCleanBySchema(taskExecutions: TaskExecution[]): Promise<void> {
+    const groupBySchemaTarget = taskExecutions.reduce((group, task) => {
+      const schemaTarget = task.schemaTarget;
+      group[schemaTarget] = group[schemaTarget] ?? [];
+      group[schemaTarget].push(task);
+      return group;
+    }, {});
+    for (const schemaTarget in groupBySchemaTarget) {
+      if (schemaTarget) {
+        const group: TaskExecution[] = groupBySchemaTarget[schemaTarget];
+        const ids = group.map(task => task.executionId);
+        if (ids.length > 0) {
+          await this.taskExecutionsCleanByIds(ids, schemaTarget).toPromise();
+        }
+      }
+    }
+    return Promise.resolve();
+  }
+
+  taskExecutionsCleanByIds(ids: number[], schemaTarget: string): Observable<any> {
+    const headers = HttpUtils.getDefaultHttpHeaders();
+    const idStr = ids.join(',');
+    const url =
+      UrlUtilities.calculateBaseApiUrl() +
+      `tasks/executions/${idStr}?action=CLEANUP,REMOVE_DATA&schemaTarget=${schemaTarget}`;
+    return this.httpClient.delete<any>(url, {headers, observe: 'response'}).pipe(catchError(ErrorUtils.catchError));
   }
 
   taskExecutionsClean(task: Task, completed: boolean, days: number): Observable<any> {
@@ -209,16 +257,15 @@ export class TaskService {
         }
       });
     }
+    const url = taskExecution?._links && taskExecution?._links['tasks/logs'] !== undefined
+      ? taskExecution?._links['tasks/logs'].href :
+      UrlUtilities.calculateBaseApiUrl() + `tasks/logs/${taskExecution.externalExecutionId}?platformName=${platformName}&schemaTarget=${taskExecution.schemaTarget}`;
     const params = new HttpParams({encoder: new DataflowEncoder()});
     return this.httpClient
-      .get<any>(
-        UrlUtilities.calculateBaseApiUrl() +
-          `tasks/logs/${taskExecution.externalExecutionId}?platformName=${platformName}`,
-        {
-          headers,
-          params
-        }
-      )
+      .get<any>(url, {
+        headers,
+        params
+      })
       .pipe(catchError(ErrorUtils.catchError));
   }
 
