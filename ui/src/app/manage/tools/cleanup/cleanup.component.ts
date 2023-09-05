@@ -59,7 +59,7 @@ export class CleanupComponent {
   clean(): void {
     this.isRunning = true;
     const values = this.form.getRawValue();
-    const days = values.activeDays ? values.days : null;
+    const days = values.activeDays && values.onlyComplete ? values.days : null;
 
     if (this.form.invalid) {
       return;
