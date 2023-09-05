@@ -9,8 +9,7 @@ import {UrlUtilities} from '../../url-utilities.service';
 
 @Component({
   selector: 'app-tools',
-  templateUrl: './tools.component.html',
-  styleUrls: ['./tools.component.css']
+  templateUrl: './tools.component.html'
 })
 export class ToolsComponent {
   @ViewChild('streamImportModal', {static: true})
