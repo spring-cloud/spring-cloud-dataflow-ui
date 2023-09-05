@@ -2,6 +2,7 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import {TaskService} from '../../../shared/api/task.service';
 import {NotificationService} from '../../../shared/service/notification.service';
+import {UntypedFormGroup, UntypedFormControl, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-tools-cleanup',
@@ -11,9 +12,9 @@ export class CleanupComponent {
   isOpen = false;
   isRunning = false;
   loading = true;
-  count: {completed: number; all: number};
   status = 'all';
   days: number;
+  form: UntypedFormGroup;
   @Output() onCleaned = new EventEmitter();
 
   constructor(
@@ -26,11 +27,17 @@ export class CleanupComponent {
     this.status = status;
     this.days = days;
     this.loading = true;
-    this.taskService.getTaskExecutionsCount(null, this.days).subscribe(
+
+    this.form = new UntypedFormGroup({
+      onlyComplete: new UntypedFormControl(false, [Validators.required]),
+      activeDays: new UntypedFormControl(false, [Validators.required]),
+      days: new UntypedFormControl(null)
+    });
+
+    this.taskService.getTaskExecutionsCount(null).subscribe(
       (count: {completed: number; all: number}) => {
-        this.count = count;
         this.loading = false;
-        if (this.count.all === 0) {
+        if (count.all === 0) {
           this.notificationService.warning(
             this.translate.instant('tools.modal.cleanUp.message.warningNoExecutionTitle'),
             this.translate.instant('tools.modal.cleanUp.message.warningNoExecutionContent')
@@ -44,21 +51,27 @@ export class CleanupComponent {
         this.isOpen = false;
       }
     );
+    this.loading = false;
     this.isRunning = false;
     this.isOpen = true;
   }
 
   clean(): void {
     this.isRunning = true;
-    this.taskService.taskExecutionsClean(null, this.status === 'completed', this.days).subscribe(
+    const values = this.form.getRawValue();
+    const days = values.activeDays ? values.days : null;
+
+    if (this.form.invalid) {
+      return;
+    }
+
+    this.taskService.taskExecutionsClean(null, values.onlyComplete, days).subscribe(
       () => {
         this.notificationService.success(
           this.translate.instant('tools.modal.cleanUp.message.successTitle'),
-          this.translate.instant('tools.modal.cleanUp.message.successContent', {
-            count: this.status === 'completed' ? this.count.completed : this.count.all
-          })
+          this.translate.instant('tools.modal.cleanUp.message.successContent')
         );
-        this.onCleaned.emit(this.count);
+        this.onCleaned.emit();
         this.isOpen = false;
       },
       error => {

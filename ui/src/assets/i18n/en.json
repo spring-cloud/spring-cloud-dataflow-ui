@@ -347,18 +347,22 @@
     "importTasks": "Import task(s): Import tasks from a JSON file",
     "streams": "Streams",
     "tasks": "Tasks",
-    "cleanUp": "Clean up Task Executions",
+    "taskJob": "Task/Job Executions",
     "modal": {
       "cleanUp": {
         "title": "Confirm Clean Up Task Execution(s)",
-        "content": "This action will remove <strong>{{ count }} execution(s)</strong>. Are you sure?",
+        "content": "You can filters the task/job execution(s) you want to clean up:",
         "cleanUp": "Clean up Execution(s)",
+        "onlyComplete": "Only complete execution(s)",
+        "olderExecution": "Cleanup older execution(s)",
+        "days": "Days",
+        "daysInvalid": "Invalid days",
         "removingAll": "Removing all entries.",
         "message": {
           "warningNoExecutionTitle": "No execution",
           "warningNoExecutionContent": "There is no execution.",
           "successTitle": "Clean up execution(s)",
-          "successContent": "{{count}} execution(s) cleaned up."
+          "successContent": "Execution(s) cleaned up."
         }
       },
       "exportStreams": {

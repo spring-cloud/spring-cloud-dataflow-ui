@@ -343,7 +343,7 @@
     "importTasks": "Importiere Aufgabe(n): Importiere Aufgaben von einer JSON-Datei",
     "streams": "Streams",
     "tasks": "Aufgaben",
-    "cleanUp": "Aufgaben-Ausführung aufräumen",
+    "taskJob": "Aufgaben-Ausführung aufräumen",
     "modal": {
       "cleanUp": {
         "title": "Bestätige Aufräumen der Aufgaben-Ausführung(en)",

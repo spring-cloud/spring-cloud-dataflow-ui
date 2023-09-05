@@ -1,9 +1,49 @@
 <clr-modal [(clrModalOpen)]="isOpen" [clrModalClosable]="!isRunning">
   <h3 class="modal-title">{{ 'tools.modal.cleanUp.title' | translate }}</h3>
-  <div class="modal-body" *ngIf="!isRunning && !loading">
-    <p
+  <div class="modal-body" *ngIf="!isRunning && !loading && form">
+    {{ 'tools.modal.cleanUp.content' | translate }}
+    <form
+      role="form"
+      (ngSubmit)="submit()"
+      clrForm
+      [formGroup]="form"
+      clrLayout="horizontal"
+      clrLabelSize="4"
+      style="padding: 0; margin: 0"
+    >
+      <clr-checkbox-container>
+        <clr-checkbox-wrapper>
+          <input formControlName="onlyComplete" type="checkbox" clrCheckbox name="onlyComplete" />
+          <label>{{ 'tools.modal.cleanUp.onlyComplete' | translate }}</label>
+        </clr-checkbox-wrapper>
+      </clr-checkbox-container>
+
+      <clr-checkbox-container>
+        <clr-checkbox-wrapper>
+          <input formControlName="activeDays" type="checkbox" clrCheckbox name="activeDays" />
+          <label>{{ 'tools.modal.cleanUp.olderExecution' | translate }}</label>
+        </clr-checkbox-wrapper>
+      </clr-checkbox-container>
+
+      <clr-input-container *ngIf="form.get('activeDays').value">
+        <label class="clr-col-1">{{ 'tools.modal.cleanUp.days' | translate }}:</label>
+        <input
+          clrInput
+          name="days"
+          formControlName="days"
+          class="clr-col-3"
+          style="width: 100%"
+          [dataflowFocus]="true"
+          pattern="[0-9]*"
+          placeholder="{{ 'tools.cleanUpDays' | translate }}"
+        />
+        <clr-control-error>{{ 'tools.modal.cleanUp.daysInvalid' | translate }}</clr-control-error>
+      </clr-input-container>
+    </form>
+
+    <!-- <p
       [innerHTML]="'tools.modal.cleanUp.content' | translate: {count: status === 'all' ? count.all : count.completed}"
-    ></p>
+    ></p> -->
   </div>
   <div class="modal-body" *ngIf="isRunning">
     <clr-spinner clrInline clrSmall></clr-spinner>
