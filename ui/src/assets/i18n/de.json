@@ -343,19 +343,23 @@
     "importTasks": "Importiere Aufgabe(n): Importiere Aufgaben von einer JSON-Datei",
     "streams": "Streams",
     "tasks": "Aufgaben",
-    "taskJob": "Aufgaben-Ausführung aufräumen",
+    "taskJob": "Aufgaben-Ausführung",
     "modal": {
       "cleanUp": {
         "title": "Bestätige Aufräumen der Aufgaben-Ausführung(en)",
-        "content": "Diese Aktion entfernt <strong>{{ count }} Ausführung(en)</strong>. Sind Sie sicher?",
+        "content": "Sie können die Task-/Job-Ausführungen filtern, die Sie aufräumen wollen:",
         "processing": "Entferne Daten...",
         "cleanUp": "Aufräumen der Ausführung(en)",
+        "onlyComplete": "Nur beendete Ausführung(en)",
+        "olderExecution": "Aufräumen älterer Ausführung(en)",
+        "days": "Tage",
+        "daysInvalid": "Tage ungültig",
         "removingAll": "Entferne alle Einträge.",
         "message": {
           "warningNoExecutionTitle": "Keine Ausführung",
           "warningNoExecutionContent": "Es gibt keine Ausführung.",
           "successTitle": "Aufräumen der Ausführung(en)",
-          "successContent": "{{count}} Ausführung(en) wurden aufgeräumt."
+          "successContent": "Ausführung(en) erfolgreich aufgeräumt."
         }
       },
       "exportStreams": {

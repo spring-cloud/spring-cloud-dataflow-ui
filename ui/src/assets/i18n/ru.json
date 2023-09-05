@@ -343,18 +343,22 @@
     "importTasks": "Импорт задач: импорт задач из файла JSON.",
     "streams": "Потоки",
     "tasks": "Задачи",
-    "taskJob": "Очистить выполнение задач",
+    "taskJob": "выполнение задач/заданий",
     "modal": {
       "cleanUp": {
         "title": "Подтвердить выполнение задачи по очистке",
-        "content": "Это действие удалит <strong>{{ count }} выполнение(я)</strong>. Вы уверены?",
+        "content": "Вы можете отфильтровать выполнение задач/заданий, которые хотите очистить:",
         "cleanUp": "Очистить выполнение",
+        "onlyComplete": "Только полное выполнение(я)",
+        "olderExecution": "Очистка старых исполнений",
+        "days": "Дни",
+        "daysInvalid": "Неверные дни",
         "removingAll": "Удаление всех записей",
         "message": {
           "warningNoExecutionTitle": "Без исполнения",
           "warningNoExecutionContent": "Нет исполнения.",
           "successTitle": "Очистить исполнение(я)",
-          "successContent": "{{count}} исполнение(я) очищено."
+          "successContent": "Исполнение(я) очищено."
         }
       },
       "exportStreams": {
