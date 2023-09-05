@@ -18,27 +18,29 @@
         </clr-checkbox-wrapper>
       </clr-checkbox-container>
 
-      <clr-checkbox-container>
-        <clr-checkbox-wrapper>
-          <input formControlName="activeDays" type="checkbox" clrCheckbox name="activeDays" />
-          <label>{{ 'tools.modal.cleanUp.olderExecution' | translate }}</label>
-        </clr-checkbox-wrapper>
-      </clr-checkbox-container>
+      <div *ngIf="form.get('onlyComplete').value">
+        <clr-checkbox-container>
+          <clr-checkbox-wrapper>
+            <input formControlName="activeDays" type="checkbox" clrCheckbox name="activeDays" />
+            <label>{{ 'tools.modal.cleanUp.olderExecution' | translate }}</label>
+          </clr-checkbox-wrapper>
+        </clr-checkbox-container>
 
-      <clr-input-container *ngIf="form.get('activeDays').value">
-        <label class="clr-col-1">{{ 'tools.modal.cleanUp.days' | translate }}:</label>
-        <input
-          clrInput
-          name="days"
-          formControlName="days"
-          class="clr-col-3"
-          style="width: 100%"
-          [dataflowFocus]="true"
-          pattern="[0-9]*"
-          placeholder="{{ 'tools.cleanUpDays' | translate }}"
-        />
-        <clr-control-error>{{ 'tools.modal.cleanUp.daysInvalid' | translate }}</clr-control-error>
-      </clr-input-container>
+        <clr-input-container *ngIf="form.get('activeDays').value">
+          <label class="clr-col-1">{{ 'tools.modal.cleanUp.days' | translate }}:</label>
+          <input
+            clrInput
+            name="days"
+            formControlName="days"
+            class="clr-col-3"
+            style="width: 100%"
+            [dataflowFocus]="true"
+            pattern="[0-9]*"
+            placeholder="{{ 'tools.cleanUpDays' | translate }}"
+          />
+          <clr-control-error>{{ 'tools.modal.cleanUp.daysInvalid' | translate }}</clr-control-error>
+        </clr-input-container>
+      </div>
     </form>
 
     <!-- <p
