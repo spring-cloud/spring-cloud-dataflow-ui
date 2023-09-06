@@ -23,6 +23,7 @@ export class ToolsComponent {
   @ViewChild('cleanupModal', {static: true})
   cleanupModal: CleanupComponent;
   baseApiUrl = UrlUtilities.calculateBaseApiUrl();
+  days: number;
 
   constructor(private notificationService: NotificationService) {}
 
@@ -41,10 +42,10 @@ export class ToolsComponent {
         this.taskImportModal.open();
         break;
       case 'cleanup-all':
-        this.cleanupModal.open('all');
+        this.cleanupModal.open('all', this.days);
         break;
       case 'cleanup-completed':
-        this.cleanupModal.open('completed');
+        this.cleanupModal.open('completed', this.days);
         break;
     }
     return false;

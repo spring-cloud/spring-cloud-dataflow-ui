@@ -169,26 +169,27 @@ export class TaskService {
     return this.httpClient.delete<any>(url, {headers, observe: 'response'}).pipe(catchError(ErrorUtils.catchError));
   }
 
-  taskExecutionsClean(task: Task, completed: boolean): Observable<any> {
+  taskExecutionsClean(task: Task, completed: boolean, days: number): Observable<any> {
     const headers = HttpUtils.getDefaultHttpHeaders();
     const paramCompleted = completed ? '&completed=true' : '';
+    const paramDays = days != null ? '&days=' + days : '';
     const paramTask = task ? `&name=${task.name}` : '';
     const url =
-      UrlUtilities.calculateBaseApiUrl() + `tasks/executions?action=CLEANUP,REMOVE_DATA${paramCompleted}${paramTask}`;
-    return this.httpClient.delete<void>(url, {headers, observe: 'response'}).pipe(catchError(ErrorUtils.catchError));
+      UrlUtilities.calculateBaseApiUrl() +
+      `tasks/executions?action=CLEANUP,REMOVE_DATA${paramCompleted}${paramTask}${paramDays}`;
+    return this.httpClient.delete<any>(url, {headers, observe: 'response'}).pipe(catchError(ErrorUtils.catchError));
   }
 
-  getTaskExecutionsCount(task?: Task): Observable<{completed: number; all: number} | unknown> {
+  getTaskExecutionsCount(task?: Task, days?: number): Observable<{completed: number; all: number} | unknown> {
     const headers = HttpUtils.getDefaultHttpHeaders();
-    let url = UrlUtilities.calculateBaseApiUrl() + 'tasks/info/executions';
-    let url2 = `${url}?completed=true`;
-    if (task) {
-      url = UrlUtilities.calculateBaseApiUrl() + `tasks/info/executions?name=${task.name}`;
-      url2 = `${url}&completed=true`;
-    }
+    let url = UrlUtilities.calculateBaseApiUrl() + 'tasks/info/executions?p=v';
+
+    url += task != null ? '&name=' + task.name : '';
+    url += days != null ? '&days=' + days : '';
+
     return this.httpClient.get<any>(url, {headers}).pipe(
       mergeMap(data =>
-        this.httpClient.get<any>(url2, {headers}).pipe(
+        this.httpClient.get<any>(url + '&completed=true', {headers}).pipe(
           map(data2 => ({
             completed: +data2.totalExecutions,
             all: +data.totalExecutions

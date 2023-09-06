@@ -22,19 +22,17 @@
   </div>
   <div class="clr-col-lg-12 clr-col-md-12 clr-col-12" appRole appFeature="tasks">
     <app-view-card
-      [titleModal]="'tools.cleanUp' | translate"
+      [titleModal]="'tools.taskJob' | translate"
       keyContext="import-export"
       name="import-export"
       id="cleanup"
     >
       <ng-template>
         <div>
-          <clr-icon shape="angle" style="transform: rotate(90deg)"></clr-icon>
-          <a href="{{ baseApiUrl }}#" (click)="run('cleanup-all')">{{ 'tools.cleanUpAll' | translate }}</a>
-        </div>
-        <div>
-          <clr-icon shape="angle" style="transform: rotate(90deg)"></clr-icon>
-          <a href="{{ baseApiUrl }}#" (click)="run('cleanup-completed')">{{ 'tools.cleanUpCompleted' | translate }}</a>
+          <div>
+            <clr-icon shape="angle" style="transform: rotate(90deg)"></clr-icon>
+            <a href="{{ baseApiUrl }}#" (click)="run('cleanup-all')">{{ 'tools.cleanUpAll' | translate }}</a>
+          </div>
         </div>
       </ng-template>
     </app-view-card>

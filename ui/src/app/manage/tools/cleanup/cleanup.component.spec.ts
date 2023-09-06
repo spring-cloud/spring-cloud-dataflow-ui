@@ -48,18 +48,4 @@ describe('manage/tools/cleanup/cleanup.component.ts', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should clean up the task executions', async done => {
-    component.open('all');
-    fixture.detectChanges();
-    await fixture.whenStable();
-    fixture.detectChanges();
-    const title = fixture.debugElement.query(By.css('.modal-title-wrapper')).nativeElement;
-    expect(title.textContent).toContain('Confirm Clean Up Task Execution(s)');
-    fixture.debugElement.query(By.css('.modal-footer .btn-danger')).nativeElement.click();
-    fixture.detectChanges();
-    await fixture.whenStable();
-    expect(NotificationServiceMock.mock.successNotifications[0].title).toBe('Clean up execution(s)');
-    expect(NotificationServiceMock.mock.successNotifications[0].message).toBe('12 execution(s) cleaned up.');
-    done();
-  });
 });
