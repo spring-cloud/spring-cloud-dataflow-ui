@@ -55,8 +55,6 @@
     <clr-dg-filter style="display: none"></clr-dg-filter>
   </clr-dg-column>
   <clr-dg-column
-    [clrDgField]="'SCHEMA_TARGET'"
-    [clrDgSortOrder]="context.by === 'SCHEMA_TARGET' ? (context.reverse ? -1 : 1) : 0"
     (clrDgColumnResize)="updateContext('sizeSchemaTarget', $event)"
     [style.width.px]="context.sizeSchemaTarget | datagridcolumn: datagrid:contextName | async"
   >
