@@ -148,9 +148,7 @@ describe('shared/api/task.service.ts', () => {
       TaskExecution.parse({
         externalExecutionId: 'foo',
         schemaTarget: 'boot3',
-        arguments: [
-          '--spring.cloud.data.flow.platformname=bar'
-        ]
+        arguments: ['--spring.cloud.data.flow.platformname=bar']
       })
     );
     const httpUri = mockHttp.get.calls.mostRecent().args[0];

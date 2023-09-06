@@ -132,10 +132,10 @@ export class TaskService {
   private async executionsCleanAll(taskExecutions: TaskExecution[]): Promise<void> {
     const taskExecutionsChildren = taskExecutions.filter(taskExecution => taskExecution.parentExecutionId);
     const taskExecutionsParents = taskExecutions.filter(taskExecution => !taskExecution.parentExecutionId);
-    if(taskExecutionsChildren.length > 0) {
+    if (taskExecutionsChildren.length > 0) {
       await this.executionsCleanBySchema(taskExecutionsChildren);
     }
-    if(taskExecutionsParents.length > 0) {
+    if (taskExecutionsParents.length > 0) {
       await this.executionsCleanBySchema(taskExecutionsParents);
     }
     return Promise.resolve();
@@ -257,9 +257,11 @@ export class TaskService {
         }
       });
     }
-    const url = taskExecution?._links && taskExecution?._links['tasks/logs'] !== undefined
-      ? taskExecution?._links['tasks/logs'].href :
-      UrlUtilities.calculateBaseApiUrl() + `tasks/logs/${taskExecution.externalExecutionId}?platformName=${platformName}&schemaTarget=${taskExecution.schemaTarget}`;
+    const url =
+      taskExecution?._links && taskExecution?._links['tasks/logs'] !== undefined
+        ? taskExecution?._links['tasks/logs'].href
+        : UrlUtilities.calculateBaseApiUrl() +
+          `tasks/logs/${taskExecution.externalExecutionId}?platformName=${platformName}&schemaTarget=${taskExecution.schemaTarget}`;
     const params = new HttpParams({encoder: new DataflowEncoder()});
     return this.httpClient
       .get<any>(url, {
