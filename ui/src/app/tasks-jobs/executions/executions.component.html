@@ -54,7 +54,7 @@
     <ng-container>{{ 'executions.main.taskName' | translate }}</ng-container>
     <clr-dg-filter style="display: none"></clr-dg-filter>
   </clr-dg-column>
-  <clr-dg-column
+  <!-- <clr-dg-column
     [clrDgField]="'SCHEMA_TARGET'"
     [clrDgSortOrder]="context.by === 'SCHEMA_TARGET' ? (context.reverse ? -1 : 1) : 0"
     (clrDgColumnResize)="updateContext('sizeSchemaTarget', $event)"
@@ -62,7 +62,7 @@
   >
     <ng-container>{{ 'executions.main.schemaTarget' | translate }}</ng-container>
     <clr-dg-filter style="display: none"></clr-dg-filter>
-  </clr-dg-column>
+  </clr-dg-column> -->
   <clr-dg-column
     (clrDgColumnResize)="updateContext('sizeDuration', $event)"
     [style.width.px]="context.sizeDuration | datagridcolumn: datagrid:contextName | async"
