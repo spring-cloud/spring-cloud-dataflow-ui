@@ -47,5 +47,4 @@ describe('manage/tools/cleanup/cleanup.component.ts', () => {
     fixture.detectChanges();
     expect(component).toBeTruthy();
   });
-
 });
