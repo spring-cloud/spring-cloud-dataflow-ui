@@ -3,7 +3,7 @@
     {{ 'applications.details.title' | translate }} <strong>{{ app.name }}</strong
     >&nbsp;
     <span class="{{ app.labelTypeClass() }}">{{ app.type }}</span>
-    <span *ngIf="defaultApp" class="label">{{ defaultApp.version }}</span>
+    <span *ngIf="defaultApp" class="label">{{ detailedApp?.version ?? defaultApp?.version }}</span>
   </span>
 </h1>
 
@@ -65,14 +65,14 @@
               <div class="row">
                 <div class="key">{{ 'applications.main.version' | translate }}</div>
                 <div class="value">
-                  <span *ngIf="defaultApp" class="label">{{ defaultApp.version }}</span>
+                  <span *ngIf="defaultApp" class="label">{{ detailedApp.version }}</span>
                 </div>
               </div>
               <div class="row">
                 <div class="key">{{ 'applications.main.bootVersion' | translate }}</div>
                 <div class="value">
                   <span *ngIf="defaultApp" class="label">{{
-                    'applications.main.bootVersions.' + defaultApp.bootVersion | translate
+                    'applications.main.bootVersions.' + detailedApp.bootVersion | translate
                   }}</span>
                 </div>
               </div>
