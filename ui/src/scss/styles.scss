@@ -547,6 +547,9 @@ h1.page-title-actions {
       color: white;
     }
   }
+  .main-container.open-hamburger-menu clr-vertical-nav {
+    background: var(--clr-global-app-background) !important;
+  }
   .main-container .header {
     app-search {
       display: none;
