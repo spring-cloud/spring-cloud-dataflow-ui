@@ -807,7 +807,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
    * @param app
    */
   openApp(builder: any, app: any): void {
-    const version = builder.formGroup.get('appsVersion').get(app.name).value || app.version;
+    const version = builder.formGroup.get('appsVersion').get(app.name).value || builder.builderAppsProperties[app.name]?.version || app.version;
     const options = builder.builderAppsProperties[app.name] ? builder.builderAppsProperties[app.name] : app.options;
     const appPropertiesSource = new AppPropertiesSource(
       Object.assign(
