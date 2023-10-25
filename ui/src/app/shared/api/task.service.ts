@@ -233,7 +233,7 @@ export class TaskService {
 
   getExecutionById(executionId: number, schemaTarget: string): Observable<TaskExecution | unknown> {
     const headers = HttpUtils.getDefaultHttpHeaders();
-    const params = new HttpParams({encoder: new DataflowEncoder()}).set('schemaTarget', schemaTarget);
+    const params = new HttpParams({encoder: new DataflowEncoder()}).set('schemaTarget', schemaTarget ?? 'boot2');
     return this.httpClient
       .get<any>(UrlUtilities.calculateBaseApiUrl() + `tasks/executions/${executionId ?? 0}`, {
         headers: headers,
