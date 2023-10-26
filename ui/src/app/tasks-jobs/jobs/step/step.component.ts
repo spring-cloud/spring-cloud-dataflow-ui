@@ -83,7 +83,7 @@ export class StepComponent implements OnInit {
 
   getTaskExecution(): void {
     this.loadingExecution = true;
-    this.taskService.getExecutionById(this.execution.taskExecutionId, this.execution.schemaTarget).subscribe(
+    this.taskService.getExecutionById(this.execution?.taskExecutionId, this.execution?.schemaTarget ?? 'boot2').subscribe(
       (taskExecution: TaskExecution) => {
         this.taskExecution = taskExecution;
         this.getTask();
