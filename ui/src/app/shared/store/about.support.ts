@@ -7,7 +7,7 @@ const parseDependency = (input): DependencyState => ({
   version: input.version,
   url: input.url,
   checksumSha1: input.checksumSha1,
-  checksumSha256: input.checksumSha256
+  checksumSha256: input.checksumSha256,
 });
 
 const parsePlatformSpecificInfo = input => {
@@ -62,5 +62,8 @@ export const parse = (input: any): AboutState => ({
     isAuthenticated: input.securityInfo.authenticated,
     username: input.securityInfo.username,
     roles: input.securityInfo.roles as string[]
-  }
+  },
+  git: {
+    commit: input.gitAndBuildInfo.git?.commit?.id?.abbrev || ''
+  },
 });

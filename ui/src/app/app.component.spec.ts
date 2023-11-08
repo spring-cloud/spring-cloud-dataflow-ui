@@ -61,7 +61,10 @@ describe('app.component.ts', () => {
       },
       security: {
         isAuthentication: true
-      }
+      },
+      git: {
+        commit: 'fakecommit'
+      },
     }
   };
   const disabledState = {
@@ -98,6 +101,9 @@ describe('app.component.ts', () => {
       },
       security: {
         isAuthentication: true
+      },
+      git: {
+        commit: 'fakecommit'
       }
     }
   };

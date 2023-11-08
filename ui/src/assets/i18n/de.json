@@ -311,7 +311,8 @@
       "copy": "Kopiere Details in die Zwischenablage",
       "message": {
         "copyContent": "Kopiere Über-Details in die Zwischenablage(Als JSON)."
-      }
+      },
+      "commit": "Commit"
     }
   },
   "auditRecords": {

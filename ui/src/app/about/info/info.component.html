@@ -12,6 +12,10 @@
           <strong>{{ 'about.info.version' | translate }}</strong
           >: {{ about.versions.implementation.version || 'n/a' }}
         </li>
+        <li>
+          <strong>{{ 'about.info.commit' | translate }}</strong
+          >: {{ about.git.commit || 'n/a' }}
+        </li>
       </ul>
       <h3>{{ 'about.info.features' | translate }}</h3>
       <ul id="enabledFeaturesTable">

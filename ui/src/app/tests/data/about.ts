@@ -53,5 +53,14 @@ export const LOAD = {
     dashboardType: 'WAVEFRONT',
     source: 'tzolov-08-09'
   },
+  gitAndBuildInfo: {
+    git: {
+      commit: {
+        id:{
+          abbrev: '0ca477f'
+        }
+      }
+    }
+  },
   _links: {self: {href: 'http://localhost:9393/about'}}
 };
