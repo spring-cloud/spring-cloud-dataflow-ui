@@ -56,9 +56,7 @@ export const LOAD = {
   gitAndBuildInfo: {
     git: {
       commit: {
-        id:{
-          abbrev: '0ca477f'
-        }
+        id: '0ca477f'
       }
     }
   },

@@ -64,6 +64,6 @@ export const parse = (input: any): AboutState => ({
     roles: input.securityInfo.roles as string[]
   },
   git: {
-    commit: input.gitAndBuildInfo.git?.commit?.id?.abbrev || ''
+    commit: input.gitAndBuildInfo.git?.commit?.id || ''
   },
 });
