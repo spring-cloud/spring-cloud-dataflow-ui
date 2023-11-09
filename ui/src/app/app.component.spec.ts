@@ -64,7 +64,7 @@ describe('app.component.ts', () => {
       },
       git: {
         commit: 'fakecommit'
-      },
+      }
     }
   };
   const disabledState = {

@@ -7,7 +7,7 @@ const parseDependency = (input): DependencyState => ({
   version: input.version,
   url: input.url,
   checksumSha1: input.checksumSha1,
-  checksumSha256: input.checksumSha256,
+  checksumSha256: input.checksumSha256
 });
 
 const parsePlatformSpecificInfo = input => {
@@ -65,5 +65,5 @@ export const parse = (input: any): AboutState => ({
   },
   git: {
     commit: input.gitAndBuildInfo.git?.commit?.id || ''
-  },
+  }
 });

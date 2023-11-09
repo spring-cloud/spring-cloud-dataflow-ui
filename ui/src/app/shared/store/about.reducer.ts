@@ -57,7 +57,7 @@ export interface AboutState {
   };
   git: {
     commit?: string;
-  }
+  };
 }
 
 export interface State extends fromRoot.State {
@@ -106,17 +106,20 @@ export const initialState: AboutState = {
   },
   git: {
     commit: ''
-  },
+  }
 };
 
 export const reducer = createReducer(
   initialState,
-  on(AboutActions.loaded, (state, {versions, features, runtimeEnvironment, monitoringDashboardInfo, security, git}) => ({
-    versions,
-    features,
-    runtimeEnvironment,
-    monitoringDashboardInfo,
-    security,
-    git
-  }))
+  on(
+    AboutActions.loaded,
+    (state, {versions, features, runtimeEnvironment, monitoringDashboardInfo, security, git}) => ({
+      versions,
+      features,
+      runtimeEnvironment,
+      monitoringDashboardInfo,
+      security,
+      git
+    })
+  )
 );
