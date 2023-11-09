@@ -12,6 +12,16 @@
           <strong>{{ 'about.info.version' | translate }}</strong
           >: {{ about.versions.implementation.version || 'n/a' }}
         </li>
+        <li>
+          <strong>{{ 'about.info.commit' | translate }}</strong
+          >:
+          <a
+            target="_blank"
+            href="https://github.com/spring-cloud/spring-cloud-dataflow/commit/{{ about.git.commit || 'main' }}"
+          >
+            {{ about.git.commit || 'main' }}
+          </a>
+        </li>
       </ul>
       <h3>{{ 'about.info.features' | translate }}</h3>
       <ul id="enabledFeaturesTable">

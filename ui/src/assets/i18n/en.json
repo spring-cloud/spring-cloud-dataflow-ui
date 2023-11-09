@@ -315,7 +315,8 @@
       "copy": "Copy Details to Clipboard",
       "message": {
         "copyContent": "Copied About Details to Clipboard (As JSON)."
-      }
+      },
+      "commit": "Commit"
     }
   },
   "auditRecords": {
