@@ -744,3 +744,15 @@ h1.page-title-actions {
 .clr-input-wrapper {
   max-width: none;
 }
+
+.version-truncate {
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  display: inline-block;
+  line-height: 1rem;
+  &>.badge {
+    margin: -1px -.45rem 1px .3rem
+  }
+}
