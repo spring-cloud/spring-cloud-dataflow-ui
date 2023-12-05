@@ -123,7 +123,7 @@
       ><span class="{{ app.labelTypeClass() }}">{{ app.type }}</span></clr-dg-cell
     >
     <clr-dg-cell>
-      <span class="label">
+      <span class="label version-truncate">
         {{ app.version }}
         <span *ngIf="app.versions?.length > 1" class="badge badge-light-blue">{{ app.versions?.length }}</span>
       </span>
