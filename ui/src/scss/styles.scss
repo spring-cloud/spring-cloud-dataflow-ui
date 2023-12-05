@@ -64,17 +64,17 @@ h1:not([cds-text]) {
 }
 
 .clr-log {
-  padding: 1rem 0;
+  padding: 0;
   max-height: inherit;
+  margin: 0;
 
   pre {
-    overflow: auto;
-    max-height: inherit;
+    max-height: 60vh;
     background: var(--clr-header-6-bg-color, #00364d);
     padding: 1rem;
     color: var(--clr-header-title-color, #fafafa);
     border: 0 none;
-    margin: 0;
+    overflow: auto;
   }
 }
 
