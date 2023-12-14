@@ -1133,10 +1133,11 @@ export class BuilderComponent implements OnInit, OnDestroy {
 
   getLabelAppVersion(taskLaunchConfig, app) {
     const lastVersion = get(taskLaunchConfig?.lastExecution?.deploymentProperties, `version.${app.name}`);
-    if (lastVersion && app.version !== lastVersion) {
+    const isFirstLaunch = this.properties.length === 0 && taskLaunchConfig.deploymentProperties.length > 0;
+    if (lastVersion && app.version !== lastVersion && !isFirstLaunch) {
       return this.translate.instant('tasks.launch.builder.lastVersionLabel', {version: lastVersion});
     }
-    return this.translate.instant('tasks.launch.builder.defaultVersionLabel', {version: app.version});
+    return isFirstLaunch && this.translate.instant('tasks.launch.builder.defaultVersionLabel', {version: app.version});
   }
 
   hasMigrations(): boolean {
