@@ -209,6 +209,7 @@ export class TaskLaunchService {
         c.ctr = {
           options: [],
           optionsState: {
+            isFirstLaunch: false,
             isLoading: true,
             isOnError: false
           }
