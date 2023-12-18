@@ -91,6 +91,7 @@ export interface Builder {
   ctrProperties: ValuedConfigurationMetadataProperty[];
   ctrPropertiesState: {
     isLoading: boolean;
+    isFirstLaunch: boolean;
     isOnError: boolean;
   };
 
@@ -229,9 +230,11 @@ export class BuilderComponent implements OnInit, OnDestroy {
               },
               () => {
                 this.refBuilder.ctrPropertiesState.isOnError = true;
+                this.refBuilder.ctrPropertiesState.isFirstLaunch = false;
               },
               () => {
                 builder.ctrPropertiesState.isLoading = false;
+                builder.ctrPropertiesState.isFirstLaunch = false;
                 this.changeDetector.markForCheck();
               }
             );
@@ -677,7 +680,8 @@ export class BuilderComponent implements OnInit, OnDestroy {
     // ctr
     const ctrPropertiesState = {
       isLoading: taskLaunchConfig.ctr.optionsState.isLoading,
-      isOnError: taskLaunchConfig.ctr.optionsState.isOnError
+      isOnError: taskLaunchConfig.ctr.optionsState.isOnError,
+      isFirstLaunch: taskLaunchConfig.ctr.optionsState.isFirstLaunch,
     };
 
     platformControl.valueChanges.subscribe(value => {
@@ -1133,11 +1137,11 @@ export class BuilderComponent implements OnInit, OnDestroy {
 
   getLabelAppVersion(taskLaunchConfig, app) {
     const lastVersion = get(taskLaunchConfig?.lastExecution?.deploymentProperties, `version.${app.name}`);
-    const isFirstLaunch = this.properties.length === 0 && taskLaunchConfig.deploymentProperties.length > 0;
-    if (lastVersion && app.version !== lastVersion && !isFirstLaunch) {
+    // const isFirstLaunch = this.properties.length === 0 && taskLaunchConfig?.deploymentProperties.length > 0;
+    if (lastVersion && app.version !== lastVersion) {
       return this.translate.instant('tasks.launch.builder.lastVersionLabel', {version: lastVersion});
     }
-    return isFirstLaunch && this.translate.instant('tasks.launch.builder.defaultVersionLabel', {version: app.version});
+    return this.translate.instant('tasks.launch.builder.defaultVersionLabel', {version: app.version});
   }
 
   hasMigrations(): boolean {
