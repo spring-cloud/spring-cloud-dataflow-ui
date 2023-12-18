@@ -681,7 +681,7 @@ export class BuilderComponent implements OnInit, OnDestroy {
     const ctrPropertiesState = {
       isLoading: taskLaunchConfig.ctr.optionsState.isLoading,
       isOnError: taskLaunchConfig.ctr.optionsState.isOnError,
-      isFirstLaunch: taskLaunchConfig.ctr.optionsState.isFirstLaunch,
+      isFirstLaunch: taskLaunchConfig.ctr.optionsState.isFirstLaunch
     };
 
     platformControl.valueChanges.subscribe(value => {
