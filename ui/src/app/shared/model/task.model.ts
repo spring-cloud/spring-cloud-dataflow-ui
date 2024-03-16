@@ -100,6 +100,7 @@ export class TaskLaunchConfig {
   ctr: {
     options: ValuedConfigurationMetadataProperty[];
     optionsState: {
+      isFirstLaunch: boolean;
       isLoading: boolean;
       isOnError: boolean;
     };

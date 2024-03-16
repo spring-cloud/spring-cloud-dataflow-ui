@@ -96,6 +96,7 @@ export class TaskLaunchService {
                 map(apps =>
                   apps.reduce((mapAccumulator, app) => {
                     const a = mapAccumulator.get(app.name);
+                    const isFirstLaunch = task?.lastTaskExecution?.deploymentProperties.length;
                     if (a) {
                       if (app.defaultVersion) {
                         a.version = app.version;
@@ -103,7 +104,7 @@ export class TaskLaunchService {
                       a.versions = [...a.versions, ...[app]];
                     } else {
                       mapAccumulator.set(app.name, {
-                        version: app.defaultVersion ? app.version : null,
+                        version: app.defaultVersion && isFirstLaunch ? app.version : null,
                         versions: [app]
                       });
                     }
@@ -208,6 +209,7 @@ export class TaskLaunchService {
         c.ctr = {
           options: [],
           optionsState: {
+            isFirstLaunch: false,
             isLoading: true,
             isOnError: false
           }
