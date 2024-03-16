@@ -5,11 +5,22 @@
       {{ 'appRoot.appTitle' | translate }}
       <h5 class="hint">{{ 'appRoot.youHaveToLogin' | translate }}</h5>
     </section>
-    <div style="padding-bottom: 50px">
-      <a href="{{ baseApiUrl }}login" class="btn btn-primary"> Log In </a>
-    </div>
+    <div *ngIf="isOAuth2; then oauth2; else standard"></div>
   </form>
 </div>
+
+<ng-template #standard>
+  <div style="padding-bottom: 50px">
+    <a href="{{ baseApiUrl }}login" class="btn btn-primary"> Log In </a>
+  </div>
+</ng-template>
+<ng-template #oauth2>
+  <div *ngFor="let item of clientRegistrations | async">
+    <div style="padding-bottom: 50px">
+      <a href="{{ baseApiUrl }}oauth2/authorization/{{ item }}" class="btn btn-primary">{{ item }}</a>
+    </div>
+  </div>
+</ng-template>
 
 <ng-template #main>
   <clr-main-container>
