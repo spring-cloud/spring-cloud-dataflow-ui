@@ -4,6 +4,7 @@ import {TaskService} from './task.service';
 
 describe('shared/api/schedule.service.ts', () => {
   let mockHttp;
+  let mockLocalStorageService;
   let scheduleService;
   let taskService;
   let jsonData = {};
@@ -15,8 +16,11 @@ describe('shared/api/schedule.service.ts', () => {
       post: jasmine.createSpy('post'),
       put: jasmine.createSpy('put')
     };
+    mockLocalStorageService = {
+      get: jasmine.createSpy('get')
+    };
     jsonData = {};
-    taskService = new TaskService(mockHttp);
+    taskService = new TaskService(mockHttp, mockLocalStorageService);
     scheduleService = new ScheduleService(mockHttp, taskService);
   });
 
