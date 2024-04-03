@@ -16,7 +16,10 @@ describe('SettingsComponent', () => {
 
   const initialState = {
     [fromSettings.settingsFeatureKey]: {
-      settings: [{name: fromSettings.themeActiveKey, value: 'default'}]
+      settings: [
+        {name: fromSettings.themeActiveKey, value: 'default'},
+        {name: fromSettings.reverseProxyFixKey, value: 'false'}
+      ]
     }
   };
 

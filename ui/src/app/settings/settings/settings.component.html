@@ -3,11 +3,11 @@
     <h3 class="modal-title">{{ 'settings.title' | translate }}</h3>
     <div class="modal-body">
       <clr-select-container *ngIf="languageActive && languages?.length > 1">
-        <label class="clr-col-md-3">{{ 'settings.language' | translate }}</label>
+        <label class="clr-col-md-4">{{ 'settings.language' | translate }}</label>
         <select
           clrSelect
           name="language"
-          class="clr-col-md-9"
+          class="clr-col-md-8"
           [value]="languageActive.value"
           (change)="languageActiveSettingOnChange($event.target.value)"
         >
@@ -18,11 +18,11 @@
         <clr-control-helper>{{ 'settings.languageDescription' | translate }}</clr-control-helper>
       </clr-select-container>
       <clr-select-container *ngIf="themeActive">
-        <label class="clr-col-md-3">{{ 'settings.theme' | translate }}</label>
+        <label class="clr-col-md-4">{{ 'settings.theme' | translate }}</label>
         <select
           clrSelect
           name="theme"
-          class="clr-col-md-9"
+          class="clr-col-md-8"
           [value]="themeActive.value"
           (change)="themeActiveSettingOnChange($event.target.value)"
         >
@@ -33,11 +33,11 @@
       </clr-select-container>
 
       <clr-select-container *ngIf="resultsPerPage">
-        <label class="clr-col-md-3">{{ 'settings.results' | translate }}</label>
+        <label class="clr-col-md-4">{{ 'settings.results' | translate }}</label>
         <select
           clrSelect
           name="theme"
-          class="clr-col-md-9"
+          class="clr-col-md-8"
           [value]="resultsPerPage.value"
           (change)="resultPerPageSettingOnChange($event.target.value)"
         >
@@ -50,6 +50,23 @@
           {{ 'settings.resultsDescription' | translate }}
         </clr-control-helper>
       </clr-select-container>
+      <clr-toggle-container>
+        <label class="clr-col-md-4">{{ 'settings.reverseProxyFix' | translate }}</label>
+        <clr-toggle-wrapper>
+          <input
+            type="checkbox"
+            clrToggle
+            name="reverseProxyFix"
+            class="clr-col-md-8"
+            [checked]="reverseProxyFix.value === 'true'"
+            (change)="reverseProxyFixOnChange($event.target.checked + '')"
+          />
+          <label>{{ 'settings.reverseProxyFixActive' | translate }}</label>
+        </clr-toggle-wrapper>
+        <clr-control-helper>
+          {{ 'settings.reverseProxyFixDescription' | translate }}
+        </clr-control-helper>
+      </clr-toggle-container>
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-outline" (click)="isOpen = false" translate>settings.close</button>
