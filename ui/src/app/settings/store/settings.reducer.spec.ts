@@ -12,7 +12,8 @@ describe('settings/store/settings.reducer.ts', () => {
     let expectedState: fromSettings.SettingsState = {
       settings: [
         {name: fromSettings.themeActiveKey, value: 'value1'},
-        {name: fromSettings.languageActiveKey, value: 'value1'}
+        {name: fromSettings.languageActiveKey, value: 'value1'},
+        {name: fromSettings.reverseProxyFixKey, value: 'value1'}
       ]
     };
     let newState = fromSettings.reducer(
@@ -20,7 +21,8 @@ describe('settings/store/settings.reducer.ts', () => {
       SettingsActions.loaded({
         settings: [
           {name: fromSettings.themeActiveKey, value: 'value1'},
-          {name: fromSettings.languageActiveKey, value: 'value1'}
+          {name: fromSettings.languageActiveKey, value: 'value1'},
+          {name: fromSettings.reverseProxyFixKey, value: 'value1'}
         ]
       })
     );
@@ -28,7 +30,8 @@ describe('settings/store/settings.reducer.ts', () => {
     expectedState = {
       settings: [
         {name: fromSettings.themeActiveKey, value: 'value2'},
-        {name: fromSettings.languageActiveKey, value: 'value1'}
+        {name: fromSettings.languageActiveKey, value: 'value1'},
+        {name: fromSettings.reverseProxyFixKey, value: 'value1'}
       ]
     };
     newState = fromSettings.reducer(

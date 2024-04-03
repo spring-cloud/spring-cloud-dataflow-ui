@@ -8,6 +8,7 @@ import {SettingModel} from '../shared/model/setting.model';
 import {LocalStorageService} from 'angular-2-local-storage';
 
 const DEFAULT_LANG = 'en';
+const DEFAULT_REVERSE_PROXY_FIX_ACTIVE = 'false';
 
 @Injectable({
   providedIn: 'root'
@@ -20,9 +21,11 @@ export class SettingsService {
   load(languages: Array<string>): Observable<SettingModel[]> {
     this.language = languages;
     const isDarkConfig = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-    let activeThemeValue: string = isDarkConfig ? 'dark' : 'default';
 
+    let activeThemeValue: string = isDarkConfig ? 'dark' : 'default';
     let activeLanguageValue: string = DEFAULT_LANG;
+    let reverseProxyFixActiveValue: string = DEFAULT_REVERSE_PROXY_FIX_ACTIVE;
+
     if (navigator?.language) {
       activeLanguageValue = navigator.language.split('-')[0];
     }
@@ -40,10 +43,15 @@ export class SettingsService {
       }
     }
 
+    if (this.localStorageService.get('reverseProxyFixActiveValue')) {
+      reverseProxyFixActiveValue = this.localStorageService.get('reverseProxyFixActiveValue');
+    }
+
     const settings: SettingModel[] = [
       {name: 'language-active', value: activeLanguageValue},
       {name: 'theme-active', value: activeThemeValue},
-      {name: 'results-per-page', value: '20'}
+      {name: 'results-per-page', value: '20'},
+      {name: 'reverse-proxy-fix-active', value: reverseProxyFixActiveValue}
     ];
     return of(settings).pipe(tap(sett => this.store.dispatch(loaded({settings: sett}))));
   }
@@ -54,6 +62,9 @@ export class SettingsService {
     }
     if (setting.name === 'language-active') {
       this.localStorageService.set('languageActiveValue', setting.value);
+    }
+    if (setting.name === 'reverse-proxy-fix-active') {
+      this.localStorageService.set('reverseProxyFixActiveValue', setting.value);
     }
     return from(new Promise<void>(resolve => resolve()));
   }
