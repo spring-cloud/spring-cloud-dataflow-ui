@@ -7,6 +7,7 @@ interface hrefObj {
 
 interface TaskExecutionLinks {
   'tasks/logs': hrefObj;
+  'tasks/definitions': hrefObj
 }
 
 export class LaunchResponse {
