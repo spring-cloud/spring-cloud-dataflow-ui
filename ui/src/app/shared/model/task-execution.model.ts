@@ -149,7 +149,7 @@ export class TaskExecutionPage extends Page<TaskExecution> {
   }
 }
 
-export class TaskExecutionThingPage extends Page<TaskExecution> {
+export class TaskExecutionThinPage extends Page<TaskExecution> {
   static parse(input: any): Page<TaskExecutionThin> {
     const page = Page.fromJSON<TaskExecutionThin>(input);
     if (input && input._embedded && input._embedded.taskExecutionResourceList) {
