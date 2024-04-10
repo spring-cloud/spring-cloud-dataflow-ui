@@ -148,3 +148,13 @@ export class TaskExecutionPage extends Page<TaskExecution> {
     return page;
   }
 }
+
+export class TaskExecutionThingPage extends Page<TaskExecution> {
+  static parse(input: any): Page<TaskExecutionThin> {
+    const page = Page.fromJSON<TaskExecutionThin>(input);
+    if (input && input._embedded && input._embedded.taskExecutionResourceList) {
+      page.items = input._embedded.taskExecutionResourceList.map(TaskExecutionThin.parse);
+    }
+    return page;
+  }
+}
