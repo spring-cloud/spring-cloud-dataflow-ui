@@ -107,6 +107,38 @@ export class TaskExecution {
   }
 }
 
+export class TaskExecutionThin {
+  executionId: number;
+  parentExecutionId: number;
+  exitCode: number;
+  taskName: string;
+  startTime: DateTime;
+  endTime: DateTime;
+  exitMessage: string;
+  externalExecutionId: number;
+  errorMessage: string;
+  schemaTarget: string;
+  platformName: string;
+  _links: TaskExecutionLinks;
+
+  static parse(input: any): TaskExecution {
+    const execution = new TaskExecution();
+    execution.executionId = input?.executionId;
+    execution.exitCode = input?.exitCode;
+    execution.taskName = input?.taskName;
+    execution.startTime = input?.startTime ? DateTime.fromISO(input.startTime) : null;
+    execution.endTime = input?.endTime ? DateTime.fromISO(input.endTime) : null;
+    execution.exitMessage = input?.exitMessage;
+    execution.schemaTarget = input?.schemaTarget || 'boot2';
+    execution.errorMessage = input?.errorMessage;
+    execution.externalExecutionId = input?.externalExecutionId;
+    execution.parentExecutionId = input?.parentExecutionId;
+    execution._links = input?._links;
+    execution.schemaTarget = input?.schemaTarget;
+    return execution;
+  }
+}
+
 export class TaskExecutionPage extends Page<TaskExecution> {
   static parse(input: any): Page<TaskExecution> {
     const page = Page.fromJSON<TaskExecution>(input);
