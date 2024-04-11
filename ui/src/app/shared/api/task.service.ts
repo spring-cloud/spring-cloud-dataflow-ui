@@ -216,7 +216,7 @@ export class TaskService {
       params = params.append('sort', `${sort},${order}`);
     }
     return this.httpClient
-      .get<any>(UrlUtilities.calculateBaseApiUrl() + 'tasks/executions', {headers, params})
+      .get<any>(UrlUtilities.calculateBaseApiUrl() + 'tasks/definitions', {headers, params})
       .pipe(map(TaskExecutionPage.parse), catchError(ErrorUtils.catchError));
   }
 
@@ -224,7 +224,7 @@ export class TaskService {
     const headers = HttpUtils.getDefaultHttpHeaders();
     const params = new HttpParams({encoder: new DataflowEncoder()}).append('platform', platform);
     return this.httpClient
-      .get<any>(UrlUtilities.calculateBaseApiUrl() + `tasks/executions/external/${externalExecutionId}`, {
+      .get<any>(UrlUtilities.calculateBaseApiUrl() + `tasks/definitions/external/${externalExecutionId}`, {
         headers,
         params
       })
@@ -235,7 +235,7 @@ export class TaskService {
     const headers = HttpUtils.getDefaultHttpHeaders();
     const params = new HttpParams({encoder: new DataflowEncoder()}).set('schemaTarget', schemaTarget);
     return this.httpClient
-      .get<any>(UrlUtilities.calculateBaseApiUrl() + `tasks/executions/${executionId ?? 0}`, {
+      .get<any>(UrlUtilities.calculateBaseApiUrl() + `tasks/definitions/${executionId ?? 0}`, {
         headers: headers,
         params: params
       })
