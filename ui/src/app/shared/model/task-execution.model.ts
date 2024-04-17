@@ -109,8 +109,8 @@ export class TaskExecution {
 export class TaskExecutionPage extends Page<TaskExecution> {
   static parse(input: any): Page<TaskExecution> {
     const page = Page.fromJSON<TaskExecution>(input);
-    if (input && input._embedded && input._embedded.taskExecutionResourceList) {
-      page.items = input._embedded.taskExecutionResourceList.map(TaskExecution.parse);
+    if (input && input._embedded && input._embedded.taskExecutionThinResourceList) {
+      page.items = input._embedded.taskExecutionThinResourceList.map(TaskExecution.parse);
     }
     return page;
   }

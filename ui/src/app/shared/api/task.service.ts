@@ -216,7 +216,7 @@ export class TaskService {
       params = params.append('sort', `${sort},${order}`);
     }
     return this.httpClient
-      .get<any>(UrlUtilities.calculateBaseApiUrl() + 'tasks/executions', {headers, params})
+      .get<any>(UrlUtilities.calculateBaseApiUrl() + 'tasks/thinexecutions', {headers, params})
       .pipe(map(TaskExecutionPage.parse), catchError(ErrorUtils.catchError));
   }
 

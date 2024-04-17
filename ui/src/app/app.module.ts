@@ -30,6 +30,7 @@ import {AppsModule} from './apps/apps.module';
 import {UrlUtilities} from './url-utilities.service';
 import {TaskService} from './shared/api/task.service';
 import {JobService} from './shared/api/job.service';
+import {DevModule} from './dev/dev.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -44,7 +45,7 @@ import {JobService} from './shared/api/job.service';
     FormsModule,
     LayoutModule,
     // DashboardModule,
-    // DevModule,
+    DevModule,
     StreamsModule,
     TasksJobsModule,
     ManageModule,
