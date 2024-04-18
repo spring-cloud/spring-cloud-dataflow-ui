@@ -129,7 +129,7 @@ describe('shared/api/task.service.ts', () => {
     expect(httpParams.get('name')).toEqual('bar');
     expect(httpParams.get('page')).toEqual('0');
     expect(httpParams.get('size')).toEqual('20');
-    expect(httpUri).toEqual('/tasks/executions');
+    expect(httpUri).toEqual('/tasks/thinexecutions');
   });
 
   it('getExecution', () => {
