@@ -147,7 +147,7 @@
         "message": {
           "successTitle": "Imprtiere Anwendung(en)",
           "successContent": "Anwendung(en) importiert.",
-          "errorContent": "Ein Fehler ist während des Importierens der Anwedungen aufgetreten. Bitte prüfen Sie die Server-Logs für mehr Informationen."
+          "errorContent": "Ein Fehler ist während des Importierens der Anwendungen aufgetreten. Bitte prüfen Sie die Server-Logs für mehr Informationen."
         }
       },
       "register": {
@@ -552,7 +552,7 @@
       "name": "Name",
       "instance": "Instanz",
       "message": {
-        "loadingErrorContent": "Ein Fehler ist beim holen der Stream Laufzeit-Status aufgetreten. Bitte prüfen Sie die Server-Logs für mehr Informationen.",
+        "loadingErrorContent": "Ein Fehler ist beim Holen der Stream Laufzeit-Status aufgetreten. Bitte prüfen Sie die Server-Logs für mehr Informationen.",
         "successTitle": "Skaliere Stream",
         "successContent": "{{ name }} Anwendung skaliert zu {{ count }}."
       }
