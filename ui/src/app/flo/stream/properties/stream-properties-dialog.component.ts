@@ -10,12 +10,12 @@ import {PropertiesDialogComponent} from '../../shared/properties/properties-dial
 
 // CM extension necessary for snippet support syntax highlighting
 // Lint support
-import 'codemirror-minified/addon/lint/javascript-lint';
+import 'codemirror/addon/lint/javascript-lint';
 // Supported languages until dynamic loading
-import 'codemirror-minified/mode/groovy/groovy';
-import 'codemirror-minified/mode/javascript/javascript';
-import 'codemirror-minified/mode/ruby/ruby';
-import 'codemirror-minified/mode/python/python';
+import 'codemirror/mode/groovy/groovy';
+import 'codemirror/mode/javascript/javascript';
+import 'codemirror/mode/ruby/ruby';
+import 'codemirror/mode/python/python';
 import {TranslateService} from '@ngx-translate/core';
 
 /**

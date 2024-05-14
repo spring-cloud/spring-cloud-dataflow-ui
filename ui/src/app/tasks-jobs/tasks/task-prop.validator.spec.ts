@@ -10,7 +10,7 @@ describe('tasks-jobs/tasks/task-prop.validator.ts', () => {
       });
     });
     it('valid', () => {
-      ['app.foo', 'deployer.foo', 'scheduler.foo'].forEach(mock => {
+      ['app.foo', 'deployer.foo', 'scheduler.foo', 'version..foo'].forEach(mock => {
         const control: UntypedFormControl = new UntypedFormControl(mock);
         expect(TaskPropValidator.key(control)).toBeNull();
       });

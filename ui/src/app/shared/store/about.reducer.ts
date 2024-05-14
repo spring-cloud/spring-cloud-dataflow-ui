@@ -55,6 +55,9 @@ export interface AboutState {
     username: string;
     roles: Array<string>;
   };
+  git: {
+    commit?: string;
+  };
 }
 
 export interface State extends fromRoot.State {
@@ -100,16 +103,23 @@ export const initialState: AboutState = {
     isAuthenticated: false,
     username: '',
     roles: []
+  },
+  git: {
+    commit: ''
   }
 };
 
 export const reducer = createReducer(
   initialState,
-  on(AboutActions.loaded, (state, {versions, features, runtimeEnvironment, monitoringDashboardInfo, security}) => ({
-    versions,
-    features,
-    runtimeEnvironment,
-    monitoringDashboardInfo,
-    security
-  }))
+  on(
+    AboutActions.loaded,
+    (state, {versions, features, runtimeEnvironment, monitoringDashboardInfo, security, git}) => ({
+      versions,
+      features,
+      runtimeEnvironment,
+      monitoringDashboardInfo,
+      security,
+      git
+    })
+  )
 );

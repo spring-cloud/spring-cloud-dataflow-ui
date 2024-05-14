@@ -8,7 +8,7 @@ import {TaskExecution} from '../../../../shared/model/task-execution.model';
   template: ` <clr-modal [(clrModalOpen)]="isOpen" *ngIf="isOpen" clrModalSize="xl">
     <h3 class="modal-title">{{ title }}</h3>
     <div class="modal-body" style="padding:0;">
-      <div class="clr-log" style="margin: 0;padding:0" *ngIf="!loading && logs">
+      <div class="clr-log" *ngIf="!loading && logs">
         <pre style="margin:0"><code>{{logs}}</code></pre>
       </div>
       <div *ngIf="loading">

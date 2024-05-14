@@ -61,6 +61,9 @@ describe('app.component.ts', () => {
       },
       security: {
         isAuthentication: true
+      },
+      git: {
+        commit: 'fakecommit'
       }
     }
   };
@@ -98,6 +101,9 @@ describe('app.component.ts', () => {
       },
       security: {
         isAuthentication: true
+      },
+      git: {
+        commit: 'fakecommit'
       }
     }
   };

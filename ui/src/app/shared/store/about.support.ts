@@ -62,5 +62,8 @@ export const parse = (input: any): AboutState => ({
     isAuthenticated: input.securityInfo.authenticated,
     username: input.securityInfo.username,
     roles: input.securityInfo.roles as string[]
+  },
+  git: {
+    commit: input.gitAndBuildInfo.git?.commit?.id || ''
   }
 });
