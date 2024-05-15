@@ -852,6 +852,16 @@ export class BuilderComponent implements OnInit, OnDestroy {
     return version !== '' && !app.versions.find(v => v.version === version);
   }
 
+  showDefaultVersion(config: any, app: any): boolean {
+    const version = config.deploymentProperties
+      .map((prop: string) => prop.split('=')[0])
+      .find((prop: string) => prop === `version.${app.name}`);
+    if (version) {
+      return false;
+    }
+    return true;
+  }
+
   /**
    * Return true if the builder is valid
    * @param builder
