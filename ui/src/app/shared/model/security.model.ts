@@ -3,4 +3,5 @@ export interface Security {
   authenticated: boolean;
   username: string;
   roles: string[];
+  clientRegistrations: string[];
 }
