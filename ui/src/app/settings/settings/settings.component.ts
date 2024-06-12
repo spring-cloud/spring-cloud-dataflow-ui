@@ -11,6 +11,7 @@ export class SettingsComponent extends ModalDialog implements OnInit {
   themeActive: SettingModel;
   resultsPerPage: SettingModel;
   languageActive: SettingModel;
+  reverseProxyFix: SettingModel;
   languages: Array<string>;
 
   constructor(private settingsService: SettingsService) {
@@ -23,6 +24,7 @@ export class SettingsComponent extends ModalDialog implements OnInit {
       this.themeActive = settings.find(st => st.name === 'theme-active');
       this.resultsPerPage = settings.find(st => st.name === 'results-per-page');
       this.languageActive = settings.find(st => st.name === 'language-active');
+      this.reverseProxyFix = settings.find(st => st.name === 'reverse-proxy-fix-active');
     });
   }
 
@@ -36,5 +38,9 @@ export class SettingsComponent extends ModalDialog implements OnInit {
 
   languageActiveSettingOnChange(language: string): void {
     this.settingsService.dispatch({name: 'language-active', value: language});
+  }
+
+  reverseProxyFixOnChange(active: string): void {
+    this.settingsService.dispatch({name: 'reverse-proxy-fix-active', value: active});
   }
 }
