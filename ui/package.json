@@ -69,7 +69,7 @@
     "@angular/cli": "15.2.11",
     "@angular/compiler-cli": "15.2.10",
     "@angular/language-service": "15.2.10",
-    "@compodoc/compodoc": "1.1.19",
+    "@compodoc/compodoc": "1.1.25",
     "@cypress/schematic": "1.6.0",
     "@types/backbone": "1.4.15",
     "@types/codemirror": "0.0.91",
