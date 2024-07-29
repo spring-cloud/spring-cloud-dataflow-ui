@@ -248,7 +248,10 @@
     "darkTheme": "dark",
     "defaultTheme": "default",
     "results": "Results",
-    "resultsDescription": "You can choose the number of results per page."
+    "resultsDescription": "You can choose the number of results per page.",
+    "reverseProxyFix": "Reverse-Proxy-Fix",
+    "reverseProxyFixActive": "Activate",
+    "reverseProxyFixDescription": "You can activate the fix for the reverse proxy operation."
   },
   "about": {
     "user": {

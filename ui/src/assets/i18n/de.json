@@ -244,7 +244,10 @@
     "darkTheme": "Dunkel",
     "defaultTheme": "Standard",
     "results": "Ergebnisse",
-    "resultsDescription": "Sie können die Anzahl pro Seite wählen."
+    "resultsDescription": "Sie können die Anzahl pro Seite wählen.",
+    "reverseProxyFix": "Reverse-Proxy-Fix",
+    "reverseProxyFixActive": "Aktivieren",
+    "reverseProxyFixDescription": "Sie können den Fix für den Reverse-Proxy-Betrieb aktivieren."
   },
   "about": {
     "user": {

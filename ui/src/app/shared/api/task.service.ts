@@ -13,12 +13,13 @@ import {
   ValuedConfigurationMetadataPropertyList
 } from '../model/detailed-app.model';
 import {UrlUtilities} from '../../url-utilities.service';
+import {LocalStorageService} from 'angular-2-local-storage';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TaskService {
-  constructor(protected httpClient: HttpClient) {}
+  constructor(protected httpClient: HttpClient, private localStorageService: LocalStorageService) {}
 
   getTasks(
     page: number,
@@ -264,10 +265,13 @@ export class TaskService {
           `tasks/logs/${taskExecution.externalExecutionId}?platformName=${platformName}&schemaTarget=${taskExecution.schemaTarget}`;
     const params = new HttpParams({encoder: new DataflowEncoder()});
     return this.httpClient
-      .get<any>(url, {
-        headers,
-        params
-      })
+      .get<any>(
+        UrlUtilities.fixReverseProxyUrl(url, this.localStorageService.get('reverseProxyFixActiveValue') === true),
+        {
+          headers,
+          params
+        }
+      )
       .pipe(catchError(ErrorUtils.catchError));
   }
 
