@@ -14,12 +14,12 @@ export class WebsiteStartersComponent {
   force = false;
 
   uris = {
-    'stream.kafka.maven': 'https://dataflow.spring.io/kafka-maven-latest',
-    'stream.kafka.docker': 'https://dataflow.spring.io/kafka-docker-latest',
-    'stream.rabbitmq.maven': 'https://dataflow.spring.io/rabbitmq-maven-latest',
-    'stream.rabbitmq.docker': 'https://dataflow.spring.io/rabbitmq-docker-latest',
-    'task.maven': 'https://dataflow.spring.io/task-maven-latest',
-    'task.docker': 'https://dataflow.spring.io/task-docker-latest'
+    'stream.kafka.maven': 'https://dataflow.spring.io/kafka-maven-5-0-x',
+    'stream.kafka.docker': 'https://dataflow.spring.io/kafka-docker-5-0-x',
+    'stream.rabbitmq.maven': 'https://dataflow.spring.io/rabbitmq-maven-5-0-x',
+    'stream.rabbitmq.docker': 'https://dataflow.spring.io/rabbitmq-docker-5-0-x',
+    'task.maven': 'https://dataflow.spring.io/task-maven-3-0-x',
+    'task.docker': 'https://dataflow.spring.io/task-docker-3-0-x'
   };
 
   constructor(

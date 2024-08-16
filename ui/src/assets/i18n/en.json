@@ -176,7 +176,7 @@
         "desc": "Provide a URI that points to the location of the properties file.<br />This properties file is formatted so that the keys represent the type and the name of the application, e.g. type.name. The property values are the URIs of the app.",
         "placeholderUri": "https://url.to.properties",
         "eg": "e.g.",
-        "egValue": "https://dataflow.spring.io/kafka-maven-latest",
+        "egValue": "https://dataflow.spring.io/kafka-maven-5-0-x",
         "invalidUri": "Please provide a valid URI pointing to the respective properties file.",
         "force": "Force, the applications will be imported and installed even if it already exists but only if not being used already.",
         "importing": "Importing application(s)",

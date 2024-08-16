@@ -50,9 +50,9 @@ export class DashboardComponent implements OnDestroy {
       case 'IMPORT_APPS':
         return forkJoin([this.getOperation('IMPORT_APPS_STREAM'), this.getOperation('IMPORT_APPS_TASK')]);
       case 'IMPORT_APPS_STREAM':
-        return this.appService.importUri('https://dataflow.spring.io/kafka-maven-latest');
+        return this.appService.importUri('https://dataflow.spring.io/kafka-maven-5-0-x');
       case 'IMPORT_APPS_TASK':
-        return this.appService.importUri('https://dataflow.spring.io/task-maven-latest');
+        return this.appService.importUri('https://dataflow.spring.io/task-maven-3-0-x');
     }
     return null;
   }
