@@ -172,7 +172,7 @@
         "desc": "Geben Sie eine URI an die auf eine Eigenschaften-Datei verweist.<br />Die Eigenschaften-Datei ist formatiert, sodass jeder Schlüssel einen Typen und den Namen der Anwendung representiert, z.B. type.name. Die Werte sind die URIs der Anwendungen.",
         "placeholderUri": "https://url.to.properties",
         "eg": "e.g.",
-        "egValue": "https://dataflow.spring.io/kafka-maven-latest",
+        "egValue": "https://dataflow.spring.io/kafka-maven-5-0-x",
         "invalidUri": "Bitte geben sie eine gültige URI an, die auf eine Properties Datei verweist.",
         "force": "Forcieren, Anwendungen werden importiert und installiert auch wenn sie bereits existieren aber nicht verwendet werden.",
         "importing": "Importiere gerade Anwendung(en)",
