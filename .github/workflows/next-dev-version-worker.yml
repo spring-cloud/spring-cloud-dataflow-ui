@@ -35,7 +35,7 @@ jobs:
     # target deploy repos
     - name: Configure JFrog Cli
       run: |
-        jfrog rt mvnc \
+        jfrog mvnc --use-wrapper \
           --server-id-resolve=${{ vars.JF_SERVER_ID }} \
           --server-id-deploy=${{ vars.JF_SERVER_ID }} \
           --repo-resolve-releases=libs-milestone \
@@ -54,7 +54,7 @@ jobs:
     # build and publish to configured target
     - name: Build and Publish
       run: |
-        jfrog rt mvn build-helper:parse-version versions:set \
+        jfrog mvn build-helper:parse-version versions:set \
           -DprocessAllModules=true \
           -DgenerateBackupPoms=false \
           -Dartifactory.publish.artifacts=false \
@@ -62,7 +62,7 @@ jobs:
           -B
         echo BUILD_ZOO_HANDLER_spring_cloud_dataflow_ui_version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout) >> $GITHUB_ENV
         jfrog rt build-clean
-        jfrog rt mvn clean install -DskipTests -B
+        jfrog mvn clean install -DskipTests -B
         jfrog rt build-publish
         echo BUILD_ZOO_HANDLER_spring_cloud_dataflow_ui_buildname=spring-cloud-dataflow-ui-3-4-x-ndv >> $GITHUB_ENV
         echo BUILD_ZOO_HANDLER_spring_cloud_dataflow_ui_buildnumber=$GITHUB_RUN_NUMBER >> $GITHUB_ENV
