@@ -16,9 +16,6 @@ jobs:
     - uses: actions/setup-java@v1
       with:
         java-version: 1.8
-    - uses: jvalkeal/setup-maven@v1
-      with:
-        maven-version: 3.6.3
     - uses: jfrog/setup-jfrog-cli@v3
       env:
         JF_URL: 'https://repo.spring.io'
@@ -33,7 +30,7 @@ jobs:
     # target deploy repos
     - name: Configure JFrog Cli
       run: |
-        jfrog rt mvnc \
+        jfrog rt mvnc --use-wrapper \
           --server-id-resolve=${{ vars.JF_SERVER_ID }} \
           --server-id-deploy=${{ vars.JF_SERVER_ID }} \
           --repo-resolve-releases=libs-release-staging \
@@ -52,7 +49,7 @@ jobs:
     # build and publish to configured target
     - name: Build and Publish
       run: |
-        jfrog rt mvn build-helper:parse-version versions:set \
+        jfrog mvn build-helper:parse-version versions:set \
           -gs .github/settings.xml \
           -Pstagingrelease \
           -DprocessAllModules=true \
@@ -62,7 +59,7 @@ jobs:
           -B
         echo BUILD_ZOO_HANDLER_spring_cloud_dataflow_ui_version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout) >> $GITHUB_ENV
         jfrog rt build-clean
-        jfrog rt mvn clean install \
+        jfrog mvn clean install \
           -gs .github/settings.xml \
           -P-spring,stagingrelease \
           -DskipTests -U -B

@@ -17,9 +17,6 @@ jobs:
     - uses: actions/setup-java@v1
       with:
         java-version: 1.8
-    - uses: jvalkeal/setup-maven@v1
-      with:
-        maven-version: 3.6.3
     - uses: jfrog/setup-jfrog-cli@v3
       env:
         JF_URL: 'https://repo.spring.io'
@@ -36,7 +33,7 @@ jobs:
     # target deploy repos
     - name: Configure JFrog Cli
       run: |
-        jfrog rt mvnc \
+        jfrog mvnc --use-wrapper \
           --server-id-resolve=${{ vars.JF_SERVER_ID }} \
           --server-id-deploy=${{ vars.JF_SERVER_ID }} \
           --repo-resolve-releases=libs-milestone \
@@ -55,7 +52,7 @@ jobs:
     # build and publish to configured target
     - name: Build and Publish
       run: |
-        jfrog rt mvn -U -B clean install
+        jfrog mvn -U -B clean install
         jfrog rt build-publish
         echo BUILD_ZOO_HANDLER_spring_cloud_dataflow_ui_version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout) >> $GITHUB_ENV
         echo BUILD_ZOO_HANDLER_spring_cloud_dataflow_ui_buildname=spring-cloud-dataflow-ui-main >> $GITHUB_ENV
