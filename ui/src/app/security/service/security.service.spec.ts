@@ -93,7 +93,7 @@ describe('security/service/security.service.ts integration', () => {
   });
 
   it('should have proper state after loaded', () => {
-    service.loaded(false, true, 'fakeuser', ['role1']);
+    service.loaded(false, true, 'fakeuser', ['role1'], []);
 
     let expected = cold('(a|)', {a: false});
     expect(service.securityEnabled().pipe(take(1))).toBeObservable(expected);

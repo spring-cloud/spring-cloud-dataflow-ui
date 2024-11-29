@@ -13,7 +13,8 @@ describe('security/store/security.reducer.ts', () => {
       enabled: false,
       authenticated: true,
       username: 'fakeuser',
-      roles: ['role1', 'role2']
+      roles: ['role1', 'role2'],
+      clientRegistrations: ['test_registration', 'test_registration2']
     };
     let newState = fromSecurity.reducer(
       undefined,
@@ -21,7 +22,8 @@ describe('security/store/security.reducer.ts', () => {
         enabled: false,
         authenticated: true,
         username: 'fakeuser',
-        roles: ['role1', 'role2']
+        roles: ['role1', 'role2'],
+        clientRegistrations: ['test_registration', 'test_registration2']
       })
     );
     expect(newState).toEqual(expectedState);
@@ -29,9 +31,19 @@ describe('security/store/security.reducer.ts', () => {
       enabled: false,
       authenticated: false,
       username: undefined,
-      roles: []
+      roles: [],
+      clientRegistrations: ['test_registration', 'test_registration2']
     };
-    newState = fromSecurity.reducer(newState, SecurityActions.logout());
+    newState = fromSecurity.reducer(
+      newState,
+      SecurityActions.logout({
+        enabled: false,
+        authenticated: false,
+        username: undefined,
+        roles: [],
+        clientRegistrations: ['test_registration', 'test_registration2']
+      })
+    );
     expect(newState).toEqual(expectedState);
   });
 });
