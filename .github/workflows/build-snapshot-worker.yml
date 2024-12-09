@@ -30,7 +30,11 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-m2-
 
-    # target deploy repos
+    - uses: jfrog/setup-jfrog-cli@v3
+      env:
+        JF_URL: 'https://repo.spring.io'
+        JF_ENV_SPRING: ${{ secrets.JF_ARTIFACTORY_SPRING }}
+      # setup frog cli
     - name: Configure JFrog Cli
       run: |
         jfrog mvnc --use-wrapper \

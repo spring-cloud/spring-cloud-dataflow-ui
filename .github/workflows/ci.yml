@@ -23,7 +23,6 @@ jobs:
     - uses: actions/setup-java@v1
       with:
         java-version: 1.8
-    # maven version
     # jfrog cli
     - uses: jfrog/setup-jfrog-cli@v3
       env:
