@@ -28,17 +28,16 @@ jobs:
       with:
         maven-version: 3.6.2
     # jfrog cli
-    - uses: jfrog/setup-jfrog-cli@v1
-      with:
-        version: 1.46.4
+    - uses: jfrog/setup-jfrog-cli@v3
       env:
-        JF_ARTIFACTORY_SPRING: ${{ secrets.JF_ARTIFACTORY_SPRING }}
+        JF_URL: 'https://repo.spring.io'
+        JF_ENV_SPRING: ${{ secrets.JF_ARTIFACTORY_SPRING }}
     # setup frog cli
     - name: Configure JFrog Cli
       run: |
-        jfrog rt mvnc \
-          --server-id-resolve=repo.spring.io \
-          --server-id-deploy=repo.spring.io \
+        jfrog mvnc \
+          --server-id-resolve=${{ vars.JF_SERVER_ID }} \
+          --server-id-deploy=${{ vars.JF_SERVER_ID }} \
           --repo-resolve-releases=libs-milestone \
           --repo-resolve-snapshots=libs-snapshot \
           --repo-deploy-releases=libs-release-local \
@@ -48,7 +47,7 @@ jobs:
     # build and publish
     - name: Build and Publish
       run: |
-        jfrog rt mvn -U -B clean install
+        jfrog mvn -U -B clean install
         jfrog rt build-publish
     # clean m2 cache
     - name: Clean cache
