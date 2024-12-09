@@ -23,10 +23,6 @@ jobs:
     - uses: actions/setup-java@v1
       with:
         java-version: 1.8
-    # maven version
-    - uses: jvalkeal/setup-maven@v1
-      with:
-        maven-version: 3.6.2
     # jfrog cli
     - uses: jfrog/setup-jfrog-cli@v3
       env:
@@ -35,7 +31,7 @@ jobs:
     # setup frog cli
     - name: Configure JFrog Cli
       run: |
-        jfrog mvnc \
+        jfrog mvnc --use-wrapper \
           --server-id-resolve=${{ vars.JF_SERVER_ID }} \
           --server-id-deploy=${{ vars.JF_SERVER_ID }} \
           --repo-resolve-releases=libs-milestone \

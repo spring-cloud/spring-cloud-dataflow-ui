@@ -24,4 +24,20 @@ export class UrlUtilities {
     path += path.endsWith('/') ? '' : '/';
     return path;
   }
+
+  public static fixReverseProxyUrl(url: string, active: boolean) {
+    if (!active) {
+      return url;
+    }
+    try {
+      const urlToFix: URL = new URL(url);
+      const baseUrl: URL = new URL(window.location.href);
+      urlToFix.host = baseUrl.host;
+      urlToFix.protocol = baseUrl.protocol;
+      urlToFix.port = baseUrl.port;
+      return urlToFix.href;
+    } catch (_) {
+      return url;
+    }
+  }
 }

@@ -5,6 +5,7 @@ import {TaskExecution} from '../model/task-execution.model';
 
 describe('shared/api/task.service.ts', () => {
   let mockHttp;
+  let mockLocalStorageService;
   let taskService;
   let jsonData = {};
   beforeEach(() => {
@@ -14,8 +15,11 @@ describe('shared/api/task.service.ts', () => {
       post: jasmine.createSpy('post'),
       put: jasmine.createSpy('put')
     };
+    mockLocalStorageService = {
+      get: jasmine.createSpy('get')
+    };
     jsonData = {};
-    taskService = new TaskService(mockHttp);
+    taskService = new TaskService(mockHttp, mockLocalStorageService);
   });
 
   it('getTasks', () => {
@@ -144,6 +148,7 @@ describe('shared/api/task.service.ts', () => {
 
   it('getExecutionLogs', () => {
     mockHttp.get.and.returnValue(of(jsonData));
+    mockLocalStorageService.get.and.returnValue(of('false'));
     taskService.getExecutionLogs(
       TaskExecution.parse({
         externalExecutionId: 'foo',

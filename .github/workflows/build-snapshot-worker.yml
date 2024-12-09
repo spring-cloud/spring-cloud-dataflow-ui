@@ -17,9 +17,11 @@ jobs:
     - uses: actions/setup-java@v1
       with:
         java-version: 1.8
-    - uses: jvalkeal/setup-maven@v1
-      with:
-        maven-version: 3.6.3
+    - uses: jfrog/setup-jfrog-cli@v3
+      env:
+        JF_URL: 'https://repo.spring.io'
+        JF_ENV_SPRING: ${{ secrets.JF_ARTIFACTORY_SPRING }}
+
     # cache maven .m2
     - uses: actions/cache@v2
       with:
@@ -35,7 +37,7 @@ jobs:
       # setup frog cli
     - name: Configure JFrog Cli
       run: |
-        jfrog mvnc \
+        jfrog mvnc --use-wrapper \
           --server-id-resolve=${{ vars.JF_SERVER_ID }} \
           --server-id-deploy=${{ vars.JF_SERVER_ID }} \
           --repo-resolve-releases=libs-milestone \

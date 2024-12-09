@@ -6,6 +6,7 @@ import {SettingModel} from '../../shared/model/setting.model';
 export const settingsFeatureKey = 'settings';
 export const themeActiveKey = 'theme-active';
 export const languageActiveKey = 'language-active';
+export const reverseProxyFixKey = 'reverse-proxy-fix-active';
 
 export interface SettingsState {
   settings: SettingModel[];
@@ -23,7 +24,8 @@ export const getSetting = (settings: SettingModel[], name: string): string =>
 export const initialState: SettingsState = {
   settings: [
     {name: themeActiveKey, value: 'default'},
-    {name: languageActiveKey, value: 'en'}
+    {name: languageActiveKey, value: 'en'},
+    {name: reverseProxyFixKey, value: 'false'}
   ]
 };
 
