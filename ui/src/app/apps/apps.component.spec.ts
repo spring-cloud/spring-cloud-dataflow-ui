@@ -80,7 +80,7 @@ describe('apps/apps.component.ts', () => {
     expect(actionBar).toBeTruthy();
     expect(title.textContent).toContain('Applications');
     expect(rows.length === 20).toBeTruthy();
-    expect(cols.length === 6).toBeTruthy();
+    expect(cols.length === 5).toBeTruthy();
     done();
   });
 
@@ -230,13 +230,13 @@ describe('apps/apps.component.ts', () => {
       sort: {by: 'version', reverse: true}
     });
     // URI
-    cols[4].query(By.css('button')).nativeElement.click();
+    cols[3].query(By.css('button')).nativeElement.click();
     fixture.detectChanges();
     expect(refresh).toHaveBeenCalledWith({
       page: {from: 0, to: 19, size: 20, current: 1},
       sort: {by: 'uri', reverse: false}
     });
-    cols[4].query(By.css('button')).nativeElement.click();
+    cols[3].query(By.css('button')).nativeElement.click();
     fixture.detectChanges();
     expect(refresh).toHaveBeenCalledWith({
       page: {from: 0, to: 19, size: 20, current: 1},

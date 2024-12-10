@@ -108,10 +108,7 @@ export class AppService {
   }
 
   registerProp(prop: any): Observable<any> {
-    let params = new HttpParams()
-      .append('uri', prop.uri)
-      .append('force', prop.force.toString())
-      .append('bootVersion', prop.bootVersion);
+    let params = new HttpParams().append('uri', prop.uri).append('force', prop.force.toString());
     if (prop.metaDataUri) {
       params = params.append('metadata-uri', prop.metaDataUri);
     }

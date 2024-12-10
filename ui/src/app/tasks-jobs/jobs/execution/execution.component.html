@@ -50,17 +50,10 @@
             <div class="row">
               <div class="key">{{ 'jobs.main.taskExecutionId' | translate }}</div>
               <div class="value">
-                <a
-                  routerLink="/tasks-jobs/task-executions/{{ execution.taskExecutionId }}/schemaTarget/{{
-                    execution.schemaTarget
-                  }}"
-                  >{{ execution.taskExecutionId }}</a
-                >
+                <a routerLink="/tasks-jobs/task-executions/{{ execution.taskExecutionId }}">{{
+                  execution.taskExecutionId
+                }}</a>
               </div>
-            </div>
-            <div class="row">
-              <div class="key">{{ 'jobs.main.schemaTarget' | translate }}</div>
-              <div class="value">{{ execution.schemaTarget }}</div>
             </div>
             <div class="row">
               <div class="key">{{ 'jobs.main.jobParameters' | translate }}</div>
@@ -183,10 +176,6 @@
                 <div class="value">{{ taskExecution.executionId }}</div>
               </div>
               <div class="row">
-                <div class="key">{{ 'executions.main.schemaTarget' | translate }}</div>
-                <div class="value">{{ taskExecution.schemaTarget }}</div>
-              </div>
-              <div class="row">
                 <div class="key">{{ 'executions.main.arguments' | translate }}</div>
                 <div class="value">
                   <div *ngIf="taskExecution.getArgumentsToArray().length > 0">
@@ -208,9 +197,7 @@
                 <div class="key">{{ 'executions.main.jobExecutionIds' | translate }}</div>
                 <div class="value">
                   <a
-                    routerLink="/tasks-jobs/job-executions/{{ jobExecutionId }}/schemaTarget/{{
-                      taskExecution.schemaTarget
-                    }}"
+                    routerLink="/tasks-jobs/job-executions/{{ jobExecutionId }}"
                     *ngFor="let jobExecutionId of taskExecution.jobExecutionIds"
                   >
                     {{ jobExecutionId }}
@@ -329,20 +316,14 @@
             <tbody>
               <tr *ngFor="let step of execution.stepExecutions">
                 <td class="left">
-                  <a
-                    routerLink="/tasks-jobs/job-executions/{{ execution.jobExecutionId }}/{{ step.id }}/schemaTarget/{{
-                      execution.schemaTarget
-                    }}"
-                    >{{ step.id }}</a
-                  >
+                  <a routerLink="/tasks-jobs/job-executions/{{ execution.jobExecutionId }}/{{ step.id }}">{{
+                    step.id
+                  }}</a>
                 </td>
                 <td class="left">
-                  <a
-                    routerLink="/tasks-jobs/job-executions/{{ execution.jobExecutionId }}/{{ step.id }}/schemaTarget/{{
-                      execution.schemaTarget
-                    }}"
-                    >{{ step.name }}</a
-                  >
+                  <a routerLink="/tasks-jobs/job-executions/{{ execution.jobExecutionId }}/{{ step.id }}">{{
+                    step.name
+                  }}</a>
                 </td>
                 <td class="left">{{ step.readCount }}</td>
                 <td class="left">{{ step.writeCount }}</td>

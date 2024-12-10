@@ -104,12 +104,12 @@ describe('shared/api/task.service.ts', () => {
   it('executionsClean', async () => {
     mockHttp.delete.and.returnValue(of(jsonData));
     const taskExecutions = [
-      TaskExecution.parse({executionId: 'foo1', schemaTarget: 'boot2'}),
-      TaskExecution.parse({executionId: 'foo2', parentExecutionId: 'foo1', schemaTarget: 'boot2'}),
-      TaskExecution.parse({executionId: 'foo3', parentExecutionId: 'foo1', schemaTarget: 'boot3'}),
-      TaskExecution.parse({executionId: 'bar1', schemaTarget: 'boot3'}),
-      TaskExecution.parse({executionId: 'bar2', parentExecutionId: 'bar1', schemaTarget: 'boot2'}),
-      TaskExecution.parse({executionId: 'bar3', parentExecutionId: 'bar1', schemaTarget: 'boot3'})
+      TaskExecution.parse({executionId: 'foo1'}),
+      TaskExecution.parse({executionId: 'foo2', parentExecutionId: 'foo1'}),
+      TaskExecution.parse({executionId: 'foo3', parentExecutionId: 'foo1'}),
+      TaskExecution.parse({executionId: 'bar1'}),
+      TaskExecution.parse({executionId: 'bar2', parentExecutionId: 'bar1'}),
+      TaskExecution.parse({executionId: 'bar3', parentExecutionId: 'bar1'})
     ];
     await taskService.executionsClean(taskExecutions).toPromise();
     const httpUri = mockHttp.delete.calls.all();
@@ -117,10 +117,8 @@ describe('shared/api/task.service.ts', () => {
     expect(httpUri).not.toEqual(null);
     expect(httpUri.length).not.toEqual(0);
     expect(httpUri.map(url => url.args[0])).toEqual([
-      '/tasks/executions/foo2,bar2?action=CLEANUP,REMOVE_DATA&schemaTarget=boot2',
-      '/tasks/executions/foo3,bar3?action=CLEANUP,REMOVE_DATA&schemaTarget=boot3',
-      '/tasks/executions/foo1?action=CLEANUP,REMOVE_DATA&schemaTarget=boot2',
-      '/tasks/executions/bar1?action=CLEANUP,REMOVE_DATA&schemaTarget=boot3'
+      '/tasks/executions/foo2,foo3,bar2,bar3?action=CLEANUP,REMOVE_DATA',
+      '/tasks/executions/foo1,bar1?action=CLEANUP,REMOVE_DATA'
     ]);
   });
 
@@ -152,13 +150,12 @@ describe('shared/api/task.service.ts', () => {
     taskService.getExecutionLogs(
       TaskExecution.parse({
         externalExecutionId: 'foo',
-        schemaTarget: 'boot3',
         arguments: ['--spring.cloud.data.flow.platformname=bar']
       })
     );
     const httpUri = mockHttp.get.calls.mostRecent().args[0];
     const headerArgs = mockHttp.get.calls.mostRecent().args[1].headers;
-    expect(httpUri).toEqual('/tasks/logs/foo?platformName=bar&schemaTarget=boot3');
+    expect(httpUri).toEqual('/tasks/logs/foo?platformName=bar');
     expect(headerArgs.get('Content-Type')).toEqual('application/json');
     expect(headerArgs.get('Accept')).toEqual('application/json');
   });

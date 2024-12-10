@@ -102,12 +102,6 @@
                 <div class="value">{{ task.lastTaskExecution?.executionId }}</div>
               </div>
               <div class="row">
-                <div class="key">{{ 'executions.main.schemaTarget' | translate }}</div>
-                <div class="value">
-                  {{ task.lastTaskExecution.schemaTarget }}
-                </div>
-              </div>
-              <div class="row">
                 <div class="key">{{ 'executions.main.arguments' | translate }}</div>
                 <div class="value">
                   <div *ngIf="task.lastTaskExecution.getArgumentsToArray().length > 0">
@@ -136,9 +130,7 @@
                 <div class="key">{{ 'executions.main.jobExecutionIds' | translate }}</div>
                 <div class="value">
                   <a
-                    routerLink="/tasks-jobs/job-executions/{{ jobExecutionId }}/schemaTarget/{{
-                      taskExecution.schemaTarget
-                    }}"
+                    routerLink="/tasks-jobs/job-executions/{{ jobExecutionId }}"
                     *ngFor="let jobExecutionId of taskExecution?.jobExecutionIds"
                   >
                     {{ jobExecutionId }}
@@ -247,12 +239,9 @@
               <tbody>
                 <tr *ngFor="let execution of executions?.items">
                   <td class="left">
-                    <a
-                      routerLink="/tasks-jobs/task-executions/{{ execution.executionId }}/schemaTarget/{{
-                        execution.schemaTarget
-                      }}"
-                      >{{ execution.executionId }}</a
-                    >
+                    <a routerLink="/tasks-jobs/task-executions/{{ execution.executionId }}">{{
+                      execution.executionId
+                    }}</a>
                   </td>
                   <td class="left">{{ execution.startTime | datetime }}</td>
                   <td class="left">{{ execution.endTime | datetime }}</td>

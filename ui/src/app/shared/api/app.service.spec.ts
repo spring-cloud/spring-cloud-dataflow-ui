@@ -110,7 +110,6 @@ describe('shared/api/app.service.ts', () => {
       uri: 'https://uri.foo.bar',
       metaDataUri: 'https://metaDataUri.foo.bar',
       type: ApplicationType.processor,
-      bootVersion: '3',
       force: true
     });
     const httpUri = mockHttp.post.calls.mostRecent().args[0];
@@ -121,7 +120,6 @@ describe('shared/api/app.service.ts', () => {
     expect(headerArgs.get('Accept')).toEqual('application/json');
     expect(httpParams.get('uri')).toEqual('https://uri.foo.bar');
     expect(httpParams.get('metadata-uri')).toEqual('https://metaDataUri.foo.bar');
-    expect(httpParams.get('bootVersion')).toEqual('3');
     expect(httpParams.get('force')).toEqual('true');
   });
 

@@ -55,13 +55,6 @@
     <clr-dg-filter style="display: none"></clr-dg-filter>
   </clr-dg-column>
   <clr-dg-column
-    (clrDgColumnResize)="updateContext('sizeSchemaTarget', $event)"
-    [style.width.px]="context.sizeSchemaTarget | datagridcolumn: datagrid:contextName | async"
-  >
-    <ng-container>{{ 'executions.main.schemaTarget' | translate }}</ng-container>
-    <clr-dg-filter style="display: none"></clr-dg-filter>
-  </clr-dg-column>
-  <clr-dg-column
     (clrDgColumnResize)="updateContext('sizeDuration', $event)"
     [style.width.px]="context.sizeDuration | datagridcolumn: datagrid:contextName | async"
   >
@@ -104,15 +97,11 @@
   </clr-dg-column>
   <clr-dg-row *ngFor="let execution of page?.items" [clrDgItem]="execution">
     <clr-dg-cell>
-      <a
-        routerLink="/tasks-jobs/task-executions/{{ execution.executionId }}/schemaTarget/{{ execution.schemaTarget }}"
-        >{{ execution.executionId }}</a
-      >
+      <a routerLink="/tasks-jobs/task-executions/{{ execution.executionId }}/">{{ execution.executionId }}</a>
     </clr-dg-cell>
     <clr-dg-cell>
       <a routerLink="/tasks-jobs/tasks/{{ execution.taskName }}">{{ execution.taskName }}</a>
     </clr-dg-cell>
-    <clr-dg-cell>{{ execution.schemaTarget }}</clr-dg-cell>
     <clr-dg-cell>{{ execution.startTime | duration: execution.endTime }}</clr-dg-cell>
     <clr-dg-cell>{{ execution.startTime | datetime }}</clr-dg-cell>
     <clr-dg-cell>{{ execution.endTime | datetime }}</clr-dg-cell>

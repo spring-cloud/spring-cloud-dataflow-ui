@@ -59,7 +59,6 @@ export class RegisterComponent implements OnInit {
               type: form.get('type').value as ApplicationType,
               uri: form.get('uri').value,
               metaDataUri: form.get('metaDataUri').value,
-              bootVersion: form.get('bootVersion').value,
               force: form.get('force').value
             };
           }
@@ -109,8 +108,7 @@ export class RegisterComponent implements OnInit {
       form.get('uri').hasError('required') &&
       form.get('name').hasError('required') &&
       form.get('metaDataUri').value === '' &&
-      form.get('type').hasError('required') &&
-      form.get('bootVersion').value === this.defaultBoot
+      form.get('type').hasError('required')
     );
   }
 
@@ -121,7 +119,6 @@ export class RegisterComponent implements OnInit {
       type: new UntypedFormControl('', Validators.required),
       uri: new UntypedFormControl('', [AppsAddValidator.appUri, Validators.required]),
       metaDataUri: new UntypedFormControl('', AppsAddValidator.appUri),
-      bootVersion: new UntypedFormControl(this.defaultBoot, Validators.required),
       force: new UntypedFormControl(false)
     });
 

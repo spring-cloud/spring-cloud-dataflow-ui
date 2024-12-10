@@ -44,7 +44,6 @@ export class ExecutionComponent implements OnInit {
         mergeMap(params => {
           this.execution = new TaskExecution();
           this.execution.executionId = params.executionId;
-          this.execution.schemaTarget = params.schemaTarget;
           return this.taskService.getExecution(this.execution);
         })
       )

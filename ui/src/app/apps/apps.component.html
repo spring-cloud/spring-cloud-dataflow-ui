@@ -83,17 +83,6 @@
       <clr-dg-filter style="display: none"></clr-dg-filter>
     </ng-container>
   </clr-dg-column>
-  <clr-dg-column
-    [clrDgField]="'bootVersion'"
-    [clrDgSortOrder]="context.by === 'bootVersion' ? (context.reverse ? -1 : 1) : 0"
-    (clrDgColumnResize)="updateContext('sizeBootVersion', $event)"
-    [style.width.px]="context.sizeBootVersion | datagridcolumn: datagrid:contextName | async"
-  >
-    <ng-container>
-      {{ 'applications.main.bootVersion' | translate }}
-      <clr-dg-filter style="display: none"></clr-dg-filter>
-    </ng-container>
-  </clr-dg-column>
 
   <clr-dg-column
     [clrDgField]="'uri'"
@@ -127,9 +116,6 @@
         {{ app.version }}
         <span *ngIf="app.versions?.length > 1" class="badge badge-light-blue">{{ app.versions?.length }}</span>
       </span>
-    </clr-dg-cell>
-    <clr-dg-cell>
-      {{ 'applications.main.bootVersions.' + app.bootVersion | translate }}
     </clr-dg-cell>
     <clr-dg-cell
       ><span class="text-truncate">{{ app.uri }}</span></clr-dg-cell

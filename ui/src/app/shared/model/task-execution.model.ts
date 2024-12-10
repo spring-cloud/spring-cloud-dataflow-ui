@@ -11,11 +11,9 @@ interface TaskExecutionLinks {
 
 export class LaunchResponse {
   executionId: number;
-  schemaTarget: string;
   static parse(input: any): LaunchResponse {
     const response = new LaunchResponse();
     response.executionId = input?.executionId;
-    response.schemaTarget = input?.schemaTarget;
     return response;
   }
 }
@@ -31,7 +29,6 @@ export class TaskExecution {
   arguments: string[];
   jobExecutionIds: number[];
   errorMessage: string;
-  schemaTarget: string;
   externalExecutionId: string;
   taskExecutionStatus: string;
   parentExecutionId: number;
@@ -50,7 +47,6 @@ export class TaskExecution {
     execution.endTime = input?.endTime ? DateTime.fromISO(input.endTime) : null;
     execution.exitMessage = input?.exitMessage;
     execution.arguments = input?.arguments || [];
-    execution.schemaTarget = input?.schemaTarget || 'boot2';
     execution.jobExecutionIds = input?.jobExecutionIds || [];
     execution.errorMessage = input?.errorMessage;
     execution.taskExecutionStatus = input?.taskExecutionStatus;
@@ -60,7 +56,6 @@ export class TaskExecution {
     execution.appProperties = input?.appProperties;
     execution.deploymentProperties = input?.deploymentProperties;
     execution._links = input?._links;
-    execution.schemaTarget = input?.schemaTarget;
     return execution;
   }
 

@@ -123,7 +123,7 @@ describe('streams/streams/deploy/deploy.component.ts', () => {
     fixture.detectChanges();
     await fixture.whenStable();
     expect(spy).toHaveBeenCalled();
-    expect(navigate).toHaveBeenCalledWith(['tasks-jobs/task-executions/0/schemaTarget/boot2']);
+    expect(navigate).toHaveBeenCalledWith(['tasks-jobs/task-executions/0']);
     done();
   });
 });

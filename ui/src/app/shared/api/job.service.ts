@@ -33,23 +33,21 @@ export class JobService {
       .pipe(map(JobExecutionPage.parse), catchError(ErrorUtils.catchError));
   }
 
-  getExecution(executionId: string, schemaTarget: string): Observable<JobExecution | unknown> {
+  getExecution(executionId: string): Observable<JobExecution | unknown> {
     const headers = HttpUtils.getDefaultHttpHeaders();
-    const params = new HttpParams({encoder: new DataflowEncoder()}).set('schemaTarget', schemaTarget);
     return this.httpClient
-      .get<any>(UrlUtilities.calculateBaseApiUrl() + `jobs/executions/${executionId}`, {headers, params})
+      .get<any>(UrlUtilities.calculateBaseApiUrl() + `jobs/executions/${executionId}`, {headers})
       .pipe(map(JobExecution.parse), catchError(ErrorUtils.catchError));
   }
 
   restart(execution: JobExecution): Observable<any> {
     const headers = HttpUtils.getDefaultHttpHeaders();
     const initHttpParams = new HttpParams({encoder: new DataflowEncoder()});
-    const params = initHttpParams.append('schemaTarget', execution.schemaTarget);
     return this.httpClient
       .put(
         UrlUtilities.calculateBaseApiUrl() + `jobs/executions/${execution.jobExecutionId}?restart=true`,
         {},
-        {headers, params}
+        {headers}
       )
       .pipe(catchError(ErrorUtils.catchError));
   }
@@ -57,42 +55,25 @@ export class JobService {
   stop(item: JobExecution): Observable<any> {
     const headers = HttpUtils.getDefaultHttpHeaders();
     const initHttpParams = new HttpParams({encoder: new DataflowEncoder()});
-    const params = initHttpParams.append('schemaTarget', item.schemaTarget);
     return this.httpClient
-      .put(
-        UrlUtilities.calculateBaseApiUrl() + `jobs/executions/${item.jobExecutionId}?stop=true`,
-        {},
-        {headers, params}
-      )
+      .put(UrlUtilities.calculateBaseApiUrl() + `jobs/executions/${item.jobExecutionId}?stop=true`, {}, {headers})
       .pipe(catchError(ErrorUtils.catchError));
   }
 
-  getExecutionStep(
-    jobExecutionId: string,
-    stepId: string,
-    schemaTarget: string
-  ): Observable<ExecutionStepResource | unknown> {
+  getExecutionStep(jobExecutionId: string, stepId: string): Observable<ExecutionStepResource | unknown> {
     const headers = HttpUtils.getDefaultHttpHeaders();
-    const params = new HttpParams({encoder: new DataflowEncoder()}).append('schemaTarget', schemaTarget);
     return this.httpClient
       .get<any>(UrlUtilities.calculateBaseApiUrl() + `jobs/executions/${jobExecutionId}/steps/${stepId}`, {
-        headers,
-        params
+        headers
       })
       .pipe(map(ExecutionStepResource.parse), catchError(ErrorUtils.catchError));
   }
 
-  getExecutionStepProgress(
-    jobExecutionId: string,
-    stepId: string,
-    schemaTarget: string
-  ): Observable<ExecutionStepProgress | unknown> {
+  getExecutionStepProgress(jobExecutionId: string, stepId: string): Observable<ExecutionStepProgress | unknown> {
     const headers = HttpUtils.getDefaultHttpHeaders();
-    const params = new HttpParams({encoder: new DataflowEncoder()}).append('schemaTarget', schemaTarget);
     return this.httpClient
       .get<any>(UrlUtilities.calculateBaseApiUrl() + `jobs/executions/${jobExecutionId}/steps/${stepId}/progress`, {
-        headers,
-        params
+        headers
       })
       .pipe(map(ExecutionStepProgress.parse), catchError(ErrorUtils.catchError));
   }
