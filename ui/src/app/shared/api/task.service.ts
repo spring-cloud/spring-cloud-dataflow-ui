@@ -94,24 +94,17 @@ export class TaskService {
 
   executionStop(taskExecution: TaskExecution): Observable<any> {
     const headers = HttpUtils.getDefaultHttpHeaders();
-    const params = new HttpParams({encoder: new DataflowEncoder()}).append('schemaTarget', taskExecution?.schemaTarget);
     return this.httpClient
-      .post<any>(
-        UrlUtilities.calculateBaseApiUrl() + `tasks/executions/${taskExecution.executionId}`,
-        {},
-        {headers, params}
-      )
+      .post<any>(UrlUtilities.calculateBaseApiUrl() + `tasks/executions/${taskExecution.executionId}`, {}, {headers})
       .pipe(catchError(ErrorUtils.catchError));
   }
 
   executionClean(taskExecution: TaskExecution): Observable<any> {
     const headers = HttpUtils.getDefaultHttpHeaders();
-    const params = new HttpParams({encoder: new DataflowEncoder()}).append('schemaTarget', taskExecution.schemaTarget);
     const url = UrlUtilities.calculateBaseApiUrl() + `tasks/executions/${taskExecution.executionId}?action=REMOVE_DATA`;
     return this.httpClient
       .delete<any>(url, {
         headers,
-        params,
         observe: 'response'
       })
       .pipe(catchError(ErrorUtils.catchError));
@@ -134,39 +127,24 @@ export class TaskService {
     const taskExecutionsChildren = taskExecutions.filter(taskExecution => taskExecution.parentExecutionId);
     const taskExecutionsParents = taskExecutions.filter(taskExecution => !taskExecution.parentExecutionId);
     if (taskExecutionsChildren.length > 0) {
-      await this.executionsCleanBySchema(taskExecutionsChildren);
+      await this.executionsCleanGrouped(taskExecutionsChildren);
     }
     if (taskExecutionsParents.length > 0) {
-      await this.executionsCleanBySchema(taskExecutionsParents);
+      await this.executionsCleanGrouped(taskExecutionsParents);
     }
     return Promise.resolve();
   }
 
-  private async executionsCleanBySchema(taskExecutions: TaskExecution[]): Promise<void> {
-    const groupBySchemaTarget = taskExecutions.reduce((group, task) => {
-      const schemaTarget = task.schemaTarget;
-      group[schemaTarget] = group[schemaTarget] ?? [];
-      group[schemaTarget].push(task);
-      return group;
-    }, {});
-    for (const schemaTarget in groupBySchemaTarget) {
-      if (schemaTarget) {
-        const group: TaskExecution[] = groupBySchemaTarget[schemaTarget];
-        const ids = group.map(task => task.executionId);
-        if (ids.length > 0) {
-          await this.taskExecutionsCleanByIds(ids, schemaTarget).toPromise();
-        }
-      }
-    }
+  private async executionsCleanGrouped(taskExecutions: TaskExecution[]): Promise<void> {
+    const ids = taskExecutions.map(task => task.executionId);
+    await this.taskExecutionsCleanByIds(ids);
     return Promise.resolve();
   }
 
-  taskExecutionsCleanByIds(ids: number[], schemaTarget: string): Observable<any> {
+  taskExecutionsCleanByIds(ids: number[]): Observable<any> {
     const headers = HttpUtils.getDefaultHttpHeaders();
     const idStr = ids.join(',');
-    const url =
-      UrlUtilities.calculateBaseApiUrl() +
-      `tasks/executions/${idStr}?action=CLEANUP,REMOVE_DATA&schemaTarget=${schemaTarget}`;
+    const url = UrlUtilities.calculateBaseApiUrl() + `tasks/executions/${idStr}?action=CLEANUP,REMOVE_DATA`;
     return this.httpClient.delete<any>(url, {headers, observe: 'response'}).pipe(catchError(ErrorUtils.catchError));
   }
 
@@ -232,19 +210,17 @@ export class TaskService {
       .pipe(map(TaskExecution.parse), catchError(ErrorUtils.catchError));
   }
 
-  getExecutionById(executionId: number, schemaTarget: string): Observable<TaskExecution | unknown> {
+  getExecutionById(executionId: number): Observable<TaskExecution | unknown> {
     const headers = HttpUtils.getDefaultHttpHeaders();
-    const params = new HttpParams({encoder: new DataflowEncoder()}).set('schemaTarget', schemaTarget);
     return this.httpClient
       .get<any>(UrlUtilities.calculateBaseApiUrl() + `tasks/executions/${executionId ?? 0}`, {
-        headers: headers,
-        params: params
+        headers: headers
       })
       .pipe(map(TaskExecution.parse), catchError(ErrorUtils.catchError));
   }
 
   getExecution(taskExecution: TaskExecution): Observable<TaskExecution | unknown> {
-    return this.getExecutionById(taskExecution.executionId, taskExecution.schemaTarget);
+    return this.getExecutionById(taskExecution.executionId);
   }
 
   getExecutionLogs(taskExecution: TaskExecution): Observable<any> {
@@ -262,7 +238,7 @@ export class TaskService {
       taskExecution?._links && taskExecution?._links['tasks/logs'] !== undefined
         ? taskExecution?._links['tasks/logs'].href
         : UrlUtilities.calculateBaseApiUrl() +
-          `tasks/logs/${taskExecution.externalExecutionId}?platformName=${platformName}&schemaTarget=${taskExecution.schemaTarget}`;
+          `tasks/logs/${taskExecution.externalExecutionId}?platformName=${platformName}`;
     const params = new HttpParams({encoder: new DataflowEncoder()});
     return this.httpClient
       .get<any>(
