@@ -49,8 +49,7 @@ export class ExecutionComponent implements OnInit {
         mergeMap(val => {
           this.execution = new JobExecution();
           this.execution.jobExecutionId = val.executionId;
-          this.execution.schemaTarget = val.schemaTarget;
-          return this.jobService.getExecution(val.executionId, val.schemaTarget);
+          return this.jobService.getExecution(val.executionId);
         })
       )
       .subscribe(
@@ -70,7 +69,7 @@ export class ExecutionComponent implements OnInit {
 
   getTaskExecution(): void {
     this.loadingExecution = true;
-    this.taskService.getExecutionById(this.execution.taskExecutionId, this.execution.schemaTarget).subscribe(
+    this.taskService.getExecutionById(this.execution.taskExecutionId).subscribe(
       (taskExecution: TaskExecution) => {
         this.taskExecution = taskExecution;
         this.getTask();
@@ -161,9 +160,7 @@ export class ExecutionComponent implements OnInit {
   }
 
   navigateTaskExecution(): void {
-    this.router.navigateByUrl(
-      `/tasks-jobs/task-executions/${this.taskExecution.executionId}/schemaTarget/${this.taskExecution.schemaTarget}`
-    );
+    this.router.navigateByUrl(`/tasks-jobs/task-executions/${this.taskExecution.executionId}`);
   }
 
   relaunch(): void {

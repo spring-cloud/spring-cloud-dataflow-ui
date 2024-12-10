@@ -294,10 +294,6 @@
                 <div class="value">{{ taskExecution.executionId }}</div>
               </div>
               <div class="row">
-                <div class="key">{{ 'jobs.main.schemaTarget' | translate }}</div>
-                <div class="value">{{ taskExecution?.schemaTarget }}</div>
-              </div>
-              <div class="row">
                 <div class="key">{{ 'executions.main.arguments' | translate }}</div>
                 <div class="value">
                   <div *ngIf="taskExecution.getArgumentsToArray().length > 0">
@@ -313,9 +309,7 @@
                 <div class="key">{{ 'executions.main.jobExecutionIds' | translate }}</div>
                 <div class="value">
                   <a
-                    routerLink="/tasks-jobs/job-executions/{{ jobExecutionId }}/schemaTarget/{{
-                      taskExecution.schemaTarget
-                    }}"
+                    routerLink="/tasks-jobs/job-executions/{{ jobExecutionId }}"
                     *ngFor="let jobExecutionId of taskExecution.jobExecutionIds"
                   >
                     {{ jobExecutionId }}
