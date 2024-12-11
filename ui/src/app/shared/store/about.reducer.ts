@@ -22,7 +22,6 @@ export interface RuntimeEnvironmentState {
   platformHostVersion: string;
   platformSpecificInfo: any;
   platformType: string;
-  springBootVersion: string;
   springVersion: string;
 }
 

@@ -39,10 +39,10 @@ describe('shared/api/app.service.ts', () => {
 
   it('getApp with spring boot version in parameter', () => {
     mockHttp.get.and.returnValue(of(jsonData));
-    appService.getApp('foo', 'processor' as any as ApplicationType, '', '3');
+    appService.getApp('foo', 'processor' as any as ApplicationType, '');
     const httpUri = mockHttp.get.calls.mostRecent().args[0];
     const headerArgs = mockHttp.get.calls.mostRecent().args[1].headers;
-    expect(httpUri).toEqual('/apps/processor/foo?bootVersion=3');
+    expect(httpUri).toEqual('/apps/processor/foo');
     expect(headerArgs.get('Content-Type')).toEqual('application/json');
     expect(headerArgs.get('Accept')).toEqual('application/json');
   });

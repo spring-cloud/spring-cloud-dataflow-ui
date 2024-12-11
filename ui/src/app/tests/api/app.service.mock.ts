@@ -26,13 +26,6 @@ export class AppServiceMock {
     return of(GET_APP).pipe(delay(1), map(DetailedApp.parse), catchError(ErrorUtils.catchError));
   }
 
-  getBootVersions(): Observable<any> {
-    return of({
-      defaultSchemaVersion: '2',
-      versions: ['2', '3']
-    });
-  }
-
   getAppVersions(name: string, type: ApplicationType): Observable<App[]> {
     return of(GET_APP_VERSIONS).pipe(
       map(AppPage.parse),
