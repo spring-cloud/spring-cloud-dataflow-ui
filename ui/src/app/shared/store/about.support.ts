@@ -31,7 +31,6 @@ const parseRuntimeEnvironment = (input: any): RuntimeEnvironmentState => ({
   platformHostVersion: input.platformHostVersion,
   platformSpecificInfo: parsePlatformSpecificInfo(input.platformSpecificInfo),
   platformType: input.platformType,
-  springBootVersion: input.springBootVersion,
   springVersion: input.springVersion
 });
 

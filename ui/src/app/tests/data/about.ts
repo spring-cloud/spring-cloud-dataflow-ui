@@ -28,7 +28,6 @@ export const LOAD = {
       platformHostVersion: '',
       platformSpecificInfo: {default: 'local'},
       platformType: 'Skipper Managed',
-      springBootVersion: '2.3.2.RELEASE',
       springVersion: '5.2.8.RELEASE'
     },
     taskLaunchers: [
@@ -42,7 +41,6 @@ export const LOAD = {
         platformHostVersion: '4.19.76-linuxkit',
         platformSpecificInfo: {},
         platformType: 'Local',
-        springBootVersion: '2.3.2.RELEASE',
         springVersion: '5.2.8.RELEASE'
       }
     ]

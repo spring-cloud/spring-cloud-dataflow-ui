@@ -14,7 +14,6 @@ import {TranslateService} from '@ngx-translate/core';
 export class RegisterComponent implements OnInit {
   forms: UntypedFormGroup[] = [];
   applicationTypes = ApplicationType;
-  bootVersions: Array<string>;
   defaultBoot: string;
   submitted = false;
   isImporting = false;
@@ -28,11 +27,7 @@ export class RegisterComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.appService.getBootVersions().subscribe((data: any) => {
-      this.bootVersions = data.versions;
-      this.defaultBoot = data.defaultSchemaVersion;
-      this.newForm();
-    });
+    this.newForm();
   }
 
   register(): void {

@@ -68,14 +68,6 @@
                   <span *ngIf="defaultApp" class="label">{{ detailedApp.version }}</span>
                 </div>
               </div>
-              <div class="row">
-                <div class="key">{{ 'applications.main.bootVersion' | translate }}</div>
-                <div class="value">
-                  <span *ngIf="defaultApp" class="label">{{
-                    'applications.main.bootVersions.' + detailedApp.bootVersion | translate
-                  }}</span>
-                </div>
-              </div>
               <div *ngIf="detailedApp.uri" class="row">
                 <div class="key">{{ 'applications.main.uri' | translate }}</div>
                 <div class="value">{{ detailedApp.uri }}</div>

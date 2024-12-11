@@ -30,7 +30,6 @@ export class App {
   version: string;
   defaultVersion: boolean;
   versions: Array<string>;
-  bootVersion?: string;
 
   public static parse(input: any): App {
     const app = new App();
@@ -40,7 +39,6 @@ export class App {
     app.version = input.version;
     app.defaultVersion = input.defaultVersion;
     app.versions = input.versions;
-    app.bootVersion = input.bootVersion;
     return app;
   }
 
