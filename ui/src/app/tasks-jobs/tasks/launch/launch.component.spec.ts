@@ -102,14 +102,13 @@ describe('streams/streams/deploy/deploy.component.ts', () => {
     NotificationServiceMock.mock.clearAll();
   });
 
-  it('should be created', async done => {
+  it('should be created', async () => {
     fixture.detectChanges();
     await fixture.whenStable();
     expect(component).toBeTruthy();
-    done();
   });
 
-  it('should run a launch (success)', async done => {
+  it('should run a launch (success)', async () => {
     const spy = spyOn(TaskServiceMock.mock, 'launch').and.callThrough();
     const navigate = spyOn((<any>component).router, 'navigate');
     fixture.detectChanges();
@@ -124,6 +123,5 @@ describe('streams/streams/deploy/deploy.component.ts', () => {
     await fixture.whenStable();
     expect(spy).toHaveBeenCalled();
     expect(navigate).toHaveBeenCalledWith(['tasks-jobs/task-executions/0']);
-    done();
   });
 });

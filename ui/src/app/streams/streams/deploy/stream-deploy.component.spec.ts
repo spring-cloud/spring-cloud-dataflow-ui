@@ -97,16 +97,15 @@ describe('streams/streams/deploy/deploy.component.ts', () => {
     NotificationServiceMock.mock.clearAll();
   });
 
-  it('should be created', async done => {
+  it('should be created', async () => {
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
     await fixture.whenStable();
     expect(component).toBeTruthy();
-    done();
   });
 
-  it('should run a deploy (success)', async done => {
+  it('should run a deploy (success)', async () => {
     const spy = spyOn(StreamServiceMock.mock, 'updateStream').and.callThrough();
     const navigate = spyOn((<any>component).router, 'navigate');
     fixture.detectChanges();
@@ -122,10 +121,9 @@ describe('streams/streams/deploy/deploy.component.ts', () => {
     expect(spy).toHaveBeenCalled();
     expect(navigate).toHaveBeenCalledWith(['streams/list']);
     expect(NotificationServiceMock.mock.successNotifications[0].title).toContain('Update success');
-    done();
   });
 
-  it('should run a deploy (error)', async done => {
+  it('should run a deploy (error)', async () => {
     const spy = spyOn(StreamServiceMock.mock, 'updateStream');
     fixture.detectChanges();
     await fixture.whenStable();
@@ -139,10 +137,9 @@ describe('streams/streams/deploy/deploy.component.ts', () => {
     await fixture.whenStable();
     expect(spy).toHaveBeenCalled();
     expect(NotificationServiceMock.mock.errorNotification[0].title).toContain('An error occurred');
-    done();
   });
 
-  it('should run a copy', async done => {
+  it('should run a copy', async () => {
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
@@ -154,6 +151,5 @@ describe('streams/streams/deploy/deploy.component.ts', () => {
     fixture.detectChanges();
     await fixture.whenStable();
     expect(NotificationServiceMock.mock.successNotifications[0].title).toContain('Copy to clipboard');
-    done();
   });
 });

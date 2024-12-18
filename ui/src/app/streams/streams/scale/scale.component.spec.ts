@@ -55,7 +55,7 @@ describe('ScaleComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should scale a stream', async done => {
+  it('should scale a stream', async () => {
     const statuses = [
       {
         name: 'foo',
@@ -118,10 +118,9 @@ describe('ScaleComponent', () => {
     expect(NotificationServiceMock.mock.successNotifications[0].message).toBe('file app scaled to 3.');
     expect(spy1).toHaveBeenCalledWith(['foo']);
     expect(spy2).toHaveBeenCalledWith('foo', 'file', 3);
-    done();
   });
 
-  it('should display an error', async done => {
+  it('should display an error', async () => {
     const spy1 = spyOn(StreamServiceMock.mock, 'getRuntimeStreamStatuses').and.callFake(() =>
       throwError(new Error('Fake error'))
     );
@@ -136,10 +135,9 @@ describe('ScaleComponent', () => {
       'An error occurred while fetching Stream runtime statuses. Please check the server logs for more details.'
     );
     expect(spy1).toHaveBeenCalledWith(['foo']);
-    done();
   });
 
-  it('should display an error when scaling', async done => {
+  it('should display an error when scaling', async () => {
     const statuses = [
       {
         name: 'foo',
@@ -203,6 +201,5 @@ describe('ScaleComponent', () => {
     expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
     expect(spy1).toHaveBeenCalledWith(['foo']);
     expect(spy2).toHaveBeenCalledWith('foo', 'file', 3);
-    done();
   });
 });

@@ -105,7 +105,10 @@ export class StreamPropertiesGroupModel extends PropertiesGroupModel {
 export class StreamPropertiesDialogComponent extends PropertiesDialogComponent {
   public title: string;
 
-  constructor(private streamsService: StreamService, private translate: TranslateService) {
+  constructor(
+    private streamsService: StreamService,
+    private translate: TranslateService
+  ) {
     super();
   }
 

@@ -135,7 +135,7 @@
                 <div *ngIf="showAllProperties">
                   <table>
                     <tbody>
-                      <tr *ngFor="let property of detailedApp.options | orderby: 'name':'ASC'">
+                      <tr *ngFor="let property of detailedApp.options | orderby: 'name' : 'ASC'">
                         <td class="key">
                           {{ getReadableId(property.id) }}
                           <div *ngIf="property.isDeprecated">

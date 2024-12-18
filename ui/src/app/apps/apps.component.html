@@ -16,7 +16,7 @@
 <clr-datagrid
   (clrDgRefresh)="refresh($event)"
   [clrDgLoading]="loading"
-  [(clrDgSelected)]="!grouped ? null : selected"
+  [(clrDgSelected)]="selected"
   *ngIf="isInit"
   #datagrid
 >
@@ -56,7 +56,7 @@
     [clrDgField]="'name'"
     [clrDgSortOrder]="context.by === 'name' ? (context.reverse ? -1 : 1) : 0"
     (clrDgColumnResize)="updateContext('sizeName', $event)"
-    [style.width.px]="context.sizeName | datagridcolumn: datagrid:contextName | async"
+    [style.width.px]="context.sizeName | datagridcolumn: datagrid : contextName | async"
     [clrFilterValue]="context.name"
   >
     <ng-container> {{ 'applications.main.name' | translate }} </ng-container>
@@ -65,7 +65,7 @@
     [clrDgField]="'type'"
     (clrDgColumnResize)="updateContext('sizeType', $event)"
     [clrDgSortOrder]="context.by === 'type' ? (context.reverse ? -1 : 1) : 0"
-    [style.width.px]="context.sizeType | datagridcolumn: datagrid:contextName | async"
+    [style.width.px]="context.sizeType | datagridcolumn: datagrid : contextName | async"
   >
     <ng-container> {{ 'applications.main.type' | translate }} </ng-container>
     <clr-dg-filter [clrDgFilter]="typeFilter">
@@ -76,7 +76,7 @@
     [clrDgField]="'version'"
     [clrDgSortOrder]="context.by === 'version' ? (context.reverse ? -1 : 1) : 0"
     (clrDgColumnResize)="updateContext('sizeVersion', $event)"
-    [style.width.px]="context.sizeVersion | datagridcolumn: datagrid:contextName | async"
+    [style.width.px]="context.sizeVersion | datagridcolumn: datagrid : contextName | async"
   >
     <ng-container>
       {{ 'applications.main.version' | translate }}
@@ -88,7 +88,7 @@
     [clrDgField]="'uri'"
     (clrDgColumnResize)="updateContext('sizeUri', $event)"
     [clrDgSortOrder]="context.by === 'uri' ? (context.reverse ? -1 : 1) : 0"
-    [style.width.px]="context.sizeUri | datagridcolumn: datagrid:contextName | async"
+    [style.width.px]="context.sizeUri | datagridcolumn: datagrid : contextName | async"
   >
     <ng-container>
       {{ 'applications.main.uri' | translate }}
@@ -97,7 +97,7 @@
   </clr-dg-column>
   <clr-dg-column
     (clrDgColumnResize)="updateContext('sizeMetadataUri', $event)"
-    [style.width.px]="context.sizeMetadataUri | datagridcolumn: datagrid:contextName | async"
+    [style.width.px]="context.sizeMetadataUri | datagridcolumn: datagrid : contextName | async"
   >
     <ng-container>
       {{ 'applications.main.metadataURI' | translate }}

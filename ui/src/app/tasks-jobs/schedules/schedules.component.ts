@@ -42,7 +42,7 @@ export class SchedulesComponent extends DatagridComponent {
       this.unsubscribe$ = this.scheduleService.getSchedules('', params.platform).subscribe(
         (page: SchedulePage) => {
           this.page = page;
-          this.selected = [];
+          this.selected = this.grouped ? [] : null;
           this.updateGroupContext(params);
           this.loading = false;
         },

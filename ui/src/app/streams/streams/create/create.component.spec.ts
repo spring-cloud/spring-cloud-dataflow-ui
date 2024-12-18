@@ -62,7 +62,7 @@ describe('streams/streams/create/create.component.ts', () => {
     NotificationServiceMock.mock.clearAll();
   });
 
-  it('should create a stream', async done => {
+  it('should create a stream', async () => {
     await fixture.whenStable();
     fixture.detectChanges();
     component.canSubmit = () => true;
@@ -77,6 +77,5 @@ describe('streams/streams/create/create.component.ts', () => {
     await fixture.whenStable();
     fixture.detectChanges();
     expect(component.operationRunning).toBe('Creation completed');
-    done();
   });
 });

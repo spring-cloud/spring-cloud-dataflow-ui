@@ -38,7 +38,7 @@ describe('tasks-jobs/tasks/launch/free-text/free-text.component.ts', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should load a properties file', async done => {
+  it('should load a properties file', done => {
     fixture.detectChanges();
     const file = new File(['a=a'], 'filename');
     const fileList: FileList = {
@@ -55,7 +55,7 @@ describe('tasks-jobs/tasks/launch/free-text/free-text.component.ts', () => {
     }, 500);
   });
 
-  it('should load a arguments file', async done => {
+  it('should load a arguments file', done => {
     fixture.detectChanges();
     const file = new File(['a=a'], 'filename');
     const fileList: FileList = {
@@ -72,7 +72,7 @@ describe('tasks-jobs/tasks/launch/free-text/free-text.component.ts', () => {
     }, 500);
   });
 
-  it('should parse arguments correctly', async () => {
+  it('should parse arguments correctly', () => {
     const args = ['app.t1.0=--arg', 'app.t2.0=--arg'].join('\n');
     fixture.detectChanges();
     component.formGroup.get('ainput').setValue(args);

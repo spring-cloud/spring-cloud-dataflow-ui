@@ -19,7 +19,10 @@ export interface StreamAppPropertiesSource extends PropertiesSource {
  * @author Alex Boyko
  */
 export class StreamGraphPropertiesSource extends GraphNodePropertiesSource implements StreamAppPropertiesSource {
-  constructor(cell: dia.Cell, private streamHead: StreamHead) {
+  constructor(
+    cell: dia.Cell,
+    private streamHead: StreamHead
+  ) {
     super(cell);
   }
 

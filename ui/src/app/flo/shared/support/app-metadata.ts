@@ -14,7 +14,10 @@ export class AppPropertyMetadata implements Flo.PropertyMetadata {
 
   public code: CodeOptions;
 
-  constructor(private metadata: ConfigurationMetadataProperty, private _groups?: string[]) {}
+  constructor(
+    private metadata: ConfigurationMetadataProperty,
+    private _groups?: string[]
+  ) {}
 
   get id(): string {
     return this.metadata.id;

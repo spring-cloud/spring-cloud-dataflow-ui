@@ -18,8 +18,8 @@
 
   .icon-search, .spinner {
     position: absolute;
-    left: 29px;
-    top: 16px;
+    left: 27px;
+    top: 14px;
     width: 24px;
     height: 24px;
   }
@@ -28,7 +28,7 @@
     left: 32px;
     height: 20px;
     width: 20px;
-    top: 19px;
+    top: 18px;
   }
 
   .btn-clear {
@@ -101,6 +101,9 @@
         color: var(--clr-h6-color, #333);
         text-decoration: none;
         cursor: pointer;
+        .text-truncate {
+          height: 28px;
+        }
       }
 
       &.active {

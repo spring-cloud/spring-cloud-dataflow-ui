@@ -3,7 +3,7 @@
 <clr-datagrid
   (clrDgRefresh)="refresh($event)"
   [clrDgLoading]="loading"
-  [(clrDgSelected)]="!grouped ? null : selected"
+  [(clrDgSelected)]="selected"
   *ngIf="isInit"
   #datagrid
 >
@@ -40,7 +40,7 @@
     [clrDgField]="'TASK_EXECUTION_ID'"
     [clrDgSortOrder]="context.by === 'TASK_EXECUTION_ID' ? (context.reverse ? -1 : 1) : 0"
     (clrDgColumnResize)="updateContext('sizeId', $event)"
-    [style.width.px]="context.sizeId | datagridcolumn: datagrid:contextName | async"
+    [style.width.px]="context.sizeId | datagridcolumn: datagrid : contextName | async"
   >
     <ng-container>{{ 'executions.main.executionId' | translate }}</ng-container>
     <clr-dg-filter style="display: none"></clr-dg-filter>
@@ -49,14 +49,14 @@
     [clrDgField]="'TASK_NAME'"
     [clrDgSortOrder]="context.by === 'TASK_NAME' ? (context.reverse ? -1 : 1) : 0"
     (clrDgColumnResize)="updateContext('sizeName', $event)"
-    [style.width.px]="context.sizeName | datagridcolumn: datagrid:contextName | async"
+    [style.width.px]="context.sizeName | datagridcolumn: datagrid : contextName | async"
   >
     <ng-container>{{ 'executions.main.taskName' | translate }}</ng-container>
     <clr-dg-filter style="display: none"></clr-dg-filter>
   </clr-dg-column>
   <clr-dg-column
     (clrDgColumnResize)="updateContext('sizeDuration', $event)"
-    [style.width.px]="context.sizeDuration | datagridcolumn: datagrid:contextName | async"
+    [style.width.px]="context.sizeDuration | datagridcolumn: datagrid : contextName | async"
   >
     <ng-container>{{ 'executions.main.duration' | translate }}</ng-container>
     <clr-dg-filter style="display: none"></clr-dg-filter>
@@ -65,7 +65,7 @@
     [clrDgField]="'START_TIME'"
     [clrDgSortOrder]="context.by === 'START_TIME' ? (context.reverse ? -1 : 1) : 0"
     (clrDgColumnResize)="updateContext('sizeStart', $event)"
-    [style.width.px]="context.sizeStart | datagridcolumn: datagrid:contextName | async"
+    [style.width.px]="context.sizeStart | datagridcolumn: datagrid : contextName | async"
   >
     <ng-container>{{ 'executions.main.startDate' | translate }}</ng-container>
     <clr-dg-filter style="display: none"></clr-dg-filter>
@@ -74,7 +74,7 @@
     [clrDgField]="'END_TIME'"
     [clrDgSortOrder]="context.by === 'END_TIME' ? (context.reverse ? -1 : 1) : 0"
     (clrDgColumnResize)="updateContext('sizeEnd', $event)"
-    [style.width.px]="context.sizeEnd | datagridcolumn: datagrid:contextName | async"
+    [style.width.px]="context.sizeEnd | datagridcolumn: datagrid : contextName | async"
   >
     <ng-container>{{ 'executions.main.endDate' | translate }}</ng-container>
     <clr-dg-filter style="display: none"></clr-dg-filter>
@@ -83,14 +83,14 @@
     [clrDgField]="'EXIT_CODE'"
     [clrDgSortOrder]="context.by === 'EXIT_CODE' ? (context.reverse ? -1 : 1) : 0"
     (clrDgColumnResize)="updateContext('sizeExit', $event)"
-    [style.width.px]="context.sizeExit | datagridcolumn: datagrid:contextName | async"
+    [style.width.px]="context.sizeExit | datagridcolumn: datagrid : contextName | async"
   >
     <ng-container>{{ 'executions.main.exitCode' | translate }}</ng-container>
     <clr-dg-filter style="display: none"></clr-dg-filter>
   </clr-dg-column>
   <clr-dg-column
     (clrDgColumnResize)="updateContext('sizeStatus', $event)"
-    [style.width.px]="context.sizeStatus | datagridcolumn: datagrid:contextName:15 | async"
+    [style.width.px]="context.sizeStatus | datagridcolumn: datagrid : contextName : 15 | async"
   >
     <ng-container>{{ 'commons.status' | translate }}</ng-container>
     <clr-dg-filter style="display: none"></clr-dg-filter>

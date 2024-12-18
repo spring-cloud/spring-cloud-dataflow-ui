@@ -65,7 +65,7 @@ describe('apps/apps.component.ts', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should display the datagrid, pagination, action bar', async done => {
+  it('should display the datagrid, pagination, action bar', async () => {
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
@@ -81,10 +81,9 @@ describe('apps/apps.component.ts', () => {
     expect(title.textContent).toContain('Applications');
     expect(rows.length === 20).toBeTruthy();
     expect(cols.length === 5).toBeTruthy();
-    done();
   });
 
-  it('should display the actions', async done => {
+  it('should display the actions', async () => {
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
@@ -96,10 +95,9 @@ describe('apps/apps.component.ts', () => {
     expect(btnAddApplications).toBeTruthy();
     expect(btnRefresh).toBeTruthy();
     expect(btnUnregisterApplications).toBeNull();
-    done();
   });
 
-  it('should display the group mode', async done => {
+  it('should display the group mode', async () => {
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
@@ -117,7 +115,6 @@ describe('apps/apps.component.ts', () => {
     expect(btnGroupActions).toBeNull();
     expect(btnUnregisterApplications).toBeTruthy();
     expect(btnUnregisterApplications.disabled).toBeTruthy();
-    done();
   });
 
   // it('should display the unregister applications confirmation', async (done) => {
@@ -146,7 +143,7 @@ describe('apps/apps.component.ts', () => {
   //   done();
   // });
 
-  it('should navigate to the application details page (menu)', async done => {
+  it('should navigate to the application details page (menu)', async () => {
     fixture.detectChanges();
     const navigate = spyOn((<any>component).router, 'navigateByUrl');
     await fixture.whenStable();
@@ -156,10 +153,9 @@ describe('apps/apps.component.ts', () => {
     await fixture.whenStable();
     fixture.detectChanges();
     expect(navigate).toHaveBeenCalledWith('apps/processor/aggregator');
-    done();
   });
 
-  it('should navigate to the application details page (datagrid)', async done => {
+  it('should navigate to the application details page (datagrid)', async () => {
     fixture.detectChanges();
     const navigate = spyOn((<any>component).router, 'navigateByUrl');
     await fixture.whenStable();
@@ -169,10 +165,9 @@ describe('apps/apps.component.ts', () => {
     link.click();
     fixture.detectChanges();
     expect(navigate).toHaveBeenCalledWith('apps/processor/aggregator');
-    done();
   });
 
-  it('should navigate to the add page', async done => {
+  it('should navigate to the add page', async () => {
     fixture.detectChanges();
     const navigate = spyOn((<any>component).router, 'navigateByUrl');
     await fixture.whenStable();
@@ -181,10 +176,9 @@ describe('apps/apps.component.ts', () => {
     btnAddApplications.click();
     fixture.detectChanges();
     expect(navigate).toHaveBeenCalledWith('apps/add');
-    done();
   });
 
-  it('should sort the datagrid', async done => {
+  it('should sort the datagrid', async () => {
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
@@ -242,16 +236,14 @@ describe('apps/apps.component.ts', () => {
       page: {from: 0, to: 19, size: 20, current: 1},
       sort: {by: 'uri', reverse: true}
     });
-    done();
   });
 
-  it('should catch API error and display a message', async done => {
+  it('should catch API error and display a message', async () => {
     spyOn(AppServiceMock.mock, 'getApps').and.callFake(() => throwError(new AppError('Fake error')));
     await fixture.whenStable();
     fixture.detectChanges();
     const notificationMessage = NotificationServiceMock.mock.errorNotification[0].message.toString();
     expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
     expect(notificationMessage === 'Fake error' || notificationMessage.indexOf('was expected') > 0).toBeTruthy();
-    done();
   });
 });

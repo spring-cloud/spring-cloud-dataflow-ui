@@ -22,7 +22,7 @@
 <clr-datagrid
   (clrDgRefresh)="refresh($event)"
   [clrDgLoading]="loading"
-  [(clrDgSelected)]="!grouped ? null : selected"
+  [(clrDgSelected)]="selected"
   *ngIf="isInit"
   #datagrid
 >
@@ -86,14 +86,14 @@
     [clrDgField]="'name'"
     [clrDgSortOrder]="context.by === 'name' ? (context.reverse ? -1 : 1) : 0"
     (clrDgColumnResize)="updateContext('sizeName', $event)"
-    [style.width.px]="context.sizeName | datagridcolumn: datagrid:contextName:30 | async"
+    [style.width.px]="context.sizeName | datagridcolumn: datagrid : contextName : 30 | async"
     [clrFilterValue]="context.name"
   >
     <ng-container>{{ 'commons.name' | translate }}</ng-container>
   </clr-dg-column>
   <clr-dg-column
     (clrDgColumnResize)="updateContext('sizeDescription', $event)"
-    [style.width.px]="context.sizeDescription | datagridcolumn: datagrid:contextName:30 | async"
+    [style.width.px]="context.sizeDescription | datagridcolumn: datagrid : contextName : 30 | async"
   >
     <ng-container>{{ 'commons.description' | translate }}</ng-container>
     <clr-dg-filter style="display: none"></clr-dg-filter>
@@ -102,14 +102,14 @@
     [clrDgField]="'dslText'"
     [clrDgSortOrder]="context.by === 'dslText' ? (context.reverse ? -1 : 1) : 0"
     (clrDgColumnResize)="updateContext('sizeDslText', $event)"
-    [style.width.px]="context.sizeDslText | datagridcolumn: datagrid:contextName:30 | async"
+    [style.width.px]="context.sizeDslText | datagridcolumn: datagrid : contextName : 30 | async"
   >
     <ng-container>{{ 'commons.definition' | translate }}</ng-container>
     <clr-dg-filter style="display: none"></clr-dg-filter>
   </clr-dg-column>
   <clr-dg-column
     (clrDgColumnResize)="updateContext('sizeStatus', $event)"
-    [style.width.px]="context.sizeStatus | datagridcolumn: datagrid:contextName:20 | async"
+    [style.width.px]="context.sizeStatus | datagridcolumn: datagrid : contextName : 20 | async"
   >
     <ng-container>
       {{ 'commons.status' | translate }}&nbsp;

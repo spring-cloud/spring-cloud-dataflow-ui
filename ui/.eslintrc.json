@@ -1,28 +1,21 @@
 {
   "root": true,
-  "ignorePatterns": [
-    "dist",
-    "coverage"
-  ],
+  "ignorePatterns": [],
   "parserOptions": {
-    "ecmaVersion": 2020
+    "ecmaVersion": "latest"
   },
   "overrides": [
     {
-      "files": [
-        "*.ts"
-      ],
+      "files": ["*.ts"],
       "parserOptions": {
-        "project": [
-          "src/tsconfig.app.json",
-          "src/tsconfig.spec.json"
-        ],
+        "project": ["src/tsconfig.app.json", "src/tsconfig.spec.json", "cypress/tsconfig.json"],
         "createDefaultProgram": true
       },
       "extends": [
-        "plugin:@angular-eslint/recommended",
         "eslint:recommended",
         "plugin:@typescript-eslint/recommended",
+        "plugin:@angular-eslint/recommended",
+        "plugin:@angular-eslint/template/process-inline-templates",
         "plugin:prettier/recommended"
       ],
       "rules": {
@@ -49,9 +42,7 @@
         "prefer-rest-params": "off",
         "@typescript-eslint/no-this-alias": "off",
         "no-shadow": "off",
-        "@typescript-eslint/no-shadow": [
-          "error"
-        ],
+        "@typescript-eslint/no-shadow": ["error"],
         "@typescript-eslint/explicit-member-accessibility": [
           "off",
           {
@@ -59,19 +50,7 @@
           }
         ],
         "@typescript-eslint/indent": "off",
-        "@typescript-eslint/member-delimiter-style": [
-          "error",
-          {
-            "multiline": {
-              "delimiter": "semi",
-              "requireLast": true
-            },
-            "singleline": {
-              "delimiter": "semi",
-              "requireLast": false
-            }
-          }
-        ],
+        "@typescript-eslint/member-delimiter-style": "off",
         "@typescript-eslint/member-ordering": "off",
         "@typescript-eslint/naming-convention": "off",
         "@typescript-eslint/no-empty-function": "off",
@@ -86,24 +65,15 @@
         "@typescript-eslint/no-non-null-assertion": "error",
         "@typescript-eslint/no-unused-expressions": "error",
         "@typescript-eslint/prefer-function-type": "error",
-        "@typescript-eslint/semi": [
-          "error",
-          "always"
-        ],
-        "@typescript-eslint/type-annotation-spacing": "error",
+        "@typescript-eslint/semi": "off",
+        "@typescript-eslint/type-annotation-spacing": "off",
         "@typescript-eslint/unified-signatures": "error",
         "arrow-body-style": "error",
-        "brace-style": [
-          "error",
-          "1tbs"
-        ],
+        "brace-style": ["error", "1tbs"],
         "constructor-super": "error",
         "curly": "error",
         "eol-last": "error",
-        "eqeqeq": [
-          "error",
-          "smart"
-        ],
+        "eqeqeq": ["error", "smart"],
         "guard-for-in": "error",
         "id-blacklist": "off",
         "id-match": "off",
@@ -141,10 +111,7 @@
         "no-eval": "error",
         "no-fallthrough": "error",
         "no-new-wrappers": "error",
-        "no-restricted-imports": [
-          "error",
-          "rxjs/Rx"
-        ],
+        "no-restricted-imports": ["error", "rxjs/Rx"],
         "no-trailing-spaces": "error",
         "no-undef-init": "error",
         "no-underscore-dangle": "off",
@@ -156,21 +123,14 @@
           "error",
           "always",
           {
-            "markers": [
-              "/"
-            ]
+            "markers": ["/"]
           }
         ]
       }
     },
     {
-      "files": [
-        "*.html"
-      ],
-      "extends": [
-        "plugin:@angular-eslint/template/recommended",
-        "plugin:prettier/recommended"
-      ],
+      "files": ["*.html"],
+      "extends": ["plugin:@angular-eslint/template/recommended", "plugin:prettier/recommended"],
       "rules": {}
     }
   ]

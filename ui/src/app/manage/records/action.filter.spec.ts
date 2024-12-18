@@ -50,7 +50,7 @@ describe('manage/records/action.filter.ts', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should set the value', async done => {
+  it('should set the value', async () => {
     component.value = 'DELETE';
     fixture.detectChanges();
     await fixture.whenStable();
@@ -68,15 +68,13 @@ describe('manage/records/action.filter.ts', () => {
     expect(`${component.value}`).toBe('CREATE');
     expect(component.isActive()).toBeTruthy();
     expect(component.accepts(null)).toBeTruthy();
-    done();
   });
 
-  it('should catch API error and display a message', async done => {
+  it('should catch API error and display a message', async () => {
     spyOn(RecordServiceMock.mock, 'getActionTypes').and.callFake(() => throwError(new AppError('Fake error')));
     await fixture.whenStable();
     fixture.detectChanges();
     expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
     expect(NotificationServiceMock.mock.errorNotification[0].message.toString()).toContain('Fake error');
-    done();
   });
 });
