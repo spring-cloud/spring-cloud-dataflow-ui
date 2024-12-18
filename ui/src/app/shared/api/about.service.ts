@@ -14,7 +14,10 @@ import {UrlUtilities} from '../../url-utilities.service';
   providedIn: 'root'
 })
 export class AboutService {
-  constructor(private httpClient: HttpClient, private store: Store<State>) {}
+  constructor(
+    private httpClient: HttpClient,
+    private store: Store<State>
+  ) {}
 
   load(): Observable<AboutState | unknown> {
     return this.httpClient.get<any>(UrlUtilities.calculateBaseApiUrl() + 'about').pipe(

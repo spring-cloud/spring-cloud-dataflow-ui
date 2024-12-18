@@ -52,7 +52,7 @@ describe('streams/deploy/free-text/free-text.component.ts', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should load a file', async done => {
+  it('should load a file', done => {
     fixture.detectChanges();
     const event = {target: {files: [new Blob(['a=a'])]}};
     component.fileChange(event);

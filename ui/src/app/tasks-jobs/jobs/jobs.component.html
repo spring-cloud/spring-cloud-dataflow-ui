@@ -7,34 +7,34 @@
   </clr-dg-action-bar>
   <clr-dg-column
     (clrDgColumnResize)="updateContext('sizeId', $event)"
-    [style.width.px]="context.sizeId | datagridcolumn: datagrid:contextName | async"
+    [style.width.px]="context.sizeId | datagridcolumn: datagrid : contextName | async"
   >
     <ng-container>{{ 'jobs.main.executionId' | translate }}</ng-container>
   </clr-dg-column>
   <clr-dg-column
     (clrDgColumnResize)="updateContext('sizeName', $event)"
-    [style.width.px]="context.sizeName | datagridcolumn: datagrid:contextName | async"
+    [style.width.px]="context.sizeName | datagridcolumn: datagrid : contextName | async"
   >
     <ng-container>{{ 'commons.name' | translate }}</ng-container>
     <clr-dg-filter style="display: none"></clr-dg-filter>
   </clr-dg-column>
   <clr-dg-column
     (clrDgColumnResize)="updateContext('sizeTaskId', $event)"
-    [style.width.px]="context.sizeTaskId | datagridcolumn: datagrid:contextName | async"
+    [style.width.px]="context.sizeTaskId | datagridcolumn: datagrid : contextName | async"
   >
     <ng-container>{{ 'jobs.main.taskId' | translate }}</ng-container>
     <clr-dg-filter style="display: none"></clr-dg-filter>
   </clr-dg-column>
   <clr-dg-column
     (clrDgColumnResize)="updateContext('sizeInstanceId', $event)"
-    [style.width.px]="context.sizeInstanceId | datagridcolumn: datagrid:contextName | async"
+    [style.width.px]="context.sizeInstanceId | datagridcolumn: datagrid : contextName | async"
   >
     <ng-container>{{ 'jobs.main.instanceId' | translate }}</ng-container>
     <clr-dg-filter style="display: none"></clr-dg-filter>
   </clr-dg-column>
   <clr-dg-column
     (clrDgColumnResize)="updateContext('sizeStart', $event)"
-    [style.width.px]="context.sizeStart | datagridcolumn: datagrid:contextName | async"
+    [style.width.px]="context.sizeStart | datagridcolumn: datagrid : contextName | async"
   >
     <ng-container>{{ 'jobs.main.startTime' | translate }}</ng-container>
     <clr-dg-filter [clrDgFilter]="dateFilter">
@@ -44,14 +44,14 @@
   </clr-dg-column>
   <clr-dg-column
     (clrDgColumnResize)="updateContext('sizeStepCount', $event)"
-    [style.width.px]="context.sizeStepCount | datagridcolumn: datagrid:contextName | async"
+    [style.width.px]="context.sizeStepCount | datagridcolumn: datagrid : contextName | async"
   >
     <ng-container>{{ 'jobs.main.stepExecutionCount' | translate }}</ng-container>
     <clr-dg-filter style="display: none"></clr-dg-filter>
   </clr-dg-column>
   <clr-dg-column
     (clrDgColumnResize)="updateContext('sizeStatus', $event)"
-    [style.width.px]="context.sizeStatus | datagridcolumn: datagrid:contextName | async"
+    [style.width.px]="context.sizeStatus | datagridcolumn: datagrid : contextName | async"
   >
     <ng-container>{{ 'commons.status' | translate }}</ng-container>
     <clr-dg-filter style="display: none"></clr-dg-filter>

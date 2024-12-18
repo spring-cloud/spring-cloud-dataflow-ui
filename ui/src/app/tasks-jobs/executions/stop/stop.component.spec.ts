@@ -50,7 +50,7 @@ describe('tasks-jobs/executions/stop/stop.component.ts', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should destroy a task', async done => {
+  it('should destroy a task', async () => {
     component.open(TaskExecution.parse({executionId: 'foo'}));
     fixture.detectChanges();
     await fixture.whenStable();
@@ -64,10 +64,9 @@ describe('tasks-jobs/executions/stop/stop.component.ts', () => {
     expect(NotificationServiceMock.mock.successNotifications[0].message).toBe(
       'Request submitted to stop task execution "foo".'
     );
-    done();
   });
 
-  it('should display an error', async done => {
+  it('should display an error', async () => {
     spyOn(TaskServiceMock.mock, 'executionStop').and.callFake(() => throwError(new Error('Fake error')));
     component.open(TaskExecution.parse({executionId: 'foo'}));
     fixture.detectChanges();
@@ -79,6 +78,5 @@ describe('tasks-jobs/executions/stop/stop.component.ts', () => {
     fixture.detectChanges();
     await fixture.whenStable();
     expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
-    done();
   });
 });

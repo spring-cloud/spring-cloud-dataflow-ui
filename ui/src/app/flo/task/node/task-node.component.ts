@@ -28,7 +28,10 @@ export class TaskNodeComponent extends NodeComponent {
 
   assetUrl = UrlUtilities.calculateAssetUrl();
 
-  constructor(docService: DocService, private modalService?: ModalService) {
+  constructor(
+    docService: DocService,
+    private modalService?: ModalService
+  ) {
     super(docService);
   }
 

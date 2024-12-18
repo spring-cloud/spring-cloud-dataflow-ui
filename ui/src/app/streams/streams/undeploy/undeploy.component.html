@@ -5,7 +5,7 @@
     <div [innerHTML]="'streams.undeploy.content' | translate: {name: streams[0].name}"></div>
   </div>
   <div class="modal-body" *ngIf="streams?.length > 1 && !isRunning">
-    <div [innerHTML]="'streams.undeploy.content' | translate: {count: streams.length}"></div>
+    <div [innerHTML]="'streams.undeploy.content2' | translate: {count: streams.length}"></div>
     <table class="table table-striped">
       <thead>
         <tr>

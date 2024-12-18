@@ -52,11 +52,10 @@ describe('about/info/info.component.ts', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should catch API error and display a message', async done => {
+  it('should catch API error and display a message', async () => {
     spyOn(AboutServiceMock.mock, 'getAbout').and.callFake(() => throwError(new AppError('Fake error')));
     await fixture.whenStable();
     fixture.detectChanges();
     expect(NotificationServiceMock.mock.errorNotification[0].title).toContain('error');
-    done();
   });
 });

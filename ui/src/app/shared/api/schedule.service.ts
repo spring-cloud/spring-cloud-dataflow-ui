@@ -12,7 +12,10 @@ import {UrlUtilities} from '../../url-utilities.service';
   providedIn: 'root'
 })
 export class ScheduleService {
-  constructor(private httpClient: HttpClient, private taskService: TaskService) {}
+  constructor(
+    private httpClient: HttpClient,
+    private taskService: TaskService
+  ) {}
 
   getSchedules(search?: string, platform?: string): Observable<SchedulePage | unknown> {
     // return of(GET_SCHEDULES)
