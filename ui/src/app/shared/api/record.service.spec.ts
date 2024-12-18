@@ -33,7 +33,7 @@ describe('shared/api/record.service.ts', () => {
     expect(httpUri).toEqual('/audit-records');
   });
 
-  it('getOperationTypes', async done => {
+  it('getOperationTypes', async () => {
     mockHttp.get.and.returnValue(
       of([
         {id: 100, name: 'App Registration', key: 'APP_REGISTRATION'},
@@ -47,26 +47,23 @@ describe('shared/api/record.service.ts', () => {
     const httpUri = mockHttp.get.calls.mostRecent().args[0];
     expect(mockHttp.get.calls.all().length).toBe(1);
     expect(httpUri).toEqual('/audit-records/audit-operation-types');
-    done();
   });
 
-  it('getOperationTypes', async done => {
+  it('getOperationTypes', async () => {
     mockHttp.get.and.returnValue(of(GET_OPERATION_TYPES));
     await recordService.getOperationTypes().subscribe();
     await recordService.getOperationTypes().subscribe();
     const httpUri = mockHttp.get.calls.mostRecent().args[0];
     expect(mockHttp.get.calls.all().length).toBe(1);
     expect(httpUri).toEqual('/audit-records/audit-operation-types');
-    done();
   });
 
-  it('getOperationTypes', async done => {
+  it('getOperationTypes', async () => {
     mockHttp.get.and.returnValue(of(GET_ACTION_TYPES));
     await recordService.getActionTypes().subscribe();
     await recordService.getActionTypes().subscribe();
     const httpUri = mockHttp.get.calls.mostRecent().args[0];
     expect(mockHttp.get.calls.all().length).toBe(1);
     expect(httpUri).toEqual('/audit-records/audit-action-types');
-    done();
   });
 });

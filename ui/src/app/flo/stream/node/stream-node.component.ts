@@ -29,7 +29,10 @@ export class StreamNodeComponent extends NodeComponent {
 
   assetUrl = UrlUtilities.calculateAssetUrl();
 
-  constructor(docService: DocService, private propertiesEditor: PropertiesEditor) {
+  constructor(
+    docService: DocService,
+    private propertiesEditor: PropertiesEditor
+  ) {
     super(docService);
   }
 

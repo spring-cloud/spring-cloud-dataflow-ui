@@ -64,7 +64,7 @@ describe('manage/records/records.component.ts', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should display the datagrid, pagination, action bar', async done => {
+  it('should display the datagrid, pagination, action bar', async () => {
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
@@ -80,10 +80,9 @@ describe('manage/records/records.component.ts', () => {
     expect(title.textContent).toContain('Records');
     expect(rows.length === 20).toBeTruthy();
     expect(cols.length === 7).toBeTruthy();
-    done();
   });
 
-  it('should sort the datagrid', async done => {
+  it('should sort the datagrid', async () => {
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
@@ -180,6 +179,5 @@ describe('manage/records/records.component.ts', () => {
       page: {from: 0, to: 19, size: 20, current: 1},
       sort: {by: 'platformName', reverse: true}
     });
-    done();
   });
 });

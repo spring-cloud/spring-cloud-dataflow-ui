@@ -41,7 +41,10 @@ export class TaskCreateComponent {
     }
   };
 
-  constructor(private taskService: TaskService, private notificationService: NotificationService) {}
+  constructor(
+    private taskService: TaskService,
+    private notificationService: NotificationService
+  ) {}
 
   open(): void {
     this.wizard.reset();

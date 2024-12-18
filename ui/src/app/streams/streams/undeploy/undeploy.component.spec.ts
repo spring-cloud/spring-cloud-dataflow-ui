@@ -52,7 +52,7 @@ describe('apps/undeploy/undeploy.component.ts', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should undeploy a stream', async done => {
+  it('should undeploy a stream', async () => {
     component.open([streams[0]]);
     fixture.detectChanges();
     await fixture.whenStable();
@@ -64,10 +64,9 @@ describe('apps/undeploy/undeploy.component.ts', () => {
     await fixture.whenStable();
     expect(NotificationServiceMock.mock.successNotifications[0].title).toBe('Undeploy stream');
     expect(NotificationServiceMock.mock.successNotifications[0].message).toBe('Successfully undeploy stream "foo".');
-    done();
   });
 
-  it('should undeploy streams', async done => {
+  it('should undeploy streams', async () => {
     component.open(streams);
     fixture.detectChanges();
     await fixture.whenStable();
@@ -79,10 +78,9 @@ describe('apps/undeploy/undeploy.component.ts', () => {
     await fixture.whenStable();
     expect(NotificationServiceMock.mock.successNotifications[0].title).toBe('Undeploy streams');
     expect(NotificationServiceMock.mock.successNotifications[0].message).toBe('2 stream(s) undeployed.');
-    done();
   });
 
-  it('should undeploy an error', async done => {
+  it('should undeploy an error', async () => {
     spyOn(StreamServiceMock.mock, 'undeployStreams').and.callFake(() => throwError(new Error('Fake error')));
     component.open([streams[0]]);
     fixture.detectChanges();
@@ -94,6 +92,5 @@ describe('apps/undeploy/undeploy.component.ts', () => {
     fixture.detectChanges();
     await fixture.whenStable();
     expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
-    done();
   });
 });

@@ -55,7 +55,7 @@ describe('tasks/schedules/destroy/destroy.component.ts', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should destroy a schedule', async done => {
+  it('should destroy a schedule', async () => {
     component.open([schedules[0]]);
     fixture.detectChanges();
     await fixture.whenStable();
@@ -67,10 +67,9 @@ describe('tasks/schedules/destroy/destroy.component.ts', () => {
     await fixture.whenStable();
     expect(NotificationServiceMock.mock.successNotifications[0].title).toBe('Delete schedule(s)');
     expect(NotificationServiceMock.mock.successNotifications[0].message).toBe('1 schedule(s) deleted.');
-    done();
   });
 
-  it('should destroy schedules', async done => {
+  it('should destroy schedules', async () => {
     component.open(schedules);
     fixture.detectChanges();
     await fixture.whenStable();
@@ -82,10 +81,9 @@ describe('tasks/schedules/destroy/destroy.component.ts', () => {
     await fixture.whenStable();
     expect(NotificationServiceMock.mock.successNotifications[0].title).toBe('Delete schedule(s)');
     expect(NotificationServiceMock.mock.successNotifications[0].message).toBe('2 schedule(s) deleted.');
-    done();
   });
 
-  it('should display an error', async done => {
+  it('should display an error', async () => {
     spyOn(ScheduleServiceMock.mock, 'destroySchedules').and.callFake(() => throwError(new Error('Fake error')));
     component.open([schedules[0]]);
     fixture.detectChanges();
@@ -97,6 +95,5 @@ describe('tasks/schedules/destroy/destroy.component.ts', () => {
     fixture.detectChanges();
     await fixture.whenStable();
     expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
-    done();
   });
 });

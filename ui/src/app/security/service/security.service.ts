@@ -14,7 +14,10 @@ import {UrlUtilities} from '../../url-utilities.service';
   providedIn: 'root'
 })
 export class SecurityService {
-  constructor(private http: HttpClient, private store: Store<State>) {}
+  constructor(
+    private http: HttpClient,
+    private store: Store<State>
+  ) {}
 
   async canAccess(roles: string[]): Promise<boolean> {
     const securityEnabled = await this.store.pipe(select(getEnabled)).pipe(take(1)).toPromise();

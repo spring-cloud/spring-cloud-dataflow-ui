@@ -18,5 +18,8 @@ export class SecurityEffect {
     {dispatch: true}
   );
 
-  constructor(private actions$: Actions, private router: Router) {}
+  constructor(
+    private actions$: Actions,
+    private router: Router
+  ) {}
 }

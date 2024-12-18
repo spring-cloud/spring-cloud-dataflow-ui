@@ -18,7 +18,10 @@ export class DashboardComponent implements OnDestroy {
   operationSubscription: Subscription;
   processing = false;
 
-  constructor(private appService: AppService, private notificationService: NotificationService) {}
+  constructor(
+    private appService: AppService,
+    private notificationService: NotificationService
+  ) {}
 
   ngOnDestroy(): void {
     if (this.operationSubscription) {

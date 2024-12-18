@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
-import {LocalStorageService} from 'angular-2-local-storage';
 import {v4 as uuidv4} from 'uuid';
+import {LocalStorageService} from './local-storage.service';
 
 @Injectable({
   providedIn: 'root'

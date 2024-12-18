@@ -29,7 +29,11 @@ export class LogComponent {
   title = '';
   logs;
 
-  constructor(private route: ActivatedRoute, private router: Router, private taskService: TaskService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private taskService: TaskService
+  ) {}
 
   open(title: string, execution: TaskExecution): void {
     this.loading = true;

@@ -55,12 +55,11 @@ describe('tasks-jobs/executions/executions.component.ts', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should catch API error and display a message', async done => {
+  it('should catch API error and display a message', async () => {
     spyOn(TaskServiceMock.mock, 'getExecutions').and.callFake(() => throwError(new AppError('Fake error')));
     await fixture.whenStable();
     fixture.detectChanges();
     expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
     expect(NotificationServiceMock.mock.errorNotification[0].message.toString()).toBe('Fake error');
-    done();
   });
 });

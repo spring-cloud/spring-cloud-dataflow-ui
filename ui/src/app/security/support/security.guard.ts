@@ -6,7 +6,11 @@ import {take} from 'rxjs/operators';
 
 @Injectable()
 export class SecurityGuard implements CanActivate {
-  constructor(private router: Router, private securityService: SecurityService, private aboutService: AboutService) {}
+  constructor(
+    private router: Router,
+    private securityService: SecurityService,
+    private aboutService: AboutService
+  ) {}
 
   async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
     const rolesNeeded: string[] = route.data.roles;

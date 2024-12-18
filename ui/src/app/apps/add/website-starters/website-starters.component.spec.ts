@@ -52,7 +52,7 @@ describe('apps/website-starters/website-starters.component.ts', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should run an app import', async done => {
+  it('should run an app import', async () => {
     const navigate = spyOn((<any>component).router, 'navigateByUrl');
     fixture.detectChanges();
     const spy = spyOn(AppServiceMock.mock, 'importUri').and.callThrough();
@@ -66,7 +66,6 @@ describe('apps/website-starters/website-starters.component.ts', () => {
     expect(navigate.calls.mostRecent().args[0].toString()).toBe('apps');
     expect(NotificationServiceMock.mock.successNotifications[0].title).toBe('Import starters');
     expect(NotificationServiceMock.mock.successNotifications[0].message).toBe('Application(s) Imported.');
-    done();
   });
 
   it('should display an error message', () => {

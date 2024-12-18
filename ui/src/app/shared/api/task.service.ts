@@ -13,13 +13,16 @@ import {
   ValuedConfigurationMetadataPropertyList
 } from '../model/detailed-app.model';
 import {UrlUtilities} from '../../url-utilities.service';
-import {LocalStorageService} from 'angular-2-local-storage';
+import {LocalStorageService} from '../service/local-storage.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TaskService {
-  constructor(protected httpClient: HttpClient, private localStorageService: LocalStorageService) {}
+  constructor(
+    protected httpClient: HttpClient,
+    private localStorageService: LocalStorageService
+  ) {}
 
   getTasks(
     page: number,

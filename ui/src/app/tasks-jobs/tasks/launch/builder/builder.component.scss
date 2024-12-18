@@ -93,6 +93,7 @@ $height: 32px;
     position: relative;
     word-break: keep-all;
     font-weight: bold;
+    align-content: center;
   }
 
   .line-body {
@@ -167,7 +168,7 @@ $height: 32px;
 
     clr-icon {
       position: absolute;
-      top: 9px;
+      top: 1px;
       left: 7px;
       transform: rotate(90deg);
       &.active {

@@ -67,7 +67,7 @@ describe('apps/unregister/unregister.component.ts', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should unregister an application', async done => {
+  it('should unregister an application', async () => {
     component.open([apps[0]]);
     fixture.detectChanges();
     await fixture.whenStable();
@@ -84,10 +84,9 @@ describe('apps/unregister/unregister.component.ts', () => {
     expect(NotificationServiceMock.mock.successNotifications[0].message).toBe(
       'Successfully removed app "foo" of type "source".'
     );
-    done();
   });
 
-  it('should unregister applications', async done => {
+  it('should unregister applications', async () => {
     component.open(apps);
     fixture.detectChanges();
     await fixture.whenStable();
@@ -102,10 +101,9 @@ describe('apps/unregister/unregister.component.ts', () => {
     await fixture.whenStable();
     expect(NotificationServiceMock.mock.successNotifications[0].title).toBe('Unregister applications');
     expect(NotificationServiceMock.mock.successNotifications[0].message).toBe('2 app(s) unregistered.');
-    done();
   });
 
-  it('should display an error', async done => {
+  it('should display an error', async () => {
     spyOn(AppServiceMock.mock, 'unregisterApps').and.callFake(() => throwError(new Error('Fake error')));
     component.open([apps[0]]);
     fixture.detectChanges();
@@ -120,6 +118,5 @@ describe('apps/unregister/unregister.component.ts', () => {
     fixture.detectChanges();
     await fixture.whenStable();
     expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
-    done();
   });
 });

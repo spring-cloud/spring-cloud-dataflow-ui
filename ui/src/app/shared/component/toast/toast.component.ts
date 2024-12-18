@@ -55,7 +55,10 @@ import {animate, keyframes, state, style, transition, trigger} from '@angular/an
   ]
 })
 export class ToastComponent extends Toast {
-  constructor(protected toastrService: ToastrService, public toastPackage: ToastPackage) {
+  constructor(
+    protected toastrService: ToastrService,
+    public toastPackage: ToastPackage
+  ) {
     super(toastrService, toastPackage);
   }
 }
