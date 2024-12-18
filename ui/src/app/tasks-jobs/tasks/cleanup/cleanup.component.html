@@ -1,7 +1,7 @@
 <clr-modal [(clrModalOpen)]="isOpen" *ngIf="task" [clrModalClosable]="!isRunning">
   <h3 class="modal-title">{{ 'tasks.cleanup.title' | translate }}</h3>
   <div class="modal-body" *ngIf="!isRunning && !loading && count.completed === count.all">
-    <p [innerHTML]="'tasks.cleanup.confirmContent' | translate: {count: count.all}"></p>
+    <div [innerHTML]="'tasks.cleanup.confirmContent' | translate: {count: count.all}"></div>
   </div>
   <div class="modal-body" *ngIf="!isRunning && !loading && count.completed !== count.all">
     <p style="padding-bottom: 8px">{{ 'tasks.cleanup.selectContent' | translate }}</p>

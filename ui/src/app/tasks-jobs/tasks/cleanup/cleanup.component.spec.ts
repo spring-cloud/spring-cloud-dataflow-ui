@@ -51,7 +51,7 @@ describe('tasks-jobs/tasks/cleanup/cleanup.component.ts', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should clean up the task executions', async done => {
+  it('should clean up the task executions', async () => {
     component.open(task);
     fixture.detectChanges();
     await fixture.whenStable();
@@ -63,6 +63,5 @@ describe('tasks-jobs/tasks/cleanup/cleanup.component.ts', () => {
     await fixture.whenStable();
     expect(NotificationServiceMock.mock.successNotifications[0].title).toBe('Clean up execution(s)');
     expect(NotificationServiceMock.mock.successNotifications[0].message).toBe('12 execution(s) cleaned up.');
-    done();
   });
 });

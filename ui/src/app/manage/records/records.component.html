@@ -10,7 +10,7 @@
     [clrDgField]="'id'"
     [clrDgSortOrder]="context.by === 'id' ? (context.reverse ? -1 : 1) : 0"
     (clrDgColumnResize)="updateContext('sizeId', $event)"
-    [style.width.px]="context.sizeId | datagridcolumn: datagrid:contextName:0 | async"
+    [style.width.px]="context.sizeId | datagridcolumn: datagrid : contextName : 0 | async"
   >
     <ng-container>{{ 'auditRecords.id' | translate }}</ng-container>
     <clr-dg-filter style="display: none"></clr-dg-filter>
@@ -20,7 +20,7 @@
     [clrDgSortOrder]="context.by === 'createdOn' ? (context.reverse ? -1 : 1) : 0"
     (clrDgColumnResize)="updateContext('sizeCreatedOn', $event)"
     [clrFilterValue]="context.dates || []"
-    [style.width.px]="context.sizeCreatedOn | datagridcolumn: datagrid:contextName | async"
+    [style.width.px]="context.sizeCreatedOn | datagridcolumn: datagrid : contextName | async"
   >
     <ng-container>{{ 'auditRecords.createdOn' | translate }}</ng-container>
     <clr-dg-filter [clrDgFilter]="datesFilter">
@@ -32,7 +32,7 @@
     [clrDgSortOrder]="context.by === 'auditAction' ? (context.reverse ? -1 : 1) : 0"
     (clrDgColumnResize)="updateContext('sizeAuditAction', $event)"
     [clrFilterValue]="context.actionType || []"
-    [style.width.px]="context.sizeAuditAction | datagridcolumn: datagrid:contextName | async"
+    [style.width.px]="context.sizeAuditAction | datagridcolumn: datagrid : contextName | async"
   >
     <ng-container>
       {{ 'auditRecords.actions' | translate }}
@@ -47,7 +47,7 @@
     [clrDgSortOrder]="context.by === 'auditOperation' ? (context.reverse ? -1 : 1) : 0"
     (clrDgColumnResize)="updateContext('sizeAuditOperation', $event)"
     [clrFilterValue]="context.operationType || []"
-    [style.width.px]="context.sizeAuditOperation | datagridcolumn: datagrid:contextName | async"
+    [style.width.px]="context.sizeAuditOperation | datagridcolumn: datagrid : contextName | async"
   >
     <ng-container>
       {{ 'auditRecords.operations' | translate }}
@@ -62,7 +62,7 @@
     [clrDgField]="'correlationId'"
     [clrDgSortOrder]="context.by === 'correlationId' ? (context.reverse ? -1 : 1) : 0"
     (clrDgColumnResize)="updateContext('sizeCorrelationId', $event)"
-    [style.width.px]="context.sizeCorrelationId | datagridcolumn: datagrid:contextName | async"
+    [style.width.px]="context.sizeCorrelationId | datagridcolumn: datagrid : contextName | async"
   >
     <ng-container>
       {{ 'auditRecords.operationID' | translate }}
@@ -73,7 +73,7 @@
     [clrDgField]="'createdBy'"
     [clrDgSortOrder]="context.by === 'createdBy' ? (context.reverse ? -1 : 1) : 0"
     (clrDgColumnResize)="updateContext('sizeCreatedBy', $event)"
-    [style.width.px]="context.sizeCreatedBy | datagridcolumn: datagrid:contextName | async"
+    [style.width.px]="context.sizeCreatedBy | datagridcolumn: datagrid : contextName | async"
   >
     <ng-container>
       {{ 'auditRecords.createdBy' | translate }}
@@ -84,7 +84,7 @@
     [clrDgField]="'platformName'"
     [clrDgSortOrder]="context.by === 'platformName' ? (context.reverse ? -1 : 1) : 0"
     (clrDgColumnResize)="updateContext('sizePlatformName', $event)"
-    [style.width.px]="context.sizePlatformName | datagridcolumn: datagrid:contextName | async"
+    [style.width.px]="context.sizePlatformName | datagridcolumn: datagrid : contextName | async"
   >
     <ng-container>
       {{ 'auditRecords.platformName' | translate }}

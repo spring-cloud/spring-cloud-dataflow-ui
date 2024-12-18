@@ -11,7 +11,10 @@ import {debounceTime} from 'rxjs/operators';
  * Class to add group titleModal to a model.
  */
 export class GroupPropertiesGroupModel extends PropertiesGroupModel {
-  constructor(propertiesSource: PropertiesSource, public title: string = '') {
+  constructor(
+    propertiesSource: PropertiesSource,
+    public title: string = ''
+  ) {
     super(propertiesSource);
   }
 }
@@ -23,7 +26,10 @@ export class GroupPropertiesGroupModel extends PropertiesGroupModel {
 export class GroupPropertiesSource implements PropertiesSource {
   private options: Array<any>;
 
-  constructor(options: Array<any>, public title: string = '') {
+  constructor(
+    options: Array<any>,
+    public title: string = ''
+  ) {
     this.options = options;
   }
 

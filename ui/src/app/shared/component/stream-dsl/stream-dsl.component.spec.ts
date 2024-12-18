@@ -42,7 +42,7 @@ describe('StreamDslComponent', () => {
     expect(component.getState()).toBe('unexpandable');
   });
 
-  it('should expand/collapse', async done => {
+  it('should expand/collapse', async () => {
     component.dsl = 'file --foo=bar | log';
     fixture.detectChanges();
     let dsl = fixture.debugElement.query(By.css('.stream-dsl')).nativeElement;
@@ -59,6 +59,5 @@ describe('StreamDslComponent', () => {
     dsl = fixture.debugElement.query(By.css('.stream-dsl')).nativeElement;
     expect(dsl.textContent).toContain('file | log');
     expect(component.getState()).toBe('collapsed');
-    done();
   });
 });

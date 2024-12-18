@@ -67,7 +67,7 @@ describe('streams/streams/streams.component.ts', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should display the datagrid, pagination, action bar', async done => {
+  it('should display the datagrid, pagination, action bar', async () => {
     component.timeSubscription = <any>{}; // hack to disable setting the timer, otherwise it times out
     fixture.detectChanges();
     await fixture.whenStable();
@@ -84,15 +84,13 @@ describe('streams/streams/streams.component.ts', () => {
     expect(title.textContent).toContain('Streams');
     expect(rows.length === 4).toBeTruthy();
     expect(cols.length === 4).toBeTruthy();
-    done();
   });
 
-  it('should catch API error and display a message', async done => {
+  it('should catch API error and display a message', async () => {
     spyOn(StreamServiceMock.mock, 'getStreams').and.callFake(() => throwError(new AppError('Fake error')));
     await fixture.whenStable();
     fixture.detectChanges();
     expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
     expect(NotificationServiceMock.mock.errorNotification[0].message.toString()).toBe('Fake error');
-    done();
   });
 });

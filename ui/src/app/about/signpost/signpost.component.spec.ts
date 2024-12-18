@@ -53,7 +53,7 @@ describe('about/signpost/signpost.component.ts', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should catch API error and display a message', async done => {
+  it('should catch API error and display a message', async () => {
     spyOn(AboutServiceMock.mock, 'getAbout').and.callFake(() => throwError(new AppError('Fake error')));
     await fixture.whenStable();
     fixture.detectChanges();
@@ -64,6 +64,5 @@ describe('about/signpost/signpost.component.ts', () => {
         notificationMessage.indexOf('An error occured') > 0 ||
         notificationMessage.indexOf('Invalid field(s)') > 0
     ).toBeTruthy();
-    done();
   });
 });

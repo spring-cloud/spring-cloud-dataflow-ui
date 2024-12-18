@@ -75,7 +75,11 @@ export class TaskLaunchService {
     value: (line: string): string => line.slice(line.indexOf('=') + 1)
   };
 
-  constructor(private taskService: TaskService, private appService: AppService, private toolsService: ToolsService) {}
+  constructor(
+    private taskService: TaskService,
+    private appService: AppService,
+    private toolsService: ToolsService
+  ) {}
 
   config(id: string): Observable<TaskLaunchConfig> {
     return this.taskService.getTask(id, true).pipe(

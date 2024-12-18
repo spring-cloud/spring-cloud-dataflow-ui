@@ -45,7 +45,10 @@ export class RuntimeStreamFloViewComponent implements OnDestroy {
     this.update();
   }
 
-  constructor(public metamodel: MetamodelService, public renderer: RenderService) {}
+  constructor(
+    public metamodel: MetamodelService,
+    public renderer: RenderService
+  ) {}
 
   ngOnDestroy(): void {
     if (this._subscriptionToGraphUpdates) {

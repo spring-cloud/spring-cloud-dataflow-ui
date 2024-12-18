@@ -3,7 +3,7 @@
 <clr-datagrid
   (clrDgRefresh)="refresh($event)"
   [clrDgLoading]="loading"
-  [(clrDgSelected)]="!grouped ? null : selected"
+  [(clrDgSelected)]="selected"
   *ngIf="isInit"
   #datagrid
 >
@@ -30,20 +30,20 @@
   </clr-dg-action-bar>
   <clr-dg-column
     (clrDgColumnResize)="updateContext('sizeName', $event)"
-    [style.width.px]="context.sizeName | datagridcolumn: datagrid:contextName | async"
+    [style.width.px]="context.sizeName | datagridcolumn: datagrid : contextName | async"
   >
     <ng-container>{{ 'commons.name' | translate }}</ng-container>
   </clr-dg-column>
   <clr-dg-column
     (clrDgColumnResize)="updateContext('sizeTaskName', $event)"
-    [style.width.px]="context.sizeTaskName | datagridcolumn: datagrid:contextName | async"
+    [style.width.px]="context.sizeTaskName | datagridcolumn: datagrid : contextName | async"
   >
     <ng-container>{{ 'schedules.main.taskName' | translate }}</ng-container>
     <clr-dg-filter style="display: none"></clr-dg-filter>
   </clr-dg-column>
   <clr-dg-column
     (clrDgColumnResize)="updateContext('sizePlatform', $event)"
-    [style.width.px]="context.sizePlatform | datagridcolumn: datagrid:contextName | async"
+    [style.width.px]="context.sizePlatform | datagridcolumn: datagrid : contextName | async"
   >
     <ng-container>{{ 'commons.platform' | translate }}</ng-container>
     <clr-dg-filter [clrDgFilter]="platformFilter">
@@ -52,7 +52,7 @@
   </clr-dg-column>
   <clr-dg-column
     (clrDgColumnResize)="updateContext('sizeCronExpression', $event)"
-    [style.width.px]="context.sizeCronExpression | datagridcolumn: datagrid:contextName | async"
+    [style.width.px]="context.sizeCronExpression | datagridcolumn: datagrid : contextName | async"
   >
     <ng-container>{{ 'schedules.main.cronExpression' | translate }}</ng-container>
     <clr-dg-filter style="display: none"></clr-dg-filter>

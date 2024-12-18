@@ -85,7 +85,7 @@ describe('streams/streams/stream-deploy.service.ts', () => {
     });
   });
 
-  it('config', async done => {
+  it('config', done => {
     streamService.streamDefinitions = GET_STREAMS;
     streamDeployService.config('foo').subscribe(config => {
       expect(config.platform).not.toBeNull();
@@ -97,7 +97,7 @@ describe('streams/streams/stream-deploy.service.ts', () => {
   });
 
   describe('appDetails', () => {
-    it('Should get the details of an app', async done => {
+    it('Should get the details of an app', done => {
       streamDeployService.appDetails('source' as any, 'time', '').subscribe(arr => {
         expect(arr).not.toBeNull();
         expect(arr.length).toBe(6);
@@ -106,7 +106,7 @@ describe('streams/streams/stream-deploy.service.ts', () => {
     });
   });
 
-  it('deploymentProperties', async done => {
+  it('deploymentProperties', done => {
     streamDeployService.deploymentProperties('foo').subscribe(args => {
       expect(args).not.toBeNull();
       done();

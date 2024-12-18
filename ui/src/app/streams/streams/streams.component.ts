@@ -84,7 +84,7 @@ export class StreamsComponent extends DatagridComponent implements OnDestroy, On
             this.expanded = {...mergeExpanded};
             this.page = page;
             this.updateGroupContext({...params, expanded: this.expanded});
-            this.selected = [];
+            this.selected = this.grouped ? [] : null;
             this.loading = false;
             if (!this.timeSubscription) {
               this.updateMetrics();

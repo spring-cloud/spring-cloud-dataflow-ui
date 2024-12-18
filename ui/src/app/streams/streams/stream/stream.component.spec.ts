@@ -66,17 +66,16 @@ describe('streams/streams/stream/stream.component.ts', () => {
     NotificationServiceMock.mock.clearAll();
   });
 
-  it('should be created', async done => {
+  it('should be created', async () => {
     fixture.detectChanges();
     await fixture.whenStable();
     expect(component).toBeTruthy();
     expect(component.getAppType('time')).toBe('source');
     expect(component.getOrigin('time')).toBe('time');
     expect(component.hasLog('time')).toBe(false);
-    done();
   });
 
-  it('should navigate back', async done => {
+  it('should navigate back', async () => {
     spyOn(StreamServiceMock.mock, 'getStream').and.callFake(() => throwError(new HttpError('Fake error', 404)));
     const navigate = spyOn((<any>component).router, 'navigateByUrl');
     fixture.detectChanges();
@@ -84,20 +83,18 @@ describe('streams/streams/stream/stream.component.ts', () => {
     fixture.detectChanges();
     expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
     expect(navigate).toHaveBeenCalledWith('streams/list');
-    done();
   });
 
-  it('should display the destroy modal', async done => {
+  it('should display the destroy modal', async () => {
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
     fixture.debugElement.query(By.css('#btn-destroy')).nativeElement.click();
     fixture.detectChanges();
     expect(fixture.debugElement.query(By.css('app-stream-destroy .modal-title')).nativeElement).toBeTruthy();
-    done();
   });
 
-  it('should navigate to the deploy page', async done => {
+  it('should navigate to the deploy page', async () => {
     const navigate = spyOn((<any>component).router, 'navigateByUrl');
     fixture.detectChanges();
     await fixture.whenStable();
@@ -105,25 +102,22 @@ describe('streams/streams/stream/stream.component.ts', () => {
     fixture.debugElement.query(By.css('#btn-update')).nativeElement.click();
     fixture.detectChanges();
     expect(navigate).toHaveBeenCalledWith('streams/list/foo/deploy');
-    done();
   });
 
-  it('should display the undeploy modal', async done => {
+  it('should display the undeploy modal', async () => {
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
     fixture.debugElement.query(By.css('#btn-undeploy')).nativeElement.click();
     fixture.detectChanges();
     expect(fixture.debugElement.query(By.css('app-stream-undeploy .modal-title')).nativeElement).toBeTruthy();
-    done();
   });
 
-  it('should catch API error and display a message', async done => {
+  it('should catch API error and display a message', async () => {
     spyOn(StreamServiceMock.mock, 'getStream').and.callFake(() => throwError(new AppError('Fake error')));
     await fixture.whenStable();
     fixture.detectChanges();
     expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
     expect(NotificationServiceMock.mock.errorNotification[0].message.toString()).toBe('Fake error');
-    done();
   });
 });

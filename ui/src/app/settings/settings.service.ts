@@ -5,7 +5,7 @@ import {tap} from 'rxjs/operators';
 import {getThemeActiveSetting, settingsFeatureKey, State} from './store/settings.reducer';
 import {loaded, update} from './store/settings.action';
 import {SettingModel} from '../shared/model/setting.model';
-import {LocalStorageService} from 'angular-2-local-storage';
+import {LocalStorageService} from '../shared/service/local-storage.service';
 
 const DEFAULT_LANG = 'en';
 const DEFAULT_REVERSE_PROXY_FIX_ACTIVE = 'false';
@@ -16,7 +16,10 @@ const DEFAULT_REVERSE_PROXY_FIX_ACTIVE = 'false';
 export class SettingsService {
   language = ['en'];
 
-  constructor(private store: Store<State>, private localStorageService: LocalStorageService) {}
+  constructor(
+    private store: Store<State>,
+    private localStorageService: LocalStorageService
+  ) {}
 
   load(languages: Array<string>): Observable<SettingModel[]> {
     this.language = languages;

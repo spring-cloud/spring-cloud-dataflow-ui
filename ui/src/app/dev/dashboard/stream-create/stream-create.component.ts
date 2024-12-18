@@ -52,7 +52,10 @@ export class StreamCreateComponent {
     }
   };
 
-  constructor(private streamService: StreamService, private notificationService: NotificationService) {}
+  constructor(
+    private streamService: StreamService,
+    private notificationService: NotificationService
+  ) {}
 
   open(): void {
     this.wizard.reset();

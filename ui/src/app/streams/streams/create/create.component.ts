@@ -12,7 +12,10 @@ import {SanitizeDsl} from '../../../flo/stream/dsl-sanitize.service';
 import {TranslateService} from '@ngx-translate/core';
 
 class ProgressData {
-  constructor(public count, public total) {}
+  constructor(
+    public count,
+    public total
+  ) {}
 
   get percent(): number {
     return Math.round((this.count / this.total) * 100);

@@ -52,7 +52,7 @@ describe('tasks/tasks/destroy/destroy.component.ts', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should destroy a task', async done => {
+  it('should destroy a task', async () => {
     component.open([tasks[0]]);
     fixture.detectChanges();
     await fixture.whenStable();
@@ -64,10 +64,9 @@ describe('tasks/tasks/destroy/destroy.component.ts', () => {
     await fixture.whenStable();
     expect(NotificationServiceMock.mock.successNotifications[0].title).toBe('Destroy task');
     expect(NotificationServiceMock.mock.successNotifications[0].message).toBe('Successfully removed task "foo".');
-    done();
   });
 
-  it('should destroy tasks', async done => {
+  it('should destroy tasks', async () => {
     component.open(tasks);
     fixture.detectChanges();
     await fixture.whenStable();
@@ -79,10 +78,9 @@ describe('tasks/tasks/destroy/destroy.component.ts', () => {
     await fixture.whenStable();
     expect(NotificationServiceMock.mock.successNotifications[0].title).toBe('Destroy tasks');
     expect(NotificationServiceMock.mock.successNotifications[0].message).toBe('2 task definition(s) destroyed.');
-    done();
   });
 
-  it('should display an error', async done => {
+  it('should display an error', async () => {
     spyOn(TaskServiceMock.mock, 'destroyTasks').and.callFake(() => throwError(new Error('Fake error')));
     component.open([tasks[0]]);
     fixture.detectChanges();
@@ -94,6 +92,5 @@ describe('tasks/tasks/destroy/destroy.component.ts', () => {
     fixture.detectChanges();
     await fixture.whenStable();
     expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
-    done();
   });
 });

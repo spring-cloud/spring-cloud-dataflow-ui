@@ -19,7 +19,7 @@ export abstract class DatagridComponent implements OnDestroy, AfterContentChecke
   isInit = false;
   isDestroy = false;
   context;
-  selected = [];
+  selected = null;
   grouped = false;
   state: ClrDatagridStateInterface;
 
@@ -102,7 +102,11 @@ export abstract class DatagridComponent implements OnDestroy, AfterContentChecke
 
   setMode(grouped: boolean): void {
     this.grouped = grouped;
-    this.selected = [];
+    if (this.grouped) {
+      this.selected = [];
+    } else {
+      this.selected = null;
+    }
   }
 
   refresh(state: ClrDatagridStateInterface): void {

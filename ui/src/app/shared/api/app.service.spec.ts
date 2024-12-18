@@ -183,7 +183,7 @@ describe('shared/api/app.service.ts', () => {
     expect(httpUri).toEqual('/apps');
   });
 
-  it('getAppVersions', async done => {
+  it('getAppVersions', async () => {
     mockHttp.get.and.returnValue(of(GET_APP_VERSIONS));
     await appService.getAppVersions('aggregator', 'processor' as any as ApplicationType).subscribe();
     const httpUri = mockHttp.get.calls.mostRecent().args[0];
@@ -193,6 +193,5 @@ describe('shared/api/app.service.ts', () => {
     expect(httpParams.get('page')).toEqual('0');
     expect(httpParams.get('size')).toEqual('10000');
     expect(httpUri).toEqual('/apps');
-    done();
   });
 });

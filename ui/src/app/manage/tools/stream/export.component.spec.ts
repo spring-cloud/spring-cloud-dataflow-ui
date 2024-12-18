@@ -52,7 +52,7 @@ describe('manage/tools/stream/export.component.ts', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should run a stream export', async done => {
+  it('should run a stream export', done => {
     fixture.detectChanges();
     component.open();
     setTimeout(() => {
@@ -66,7 +66,7 @@ describe('manage/tools/stream/export.component.ts', () => {
     }, 200);
   });
 
-  it('should manage error if no stream selected', async done => {
+  it('should manage error if no stream selected', done => {
     fixture.detectChanges();
     component.open();
     setTimeout(() => {

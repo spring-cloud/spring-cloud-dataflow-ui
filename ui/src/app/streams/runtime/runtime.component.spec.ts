@@ -52,7 +52,7 @@ describe('streams/runtime/runtime.component.ts', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should show the detail runtime', async done => {
+  it('should show the detail runtime', async () => {
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
@@ -63,6 +63,5 @@ describe('streams/runtime/runtime.component.ts', () => {
     expect(modal).toBeTruthy();
     const title = modal.query(By.css('.modal-title-wrapper')).nativeElement;
     expect(title.textContent).toContain('Instances for app');
-    done();
   });
 });
