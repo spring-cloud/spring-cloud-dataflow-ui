@@ -82,7 +82,10 @@ export class FreeTextComponent implements OnInit, OnDestroy {
    * Constructor
    * Initialize FormGroup
    */
-  constructor(private notificationService: NotificationService, private translate: TranslateService) {
+  constructor(
+    private notificationService: NotificationService,
+    private translate: TranslateService
+  ) {
     this.formGroup = new UntypedFormGroup({
       input: new UntypedFormControl(),
       file: new UntypedFormControl('')

@@ -53,7 +53,7 @@ describe('streams/streams/destroy/destroy.component.ts', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should destroy a stream', async done => {
+  it('should destroy a stream', async () => {
     component.open([streams[0]]);
     fixture.detectChanges();
     await fixture.whenStable();
@@ -65,10 +65,9 @@ describe('streams/streams/destroy/destroy.component.ts', () => {
     await fixture.whenStable();
     expect(NotificationServiceMock.mock.successNotifications[0].title).toBe('Destroy stream');
     expect(NotificationServiceMock.mock.successNotifications[0].message).toBe('Successfully removed stream "foo".');
-    done();
   });
 
-  it('should destroy streams', async done => {
+  it('should destroy streams', async () => {
     component.open(streams);
     fixture.detectChanges();
     await fixture.whenStable();
@@ -80,10 +79,9 @@ describe('streams/streams/destroy/destroy.component.ts', () => {
     await fixture.whenStable();
     expect(NotificationServiceMock.mock.successNotifications[0].title).toBe('Destroy streams');
     expect(NotificationServiceMock.mock.successNotifications[0].message).toBe('2 stream(s) destroyed.');
-    done();
   });
 
-  it('should display an error', async done => {
+  it('should display an error', async () => {
     spyOn(StreamServiceMock.mock, 'destroyStreams').and.callFake(() => throwError(new Error('Fake error')));
     component.open([streams[0]]);
     fixture.detectChanges();
@@ -95,6 +93,5 @@ describe('streams/streams/destroy/destroy.component.ts', () => {
     fixture.detectChanges();
     await fixture.whenStable();
     expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
-    done();
   });
 });

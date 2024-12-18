@@ -52,17 +52,16 @@ describe('manage/tools/task/import.component.ts', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should run a task import', async done => {
+  it('should run a task import', async () => {
     fixture.detectChanges();
     component.open();
     component.fileChanged({target: {files: ['foo']}});
     component.run();
     fixture.detectChanges();
     expect(component.view).toBe('result');
-    done();
   });
 
-  it('should handle empty file and error', async done => {
+  it('should handle empty file and error', async () => {
     spyOn(ImportExportServiceMock.mock, 'tasksImport').and.callFake(() => throwError(new Error('Fake error')));
     fixture.detectChanges();
     component.open();
@@ -80,6 +79,5 @@ describe('manage/tools/task/import.component.ts', () => {
     fixture.detectChanges();
     expect(NotificationServiceMock.mock.errorNotification[1].title).toBe('Invalid file');
     expect(NotificationServiceMock.mock.errorNotification[1].message).toBe('The file is not valid.');
-    done();
   });
 });

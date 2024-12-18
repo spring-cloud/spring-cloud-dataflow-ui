@@ -28,7 +28,10 @@ export class ViewComponent {
 
   private editorContext: Flo.EditorContext;
 
-  constructor(public metamodelService: MetamodelService, public renderService: RenderService) {}
+  constructor(
+    public metamodelService: MetamodelService,
+    public renderService: RenderService
+  ) {}
 
   setEditorContext(editorContext: Flo.EditorContext): void {
     this.editorContext = editorContext;

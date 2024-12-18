@@ -56,7 +56,7 @@ export class TasksComponent extends DatagridComponent {
           (page: TaskPage) => {
             this.page = page;
             this.updateGroupContext(params);
-            this.selected = [];
+            this.selected = this.grouped ? [] : null;
             this.loading = false;
           },
           error => {
@@ -69,7 +69,7 @@ export class TasksComponent extends DatagridComponent {
 
   setMode(grouped: boolean): void {
     this.grouped = grouped;
-    this.selected = [];
+    this.selected = this.grouped ? [] : null;
     // Hack (clarity/refresh lockItem)
     setTimeout(() => {
       this.datagrid.rows.map(row => {

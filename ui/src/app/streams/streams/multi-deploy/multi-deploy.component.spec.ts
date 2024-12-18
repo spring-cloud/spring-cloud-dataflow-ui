@@ -59,14 +59,13 @@ describe('streams/streams/multi-deploy/multi-deploy.component.ts', () => {
     NotificationServiceMock.mock.clearAll();
   });
 
-  it('should be created', async done => {
+  it('should be created', async () => {
     fixture.detectChanges();
     await fixture.whenStable();
     expect(component).toBeTruthy();
-    done();
   });
 
-  it('should run a deploy', async done => {
+  it('should run a deploy', async () => {
     const navigate = spyOn((<any>component).router, 'navigateByUrl');
     const spy = spyOn(StreamServiceMock.mock, 'updateStream').and.callFake(() => of({}));
     fixture.detectChanges();
@@ -78,10 +77,9 @@ describe('streams/streams/multi-deploy/multi-deploy.component.ts', () => {
     fixture.detectChanges();
     expect(spy).toHaveBeenCalledTimes(2);
     expect(navigate).toHaveBeenCalledWith('streams/list');
-    done();
   });
 
-  it('should display an error', async done => {
+  it('should display an error', async () => {
     const spy = spyOn(StreamServiceMock.mock, 'updateStream').and.callFake(() =>
       throwError(new HttpError('Fake error', 404))
     );
@@ -93,15 +91,13 @@ describe('streams/streams/multi-deploy/multi-deploy.component.ts', () => {
     await fixture.whenStable();
     fixture.detectChanges();
     expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
-    done();
   });
 
-  it('should catch API error and display a message', async done => {
+  it('should catch API error and display a message', async () => {
     spyOn(StreamServiceMock.mock, 'getPlatforms').and.callFake(() => throwError(new AppError('Fake error')));
     await fixture.whenStable();
     fixture.detectChanges();
     expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
     expect(NotificationServiceMock.mock.errorNotification[0].message.toString()).toContain('Fake error');
-    done();
   });
 });

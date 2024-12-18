@@ -48,7 +48,7 @@ describe('manage/records/operation.filter.ts', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should set the value', async done => {
+  it('should set the value', async () => {
     component.value = 'STREAM';
     fixture.detectChanges();
     await fixture.whenStable();
@@ -66,6 +66,5 @@ describe('manage/records/operation.filter.ts', () => {
     expect(`${component.value}`).toBe('APP_REGISTRATION');
     expect(component.isActive()).toBeTruthy();
     expect(component.accepts(null)).toBeTruthy();
-    done();
   });
 });

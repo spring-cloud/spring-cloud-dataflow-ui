@@ -1,8 +1,9 @@
-import {Injectable} from '@angular/core';
+import {Inject, Injectable} from '@angular/core';
 import {Theme} from './types';
 import {defaultTheme} from './default-theme';
 import {darkTheme} from './dark-theme';
-import {LocalStorageService} from 'angular-2-local-storage';
+import {LocalStorageService} from '../../shared/service/local-storage.service';
+import {DOCUMENT} from '@angular/common';
 
 const themePrefix = 'scdf-theme_';
 
@@ -13,7 +14,10 @@ export class ThemeService {
   private themes: Theme[] = [defaultTheme, darkTheme];
   active = 'default';
 
-  constructor(private localStorageService: LocalStorageService) {}
+  constructor(
+    @Inject(DOCUMENT) private document: Document,
+    private localStorageService: LocalStorageService
+  ) {}
 
   getTheme(): string {
     if (this.localStorageService.get('theme')) {
@@ -34,6 +38,7 @@ export class ThemeService {
   }
 
   switchTheme(name: string): string {
+    this.document.body.setAttribute('cds-theme', name);
     const style = document.createElement('style');
     const theme = this.themes.find(t => t.name === name);
     if (!theme) {

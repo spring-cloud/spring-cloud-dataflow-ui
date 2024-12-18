@@ -49,7 +49,7 @@ export class ExecutionsComponent extends DatagridComponent {
           (page: TaskExecutionPage) => {
             this.page = page;
             this.updateGroupContext(params);
-            this.selected = [];
+            this.selected = this.grouped ? [] : null;
             this.loading = false;
           },
           error => {

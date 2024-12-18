@@ -53,7 +53,10 @@ export class AutoResizeDirective implements AfterViewInit {
     this.setMaxHeight();
   }
 
-  constructor(private _elementRef: ElementRef, @Optional() @Self() formControl: NgControl) {
+  constructor(
+    private _elementRef: ElementRef,
+    @Optional() @Self() formControl: NgControl
+  ) {
     if (formControl && formControl.valueChanges) {
       formControl.valueChanges.subscribe(() => this.resizeToFitContent());
     }

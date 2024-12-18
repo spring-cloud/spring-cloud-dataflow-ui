@@ -48,7 +48,7 @@ describe('manage/records/action.filter.ts', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should set the value', async done => {
+  it('should set the value', async () => {
     const dateStart = DateTime.fromFormat('2020-12-01', 'yyyy-MM-dd');
     const dateEnd = DateTime.fromFormat('2020-12-01', 'yyyy-MM-dd');
     component.value = [dateStart, dateEnd];
@@ -73,6 +73,5 @@ describe('manage/records/action.filter.ts', () => {
     expect(component.value[1].toFormat('yyyy-MM-dd')).toBe('2020-12-15');
     expect(component.isActive()).toBeTruthy();
     expect(component.accepts()).toBeTruthy();
-    done();
   });
 });

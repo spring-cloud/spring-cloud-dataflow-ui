@@ -53,17 +53,16 @@ describe('streams/streams/rollback/rollback.component.ts', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should display a success message', async done => {
+  it('should display a success message', async () => {
     component.open(StreamHistory.parse(GET_STREAM_HISTORY));
     fixture.detectChanges();
     fixture.debugElement.query(By.css('.modal-footer .btn-primary')).nativeElement.click();
     fixture.detectChanges();
     await fixture.whenStable();
     expect(NotificationServiceMock.mock.successNotifications[0].title).toBe('Rollback success');
-    done();
   });
 
-  it('should display an error', async done => {
+  it('should display an error', async () => {
     spyOn(StreamServiceMock.mock, 'rollbackStream').and.callFake(() => throwError(new Error('Fake error')));
     component.open(StreamHistory.parse(GET_STREAM_HISTORY));
     fixture.detectChanges();
@@ -71,6 +70,5 @@ describe('streams/streams/rollback/rollback.component.ts', () => {
     fixture.detectChanges();
     await fixture.whenStable();
     expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
-    done();
   });
 });
