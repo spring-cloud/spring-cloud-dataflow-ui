@@ -6,21 +6,9 @@
 </p>
 
 <p align="center">
-  <a href="https://travis-ci.org/spring-cloud/spring-cloud-dataflow-ui">
-    <img src="https://travis-ci.org/spring-cloud/spring-cloud-dataflow-ui.png?branch=master"
-         alt="Build Status">
-  </a>
   <a href="https://ci.appveyor.com/project/ghillert/spring-cloud-dataflow-ui/branch/master">
     <img src="https://ci.appveyor.com/api/projects/status/7pqco2aqjyaphp36/branch/master?svg=true"
          alt="Build status">
-  </a>
-  <a href="https://codecov.io/gh/spring-cloud/spring-cloud-dataflow-ui/branch/master">
-    <img src="https://codecov.io/gh/spring-cloud/spring-cloud-dataflow-ui/branch/master/graph/badge.svg"
-         alt="Code Coverage">
-  </a>
-  <a href="https://saucelabs.com/u/ghillert">
-    <img src="https://saucelabs.com/buildstatus/ghillert"
-         alt="Sauce Test Status">
   </a>
 </p>
 
@@ -92,7 +80,6 @@ Before building be sure that the `ng-serve` development server has been shutdown
 
 ## Acknowledgments
 
-Thanks to [Saucelabs](https://saucelabs.com/) and [Browserstack](https://www.browserstack.com/) for supporting us.
 This project uses code from several open source packages:
 [Angular](https://angular.io),
 [Clarity Design](https://clarity.design/),
@@ -104,7 +91,7 @@ This project uses code from several open source packages:
 
 This project is powered by:
 
-<a href="https://www.vmware.com/"><img alt="VMWare" width="150" title="VMWare" src="https://i.imgur.com/xlFSgTU.png"></a> <a href="https://spring.io/"><img alt="Spring" title="Spring" src="https://i.imgur.com/az8Xady.png" width="155"></a>
+<a href="https://spring.io/"><img alt="Spring" title="Spring" src="https://i.imgur.com/az8Xady.png" width="155"></a>
 
 [Angular]: https://angular.io/
 [Angular CLI]: https://cli.angular.io/
