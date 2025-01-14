@@ -76,6 +76,10 @@ Before building be sure that the `ng-serve` development server has been shutdown
 
 **If you want to contribute and help developing the project, please, have a look at the [Developer Guideline](README_DEV.md/#development).**
 
+## Developer Certificate of Origin
+All commits must include a **Signed-off-by** trailer at the end of each commit message to indicate that the contributor agrees to the Developer Certificate of Origin.
+For additional details, please refer to the blog post [Hello DCO, Goodbye CLA: Simplifying Contributions to Spring](https://spring.io/blog/2025/01/06/hello-dco-goodbye-cla-simplifying-contributions-to-spring).
+
 ---
 
 ## Acknowledgments
