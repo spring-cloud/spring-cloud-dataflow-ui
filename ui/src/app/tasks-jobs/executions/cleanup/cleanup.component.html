@@ -1,12 +1,12 @@
 <clr-modal [(clrModalOpen)]="isOpen" *ngIf="executions" [clrModalClosable]="!isRunning">
   <h3 class="modal-title">{{ 'executions.cleanup.title' | translate }}</h3>
   <div class="modal-body" *ngIf="executions.length === 1 && !isRunning">
-    <p
+    <div
       [innerHTML]="
         'executions.cleanup.description'
           | translate: {executionId: executions[0].executionId, taskName: executions[0].taskName}
       "
-    ></p>
+    ></div>
   </div>
   <div class="modal-body" *ngIf="executions.length > 1 && !isRunning">
     <p [innerHTML]="'executions.cleanup.description2' | translate: {count: executions.length}"></p>

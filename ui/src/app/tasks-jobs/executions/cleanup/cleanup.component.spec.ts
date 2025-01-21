@@ -52,7 +52,7 @@ describe('tasks-jobs/executions/cleanup/cleanup.component.ts', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should destroy a task', async done => {
+  it('should destroy a task', async () => {
     component.open([executions[0]]);
     fixture.detectChanges();
     await fixture.whenStable();
@@ -64,10 +64,9 @@ describe('tasks-jobs/executions/cleanup/cleanup.component.ts', () => {
     await fixture.whenStable();
     expect(NotificationServiceMock.mock.successNotifications[0].title).toBe('Clean up task execution(s)');
     expect(NotificationServiceMock.mock.successNotifications[0].message).toBe('1 task execution(s) cleaned up.');
-    done();
   });
 
-  it('should destroy tasks', async done => {
+  it('should destroy tasks', async () => {
     component.open(executions);
     fixture.detectChanges();
     await fixture.whenStable();
@@ -79,10 +78,9 @@ describe('tasks-jobs/executions/cleanup/cleanup.component.ts', () => {
     await fixture.whenStable();
     expect(NotificationServiceMock.mock.successNotifications[0].title).toBe('Clean up task execution(s)');
     expect(NotificationServiceMock.mock.successNotifications[0].message).toBe('2 task execution(s) cleaned up.');
-    done();
   });
 
-  it('should display an error', async done => {
+  it('should display an error', async () => {
     spyOn(TaskServiceMock.mock, 'executionsClean').and.callFake(() => throwError(new Error('Fake error')));
     component.open([executions[0]]);
     fixture.detectChanges();
@@ -94,6 +92,5 @@ describe('tasks-jobs/executions/cleanup/cleanup.component.ts', () => {
     fixture.detectChanges();
     await fixture.whenStable();
     expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
-    done();
   });
 });

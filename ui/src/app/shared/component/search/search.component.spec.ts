@@ -59,7 +59,7 @@ describe('shared/component/search/search.component.ts', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should run a complete search', async done => {
+  it('should run a complete search', done => {
     const spy1 = spyOn(TaskServiceMock.mock, 'getTasks').and.callFake(() => of(new TaskPage()));
     const spy2 = spyOn(StreamServiceMock.mock, 'getStreams').and.callFake(() => of(new StreamPage()));
     const spy3 = spyOn(AppServiceMock.mock, 'getApps').and.callFake(() => of(new AppPage()));
@@ -78,7 +78,7 @@ describe('shared/component/search/search.component.ts', () => {
     }, 320);
   });
 
-  it('should run a search without streams', async done => {
+  it('should run a search without streams', done => {
     const spy1 = spyOn(TaskServiceMock.mock, 'getTasks').and.callFake(() => of(new TaskPage()));
     const spy2 = spyOn(StreamServiceMock.mock, 'getStreams');
     const spy3 = spyOn(AppServiceMock.mock, 'getApps').and.callFake(() => of(new AppPage()));
@@ -99,7 +99,7 @@ describe('shared/component/search/search.component.ts', () => {
     }, 320);
   });
 
-  it('should run a search without tasks', async done => {
+  it('should run a search without tasks', done => {
     const spy1 = spyOn(TaskServiceMock.mock, 'getTasks');
     const spy2 = spyOn(StreamServiceMock.mock, 'getStreams').and.callFake(() => of(new StreamPage()));
     const spy3 = spyOn(AppServiceMock.mock, 'getApps').and.callFake(() => of(new AppPage()));
@@ -120,7 +120,7 @@ describe('shared/component/search/search.component.ts', () => {
     }, 320);
   });
 
-  it('should display an error (stream)', async done => {
+  it('should display an error (stream)', done => {
     spyOn(StreamServiceMock.mock, 'getStreams').and.callFake(() => throwError('error'));
     fixture.detectChanges();
     component.search.setValue('foo');
@@ -132,7 +132,7 @@ describe('shared/component/search/search.component.ts', () => {
     }, 320);
   });
 
-  it('should display an error (task)', async done => {
+  it('should display an error (task)', done => {
     spyOn(TaskServiceMock.mock, 'getTasks').and.callFake(() => throwError('error'));
     fixture.detectChanges();
     component.search.setValue('foo');
@@ -144,7 +144,7 @@ describe('shared/component/search/search.component.ts', () => {
     }, 320);
   });
 
-  it('should display an error (app)', async done => {
+  it('should display an error (app)', done => {
     spyOn(AppServiceMock.mock, 'getApps').and.callFake(() => throwError('error'));
     fixture.detectChanges();
     component.search.setValue('foo');
@@ -156,7 +156,7 @@ describe('shared/component/search/search.component.ts', () => {
     }, 320);
   });
 
-  it('should clear the search', async done => {
+  it('should clear the search', done => {
     fixture.detectChanges();
     component.search.setValue('foo');
     setTimeout(() => {
@@ -175,7 +175,7 @@ describe('shared/component/search/search.component.ts', () => {
     }, 320);
   });
 
-  it('should remove the search on blur', async done => {
+  it('should remove the search on blur', done => {
     fixture.detectChanges();
     component.search.setValue('foo');
     setTimeout(() => {
@@ -193,46 +193,5 @@ describe('shared/component/search/search.component.ts', () => {
         done();
       }, 220);
     }, 320);
-  });
-
-  describe('should use key shortcut', () => {
-    beforeEach(async done => {
-      fixture.detectChanges();
-      component.search.setValue('foo');
-      component.inputQuickSearch.nativeElement.focus();
-      setTimeout(() => {
-        fixture.detectChanges();
-        done();
-      }, 320);
-    });
-
-    // it('Escape', async done => {
-    //   const event = new KeyboardEvent('keyDown', { keyCode: 27 });
-    //   component.onKeyDown(event);
-    //   fixture.detectChanges();
-    //   setTimeout(() => {
-    //     fixture.detectChanges();
-    //     expect(component.searching.apps).toBeFalsy();
-    //     expect(component.searching.streams).toBeFalsy();
-    //     expect(component.searching.tasks).toBeFalsy();
-    //     expect(component.results.apps).toBeNull();
-    //     expect(component.results.tasks).toBeNull();
-    //     expect(component.results.streams).toBeNull();
-    //     expect(component.search.value).toBe('');
-    //     done();
-    //   }, 220);
-    // });
-
-    // it('Down/Up/Enter', async done => {
-    //   const navigate = spyOn((<any>component).router, 'navigateByUrl');
-    //   component.onKeyDown(new KeyboardEvent('keyDown', { keyCode: 40 }));
-    //   component.onKeyDown(new KeyboardEvent('keyDown', { keyCode: 38 }));
-    //   component.onKeyDown(new KeyboardEvent('keyDown', { keyCode: 39 }));
-    //   component.onKeyDown(new KeyboardEvent('keyDown', { keyCode: 37 }));
-    //   component.onKeyDown(new KeyboardEvent('keyDown', { keyCode: 13 }));
-    //   fixture.detectChanges();
-    //   expect(navigate.calls.mostRecent().args[0].toString()).toBe('/apps/processor/aggregator');
-    //   done();
-    // });
   });
 });

@@ -16,9 +16,9 @@ import {TranslateService} from '@ngx-translate/core';
   templateUrl: './apps.component.html'
 })
 export class AppsComponent extends DatagridComponent {
-  page: AppPage;
-  @ViewChild('unregisterModal', {static: true}) unregisterModal: UnregisterComponent;
-  @ViewChild('versionModal', {static: true}) versionModal: VersionComponent;
+  page!: AppPage;
+  @ViewChild('unregisterModal', {static: true}) unregisterModal!: UnregisterComponent;
+  @ViewChild('versionModal', {static: true}) versionModal!: VersionComponent;
 
   constructor(
     private appService: AppService,
@@ -50,7 +50,7 @@ export class AppsComponent extends DatagridComponent {
           (page: AppPage) => {
             this.page = page;
             this.updateGroupContext(params);
-            this.selected = [];
+            this.selected = this.grouped ? [] : null;
             this.loading = false;
           },
           error => {

@@ -52,7 +52,7 @@ describe('apps/version/version.component.ts', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should open the modal', async done => {
+  it('should open the modal', async () => {
     component.open('aggregator', ApplicationType.processor as any as ApplicationType);
     fixture.detectChanges();
     await fixture.whenStable();
@@ -61,10 +61,9 @@ describe('apps/version/version.component.ts', () => {
     const items = fixture.debugElement.queryAll(By.css('.modal-body table tbody tr'));
     expect(title.textContent).toContain('Manage versions');
     expect(items.length).toBe(2);
-    done();
   });
 
-  it('should handle error', async done => {
+  it('should handle error', async () => {
     spyOn(AppServiceMock.mock, 'getAppVersions').and.callFake(() => throwError(new HttpError('Fake error', 404)));
     component.open('aggregator', ApplicationType.processor as any as ApplicationType);
     fixture.detectChanges();
@@ -72,10 +71,9 @@ describe('apps/version/version.component.ts', () => {
     fixture.detectChanges();
     expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
     expect(component.isOpen).toBe(false);
-    done();
   });
 
-  it('should display the unregister version confirmation', async done => {
+  it('should display the unregister version confirmation', async () => {
     component.open('aggregator', ApplicationType.processor as any as ApplicationType);
     fixture.detectChanges();
     await fixture.whenStable();
@@ -96,10 +94,9 @@ describe('apps/version/version.component.ts', () => {
     fixture.detectChanges();
     expect(component.isOpen).toBe(false);
     expect(NotificationServiceMock.mock.successNotifications[0].title).toBe('Unregister version');
-    done();
   });
 
-  it('should handle error on unregister version', async done => {
+  it('should handle error on unregister version', async () => {
     component.open('aggregator', ApplicationType.processor as any as ApplicationType);
     spyOn(AppServiceMock.mock, 'unregisterApp').and.callFake(() => throwError(new HttpError('Fake error', 404)));
     fixture.detectChanges();
@@ -121,10 +118,9 @@ describe('apps/version/version.component.ts', () => {
     fixture.detectChanges();
     expect(component.isOpen).toBe(false);
     expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
-    done();
   });
 
-  it('should display the make default version confirmation', async done => {
+  it('should display the make default version confirmation', async () => {
     component.open('aggregator', ApplicationType.processor as any as ApplicationType);
     fixture.detectChanges();
     await fixture.whenStable();
@@ -144,10 +140,9 @@ describe('apps/version/version.component.ts', () => {
     await fixture.whenStable();
     fixture.detectChanges();
     expect(NotificationServiceMock.mock.successNotifications[0].title).toBe('Default version');
-    done();
   });
 
-  it('should handle error on make default version', async done => {
+  it('should handle error on make default version', async () => {
     component.open('aggregator', ApplicationType.processor as any as ApplicationType);
     spyOn(AppServiceMock.mock, 'defaultVersion').and.callFake(() => throwError(new HttpError('Fake error', 404)));
     fixture.detectChanges();
@@ -169,6 +164,5 @@ describe('apps/version/version.component.ts', () => {
     fixture.detectChanges();
     expect(component.isOpen).toBe(false);
     expect(NotificationServiceMock.mock.errorNotification[0].title).toBe('An error occurred');
-    done();
   });
 });
