@@ -242,7 +242,7 @@ export class TaskService {
     const params = new HttpParams({encoder: new DataflowEncoder()});
     return this.httpClient
       .get<any>(
-        UrlUtilities.fixReverseProxyUrl(url, this.localStorageService.get('reverseProxyFixActiveValue') === true),
+        UrlUtilities.fixReverseProxyUrl(url, this.localStorageService.get('reverseProxyFixActiveValue') === 'true'),
         {
           headers,
           params
