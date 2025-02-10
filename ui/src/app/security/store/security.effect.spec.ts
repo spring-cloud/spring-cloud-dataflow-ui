@@ -20,8 +20,15 @@ describe('Security Effect', () => {
   }));
 
   it('Unauthorised should logout', () => {
-    actions$ = of(SecurityAction.unauthorised());
-    const expected = cold('(a|)', {a: SecurityAction.logout()});
+    const props = {
+      authenticated: false,
+      enabled: false,
+      username: '',
+      roles: [],
+      clientRegistrations: []
+    };
+    actions$ = of(SecurityAction.unauthorised(props));
+    const expected = cold('(a|)', {a: SecurityAction.logout(props)});
     expect(effects.securityReset$).toBeObservable(expected);
     expect(routerSpy.navigate).toHaveBeenCalledWith(['/']);
   });

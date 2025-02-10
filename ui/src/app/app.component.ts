@@ -11,6 +11,8 @@ import {UrlUtilities} from './url-utilities.service';
 export class AppComponent {
   shouldProtect = this.securityService.shouldProtect();
   securityEnabled = this.securityService.securityEnabled();
+  isOAuth2 = this.securityService.isOAuth2();
+  clientRegistrations = this.securityService.clientRegistrations();
   baseApiUrl = UrlUtilities.calculateBaseApiUrl();
 
   constructor(

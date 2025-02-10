@@ -9,6 +9,7 @@ export interface SecurityState {
   authenticated: boolean;
   username: string;
   roles: string[];
+  clientRegistrations?: string[];
 }
 
 export interface State extends fromRoot.State {
@@ -23,17 +24,22 @@ export const getAuthenticated = (state: State): boolean => state[securityFeature
 
 export const getUsername = (state: State): string => state[securityFeatureKey].username;
 
+export const getClientRegistrations = (state: State): string[] => state[securityFeatureKey].clientRegistrations;
+
 export const getRoles = (state: State): string[] => state[securityFeatureKey].roles;
 
 export const getShouldProtect = createSelector(getEnabled, getAuthenticated, (enabled, authenticated) =>
   !enabled ? false : enabled && !authenticated
 );
 
+export const isOAuth2 = createSelector(getClientRegistrations, clientRegistrations => clientRegistrations.length > 0);
+
 export const initialState: SecurityState = {
   enabled: true,
   authenticated: false,
   username: undefined,
-  roles: []
+  roles: [],
+  clientRegistrations: []
 };
 
 export const reducer = createReducer(
@@ -42,12 +48,14 @@ export const reducer = createReducer(
     enabled: props.enabled,
     authenticated: props.authenticated,
     username: props.username,
-    roles: props.roles
+    roles: props.roles,
+    clientRegistrations: props.clientRegistrations
   })),
-  on(SecurityActions.logout, state => ({
+  on(SecurityActions.logout, (state, props) => ({
     enabled: state.enabled,
     authenticated: false,
     username: undefined,
-    roles: []
+    roles: props.roles,
+    clientRegistrations: props.clientRegistrations
   }))
 );

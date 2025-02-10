@@ -84,7 +84,8 @@ import {JobService} from './shared/api/job.service';
                   security.authenticationEnabled,
                   security.authenticated,
                   security.username,
-                  security.roles
+                  security.roles,
+                  security.clientRegistrations
                 );
                 if (security.authenticated || !security.authenticationEnabled) {
                   return aboutService.load().pipe(map(() => security));
