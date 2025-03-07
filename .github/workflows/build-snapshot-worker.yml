@@ -23,7 +23,7 @@ jobs:
         JF_ENV_SPRING: ${{ secrets.JF_ARTIFACTORY_SPRING }}
 
     # cache maven .m2
-    - uses: actions/cache@v2
+    - uses: actions/cache@v3
       with:
         path: ~/.m2/repository
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}

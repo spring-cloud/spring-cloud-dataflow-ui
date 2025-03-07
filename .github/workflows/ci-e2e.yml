@@ -21,7 +21,7 @@ jobs:
           config-file: cypress-dc-local.json
           browser: chrome
           headless: true
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: cypress-artifacts
